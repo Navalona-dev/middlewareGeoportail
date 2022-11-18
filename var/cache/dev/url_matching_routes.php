@@ -8,6 +8,12 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
+        '/api/login' => [
+            [['_route' => 'login', '_controller' => 'App\\Controller\\SecurityController::loginAction'], null, null, null, false, false, null],
+            [['_route' => 'api_login_check'], null, null, null, false, false, null],
+        ],
+        '/user' => [[['_route' => 'user', '_controller' => 'App\\Controller\\UserController::index'], null, null, null, false, false, null]],
+        '/useradd' => [[['_route' => 'adduser', '_controller' => 'App\\Controller\\UserController::addUser'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'

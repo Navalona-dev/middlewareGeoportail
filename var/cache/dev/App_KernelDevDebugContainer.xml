@@ -3807,8 +3807,8 @@
     </service>
     <service id="doctrine.dbal.default_connection" class="Doctrine\DBAL\Connection" public="true">
       <argument type="collection">
+        <argument key="driver">pdo_pgsql</argument>
         <argument key="url">%env(resolve:DATABASE_URL)%</argument>
-        <argument key="driver">pdo_mysql</argument>
         <argument key="host">localhost</argument>
         <argument key="port">null</argument>
         <argument key="user">root</argument>

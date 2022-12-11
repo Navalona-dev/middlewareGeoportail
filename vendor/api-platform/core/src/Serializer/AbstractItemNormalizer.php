@@ -203,17 +203,15 @@ abstract class AbstractItemNormalizer extends AbstractObjectNormalizer
             unset($context[self::IS_TRANSFORMED_TO_SAME_CLASS]);
         }
 
-        $iri = null;
-        if ($this->resourceClassResolver->isResourceClass($resourceClass)) {
+        if ($isResourceClass = $this->resourceClassResolver->isResourceClass($resourceClass)) {
             $context = $this->initContext($resourceClass, $context);
-
-            if ($this->iriConverter instanceof LegacyIriConverterInterface) {
-                $iri = $this->iriConverter->getIriFromItem($object);
-            }
         }
 
+        $iri = null;
         if (isset($context['iri'])) {
             $iri = $context['iri'];
+        } elseif ($this->iriConverter instanceof LegacyIriConverterInterface && $isResourceClass) {
+            $iri = $this->iriConverter->getIriFromItem($object);
         } elseif ($this->iriConverter instanceof IriConverterInterface) {
             $iri = $this->iriConverter->getIriFromResource($object, UrlGeneratorInterface::ABS_URL, $context['operation'] ?? null, $context);
         }
@@ -712,7 +710,7 @@ abstract class AbstractItemNormalizer extends AbstractObjectNormalizer
         if (isset($context['resource_class']) && $this->resourceClassResolver->isResourceClass($context['resource_class']) && $this->resourceMetadataFactory instanceof ResourceMetadataCollectionFactoryInterface) {
             $resourceClass = $this->resourceClassResolver->getResourceClass(null, $context['resource_class']); // fix for abstract classes and interfaces
             // This is a hot spot, we should avoid calling this here but in many cases we can't
-            $operation = $context['operation'] ?? $this->resourceMetadataFactory->create($resourceClass)->getOperation($context['operation_name'] ?? null);
+            $operation = $context['root_operation'] ?? $context['operation'] ?? $this->resourceMetadataFactory->create($resourceClass)->getOperation($context['root_operation_name'] ?? $context['operation_name'] ?? null);
             $options['normalization_groups'] = $operation->getNormalizationContext()['groups'] ?? null;
             $options['denormalization_groups'] = $operation->getDenormalizationContext()['groups'] ?? null;
         }

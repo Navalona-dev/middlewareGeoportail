@@ -10,7 +10,7 @@
 /vendor/
 .env
 ###< symfony/framework-bundle ###
-
+/var/
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache

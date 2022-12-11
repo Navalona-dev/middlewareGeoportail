@@ -8,6 +8,7 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
+        '/api/education/add' => [[['_route' => 'education_add', '_controller' => 'App\\Controller\\EducationController::create'], null, ['POST' => 0], null, false, false, null]],
         '/api/login' => [
             [['_route' => 'login', '_controller' => 'App\\Controller\\SecurityController::loginAction'], null, null, null, false, false, null],
             [['_route' => 'api_login_check'], null, null, null, false, false, null],

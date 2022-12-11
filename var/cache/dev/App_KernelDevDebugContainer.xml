@@ -138,9 +138,9 @@
     <parameter key="doctrine.dbal.events.oracle_session_init.class">Doctrine\DBAL\Event\Listeners\OracleSessionInit</parameter>
     <parameter key="doctrine.class">Doctrine\Bundle\DoctrineBundle\Registry</parameter>
     <parameter key="doctrine.entity_managers" type="collection">
-      <parameter key="default">doctrine.orm.default_entity_manager</parameter>
+      <parameter key="middleware">doctrine.orm.middleware_entity_manager</parameter>
     </parameter>
-    <parameter key="doctrine.default_entity_manager">default</parameter>
+    <parameter key="doctrine.default_entity_manager">middleware</parameter>
     <parameter key="doctrine.dbal.connection_factory.types" type="collection"/>
     <parameter key="doctrine.connections" type="collection">
       <parameter key="default">doctrine.dbal.default_connection</parameter>
@@ -364,6 +364,13 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
+    <service id="App\Controller\EducationController" class="App\Controller\EducationController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.GNc8e5B.App\Controller\EducationController"/>
+      </call>
+    </service>
     <service id="App\Controller\SecurityController" class="App\Controller\SecurityController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -378,10 +385,15 @@
         <argument type="service" id=".service_locator.GNc8e5B.App\Controller\UserController"/>
       </call>
     </service>
+    <service id="App\Repository\EducationRepository" class="App\Repository\EducationRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Service\CreateMediaObjectAction" class="App\Service\CreateMediaObjectAction" autowire="true" autoconfigure="true"/>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="response_listener" class="Symfony\Component\HttpKernel\EventListener\ResponseListener">
       <tag name="kernel.event_subscriber"/>
@@ -702,8 +714,8 @@
         <argument>cache.property_info</argument>
         <argument>cache.validator_expression_language</argument>
         <argument>cache.security_expression_language</argument>
-        <argument>cache.doctrine.orm.default.result</argument>
-        <argument>cache.doctrine.orm.default.query</argument>
+        <argument>cache.doctrine.orm.middleware.result</argument>
+        <argument>cache.doctrine.orm.middleware.query</argument>
         <argument>api_platform.cache.route_name_resolver</argument>
         <argument>api_platform.cache.metadata.resource</argument>
         <argument>api_platform.cache.metadata.resource.legacy</argument>
@@ -742,8 +754,8 @@
         <argument>cache.property_info</argument>
         <argument>cache.validator_expression_language</argument>
         <argument>cache.security_expression_language</argument>
-        <argument>cache.doctrine.orm.default.result</argument>
-        <argument>cache.doctrine.orm.default.query</argument>
+        <argument>cache.doctrine.orm.middleware.result</argument>
+        <argument>cache.doctrine.orm.middleware.query</argument>
         <argument>api_platform.cache.route_name_resolver</argument>
         <argument>api_platform.cache.metadata.resource</argument>
         <argument>api_platform.cache.metadata.resource.legacy</argument>
@@ -770,8 +782,8 @@
         <argument>cache.property_info</argument>
         <argument>cache.validator_expression_language</argument>
         <argument>cache.security_expression_language</argument>
-        <argument>cache.doctrine.orm.default.result</argument>
-        <argument>cache.doctrine.orm.default.query</argument>
+        <argument>cache.doctrine.orm.middleware.result</argument>
+        <argument>cache.doctrine.orm.middleware.query</argument>
         <argument>api_platform.cache.route_name_resolver</argument>
         <argument>api_platform.cache.metadata.resource</argument>
         <argument>api_platform.cache.metadata.resource.legacy</argument>
@@ -1206,8 +1218,8 @@
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
         <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
         <argument key="cache.security_expression_language" type="service" id="cache.security_expression_language" on-invalid="ignore_uninitialized"/>
-        <argument key="cache.doctrine.orm.default.result" type="service" id="cache.doctrine.orm.default.result" on-invalid="ignore_uninitialized"/>
-        <argument key="cache.doctrine.orm.default.query" type="service" id="cache.doctrine.orm.default.query" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.doctrine.orm.middleware.result" type="service" id="cache.doctrine.orm.middleware.result" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.doctrine.orm.middleware.query" type="service" id="cache.doctrine.orm.middleware.query" on-invalid="ignore_uninitialized"/>
         <argument key="api_platform.cache.route_name_resolver" type="service" id="api_platform.cache.route_name_resolver" on-invalid="ignore_uninitialized"/>
         <argument key="api_platform.cache.metadata.resource" type="service" id="api_platform.cache.metadata.resource" on-invalid="ignore_uninitialized"/>
         <argument key="api_platform.cache.metadata.resource.legacy" type="service" id="api_platform.cache.metadata.resource.legacy" on-invalid="ignore_uninitialized"/>
@@ -2156,10 +2168,10 @@
       <argument type="iterator">
         <argument type="service" id="property_info.serializer_extractor"/>
         <argument type="service" id="property_info.reflection_extractor"/>
-        <argument type="service" id="doctrine.orm.default_entity_manager.property_info_extractor"/>
+        <argument type="service" id="doctrine.orm.middleware_entity_manager.property_info_extractor"/>
       </argument>
       <argument type="iterator">
-        <argument type="service" id="doctrine.orm.default_entity_manager.property_info_extractor"/>
+        <argument type="service" id="doctrine.orm.middleware_entity_manager.property_info_extractor"/>
         <argument type="service" id="property_info.phpstan_extractor"/>
         <argument type="service" id="property_info.php_doc_extractor"/>
         <argument type="service" id="property_info.reflection_extractor"/>
@@ -2168,7 +2180,7 @@
         <argument type="service" id="property_info.php_doc_extractor"/>
       </argument>
       <argument type="iterator">
-        <argument type="service" id="doctrine.orm.default_entity_manager.property_info_extractor"/>
+        <argument type="service" id="doctrine.orm.middleware_entity_manager.property_info_extractor"/>
         <argument type="service" id="property_info.reflection_extractor"/>
       </argument>
       <argument type="iterator">
@@ -2340,7 +2352,7 @@
         <argument type="service" id="validator.property_info_loader"/>
       </call>
       <call method="addLoader">
-        <argument type="service" id="doctrine.orm.default_entity_manager.validator_loader"/>
+        <argument type="service" id="doctrine.orm.middleware_entity_manager.validator_loader"/>
       </call>
       <factory class="Symfony\Component\Validator\Validation" method="createValidatorBuilder"/>
     </service>
@@ -3735,7 +3747,7 @@
       <argument>%doctrine.connections%</argument>
       <argument>%doctrine.entity_managers%</argument>
       <argument>default</argument>
-      <argument>default</argument>
+      <argument>middleware</argument>
     </service>
     <service id="doctrine.twig.doctrine_extension" class="Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension">
       <tag name="twig.extension"/>
@@ -3792,7 +3804,7 @@
       </call>
     </service>
     <service id="doctrine.dbal.default_connection.event_manager" class="Symfony\Bridge\Doctrine\ContainerAwareEventManager">
-      <argument type="service" id=".service_locator.bBRwv06"/>
+      <argument type="service" id=".service_locator.g.dtcN3"/>
       <argument type="collection">
         <argument>doctrine.orm.listeners.doctrine_dbal_cache_adapter_schema_subscriber</argument>
         <argument>doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber</argument>
@@ -3801,7 +3813,7 @@
           <argument type="collection">
             <argument>loadClassMetadata</argument>
           </argument>
-          <argument>doctrine.orm.default_listeners.attach_entity_listeners</argument>
+          <argument>doctrine.orm.middleware_listeners.attach_entity_listeners</argument>
         </argument>
       </argument>
     </service>
@@ -3829,7 +3841,7 @@
           <argument>%doctrine.connections%</argument>
           <argument>%doctrine.entity_managers%</argument>
           <argument>default</argument>
-          <argument>default</argument>
+          <argument>middleware</argument>
         </service>
       </argument>
     </service>
@@ -3859,7 +3871,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator._inl0RG"/>
+      <argument type="service" id=".service_locator.SJfrE9U"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -4029,7 +4041,7 @@
         <argument>doctrine:mapping:import</argument>
       </call>
     </service>
-    <service id="doctrine.orm.default_configuration" class="Doctrine\ORM\Configuration">
+    <service id="doctrine.orm.middleware_configuration" class="Doctrine\ORM\Configuration">
       <tag name="doctrine.orm.configuration"/>
       <call method="setEntityNamespaces">
         <argument type="collection">
@@ -4037,16 +4049,16 @@
         </argument>
       </call>
       <call method="setMetadataCache">
-        <argument type="service" id="cache.doctrine.orm.default.metadata"/>
+        <argument type="service" id="cache.doctrine.orm.middleware.metadata"/>
       </call>
       <call method="setQueryCache">
-        <argument type="service" id="cache.doctrine.orm.default.query"/>
+        <argument type="service" id="cache.doctrine.orm.middleware.query"/>
       </call>
       <call method="setResultCache">
-        <argument type="service" id="cache.doctrine.orm.default.result"/>
+        <argument type="service" id="cache.doctrine.orm.middleware.result"/>
       </call>
       <call method="setMetadataDriverImpl">
-        <argument type="service" id=".doctrine.orm.default_metadata_driver"/>
+        <argument type="service" id=".doctrine.orm.middleware_metadata_driver"/>
       </call>
       <call method="setProxyDir">
         <argument>/var/www/html/middlewareGeoportail/var/cache/dev/doctrine/orm/Proxies</argument>
@@ -4067,56 +4079,56 @@
         <argument>Doctrine\ORM\EntityRepository</argument>
       </call>
       <call method="setNamingStrategy">
-        <argument type="service" id="doctrine.orm.naming_strategy.underscore_number_aware"/>
+        <argument type="service" id="doctrine.orm.naming_strategy.default"/>
       </call>
       <call method="setQuoteStrategy">
         <argument type="service" id="doctrine.orm.quote_strategy.default"/>
       </call>
       <call method="setEntityListenerResolver">
-        <argument type="service" id="doctrine.orm.default_entity_listener_resolver"/>
+        <argument type="service" id="doctrine.orm.middleware_entity_listener_resolver"/>
       </call>
       <call method="setRepositoryFactory">
         <argument type="service" id="doctrine.orm.container_repository_factory"/>
       </call>
     </service>
-    <service id="doctrine.orm.default_annotation_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver">
+    <service id="doctrine.orm.middleware_annotation_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver">
       <argument type="service" id="annotations.cached_reader"/>
       <argument type="collection">
         <argument>/var/www/html/middlewareGeoportail/src/Entity</argument>
       </argument>
     </service>
-    <service id="cache.doctrine.orm.default.metadata" class="Symfony\Component\Cache\Adapter\ArrayAdapter"/>
-    <service id="cache.doctrine.orm.default.result" class="Symfony\Component\Cache\Adapter\ArrayAdapter">
+    <service id="cache.doctrine.orm.middleware.metadata" class="Symfony\Component\Cache\Adapter\ArrayAdapter"/>
+    <service id="cache.doctrine.orm.middleware.result" class="Symfony\Component\Cache\Adapter\ArrayAdapter">
       <tag name="cache.pool"/>
     </service>
-    <service id="cache.doctrine.orm.default.query" class="Symfony\Component\Cache\Adapter\ArrayAdapter">
+    <service id="cache.doctrine.orm.middleware.query" class="Symfony\Component\Cache\Adapter\ArrayAdapter">
       <tag name="cache.pool"/>
     </service>
-    <service id="doctrine.orm.default_entity_listener_resolver" class="Doctrine\Bundle\DoctrineBundle\Mapping\ContainerEntityListenerResolver">
+    <service id="doctrine.orm.middleware_entity_listener_resolver" class="Doctrine\Bundle\DoctrineBundle\Mapping\ContainerEntityListenerResolver">
       <argument type="service" id="service_container"/>
     </service>
-    <service id="doctrine.orm.default_listeners.attach_entity_listeners" class="Doctrine\ORM\Tools\AttachEntityListenersListener">
-      <tag name="doctrine.event_listener" event="loadClassMetadata"/>
+    <service id="doctrine.orm.middleware_listeners.attach_entity_listeners" class="Doctrine\ORM\Tools\AttachEntityListenersListener">
+      <tag name="doctrine.event_listener" event="loadClassMetadata" connection="default"/>
     </service>
-    <service id="doctrine.orm.default_manager_configurator" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator">
+    <service id="doctrine.orm.middleware_manager_configurator" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator">
       <argument type="collection"/>
       <argument type="collection"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager" class="Doctrine\ORM\EntityManager" public="true" lazy="true">
+    <service id="doctrine.orm.middleware_entity_manager" class="Doctrine\ORM\EntityManager" public="true" lazy="true">
       <tag name="container.preload" class="Doctrine\ORM\Proxy\Autoloader"/>
       <argument type="service" id="doctrine.dbal.default_connection"/>
-      <argument type="service" id="doctrine.orm.default_configuration"/>
-      <configurator service="doctrine.orm.default_manager_configurator" method="configure"/>
+      <argument type="service" id="doctrine.orm.middleware_configuration"/>
+      <configurator service="doctrine.orm.middleware_manager_configurator" method="configure"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager.property_info_extractor" class="Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor">
+    <service id="doctrine.orm.middleware_entity_manager.property_info_extractor" class="Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor">
       <tag name="property_info.list_extractor" priority="-1001"/>
       <tag name="property_info.type_extractor" priority="-999"/>
       <tag name="property_info.access_extractor" priority="-999"/>
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="doctrine.orm.middleware_entity_manager"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager.validator_loader" class="Symfony\Bridge\Doctrine\Validator\DoctrineLoader">
+    <service id="doctrine.orm.middleware_entity_manager.validator_loader" class="Symfony\Bridge\Doctrine\Validator\DoctrineLoader">
       <tag name="validator.auto_mapper" priority="-100"/>
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="doctrine.orm.middleware_entity_manager"/>
       <argument>null</argument>
     </service>
     <service id="doctrine.migrations.dependency_factory" class="Doctrine\Migrations\DependencyFactory">
@@ -5478,10 +5490,10 @@
       <argument type="service" id="doctrine" on-invalid="ignore"/>
       <argument>true</argument>
       <argument type="collection">
-        <argument key="default" type="collection">
+        <argument key="middleware" type="collection">
           <argument type="collection">
             <argument>App\Entity</argument>
-            <argument type="service" id="doctrine.orm.default_annotation_metadata_driver"/>
+            <argument type="service" id="doctrine.orm.middleware_annotation_metadata_driver"/>
           </argument>
         </argument>
       </argument>
@@ -5622,12 +5634,17 @@
     <service id="maker.maker.make_stimulus_controller" class="Symfony\Bundle\MakerBundle\Maker\MakeStimulusController">
       <tag name="maker.command"/>
     </service>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\EducationController" class="App\Controller\EducationController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\EducationController" class="App\Controller\EducationController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\EducationController" class="App\Controller\EducationController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\UserController" class="App\Controller\UserController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\UserController" class="App\Controller\UserController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\UserController" class="App\Controller\UserController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\EducationRepository" class="App\Repository\EducationRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\EducationRepository" class="App\Repository\EducationRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.gSv9zYw" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -6010,15 +6027,22 @@
         <argument key="loader" type="service_closure" id=".errored..service_locator.KfbR3DY.Symfony\Component\Config\Loader\LoaderInterface"/>
       </argument>
     </service>
+    <service id=".service_locator.jBKfg1k" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="educationRepository" type="service_closure" id="App\Repository\EducationRepository"/>
+      </argument>
+    </service>
     <service id=".service_locator.pwZ6MTM" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="passwordEncoder" type="service_closure" id="security.user_password_encoder.generic"/>
       </argument>
     </service>
-    <service id=".service_locator.XV3veQM" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.t7pqFoE" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Controller\EducationController::create" type="service_closure" id=".service_locator.jBKfg1k"/>
         <argument key="App\Controller\UserController::addUser" type="service_closure" id=".service_locator.pwZ6MTM"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
@@ -6026,6 +6050,7 @@
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel::terminate" type="service_closure" id=".service_locator.KfwZsne"/>
+        <argument key="App\Controller\EducationController:create" type="service_closure" id=".service_locator.jBKfg1k"/>
         <argument key="App\Controller\UserController:addUser" type="service_closure" id=".service_locator.pwZ6MTM"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
@@ -6114,18 +6139,19 @@
     <service id="security.ldap_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection"/>
     </service>
-    <service id=".service_locator.bBRwv06" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.g.dtcN3" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service_closure" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
         <argument key="doctrine.orm.listeners.doctrine_dbal_cache_adapter_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.doctrine_dbal_cache_adapter_schema_subscriber"/>
         <argument key="doctrine.orm.listeners.doctrine_token_provider_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.doctrine_token_provider_schema_subscriber"/>
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
+        <argument key="doctrine.orm.middleware_listeners.attach_entity_listeners" type="service_closure" id="doctrine.orm.middleware_listeners.attach_entity_listeners"/>
       </argument>
     </service>
-    <service id=".service_locator._inl0RG" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.SJfrE9U" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Repository\EducationRepository" type="service_closure" id="App\Repository\EducationRepository"/>
         <argument key="App\Repository\UserRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
@@ -6136,8 +6162,8 @@
         <argument key="doctrine.uuid_generator" type="service_closure" id="doctrine.uuid_generator"/>
       </argument>
     </service>
-    <service id=".doctrine.orm.default_metadata_driver" class="Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver">
-      <argument type="service" id=".doctrine.orm.default_metadata_driver.inner"/>
+    <service id=".doctrine.orm.middleware_metadata_driver" class="Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver">
+      <argument type="service" id=".doctrine.orm.middleware_metadata_driver.inner"/>
       <argument type="service" id=".service_locator.KLVvNIq"/>
     </service>
     <service id="doctrine.dbal.debug_middleware.default" class="Doctrine\Bundle\DoctrineBundle\Middleware\DebugMiddleware">
@@ -6163,6 +6189,12 @@
         <argument key="session" type="service_closure" id=".session.deprecated" on-invalid="ignore"/>
         <argument key="twig" type="service_closure" id="twig" on-invalid="ignore"/>
       </argument>
+    </service>
+    <service id=".service_locator.GNc8e5B.App\Controller\EducationController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EducationController"/>
+      <argument>App\Controller\EducationController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.GNc8e5B" method="withContext"/>
     </service>
     <service id=".service_locator.GNc8e5B.App\Controller\SecurityController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\SecurityController"/>
@@ -6355,16 +6387,16 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.XV3veQM"/>
+      <argument type="service" id=".service_locator.t7pqFoE"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.XV3veQM"/>
+      <argument type="service" id=".service_locator.t7pqFoE"/>
     </service>
-    <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
+    <service id=".doctrine.orm.middleware_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
-        <argument type="service" id="doctrine.orm.default_annotation_metadata_driver"/>
+        <argument type="service" id="doctrine.orm.middleware_annotation_metadata_driver"/>
         <argument>App\Entity</argument>
       </call>
     </service>
@@ -7156,14 +7188,14 @@
     <service id="database_connection" alias="doctrine.dbal.default_connection" public="true"/>
     <service id="doctrine.dbal.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
     <service id="Doctrine\DBAL\Connection $defaultConnection" alias="doctrine.dbal.default_connection"/>
-    <service id="Doctrine\ORM\EntityManagerInterface" alias="doctrine.orm.default_entity_manager"/>
+    <service id="Doctrine\ORM\EntityManagerInterface" alias="doctrine.orm.middleware_entity_manager"/>
     <service id="doctrine.orm.metadata.annotation_reader" alias="annotations.cached_reader"/>
-    <service id="doctrine.orm.entity_manager" alias="doctrine.orm.default_entity_manager" public="true"/>
-    <service id="doctrine.orm.default_metadata_cache" alias="cache.doctrine.orm.default.metadata"/>
-    <service id="doctrine.orm.default_result_cache" alias="cache.doctrine.orm.default.result"/>
-    <service id="doctrine.orm.default_query_cache" alias="cache.doctrine.orm.default.query"/>
-    <service id="Doctrine\ORM\EntityManagerInterface $defaultEntityManager" alias="doctrine.orm.default_entity_manager"/>
-    <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
+    <service id="doctrine.orm.entity_manager" alias="doctrine.orm.middleware_entity_manager" public="true"/>
+    <service id="doctrine.orm.middleware_metadata_cache" alias="cache.doctrine.orm.middleware.metadata"/>
+    <service id="doctrine.orm.middleware_result_cache" alias="cache.doctrine.orm.middleware.result"/>
+    <service id="doctrine.orm.middleware_query_cache" alias="cache.doctrine.orm.middleware.query"/>
+    <service id="Doctrine\ORM\EntityManagerInterface $middlewareEntityManager" alias="doctrine.orm.middleware_entity_manager"/>
+    <service id="doctrine.orm.middleware_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="api_platform.serializer" alias="serializer"/>
     <service id="api_platform.property_accessor" alias="property_accessor"/>
@@ -7268,7 +7300,7 @@
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.XV3veQM"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.t7pqFoE"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
@@ -7283,9 +7315,9 @@
     <service id=".service_locator.bnaLdkn" alias="api_platform.serializer_locator"/>
     <service id=".service_locator.Xbsa8iG" alias="api_platform.filter_locator"/>
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
-    <service id=".service_locator.uvanbAN" alias=".service_locator.XV3veQM"/>
+    <service id=".service_locator.ZStfk7D" alias=".service_locator.t7pqFoE"/>
     <service id=".service_locator.wKF4yn1" alias=".service_locator.l6ELYLY"/>
-    <service id=".service_locator.4hi2aOY" alias=".service_locator.bBRwv06"/>
+    <service id=".service_locator.PZR_i4b" alias=".service_locator.g.dtcN3"/>
     <service id=".service_locator.W9y3dzm" alias=".service_locator.GNc8e5B"/>
     <service id="api_platform.metadata.property.metadata_factory.property_info.legacy.inner" alias="api_platform.metadata.property.metadata_factory.xml.legacy"/>
     <service id="api_platform.metadata.resource.metadata_factory.annotation.inner" alias="api_platform.metadata.resource.metadata_factory.xml"/>
@@ -7332,7 +7364,7 @@
     <service id="argument_resolver.default" alias="debug.argument_resolver.default"/>
     <service id="argument_resolver.variadic" alias="debug.argument_resolver.variadic"/>
     <service id="argument_resolver.not_tagged_controller" alias="debug.argument_resolver.not_tagged_controller"/>
-    <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
+    <service id="doctrine.orm.middleware_metadata_driver" alias=".doctrine.orm.middleware_metadata_driver"/>
     <service id="serializer.mapping.class_metadata_factory" alias="api_platform.serializer.mapping.class_metadata_factory"/>
     <service id="api_platform.openapi.normalizer" alias="api_platform.openapi.normalizer.api_gateway"/>
     <service id="api_platform.swagger.normalizer.documentation" alias="api_platform.swagger.normalizer.api_gateway"/>
@@ -7344,6 +7376,7 @@
     <service id="api_platform.subresource_operation_factory" alias="api_platform.subresource_operation_factory.cached"/>
     <service id=".service_locator._5g_Wvc" alias=".service_locator.KfwZsne"/>
     <service id=".service_locator.JBAFp66" alias=".service_locator.KfbR3DY"/>
+    <service id=".service_locator.mKEH_YG" alias=".service_locator.jBKfg1k"/>
     <service id=".service_locator.F2VpVm6" alias=".service_locator.pwZ6MTM"/>
     <service id=".service_locator.smJsCNt" alias=".service_locator.GNc8e5B"/>
     <service id=".service_locator.l3DyD1S" alias=".service_locator.KtOJFwR"/>

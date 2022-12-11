@@ -4406,6 +4406,19 @@
       <argument type="service" id="api_platform.uri_variables.converter"/>
       <argument type="service" id="api_platform.symfony.iri_converter.skolem" on-invalid="null"/>
     </service>
+    <service id="api_platform.iri_converter.legacy" class="ApiPlatform\Core\Bridge\Symfony\Routing\IriConverter">
+      <argument type="service" id="api_platform.metadata.property.name_collection_factory.cached"/>
+      <argument type="service" id="api_platform.metadata.property.metadata_factory.cached.legacy"/>
+      <argument type="service" id="debug.api_platform.item_data_provider"/>
+      <argument type="service" id="api_platform.route_name_resolver.cached"/>
+      <argument type="service" id="api_platform.router"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="api_platform.identifiers_extractor.cached"/>
+      <argument type="service" id="debug.api_platform.subresource_data_provider" on-invalid="ignore"/>
+      <argument type="service" id="api_platform.identifier.converter" on-invalid="ignore"/>
+      <argument type="service" id="api_platform.resource_class_resolver"/>
+      <argument type="service" id="api_platform.metadata.resource.metadata_factory.cached"/>
+    </service>
     <service id="api_platform.symfony.iri_converter.skolem" class="ApiPlatform\Symfony\Routing\SkolemIriConverter">
       <argument type="service" id="api_platform.router"/>
     </service>
@@ -4474,19 +4487,6 @@
       <argument type="service" id="api_platform.router"/>
       <argument type="service" id="api_platform.operation_path_resolver.custom"/>
       <argument type="service" id="api_platform.subresource_operation_factory.cached"/>
-    </service>
-    <service id="api_platform.iri_converter.legacy" class="ApiPlatform\Core\Bridge\Symfony\Routing\IriConverter">
-      <argument type="service" id="api_platform.metadata.property.name_collection_factory.cached"/>
-      <argument type="service" id="api_platform.metadata.property.metadata_factory.cached.legacy"/>
-      <argument type="service" id="debug.api_platform.item_data_provider"/>
-      <argument type="service" id="api_platform.route_name_resolver.cached"/>
-      <argument type="service" id="api_platform.router"/>
-      <argument type="service" id="property_accessor"/>
-      <argument type="service" id="api_platform.identifiers_extractor.cached"/>
-      <argument type="service" id="debug.api_platform.subresource_data_provider" on-invalid="ignore"/>
-      <argument type="service" id="api_platform.identifier.converter" on-invalid="ignore"/>
-      <argument type="service" id="api_platform.resource_class_resolver"/>
-      <argument type="service" id="api_platform.metadata.resource.metadata_factory.cached"/>
     </service>
     <service id="api_platform.listener.request.add_format" class="ApiPlatform\Symfony\EventListener\AddFormatListener">
       <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="28"/>
@@ -6015,12 +6015,6 @@
         <argument>Creates a new Stimulus controller</argument>
       </call>
     </service>
-    <service id=".service_locator.KfwZsne" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="response" type="service_closure" id=".errored..service_locator.KfwZsne.Symfony\Component\HttpFoundation\Response"/>
-      </argument>
-    </service>
     <service id=".service_locator.KfbR3DY" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -6039,22 +6033,19 @@
         <argument key="passwordEncoder" type="service_closure" id="security.user_password_encoder.generic"/>
       </argument>
     </service>
-    <service id=".service_locator.t7pqFoE" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.TT20Uvz" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\EducationController::create" type="service_closure" id=".service_locator.jBKfg1k"/>
         <argument key="App\Controller\UserController::addUser" type="service_closure" id=".service_locator.pwZ6MTM"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
-        <argument key="App\Kernel::terminate" type="service_closure" id=".service_locator.KfwZsne"/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
-        <argument key="kernel::terminate" type="service_closure" id=".service_locator.KfwZsne"/>
         <argument key="App\Controller\EducationController:create" type="service_closure" id=".service_locator.jBKfg1k"/>
         <argument key="App\Controller\UserController:addUser" type="service_closure" id=".service_locator.pwZ6MTM"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
-        <argument key="kernel:terminate" type="service_closure" id=".service_locator.KfwZsne"/>
       </argument>
     </service>
     <service id=".service_locator.l6ELYLY" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -6387,12 +6378,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.t7pqFoE"/>
+      <argument type="service" id=".service_locator.TT20Uvz"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.t7pqFoE"/>
+      <argument type="service" id=".service_locator.TT20Uvz"/>
     </service>
     <service id=".doctrine.orm.middleware_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -6452,7 +6443,6 @@
       <argument type="service" id="api_platform.path_segment_name_generator.underscore"/>
       <argument type="service" id="api_platform.identifiers_extractor.cached"/>
     </service>
-    <service id=".errored..service_locator.KfwZsne.Symfony\Component\HttpFoundation\Response" class="Symfony\Component\HttpFoundation\Response"/>
     <service id=".errored..service_locator.KfbR3DY.Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface"/>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>about</argument>
@@ -7300,22 +7290,19 @@
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.t7pqFoE"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.TT20Uvz"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
-    <service id="api_platform.doctrine.listener.mercure.publish" alias="api_platform.doctrine.orm.listener.mercure.publish">
-      <deprecated package="api-platform/core" version="2.6">Using "%alias_id%" service is deprecated since API Platform 2.6. Use "api_platform.doctrine.orm.listener.mercure.publish" instead.</deprecated>
-    </service>
     <service id="api_platform.name_converter" alias="serializer.name_converter.metadata_aware"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.k3s3K.2" alias=".service_locator.dsdSIIc"/>
     <service id=".service_locator.bnaLdkn" alias="api_platform.serializer_locator"/>
     <service id=".service_locator.Xbsa8iG" alias="api_platform.filter_locator"/>
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
-    <service id=".service_locator.ZStfk7D" alias=".service_locator.t7pqFoE"/>
+    <service id=".service_locator.CRfUQ1z" alias=".service_locator.TT20Uvz"/>
     <service id=".service_locator.wKF4yn1" alias=".service_locator.l6ELYLY"/>
     <service id=".service_locator.PZR_i4b" alias=".service_locator.g.dtcN3"/>
     <service id=".service_locator.W9y3dzm" alias=".service_locator.GNc8e5B"/>
@@ -7374,7 +7361,6 @@
     <service id="api_platform.metadata.resource.metadata_factory.cached.inner" alias="api_platform.metadata.resource.metadata_factory.formats"/>
     <service id="api_platform.metadata.property.metadata_factory.cached.legacy.inner" alias="api_platform.metadata.property.metadata_factory.validator.legacy"/>
     <service id="api_platform.subresource_operation_factory" alias="api_platform.subresource_operation_factory.cached"/>
-    <service id=".service_locator._5g_Wvc" alias=".service_locator.KfwZsne"/>
     <service id=".service_locator.JBAFp66" alias=".service_locator.KfbR3DY"/>
     <service id=".service_locator.mKEH_YG" alias=".service_locator.jBKfg1k"/>
     <service id=".service_locator.F2VpVm6" alias=".service_locator.pwZ6MTM"/>

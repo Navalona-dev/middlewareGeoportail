@@ -23,7 +23,7 @@ class EducationRepository extends ServiceEntityRepository
     public function getAllInfrastructuresEducation()
     {
         $sql = "SELECT * FROM t_ec_01_infrastructure";
-
+        
         /*$rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addEntityResult(Region::class, "r");
 
@@ -41,7 +41,8 @@ class EducationRepository extends ServiceEntityRepository
         return $stmt->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);*/
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
-        $query->execute();
+        $result = $query->execute();
+        
         return $query->fetchAll();
         /*return $this->entityManager->createQueryBuilder('r')
             ->orderBy('r.nom', 'ASC')

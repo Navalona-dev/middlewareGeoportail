@@ -42,8 +42,8 @@ class EducationRepository extends ServiceEntityRepository
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $result = $query->execute();
-        
-        return $query->fetchAll();
+
+        return $result->fetchAll();
         /*return $this->entityManager->createQueryBuilder('r')
             ->orderBy('r.nom', 'ASC')
             ->getQuery()

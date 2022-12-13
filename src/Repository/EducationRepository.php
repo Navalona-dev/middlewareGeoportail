@@ -20,6 +20,16 @@ class EducationRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
+    public function addEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null )
+    {
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, communeTerrain, date_information, sourceInformation, mode_acquisition_information, geom,  numeroSequence, codeProduit, codeCommune ) VALUES (".$nom.", ".$indicatif.", ".$categorie.", ".$localite.", ".$communeTerrain.", ".$dateInfo.", ".$sourceInformation.", ".$modeAcquisitionInformation.", ST_GeomFromText('POINT(" . $longitude . " " . $latitude . "), ".$numeroSequence.", ".$codeProduit.", ".$codeCommune.")";
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        
+        return $query->execute();
+    }
+    
     public function getAllInfrastructuresEducation()
     {
         $sql = "SELECT id, nom, indicatif, categorie, localite, commune_terrain, date_information, source_information, mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, numero_sequence, code_produit, code_commune  FROM t_ec_01_infrastructure as infra";
@@ -44,7 +54,7 @@ class EducationRepository extends ServiceEntityRepository
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $result = $query->execute();
-        
+
         return $result->fetchAll();
         /*return $this->entityManager->createQueryBuilder('r')
             ->orderBy('r.nom', 'ASC')

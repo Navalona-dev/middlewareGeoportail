@@ -22,8 +22,10 @@ class EducationRepository extends ServiceEntityRepository
 
     public function getAllInfrastructuresEducation()
     {
-        $sql = "SELECT * FROM t_ec_01_infrastructure";
-        
+        $sql = "SELECT id, nom, indicatif, categorie, localite, commune_terrain, date_information, source_information, mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, numero_sequence, code_produit, code_commune  FROM t_ec_01_infrastructure as infra";
+
+        //$sql = "SELECT ST_X(infra.geom) AS X1, ST_Y(infra.geom) AS Y1, ST_X(ST_TRANSFORM(infra.geom,4674)) AS LONG, ST_Y(ST_TRANSFORM(infra.geom,4674)) AS LAT FROM t_ec_01_infrastructure as infra";
+
         /*$rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addEntityResult(Region::class, "r");
 
@@ -42,7 +44,7 @@ class EducationRepository extends ServiceEntityRepository
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $result = $query->execute();
-
+        
         return $result->fetchAll();
         /*return $this->entityManager->createQueryBuilder('r')
             ->orderBy('r.nom', 'ASC')

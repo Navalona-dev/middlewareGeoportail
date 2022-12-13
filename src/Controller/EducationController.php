@@ -29,7 +29,9 @@ class EducationController extends AbstractController
     {    
        
         $data = json_decode($request->getContent(), true);
-        $infrastructures = $educationRepository->getAllInfrastructuresEducation();
+        
+        $infrastructures = $educationRepository->addEducation($data['nom'], $data['indicatif'], $data['categorie'], $data['localite'], $data['communeTerrain'], $data['date_information'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['numeroSequence'],  $data['codeProduit'], $data['codeCommune'], (int) $data['latitude'],(int) $data['longitude']);
+        
 
         //var_dump($infrastructures);
        /* $uploadedFile = $request->files->get('image');
@@ -72,19 +74,34 @@ class EducationController extends AbstractController
           */
 
         $response->setContent(json_encode([
-            'code'  => Response::HTTP_CREATED,
+            'code'  => Response::HTTP_OK,
             'status' => true,
-            'message' => "education created_successfull",
+            'message' => "education created_successfull"
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/infra/education/liste", name="education_list", methods={"GET"})
+     */
+    public function listeEducation(Request $request, EducationRepository $educationRepository)
+    {    
+        $infrastructures = $educationRepository->getAllInfrastructuresEducation();
+
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "education list_successfull",
             'data' => $infrastructures
         ]));
 
         $response->headers->set('Content-Type', 'application/json');
         
-            
         return $response;
-            /*  $product = new Product();
-      
-                $product->setName('foo');
-                $product->setReference('99');*/
     }
 }

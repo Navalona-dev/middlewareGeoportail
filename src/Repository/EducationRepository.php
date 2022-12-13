@@ -23,7 +23,7 @@ class EducationRepository extends ServiceEntityRepository
     public function addEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null )
     {
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, communeTerrain, date_information, sourceInformation, mode_acquisition_information, geom,  numeroSequence, codeProduit, codeCommune ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', 'ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', '".$numeroSequence."', '".$codeProduit."', '".$codeCommune."')";
+        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, communeTerrain, date_information, sourceInformation, mode_acquisition_information, geom,  numeroSequence, codeProduit, codeCommune ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")), '".$numeroSequence."', '".$codeProduit."', '".$codeCommune."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

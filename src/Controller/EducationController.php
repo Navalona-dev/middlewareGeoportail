@@ -30,7 +30,8 @@ class EducationController extends AbstractController
        
         $data = json_decode($request->getContent(), true);
         $infrastructures = $educationRepository->getAllInfrastructuresEducation();
-        var_dump($infrastructures);
+
+        //var_dump($infrastructures);
        /* $uploadedFile = $request->files->get('image');
         var_dump($uploadedFile);*/
         
@@ -74,7 +75,7 @@ class EducationController extends AbstractController
             'code'  => Response::HTTP_CREATED,
             'status' => true,
             'message' => "education created_successfull",
-            'data' => json_encode($jsonContent)
+            'data' => $infrastructures
         ]));
 
         $response->headers->set('Content-Type', 'application/json');

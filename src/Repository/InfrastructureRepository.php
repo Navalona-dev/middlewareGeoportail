@@ -6,7 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 
-class EducationRepository extends ServiceEntityRepository
+class InfrastructureRepository extends ServiceEntityRepository
 {
     private $entityManager;
 
@@ -26,37 +26,16 @@ class EducationRepository extends ServiceEntityRepository
         return $query->execute();
     }
     
-    public function getAllInfrastructuresEducation()
+    public function getAllInfrastructureCodes()
     {
-        $sql = "SELECT id, nom, indicatif, categorie, localite, commune_terrain, date_information, source_information, mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, numero_sequence, code_produit, code_commune  FROM t_ec_01_infrastructure as infra";
+        $sql = "SELECT * FROM code_infra";
 
-        //$sql = "SELECT ST_X(infra.geom) AS X1, ST_Y(infra.geom) AS Y1, ST_X(ST_TRANSFORM(infra.geom,4674)) AS LONG, ST_Y(ST_TRANSFORM(infra.geom,4674)) AS LAT FROM t_ec_01_infrastructure as infra";
-
-        /*$rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addEntityResult(Region::class, "r");
-
-        foreach ($this->getClassMetadata()->fieldMappings as $obj) {
-            $rsm->addFieldResult("r", $obj["columnName"], $obj["fieldName"]);
-        }
-
-        $stmt = $this->entityManager->createNativeQuery($sql, $rsm);*/
-        /* $stmt->setParameter(":current_time", new \DateTime("now"));
-        $stmt->setParameter(":status_available", Region::STATUS_AVAILABLE);
-        $stmt->setParameter(":status_unknown", Region::STATUS_UNKNOWN);
-        $stmt->setParameter(":status_unavailable", Region::STATUS_UNAVAILABLE);*/
-
-        /*$stmt->execute();
-        return $stmt->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);*/
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $result = $query->execute();
 
         return $result->fetchAll();
-        /*return $this->entityManager->createQueryBuilder('r')
-            ->orderBy('r.nom', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;*/
+       
     }
 
     /*public function getAllCommunesByRegion($region)

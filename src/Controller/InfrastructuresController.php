@@ -26,9 +26,7 @@ class InfrastructuresController extends AbstractController
     public function listeInfrastructureCodes(Request $request, InfrastructureService $infrastructureService)
     {    
         $infrastructureCodes = $infrastructureService->getAllInfrastructureCodes();
-
-        var_dump($infrastructureCodes);
-        exit();
+        
         $response = new Response();
 
         $response->setContent(json_encode([

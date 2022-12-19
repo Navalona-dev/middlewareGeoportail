@@ -19,6 +19,11 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Service\InfrastructureService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructure.service']
+        public: true
+    infrastructure.service:
+        class: App\Repository\InfrastructureRepository
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

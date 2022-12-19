@@ -27,8 +27,8 @@ class InfrastructuresController extends AbstractController
     {    
         $infrastructureCodes = $infrastructureService->getAllInfrastructureCodes();
 
-        dd($infrastructureCodes);
-
+        var_dump($infrastructureCodes);
+        exit();
         $response = new Response();
 
         $response->setContent(json_encode([

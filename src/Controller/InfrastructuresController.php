@@ -42,7 +42,7 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructures/niveau/{domaine}", name="infrastructure_codes_list", methods={"GET"})
+     * @Route("/api/infrastructures/niveau/{domaine}", name="infrastructure_codes_list_domaine", methods={"GET"})
      */
     public function listeNiveauInfrastructureByDomaine(Request $request, InfrastructureService $infrastructureService)
     {    

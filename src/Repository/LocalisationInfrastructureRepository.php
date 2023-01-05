@@ -6,7 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 
-class InfrastructureRepository extends ServiceEntityRepository
+class LocalisationInfrastructureRepository extends ServiceEntityRepository
 {
     private $entityManager;
 
@@ -15,18 +15,7 @@ class InfrastructureRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null )
-    {
-        $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.")";
-        
-        $conn = $this->entityManager->getConnection();
-        $query = $conn->prepare($sql);
-        
-        return $query->execute();
-    }
-    
-    public function getAllDomainesInfrastructure()
+    public function getAllRegions()
     {
         $sql = "SELECT * FROM code_infra";
 
@@ -38,9 +27,9 @@ class InfrastructureRepository extends ServiceEntityRepository
        
     }
 
-    public function getAllNiveauInfrastructureByDomaine($domaine = null)
+    public function getAllCommunesByRegion($region = null)
     {
-        $sql = "SELECT * FROM niveau3 where niveau3 ILIKE '" . $domaine . "%'";
+        $sql = "SELECT * FROM niveau3 where niveau3 ILIKE '%" . $region . "%'";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

@@ -21,11 +21,11 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructures/codes", name="infrastructure_codes_list", methods={"GET"})
+     * @Route("/api/infrastructures/domaines", name="infrastructure_codes_list", methods={"GET"})
      */
-    public function listeInfrastructureCodes(Request $request, InfrastructureService $infrastructureService)
+    public function listeDomaineInfrastructure(Request $request, InfrastructureService $infrastructureService)
     {    
-        $infrastructureCodes = $infrastructureService->getAllInfrastructureCodes();
+        $domaineInfrastructure = $infrastructureService->getAllDomainesInfrastructure();
         
         $response = new Response();
 
@@ -33,7 +33,29 @@ class InfrastructuresController extends AbstractController
             'code'  => Response::HTTP_OK,
             'status' => true,
             'message' => "infrastructure code list_successfull",
-            'data' => $infrastructureCodes
+            'data' => $domaineInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/infrastructures/niveau/{domaine}", name="infrastructure_codes_list", methods={"GET"})
+     */
+    public function listeNiveauInfrastructureByDomaine(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $domaine = $request->query->get('domaine');
+        $niveauInfrastructure = $infrastructureService->getAllNiveauInfrastructureByDomaine($domaine);
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "infrastructure code list_successfull",
+            'data' => $niveauInfrastructure
         ]));
 
         $response->headers->set('Content-Type', 'application/json');

@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManager;
 use App\Repository;
 use App\Repository\InfrastructureRepository;
 
-class InfrastructureService
+class LocalisationInfrastructureService
 {
     private $tokenStorage;
     private $entityManager;
@@ -40,20 +40,20 @@ class InfrastructureService
         return $permission;
     }*/
 
-    public function getAllDomainesInfrastructure()
+    public function getAllRegions()
     {
-        $domainesInfrastructures = $this->infrastructureRepository->getAllDomainesInfrastructure();
-        if (count($domainesInfrastructures) > 0) {
-            return $domainesInfrastructures;
+        $regionsInfrastructures = $this->infrastructureRepository->getAllRegions();
+        if (count($regionsInfrastructures) > 0) {
+            return $regionsInfrastructures;
         }
         return 0;
     }
 
-    public function getAllNiveauInfrastructureByDomaine($domaine = null)
+    public function getAllCommunesByRegion($region = null)
     {
-        $niveauxInfrastructures = $this->infrastructureRepository->getAllNiveauInfrastructureByDomaine($domaine);
-        if (count($niveauxInfrastructures) > 0) {
-            return $niveauxInfrastructures;
+        $communesInfrastructure = $this->infrastructureRepository->getAllCommunesByRegion($region);
+        if (count($communesInfrastructure) > 0) {
+            return $communesInfrastructure;
         }
         return 0;
     }

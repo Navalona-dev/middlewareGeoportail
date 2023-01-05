@@ -42,19 +42,19 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructures/niveau/{domaine}", name="infrastructure_codes_list_domaine", methods={"GET"})
+     * @Route("/api/infrastructures/niveau", name="infrastructure_codes_list_domaine", methods={"POST"})
      */
     public function listeNiveauInfrastructureByDomaine(Request $request, InfrastructureService $infrastructureService)
     {    
-        $domaine = $request->query->get('domaine');
-        $niveauInfrastructure = $infrastructureService->getAllNiveauInfrastructureByDomaine($domaine);
+        $data = json_decode($request->getContent(), true);
+        $niveauInfrastructure = $infrastructureService->getAllNiveauInfrastructureByDomaine($data["domaine"]);
         
         $response = new Response();
 
         $response->setContent(json_encode([
             'code'  => Response::HTTP_OK,
             'status' => true,
-            'message' => "infrastructure code list_successfull",
+            'message' => "infrastructure niveau list_successfull",
             'data' => $niveauInfrastructure
         ]));
 

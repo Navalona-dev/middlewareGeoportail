@@ -58,6 +58,16 @@ class InfrastructureService
         return 0;
     }
 
+    public function getAllNiveauInfrastructureByDomaineNiveau3($domaine = null)
+    {
+        $niveauxInfrastructures = $this->infrastructureRepository->getAllNiveauInfrastructureByDomaineNiveau3($domaine);
+        if (count($niveauxInfrastructures) > 0) {
+            return $niveauxInfrastructures;
+        }
+        return 0;
+    }
+
+    
     public function update()
     {
         $this->entityManager->flush();

@@ -20,11 +20,12 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
     App\Service\InfrastructureService:
-        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructure.service']
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructurerepository.service']
         public: true
-    infrastructure.service:
+    infrastructurerepository.service:
         class: App\Repository\InfrastructureRepository
     App\Service\LocalisationInfrastructureService:
-        autowire: true
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructurerepository.service']
+        public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

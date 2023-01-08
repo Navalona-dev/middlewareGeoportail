@@ -38,6 +38,18 @@ class InfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getAllNiveauInfrastructureByDomaineNiveau3($domaine = null)
+    {
+        $sql = "select * from niveau_3 where niveau."indicatif infrastructure" ILIKE '" . $domaine . "%'";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     public function getAllNiveauInfrastructureByDomaine($domaine = null)
     {
         $sql = "select * from (select * from niveau_2  UNION select * from niveau_3) as niveau where niveau.code_2 ILIKE '" . $domaine . "%'";

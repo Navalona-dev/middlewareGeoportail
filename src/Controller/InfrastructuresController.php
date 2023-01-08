@@ -50,7 +50,7 @@ class InfrastructuresController extends AbstractController
 
         switch ($data["type"]) {
             case 'education':
-                $niveauInfrastructure = $infrastructureService->getAllNiveauInfrastructureByDomaine($data["domaine"]);
+                $niveauInfrastructure = $infrastructureService->getAllNiveauInfrastructureByDomaineNiveau3($data["domaine"]);
                 break;
             case 'sante':
                 # code...

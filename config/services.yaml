@@ -25,7 +25,9 @@ services:
     infrastructurerepository.service:
         class: App\Repository\InfrastructureRepository
     App\Service\LocalisationInfrastructureService:
-        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructurerepository.service']
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@localisationinfrastructurerepository.service']
         public: true
+    localisationinfrastructurerepository.service:
+        class: App\Repository\LocalisationInfrastructureRepository
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

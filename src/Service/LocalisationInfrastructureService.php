@@ -11,21 +11,21 @@ use App\Exception\ActionInvalideException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use App\Repository;
-use App\Repository\InfrastructureRepository;
+use App\Repository\LocalisationInfrastructureRepository;
 
 class LocalisationInfrastructureService
 {
     private $tokenStorage;
     private $entityManager;
     private $session;
-    private $infrastructureRepository;
+    private $LocalisationInfrastructureRepository;
 
-    public function __construct(TokenStorageInterface  $TokenStorageInterface, EntityManager $entityManager, SessionInterface $session, InfrastructureRepository $infrastructureRepository)
+    public function __construct(TokenStorageInterface  $TokenStorageInterface, EntityManager $entityManager, SessionInterface $session, LocalisationInfrastructureRepository $LocalisationInfrastructureRepository)
     {
         $this->tokenStorage = $TokenStorageInterface;
         $this->entityManager = $entityManager;
         $this->session = $session;
-        $this->infrastructureRepository = $infrastructureRepository;
+        $this->LocalisationInfrastructureRepository = $LocalisationInfrastructureRepository;
     }
 
     /*public function add($instance)
@@ -42,7 +42,7 @@ class LocalisationInfrastructureService
 
     public function getAllRegions()
     {
-        $regionsInfrastructures = $this->infrastructureRepository->getAllRegions();
+        $regionsInfrastructures = $this->LocalisationInfrastructureRepository->getAllRegions();
         if (count($regionsInfrastructures) > 0) {
             return $regionsInfrastructures;
         }
@@ -51,7 +51,7 @@ class LocalisationInfrastructureService
 
     public function getAllCommunesByRegion($region = null)
     {
-        $communesInfrastructure = $this->infrastructureRepository->getAllCommunesByRegion($region);
+        $communesInfrastructure = $this->LocalisationInfrastructureRepository->getAllCommunesByRegion($region);
         if (count($communesInfrastructure) > 0) {
             return $communesInfrastructure;
         }

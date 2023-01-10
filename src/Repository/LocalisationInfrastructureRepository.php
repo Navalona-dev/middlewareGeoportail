@@ -17,7 +17,7 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
 
     public function getAllRegions()
     {
-        $sql = "SELECT region, reg_ceni  FROM couche_region";
+        $sql = "SELECT DISTINCT region, reg_ceni  FROM couche_region";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -29,7 +29,7 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
 
     public function getAllDistrictByRegion($region = null)
     {
-        $sql = "SELECT district, dist_ceni  FROM couche_commune where region ILIKE '%" . $region . "%'";
+        $sql = "SELECT DISTINCT district, dist_ceni  FROM couche_commune where region ILIKE '%" . $region . "%'";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

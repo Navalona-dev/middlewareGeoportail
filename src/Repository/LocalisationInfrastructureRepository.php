@@ -17,7 +17,7 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
 
     public function getAllRegions()
     {
-        $sql = "SELECT * FROM code_infra";
+        $sql = "SELECT region, reg_ceni  FROM couche_region";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -27,9 +27,21 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
        
     }
 
-    public function getAllCommunesByRegion($region = null)
+    public function getAllDistrictByRegion($region = null)
     {
-        $sql = "SELECT * FROM niveau3 where niveau3 ILIKE '%" . $region . "%'";
+        $sql = "SELECT district, dist_ceni  FROM couche_commune where region ILIKE '%" . $region . "%'";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getAllCommunesByDistrictInRegion($region = null, $district = null)
+    {
+        $sql = "SELECT commune, com_ceni  FROM couche_commune where region ILIKE '%" . $region . "%' and district ILIKE '%" . $district . "%'";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

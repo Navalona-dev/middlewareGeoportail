@@ -46,16 +46,25 @@ class LocalisationInfrastructureService
         if (count($regionsInfrastructures) > 0) {
             return $regionsInfrastructures;
         }
-        return 0;
+        return false;
     }
 
-    public function getAllCommunesByRegion($region = null)
+    public function getAllDistrictByRegion($region = null)
     {
-        $communesInfrastructure = $this->LocalisationInfrastructureRepository->getAllCommunesByRegion($region);
+        $districtsInfrastructure = $this->LocalisationInfrastructureRepository->getAllDistrictByRegion($region);
+        if (count($districtsInfrastructure) > 0) {
+            return $districtsInfrastructure;
+        }
+        return false;
+    }
+
+    public function getAllCommunesByDistrictInRegion($region = null, $district = null)
+    {
+        $communesInfrastructure = $this->LocalisationInfrastructureRepository->getAllCommunesByDistrictInRegion($region, $district);
         if (count($communesInfrastructure) > 0) {
             return $communesInfrastructure;
         }
-        return 0;
+        return false;
     }
 
     public function update()

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class LocalisationInfrastructureController extends AbstractController
 {
     /**
-     * @Route("/api/regions", name="all_region", methods={"GET"})
+     * @Route("/api/regions", name="all_regions", methods={"GET"})
      */
     public function listeRegionsInfrastructure(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)
     {    
@@ -22,7 +22,7 @@ class LocalisationInfrastructureController extends AbstractController
         $response->setContent(json_encode([
             'code'  => Response::HTTP_OK,
             'status' => true,
-            'message' => "infrastructure regions list_successfull",
+            'message' => "Regions list_successfull",
             'data' => $regionsInfrastructure
         ]));
 
@@ -32,19 +32,44 @@ class LocalisationInfrastructureController extends AbstractController
     }
 
      /**
-     * @Route("/api/communes/{region}", name="commmunes_region", methods={"GET"})
+     * @Route("/api/districts", name="districts_region", methods={"POST"})
      */
-    public function listeCommunesByRegion(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)
+    public function listeDistrictsByRegion(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)
     {    
-        $region = $request->query->get('region');
-        $commmunesInfrastructure = $localisationInfrastructureService->getAllCommunesByRegion($region);
+        $data = json_decode($request->getContent(), true);
+        $region = $data['region'];
+        $commmunesInfrastructure = $localisationInfrastructureService->getAllDistrictByRegion($region);
         
         $response = new Response();
 
         $response->setContent(json_encode([
             'code'  => Response::HTTP_OK,
             'status' => true,
-            'message' => "infrastructure code list_successfull",
+            'message' => "Districts list_successfull",
+            'data' => $commmunesInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/communes", name="commmunes_district_region", methods={"POST"})
+     */
+    public function listeCommunesByDistrictInRegion(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)
+    {    
+        $data = json_decode($request->getContent(), true);
+        $region = $data['region'];
+        $district = $data['district'];
+        $commmunesInfrastructure = $localisationInfrastructureService->getAllCommunesByDistrictInRegion($region, $district);
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "communes list_successfull",
             'data' => $commmunesInfrastructure
         ]));
 

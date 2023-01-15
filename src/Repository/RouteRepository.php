@@ -15,13 +15,14 @@ class RouteRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addRoute($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null )
+    public function addInfrastructureRoute($categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $latitude = null, $longitude = null, $pkDebut = null, $section = null, $rattache = null, $gestionnaire = null, $modeGestion = null, $numero = null, $pkFin = null, $lineaire = null, $largeurHausse = null, $largeurAccotement = null, $structure = null, $region = null, $district = null, $gps = null )
     {
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ro_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.")";
+        $sql = "INSERT into t_ro_01_infrastructure (pk_debut, rattache, geom, section, categorie, localite,  commune_terrain, gestionnaire, mode_gestion, date_information, source_Information, mode_acquisition_infromation, numero, pk_fin, lineaire, \"Largeur de la chaussée\", \"Largeur des accotements\", Structure, region, district, gps) VALUES ('".$pkDebut."', '".$rattache."', , ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$section."', '".$categorie."', '".$localite."', '".$communeTerrain."', , '".$gestionnaire."', '".$modeGestion."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$numero."', ".$pkFin.", ".$lineaire.", ".$largeurHausse.", ".$largeurAccotement.", , ".$structure.", ".$region.", ".$district.", ".$gps.")";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
+        $query->execute();
         
         return $query->execute();
     }

@@ -29,8 +29,8 @@ class RouteController extends AbstractController
     {    
        
         $data = json_decode($request->getContent(), true);
-        
-        $RouteRepository->addRoute($data['nom'], $data['indicatif'], $data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['numeroSequence'], (int) $data['codeProduit'], (int) $data['codeCommune'], (float) $data['latitude'],(float) $data['longitude']);
+        //$data['infoSupplementaire']["accotement"]["degrationSurface"]
+        $RouteRepository->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], (float) $data['latitude'],(float) $data['longitude'], $data['pk']['debut'], $data['section'], $data['numeroRoute'], $data['gestionnaire'], $data['modeGestion'], null,  $data['pk']['fin'], null, $data['largeur']['hausse'], $data['largeur']['accotement'], $data['structure'], $data['region'], $data['district'], $data['gps']);
         
 
         //var_dump($infrastructures);

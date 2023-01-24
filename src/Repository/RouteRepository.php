@@ -51,7 +51,7 @@ class RouteRepository extends ServiceEntityRepository
 
     public function addInfrastructureBaseRoute($coordonnées = null, $nom = null )
     {
-        $sql = "INSERT into y_liste_route (geom, nom) VALUES (ST_GeomFromText('MULTILINESTRING(" . $coordonnées. ")', 4326), '".$nom."')";
+        $sql = "INSERT into y_liste_route (geom, nom) VALUES (ST_GeomFromText('MULTILINESTRING((".$coordonnées."))'), '".$nom."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

@@ -29,5 +29,10 @@ services:
         public: true
     localisationinfrastructurerepository.service:
         class: App\Repository\LocalisationInfrastructureRepository
+    App\Service\RouteService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@routerepository.service']
+        public: true
+    routerepository.service:
+        class: App\Repository\RouteRepository
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

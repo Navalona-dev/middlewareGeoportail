@@ -15,10 +15,10 @@ class RouteRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructureRoute($categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $mulitpleCoordonne = null, $pkDebut = null, $section = null, $rattache = null, $gestionnaire = null, $modeGestion = null, $numero = null, $pkFin = null, $lineaire = null, $largeurHausse = null, $largeurAccotement = null, $structure = null, $region = null, $district = null, $gps = null )
+    public function addInfrastructureRoute($categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $pkDebut = null, $section = null, $rattache = null, $gestionnaire = null, $modeGestion = null, $numero = null, $pkFin = null, $lineaire = null, $largeurHausse = null, $largeurAccotement = null, $structure = null, $region = null, $district = null, $gps = null, $longitude = null, $latitude = null )
     {
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ro_01_infrastructure (pk_debut, rattache, geom, \"section\", categorie, localite,  commune_terrain, gestionnaire, mode_gestion, date_information, source_Information, mode_acquisition_infromation, \"Numero\", pk_fin, lineaire, \"Largeur de la chaussée\", \"Largeur des accotements\", \"Structure\", region, district, gps) VALUES ('".$pkDebut."', '".$rattache."', ST_GeomFromText('MULTILINESTRING((".$mulitpleCoordonne."))'), '".$section."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$gestionnaire."', '".$modeGestion."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', null, '".$pkFin."', null, '".$largeurHausse."', '".$largeurAccotement."', '".$structure."', '".$region."', '".$district."', null)";
+        $sql = "INSERT into t_ro_01_infrastructure (pk_debut, rattache, \"section\", categorie, localite,  commune_terrain, gestionnaire, mode_gestion, date_information, source_Information, mode_acquisition_infromation, \"Numero\", pk_fin, lineaire, \"Largeur de la chaussée\", \"Largeur des accotements\", \"Structure\", region, district, gps, geom) VALUES ('".$pkDebut."', '".$rattache."', '".$section."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$gestionnaire."', '".$modeGestion."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', null, '".$pkFin."', null, '".$largeurHausse."', '".$largeurAccotement."', '".$structure."', '".$region."', '".$district."', null, ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326))";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -29,37 +29,37 @@ class RouteRepository extends ServiceEntityRepository
     
     public function getAllInfrastructuresRoute()
     {
-        $sql = "SELECT id, nom, indicatif, categorie, localite, commune_terrain, date_information, source_information, mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, numero_sequence, code_produit, code_commune  FROM t_ec_01_infrastructure as infra";
+        $sql = "SELECT id, nom, indicatif, categorie, localite, commune_terrain, date_information, source_information, mode_acquisition_information, ST_X(infraroute.geom) AS long, ST_Y(infraroute.geom) AS lat, numero_sequence, code_produit, code_commune  FROM t_ro_01_infrastructure as infraroute";
 
-        //$sql = "SELECT ST_X(infra.geom) AS X1, ST_Y(infra.geom) AS Y1, ST_X(ST_TRANSFORM(infra.geom,4674)) AS LONG, ST_Y(ST_TRANSFORM(infra.geom,4674)) AS LAT FROM t_ec_01_infrastructure as infra";
-
-        /*$rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addEntityResult(Region::class, "r");
-
-        foreach ($this->getClassMetadata()->fieldMappings as $obj) {
-            $rsm->addFieldResult("r", $obj["columnName"], $obj["fieldName"]);
-        }
-
-        $stmt = $this->entityManager->createNativeQuery($sql, $rsm);*/
-        /* $stmt->setParameter(":current_time", new \DateTime("now"));
-        $stmt->setParameter(":status_available", Region::STATUS_AVAILABLE);
-        $stmt->setParameter(":status_unknown", Region::STATUS_UNKNOWN);
-        $stmt->setParameter(":status_unavailable", Region::STATUS_UNAVAILABLE);*/
-
-        /*$stmt->execute();
-        return $stmt->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);*/
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $result = $query->execute();
 
         return $result->fetchAll();
-        /*return $this->entityManager->createQueryBuilder('r')
-            ->orderBy('r.nom', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;*/
     }
 
+    public function getAllInfrastructuresBaseRoute()
+    {
+        $sql = "SELECT ST_X(infraroute.geom) AS long, ST_Y(infraroute.geom) AS lat, infrabaseroute.nom as rattache  FROM y_liste_route as infrabaseroute";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+    }
+
+    public function addInfrastructureBaseRoute($coordonnées = null, $nom = null )
+    {
+        $sql = "INSERT into y_liste_route (geom, nom) VALUES (ST_GeomFromText('MULTILINESTRING(" . $coordonnées. ")', 4326), '".$nom."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        
+        return $query->execute();
+    }
+    
     /*public function getAllCommunesByRegion($region)
     {
         $sql = "SELECT * FROM commune as c where region_id = " . $region . " order by c.nom";

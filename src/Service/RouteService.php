@@ -30,7 +30,7 @@ class RouteService
     
     public function addInfrastructureRoute($data)
     {
-        $route = $this->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['pk']['debut'], $data['section'], $data['numeroRoute'], $data['gestionnaire'], $data['modeGestion'], null,  $data['pk']['fin'], null, $data['largeur']['hausse'], $data['largeur']['accotement'], $data['structure'], $data['region'], $data['district'], $data['gps'], $data['longitude'], $data['latitude']);
+        $route = $this->routeRepository->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['pk']['debut'], $data['section'], $data['numeroRoute'], $data['gestionnaire'], $data['modeGestion'], null,  $data['pk']['fin'], null, $data['largeur']['hausse'], $data['largeur']['accotement'], $data['structure'], $data['region'], $data['district'], $data['gps'], $data['longitude'], $data['latitude']);
         $this->entityManager->persist($route);
         $this->update();
         return $route;
@@ -38,7 +38,7 @@ class RouteService
 
     public function addInfrastructureBaseRoute($multipleCoordonnée, $nom)
     {
-        $route = $this->addInfrastructureBaseRoute($multipleCoordonnée, $nom);
+        $route = $this->routeRepository->addInfrastructureBaseRoute($multipleCoordonnée, $nom);
         $this->entityManager->persist($route);
         $this->update();
         return $route;

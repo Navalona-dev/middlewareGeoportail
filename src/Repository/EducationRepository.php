@@ -24,7 +24,9 @@ class EducationRepository extends ServiceEntityRepository
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         
-        return $query->execute();
+        $id = $query->fetchColumn();
+
+        return $id;
     }
     
     public function getAllInfrastructuresEducation()

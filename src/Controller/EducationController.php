@@ -31,7 +31,7 @@ class EducationController extends AbstractController
        
         $data = json_decode($request->getContent(), true);
         
-        $result = $educationService->addInfrastructureEducation($data);
+        $id = $educationService->addInfrastructureEducation($data);
         
 
         //var_dump($infrastructures);
@@ -77,7 +77,7 @@ class EducationController extends AbstractController
         $response->setContent(json_encode([
             'code'  => Response::HTTP_OK,
             'status' => true,
-            'message' => "education created_successfull"
+            'message' => "education created_successfull".$id
         ]));
 
         $response->headers->set('Content-Type', 'application/json');

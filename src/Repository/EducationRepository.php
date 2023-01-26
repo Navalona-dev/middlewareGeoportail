@@ -57,7 +57,19 @@ class EducationRepository extends ServiceEntityRepository
         return $id;
     }
 
-    
+    public function addInfrastructureEducationDonneAnnexe($idInfrastructure = null, $existenceCantine = null, $nombreEnseignant, $nombreEleve = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ec_14_donnees_annexes (existence_cantine, nombre_enseignant, nombre_eleve, date_information, source_Information, mode_acquisition_information, id_infrastructure) VALUES (".$existenceCantine.", '".$nombreEnseignant."', '".$nombreEleve."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ".$idInfrastructure.")";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
     
     public function getAllInfrastructuresEducation()
     {

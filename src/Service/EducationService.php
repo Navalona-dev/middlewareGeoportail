@@ -58,10 +58,21 @@ class EducationService
 
         return false;
     }
-
+    
     public function addInfrastructureEducationSituation($idInfrastructure, $data)
     {
         $result = $this->educationRepository->addInfrastructureEducationSituation($idInfrastructure, $data['infoSupplementaire']['fonctionnel'], $data['infoSupplementaire']['causeNonFonctinel'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function addInfrastructureEducationDonneAnnexe($idInfrastructure, $data)
+    {
+        $result = $this->educationRepository->addInfrastructureEducationSituation($idInfrastructure, $data['infoSupplementaire']['existenceCantine'], $data['infoSupplementaire']['nombreEnseignant'], $data['infoSupplementaire']['nombreEleve'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
         
         if ($result) {
             return $result;

@@ -123,7 +123,7 @@ class RouteController extends AbstractController
             }
         }
         
-        $route = $routeService->addInfrastructureBaseRoute($multipleCoordonne, $data['nom']);
+        $result = $routeService->addInfrastructureBaseRoute($multipleCoordonne, $data['nom']);
         
 
         $response = new Response();

@@ -31,7 +31,7 @@ class EducationController extends AbstractController
        
         $data = json_decode($request->getContent(), true);
         
-        $result = $educationService->addInfrastructureEducation($data['nom'], $data['indicatif'], $data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['numeroSequence'], (int) $data['codeProduit'], (int) $data['codeCommune'], (float) $data['latitude'],(float) $data['longitude']);
+        $result = $educationService->addInfrastructureEducation($data);
         
 
         //var_dump($infrastructures);

@@ -36,8 +36,8 @@ class RouteService
 
     public function addInfrastructureBaseRoute($multipleCoordonnée, $nom)
     {
-        $route = $this->routeRepository->addInfrastructureBaseRoute($multipleCoordonnée, $nom);
-        return $route;
+        $result = $this->routeRepository->addInfrastructureBaseRoute($multipleCoordonnée, $nom);
+        return $result;
     }
 
     public function getAllInfrastructuresRoute()

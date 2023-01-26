@@ -72,48 +72,4 @@ class InfrastructureService
     {
         $this->entityManager->flush();
     }
-
-    /*public function remove($permission)
-    {
-        $this->entityManager->remove($permission);
-        $this->update();
-    }
-
-    public function getAllPermissions()
-    {
-        $permissions = $this->entityManager->getRepository(Permission::class)->findAll();
-        if (count($permissions) > 0) {
-            return $permissions;
-        }
-        return 0;
-    }
-
-    public function getAllPermissionByCategorie($categorie)
-    {
-        $permissions = $this->entityManager->getRepository(Permission::class)->findBy(['categoryofpermission' => $categorie]);
-        if (count($permissions) > 0) {
-            return $permissions;
-        }
-        return 0;
-    }
-
-    public function getPermissionById($id)
-    {
-        $permission = $this->entityManager->getRepository(Permission::class)->find($id);
-        if ($permission) {
-            return $permission;
-        }
-        return null;
-    }
-
-    public function addPrivilege($permission, $privilege)
-    {
-        $permission->addPrivilege($privilege);
-    }
-
-    public function removePrivilege($privilege, $permission)
-    {
-        $permission->removePrivilege($privilege);
-    }*/
-
 }

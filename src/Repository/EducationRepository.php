@@ -15,7 +15,7 @@ class EducationRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null )
+    public function addInfrastructureEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null )
     {
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.")";

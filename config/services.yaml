@@ -29,6 +29,11 @@ services:
         public: true
     localisationinfrastructurerepository.service:
         class: App\Repository\LocalisationInfrastructureRepository
+    App\Service\EducationService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@educationrepository.service']
+        public: true
+    educationrepository.service:
+        class: App\Repository\EducationRepository
     App\Service\RouteService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@routerepository.service']
         public: true

@@ -50,7 +50,7 @@ class EducationService
     
     public function addInfrastructureEducationEtat($idInfrastructure, $data)
     {
-        $result = $this->educationRepository->addInfrastructureEducationEtat($idInfrastructure, $data['infoSupplementaire']['etat'], $data['infoSupplementaire']['etat'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
+        $result = $this->educationRepository->addInfrastructureEducationEtat($idInfrastructure, $data['infoSupplementaire']['etat'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
         
         if ($result) {
             return $result;

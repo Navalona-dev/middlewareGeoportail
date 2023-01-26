@@ -72,7 +72,7 @@ class EducationService
 
     public function addInfrastructureEducationDonneAnnexe($idInfrastructure, $data)
     {
-        $result = $this->educationRepository->addInfrastructureEducationSituation($idInfrastructure, $data['infoSupplementaire']['existenceCantine'], $data['infoSupplementaire']['nombreEnseignant'], $data['infoSupplementaire']['nombreEleve'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
+        $result = $this->educationRepository->addInfrastructureEducationDonneAnnexe($idInfrastructure, $data['infoSupplementaire']['existenceCantine'], $data['infoSupplementaire']['nombreEnseignant'], $data['infoSupplementaire']['nombreEleve'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
         
         if ($result) {
             return $result;

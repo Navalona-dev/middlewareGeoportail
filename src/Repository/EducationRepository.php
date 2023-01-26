@@ -23,7 +23,7 @@ class EducationRepository extends ServiceEntityRepository
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
-        
+        $query->execute();
         $id = $conn->lastInsertId();
 
         return $id;

@@ -103,7 +103,7 @@ class RouteController extends AbstractController
     }
 
      /**
-     * @Route("/api/route/base/add", name="route_add", methods={"POST"})
+     * @Route("/api/route/base/add", name="route_base_add", methods={"POST"})
      */
     public function createBaseRoute(Request $request, RouteService $routeService)
     {    

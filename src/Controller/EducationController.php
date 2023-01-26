@@ -84,7 +84,8 @@ class EducationController extends AbstractController
         $response->setContent(json_encode([
             'code'  => Response::HTTP_OK,
             'status' => true,
-            'message' => "education created_successfull".$id
+            'message' => "education created_successfull",
+            'data' => $id
         ]));
 
         $response->headers->set('Content-Type', 'application/json');

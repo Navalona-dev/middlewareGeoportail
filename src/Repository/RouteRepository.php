@@ -22,8 +22,8 @@ class RouteRepository extends ServiceEntityRepository
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
-        
-        return $query->execute();
+        $result = $query->execute();
+        return $result;
     }
     
     public function getAllInfrastructuresRoute()

@@ -30,11 +30,16 @@ class EducationService
     
     public function addInfrastructureEducation($data)
     {
-        $result = $this->educationRepository->addInfrastructureEducation($data['nom'], $data['indicatif'], $data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['numeroSequence'], (int) $data['codeProduit'], (int) $data['codeCommune'], (float) $data['latitude'],(float) $data['longitude']);
-        return $result;
+        $result = $this->educationRepository->addInfrastructureEducation($data['nom'], $data['indicatif'], $data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['numeroSequence'], (int) $data['codeProduit'], (int) $data['codeCommune'], (float) $data['latitude'],(float) $data['longitude'], $data['sousCategorie'], $data['district']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
     }
 
-    public function getAllInfrastructuresEducation()
+    public function getAllInfrastructuresEducation($data)
     {
         $educations = $this->educationRepository->getAllInfrastructuresEducation();
         if (count($educations) > 0) {
@@ -43,6 +48,27 @@ class EducationService
         return 0;
     }
     
+    public function addInfrastructureEducationEtat($idInfrastructure, $data)
+    {
+        $result = $this->educationRepository->addInfrastructureEducationEtat($idInfrastructure, $data['infoSupplementaire']['etat'], $data['infoSupplementaire']['etat'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function addInfrastructureEducationSituation($idInfrastructure, $data)
+    {
+        $result = $this->educationRepository->addInfrastructureEducationSituation($idInfrastructure, $data['infoSupplementaire']['fonctionnel'], $data['infoSupplementaire']['causeNonFonctinel'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
     
     public function update()
     {

@@ -33,7 +33,12 @@ class EducationController extends AbstractController
         
         $id = $educationService->addInfrastructureEducation($data);
         
+        if ($id != false) {
+            // add situation et etat
+            $idEtat = $educationService->addInfrastructureEducationEtat($id, $data);
 
+            $idSituation = $educationService->addInfrastructureEducationSituation($id, $data);
+        }
         //var_dump($infrastructures);
        /* $uploadedFile = $request->files->get('image');
         var_dump($uploadedFile);*/

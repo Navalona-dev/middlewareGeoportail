@@ -15,11 +15,11 @@ class EducationRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructureEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null )
+    public function addInfrastructureEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null, $sousCategorie= null, $district = null )
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.")";
+        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -28,6 +28,36 @@ class EducationRepository extends ServiceEntityRepository
 
         return $id;
     }
+
+    public function addInfrastructureEducationEtat($idInfrastructure = null, $etat = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ec_04_etat (id_infrastructure, etat, date_information, source_Information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$etat."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureEducationSituation($idInfrastructure = null, $fonctionnel = null, $raison, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ec_03_situation (id_infrastructure, fonctionnel, raison, date_information, source_Information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$fonctionnel."', '".$raison."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    
     
     public function getAllInfrastructuresEducation()
     {

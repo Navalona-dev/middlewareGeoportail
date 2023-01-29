@@ -3,3 +3,11 @@
 #    controller: App\Controller\DefaultController::index
 api_login_check:
     path: /api/login
+api_refresh_token:
+    path:       /api/token/refresh
+    defaults: { _controller: App\Service\RefreshTokenSecurityCookieService:refresh }
+    methods: [POST]
+    #defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }
+    #controller: { _controller: Gesdinet\JWTRefreshTokenBundle\Service\RefreshToken::refresh }
+    #controller: gesdinet.jwtrefreshtoken::refresh
+    

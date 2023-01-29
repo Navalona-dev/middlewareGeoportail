@@ -70,7 +70,6 @@ class EducationController extends AbstractController
             //dd($tmpPathName, $nomOriginal);
             move_uploaded_file($tmpPathName, $directory.$nomOriginal);
             
-            dd($uploadedFile);
             $id = $educationService->addInfrastructureEducation($data);
             
             if ($id != false) {

@@ -20,6 +20,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
 use App\Service\EducationService;
+use Doctrine\ORM\ORMInvalidArgumentException;
+use App\Exception\PropertyVideException;
+use Doctrine\Persistence\Mapping\MappingException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use App\Exception\UnsufficientPrivilegeException;
+use Symfony\Component\HttpClient\Exception\ServerException;
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 
 class EducationController extends AbstractController
 {
@@ -29,68 +36,104 @@ class EducationController extends AbstractController
     public function create(Request $request, EducationService $educationService)
     {    
        
-        $data = json_decode($request->getContent(), true);
-        
-        $id = $educationService->addInfrastructureEducation($data);
-        
-        if ($id != false) {
-            // add situation et etat
-            $idEtat = $educationService->addInfrastructureEducationEtat($id, $data);
-
-            $idSituation = $educationService->addInfrastructureEducationSituation($id, $data);
-
-            $idDonneAnnexe = $educationService->addInfrastructureEducationDonneAnnexe($id, $data);
-        }
-        //var_dump($infrastructures);
-       /* $uploadedFile = $request->files->get('image');
-        var_dump($uploadedFile);*/
-        
-        //$mediaObjectAction = $this->get('app.media');
-       
-       /*$mediaObject = $mediaObjectAction->getMediaObject($request);
-      var_dump($mediaObject->getRealPath());
-       die($mediaObject->getpathName());*/
-
-       //var_dump($data);
-       //exit();
-        //$product = $this->get('serializer')->deserialize($data, 'App\Entity\Product', 'json');
-       
-        //$em = $this->getDoctrine()->getManager();
-        //$em->persist($product);
-        //$em->flush();
-
+        // $data = json_decode($request->getContent(), true);
         $response = new Response();
 
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
-        /*$products = $this->getDoctrine()
-        ->getRepository(Product::class)
-        ->findAll();*/
-        /*if (!$products) {
-            throw $this->createNotFoundException(
-                'No product found for id '.$id
-            );
-        }*/
+        try {
+            $data = [];
+            $data['nom' ] = $request->get('nom');
+            $data['indicatif' ] = $request->get('indicatif');
+            $data['categorie' ] = $request->get('categorie');
+            $data['localite' ] = $request->get('localite');
+            $data['sourceInformation' ] = $request->get('sourceInformation');
+            $data['district' ] = $request->get('district');
+            $data['sousCategorie' ] = $request->get('sousCategorie');
+            $data['communeTerrain' ] = $request->get('communeTerrain');
+            $data['numeroSequence' ] = $request->get('numeroSequence');
+            $data['codeProduit' ] = $request->get('codeProduit');
+            $data['codeCommune' ] = $request->get('codeCommune');
+            $data['latitude' ] = $request->get('latitude');
+            $data['longitude' ] = $request->get('longitude');
+            $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
+            $data['infoSupplementaire' ] = [];
+            $data['infoSupplementaire' ]['etat'] = $request->get('etat');
+            $data['infoSupplementaire' ]['fonctionnel'] = $request->get('fonctionnel');
+            $data['infoSupplementaire' ]['causeNonFonctinel'] = $request->get('causeNonFonctinel');
+            $data['infoSupplementaire' ]['existenceCantine'] = $request->get('existenceCantine');
+            $data['infoSupplementaire' ]['nombreEnseignant'] = $request->get('nombreEnseignant');
+            $data['infoSupplementaire' ]['nombreEleve'] = $request->get('nombreEleve');
 
-        //$jsonContent = $serializer->serialize($products, 'json');
+            $uploadedFile = $request->files->get('photo');
+            $nomOriginal = $uploadedFile->getClientOriginalName();
+            $tmpPathName = $uploadedFile->getPathname();
+            $directory = $this->getParameter('kernel.project_dir') . "/public/images/infrastructures/education/photo/";
+            //dd($tmpPathName, $nomOriginal);
+            move_uploaded_file($tmpPathName, $directory.$nomOriginal);
+            
+            dd($uploadedFile);
+            $id = $educationService->addInfrastructureEducation($data);
+            
+            if ($id != false) {
+                // add situation et etat
+                $idEtat = $educationService->addInfrastructureEducationEtat($id, $data);
 
-        $jsonContent = [];
+                $idSituation = $educationService->addInfrastructureEducationSituation($id, $data);
 
-         /**
-          * fin serialisation
-          */
+                $idDonneAnnexe = $educationService->addInfrastructureEducationDonneAnnexe($id, $data);
+            }
+            
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "education created_successfull",
+                'data' => $id
+            ]));
 
-        $response->setContent(json_encode([
-            'code'  => Response::HTTP_OK,
-            'status' => true,
-            'message' => "education created_successfull",
-            'data' => $id
-        ]));
+            $response->headers->set('Content-Type', 'application/json');
+            
+            return $response;
 
-        $response->headers->set('Content-Type', 'application/json');
-        
-        return $response;
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
     }
 
     /**

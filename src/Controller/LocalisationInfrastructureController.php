@@ -242,7 +242,7 @@ class LocalisationInfrastructureController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Regions list_successfull",
+                'message' => "Localiation list_successfull",
                 'data' => $data
             ]));
 

@@ -40,7 +40,7 @@ services:
     routerepository.service:
         class: App\Repository\RouteRepository
     App\Service\RefreshTokenService:
-        arguments: ['@gesdinet.jwtrefreshtoken.authenticator', "@gesdinet.jwtrefreshtoken.user_provider", '@gesdinet.jwtrefreshtoken.security.authentication.success_handler', '@gesdinet.jwtrefreshtoken.security.authentication.failure_handler', '@gesdinet.jwtrefreshtoken.refresh_token_manager', 2592000, 'username',false, '@event_dispatcher']
+        arguments: ['@gesdinet.jwtrefreshtoken.authenticator', "@gesdinet.jwtrefreshtoken.user_provider", '@gesdinet.jwtrefreshtoken.security.authentication.success_handler', '@gesdinet.jwtrefreshtoken.security.authentication.failure_handler', '@gesdinet.jwtrefreshtoken.refresh_token_manager', 360, 'username',false, '@event_dispatcher']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

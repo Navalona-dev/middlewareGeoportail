@@ -8,6 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use Doctrine\ORM\ORMInvalidArgumentException;
+use App\Exception\PropertyVideException;
+use Doctrine\Persistence\Mapping\MappingException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use App\Exception\UnsufficientPrivilegeException;
+use Symfony\Component\HttpClient\Exception\ServerException;
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
+
 class InfrastructuresController extends AbstractController
 {
     /**
@@ -48,30 +56,72 @@ class InfrastructuresController extends AbstractController
     {    
         $data = json_decode($request->getContent(), true);
 
-        switch ($data["type"]) {
-            case 'education':
-                $niveauInfrastructure = $infrastructureService->getAllNiveauInfrastructureByDomaineNiveau3($data["domaine"]);
-                break;
-            case 'sante':
-                # code...
-                break;
-            default:
-                # code...
-                break;
-        }
-        
-        
         $response = new Response();
 
-        $response->setContent(json_encode([
-            'code'  => Response::HTTP_OK,
-            'status' => true,
-            'message' => "infrastructure niveau list_successfull",
-            'data' => $niveauInfrastructure
-        ]));
+        try {
 
-        $response->headers->set('Content-Type', 'application/json');
-        
+            switch ($data["type"]) {
+                case 'education':
+                    $niveauInfrastructure = $infrastructureService->getAllNiveauInfrastructureByDomaineNiveau3($data["domaine"]);
+                    break;
+                case 'sante':
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "infrastructure niveau list_successfull",
+                'data' => $niveauInfrastructure
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
         return $response;
     }
 }

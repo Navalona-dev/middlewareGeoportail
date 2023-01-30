@@ -89,8 +89,6 @@ class EducationController extends AbstractController
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
-            
-            return $response;
 
         } catch (PropertyVideException $PropertyVideException) {
             $response->setContent(json_encode([
@@ -133,6 +131,8 @@ class EducationController extends AbstractController
                 'message' => $Exception->getMessage(),
             ]));
         }
+
+        return $response;
     }
 
     /**
@@ -140,19 +140,62 @@ class EducationController extends AbstractController
      */
     public function listeEducation(Request $request, EducationRepository $educationRepository)
     {    
-        $infrastructures = $educationRepository->getAllInfrastructuresEducation();
-
         $response = new Response();
 
-        $response->setContent(json_encode([
-            'code'  => Response::HTTP_OK,
-            'status' => true,
-            'message' => "education list_successfull",
-            'data' => $infrastructures
-        ]));
+        try {
 
-        $response->headers->set('Content-Type', 'application/json');
-        
+            $infrastructures = $educationRepository->getAllInfrastructuresEducation();
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "education list_successfull",
+                'data' => $infrastructures
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
         return $response;
     }
 }

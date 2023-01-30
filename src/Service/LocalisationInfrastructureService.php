@@ -49,6 +49,24 @@ class LocalisationInfrastructureService
         return false;
     }
 
+    public function getAllDistricts()
+    {
+        $districtsInfrastructures = $this->LocalisationInfrastructureRepository->getAllDistricts();
+        if (count($districtsInfrastructures) > 0) {
+            return $districtsInfrastructures;
+        }
+        return false;
+    }
+
+    public function getAllCommunes()
+    {
+        $communessInfrastructures = $this->LocalisationInfrastructureRepository->getAllCommunes();
+        if (count($communessInfrastructures) > 0) {
+            return $communessInfrastructures;
+        }
+        return false;
+    }
+
     public function getAllDistrictByRegion($region = null)
     {
         $districtsInfrastructure = $this->LocalisationInfrastructureRepository->getAllDistrictByRegion($region);

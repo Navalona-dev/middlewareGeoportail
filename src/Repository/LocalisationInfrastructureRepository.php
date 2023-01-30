@@ -27,6 +27,30 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getAllDistricts()
+    {
+        $sql = "SELECT DISTINCT district, dist_ceni  FROM couche_commune";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getAllCommunes()
+    {
+        $sql = "SELECT commune, com_ceni  FROM couche_commune";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     public function getAllDistrictByRegion($region = null)
     {
         $sql = "SELECT DISTINCT district, dist_ceni  FROM couche_commune where region ILIKE '%" . $region . "%'";

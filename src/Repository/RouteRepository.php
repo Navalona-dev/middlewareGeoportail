@@ -22,8 +22,10 @@ class RouteRepository extends ServiceEntityRepository
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
-        
-        return $query->execute();
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
     }
     
     public function getAllInfrastructuresRoute()
@@ -58,6 +60,100 @@ class RouteRepository extends ServiceEntityRepository
         return $query->execute();
     }
     
+    public function addInfrastructureRouteEtat($idInfrastructure = null, $etat = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ro_03_etat (id_infrastructure, etat, date_information, source_Information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$etat."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureRouteSituation($idInfrastructure = null, $fonctionnel = null, $raison, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ro_02_situation (id_infrastructure, fonctionnel, raison, date_information, source_Information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$fonctionnel."', '".$raison."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureRouteSurface($idInfrastructure = null, $revetement = null, $revetueNidDePoule = null, $revetueArrachement = null, $revetueRessuage = null, $revetueFissureLogitudinaleDeJoint = null, $nonRevetueTraverse = null, $nonRevetueBourbier = null, $nonRevetueTeteDeChat = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ro_04_surface (id_infrastructure, revetement, revetue_nid_de_poule, revetue_arrachement, revetue_ressuage, revetue_fissure_logitudinale_de_joint, non_revetue_traverse, non_revetue_bourbier, non_revetue_tete_de_chat, date_information, source_Information, mode_acquisition_infromation) VALUES (".$idInfrastructure.", '".$revetement."', '".$revetueNidDePoule."', '".$revetueArrachement."', '".$revetueRessuage."', '".$revetueFissureLogitudinaleDeJoint."', '".$nonRevetueTraverse."', '".$nonRevetueBourbier."', '".$nonRevetueTeteDeChat."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureRouteStructure($idInfrastructure = null, $revetueDefomation = null, $revetueFissuration = null, $revetueFaiencage = null, $nonRevetueNidsDpoule = null, $nonRevetueDeformation = null,  $nonRevetueToleOndule = null,$nonRevetueRavines = null,  $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ro_05_structure (id_infrastructure, revetue_defomation, revetue_fissuration, revetue_faiencage, non_revetue_nids_de_poule, non_revetue_deformation, non_revetue_tole_ondule, non_revetue_ravines, date_information, source_Information, mode_acquisition_infromation) VALUES (".$idInfrastructure.", '".$revetueDefomation."', '".$revetueFissuration."', '".$revetueFaiencage."', '".$nonRevetueNidsDpoule."', '".$nonRevetueDeformation."', '".$nonRevetueToleOndule."', '".$nonRevetueRavines."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureRouteCollecte($idInfrastructure = null,  $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sourceInfo = pg_escape_string($sourceInformation);
+        $dateInfo = new \DateTime();
+        $sql = "INSERT into t_ro_06_collectees (id_infrastructure, date_information, source_Information, mode_acquisition_infromation) VALUES (".$idInfrastructure.", '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureRouteAccotement($idCollecteDonnees = null, $cote = null, $revetueDegradationSurface = null, $revetueDentelleRive = null,  $revetueDenivellationEntreChausséeAccotement = null,$revetueDestructionAffouillementAccotement = null,  $nonRevetueDeformationProfil = null, $revetu = null)
+    {   
+        $sql = "INSERT into t_ro_07_accotement (id_collecte_donnees, cote, revetue_degradation_de_la_surface, revetue_dentelle_de_rive, revetue_denivellation_entre_chaussée_et_accotement, revetue_destruction_par_affouillement_de_accotement, non_revetue_deformation_du_profil, revetu) VALUES (".$idCollecteDonnees.", '".$cote."', '".$revetueDegradationSurface."', '".$revetueDentelleRive."', '".$revetueDenivellationEntreChausséeAccotement."', '".$revetueDestructionAffouillementAccotement."', '".$nonRevetueDeformationProfil."', '".$revetu."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureRouteFosse($idCollecteDonnees = null, $cote = null, $revetueDegradationFosse = null,  $revetueSectionBouche = null,$nonRevetueProfil = null,  $nonRevetueEncombrement = null, $revetu = null)
+    {   
+        $sql = "INSERT into t_ro_08_fosse (cote, revetue_degradation_du_fosse, revetue_section_bouche, non_revetue_profil, non_revetue_encombrement, id_collecte_donnees,  revetu) VALUES ('".$cote."', '".$revetueDegradationFosse."', '".$revetueSectionBouche."', '".$nonRevetueProfil."', '".$nonRevetueEncombrement."', ".$idCollecteDonnees.", '".$revetu."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
     /*public function getAllCommunesByRegion($region)
     {
         $sql = "SELECT * FROM commune as c where region_id = " . $region . " order by c.nom";

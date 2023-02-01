@@ -57,7 +57,27 @@ class RouteController extends AbstractController
             }*/
             
             //$result = $routeService->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['pk']['debut'], $data['section'], $data['numeroRoute'], $data['gestionnaire'], $data['modeGestion'], null,  $data['pk']['fin'], null, $data['largeur']['hausse'], $data['largeur']['accotement'], $data['structure'], $data['region'], $data['district'], $data['gps']);
-            $result = $routeService->addInfrastructureRoute($data);
+            $idInfra = $routeService->addInfrastructureRoute($data);
+
+            if ($idInfra != false) {
+                // add situation et etat
+                $idEtat = $routeService->addInfrastructureRouteEtat($idInfra, $data);
+
+                $idSituation = $routeService->addInfrastructureRouteSituation($idInfra, $data);
+
+                $idSurface = $routeService->addInfrastructureRouteSurface($idInfra, $data);
+
+                $idStructure = $routeService->addInfrastructureRouteStructure($idInfra, $data);
+
+                $idCollecteDonne = $routeService->addInfrastructureRouteCollecte($idInfra, $data);
+
+                if ($idCollecteDonne != false) {
+                    $idAccotement = $routeService->addInfrastructureRouteAccotement($idCollecteDonne, $data);
+
+                    $idFosse = $routeService->addInfrastructureRouteFosse($idCollecteDonne, $data);
+                }
+                //$idDonneAnnexe = $routeService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
+            }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

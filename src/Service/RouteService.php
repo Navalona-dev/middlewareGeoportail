@@ -126,7 +126,7 @@ class RouteService
 
     public function addInfrastructureRouteFosse($idCollecteDonne = null, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteFosse($idCollecteDonne, $data['infoSupplementaire']['fosse']['typeRevetementAccotement'], $data['infoSupplementaire']['fosse']['revetuDegradationFosse'], $data['infoSupplementaire']['fosse']['revetuSectionBouche'], $data['infoSupplementaire']['fosse']['nonRevetuFosseProfil'], $data['infoSupplementaire']['fosse']['nonRevetuEncombrement'], null);
+        $result = $this->routeRepository->addInfrastructureRouteFosse($idCollecteDonne, $data['infoSupplementaire']['accotement']['typeRevetementAccotement'], $data['infoSupplementaire']['fosse']['revetuDegradationFosse'], $data['infoSupplementaire']['fosse']['revetuSectionBouche'], $data['infoSupplementaire']['fosse']['nonRevetuFosseProfil'], $data['infoSupplementaire']['fosse']['nonRevetuEncombrement'], null);
         
         if ($result) {
             return $result;

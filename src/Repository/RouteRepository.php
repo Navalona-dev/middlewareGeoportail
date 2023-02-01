@@ -120,7 +120,7 @@ class RouteRepository extends ServiceEntityRepository
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ro_06_collectees (id_infrastructure, date_information, source_Information, mode_acquisition_infromation) VALUES (".$idInfrastructure.", '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        $sql = "INSERT into t_ro_06_collectees (id_infrastructure, date_information, source_Information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

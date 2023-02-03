@@ -67,7 +67,33 @@ class InfrastructureService
         return 0;
     }
 
+    public function getAllSourceInfo()
+    {
+        $sourceInformations = $this->infrastructureRepository->getAllSourceInfo();
+        if (count($sourceInformations) > 0) {
+            return $sourceInformations;
+        }
+        return 0;
+    }
+
+    public function getAllIndicatifNiveau3()
+    {
+        $indicatifNiveau3 = $this->infrastructureRepository->getAllIndicatifNiveau3();
+        if (count($indicatifNiveau3) > 0) {
+            return $indicatifNiveau3;
+        }
+        return 0;
+    }
     
+    public function getAllIndicatifNiveau2()
+    {
+        $indicatifNiveau3 = $this->infrastructureRepository->getAllIndicatifNiveau2();
+        if (count($indicatifNiveau3) > 0) {
+            return $indicatifNiveau3;
+        }
+        return 0;
+    }
+
     public function update()
     {
         $this->entityManager->flush();

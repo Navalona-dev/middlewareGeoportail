@@ -124,4 +124,69 @@ class InfrastructuresController extends AbstractController
         }
         return $response;
     }
+    
+    /**
+     * @Route("/api/source/information", name="infrastructure_source_information", methods={"GET"})
+     */
+    public function sourceInfoInfrastructure(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $sourceInfrastructure = $infrastructureService->getAllSourceInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "source information list_successfull",
+            'data' => $sourceInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/indicatif/niveau3", name="indicatif_niveau3", methods={"GET"})
+     */
+    public function indicatifNiveau3Infrastructure(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $indicatifNiveau3 = $infrastructureService->getAllIndicatifNiveau3();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "indicatif niveau3 list_successfull",
+            'data' => $indicatifNiveau3
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/indicatif/niveau2", name="indicatif_niveau3", methods={"GET"})
+     */
+    public function indicatifNiveau2Infrastructure(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $indicatifNiveau2 = $infrastructureService->getAllIndicatifNiveau2();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "indicatif niveau2 list_successfull",
+            'data' => $indicatifNiveau2
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    
 }

@@ -50,6 +50,43 @@ class InfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getAllIndicatifNiveau3()
+    {
+        $sql = "select * from niveau_3";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getAllIndicatifNiveau2()
+    {
+        $sql = "select * from niveau_2";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getAllSourceInfo()
+    {
+        $sql = "select * from x_source_informations";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    
     public function getAllNiveauInfrastructureByDomaine($domaine = null)
     {
         $sql = "select * from (select * from niveau_2  UNION select * from niveau_3) as niveau where niveau.code_2 ILIKE '" . $domaine . "%'";

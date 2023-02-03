@@ -168,7 +168,7 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
-     * @Route("/api/indicatif/niveau2", name="indicatif_niveau3", methods={"GET"})
+     * @Route("/api/indicatif/niveau2", name="indicatif_niveau2", methods={"GET"})
      */
     public function indicatifNiveau2Infrastructure(Request $request, InfrastructureService $infrastructureService)
     {    

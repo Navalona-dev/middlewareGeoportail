@@ -85,6 +85,15 @@ class LocalisationInfrastructureService
         return false;
     }
 
+    public function getAllLocalitesInCommunes($codeCommune = null)
+    {
+        $localitesInfrastructure = $this->LocalisationInfrastructureRepository->getAllLocalitesInCommunes($codeCommune);
+        if (count($localitesInfrastructure) > 0) {
+            return $localitesInfrastructure;
+        }
+        return false;
+    }
+
     public function update()
     {
         $this->entityManager->flush();

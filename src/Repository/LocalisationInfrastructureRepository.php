@@ -74,6 +74,19 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
         return $result->fetchAll();
        
     }
+
+    public function getAllLocalitesInCommunes($codeCommune)
+    {
+        $sql = "SELECT nom_loca, c_com  FROM couche_localites where c_com = " . $codeCommune . "";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     /*public function getAllCommunesByRegion($region)
     {
         $sql = "SELECT * FROM commune as c where region_id = " . $region . " order by c.nom";

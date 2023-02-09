@@ -303,9 +303,13 @@ class LocalisationInfrastructureController extends AbstractController
 
             $communesInfrastructure = $localisationInfrastructureService->getAllCommunes();
 
+            $localitesInfrastructure = $localisationInfrastructureService->getAllLocalites();
+
+
             $data["regions"] = $regionsInfrastructure;
             $data["districts"] = $districtsInfrastructure;
             $data["communes"] = $communesInfrastructure;
+            $data["localites"] = $localitesInfrastructure;
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

@@ -67,6 +67,16 @@ class LocalisationInfrastructureService
         return false;
     }
 
+    public function getAllLocalites()
+    {
+        $localitesInfrastructures = $this->LocalisationInfrastructureRepository->getAllLocalites();
+        if (count($localitesInfrastructures) > 0) {
+            return $localitesInfrastructures;
+        }
+        return false;
+    }
+
+    
     public function getAllDistrictByRegion($region = null)
     {
         $districtsInfrastructure = $this->LocalisationInfrastructureRepository->getAllDistrictByRegion($region);

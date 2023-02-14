@@ -85,7 +85,7 @@ class EducationController extends AbstractController
             move_uploaded_file($tmpPathName3, $directory3.$nomOriginal3);
             $data['photo3'] = $nomOriginal3;
             
-            dd($tmpPathName1, $tmpPathName1);
+            dd($tmpPathName1, $directory1.$nomOriginal1);
             
             
             

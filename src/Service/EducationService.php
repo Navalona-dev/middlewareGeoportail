@@ -30,7 +30,7 @@ class EducationService
     
     public function addInfrastructureEducation($data)
     {
-        $result = $this->educationRepository->addInfrastructureEducation($data['nom'], $data['indicatif'], $data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['numeroSequence'], (int) $data['codeProduit'], (int) $data['codeCommune'], (float) $data['latitude'],(float) $data['longitude'], $data['sousCategorie'], $data['district']);
+        $result = $this->educationRepository->addInfrastructureEducation($data['nom'], $data['indicatif'], $data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['numeroSequence'], (int) $data['codeProduit'], (int) $data['codeCommune'], (float) $data['latitude'],(float) $data['longitude'], $data['sousCategorie'], $data['district'], $data['photo1'], $data['photo2'], $data['photo3']);
         
         if ($result) {
             return $result;

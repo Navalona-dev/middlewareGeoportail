@@ -15,11 +15,11 @@ class EducationRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructureEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null, $sousCategorie= null, $district = null )
+    public function addInfrastructureEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null, $sousCategorie= null, $district = null, $photo1 = null, $photo2 = null, $photo3 = null )
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."')";
+        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district, photo1, photo2, photo3 ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."', '".$photo1."', '".$photo2."', '".$photo3."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

@@ -67,29 +67,36 @@ class EducationController extends AbstractController
             $uploadedFile2 = $request->files->get('photo2');
             $uploadedFile3 = $request->files->get('photo3');
 
-            $nomOriginal1 = $uploadedFile1->getClientOriginalName();
-            $tmpPathName1 = $uploadedFile1->getPathname();
-            $directory1 = $this->getParameter('pathImageEducation') . "photo1/";
-            $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
-            dd($uploadedFile1->getClientOriginalExtension(), $name_temp.".".$uploadedFile1->getClientOriginalExtension());
-            move_uploaded_file($tmpPathName1, $directory1.$nomOriginal1);
-            $data['photo1'] = $nomOriginal1;
+            if (null != $uploadedFile1) {
+                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
+                $tmpPathName1 = $uploadedFile1->getPathname();
+                $directory1 = $this->getParameter('pathImageEducation') . "photo1/";
+                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+                $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
 
-            $nomOriginal2 = $uploadedFile2->getClientOriginalName();
-            $tmpPathName2 = $uploadedFile2->getPathname();
-            $directory2 = $this->getParameter('pathImageEducation') . "photo2/";
-            move_uploaded_file($tmpPathName2, $directory2.$nomOriginal2);
-            $data['photo2'] = $nomOriginal2;
+                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
+                $data['photo1'] = $nomPhoto1;
+            }
             
-            $nomOriginal3 = $uploadedFile3->getClientOriginalName();
-            $tmpPathName3 = $uploadedFile3->getPathname();
-            $directory3 = $this->getParameter('pathImageEducation') . "photo3/";
-            move_uploaded_file($tmpPathName3, $directory3.$nomOriginal3);
-            $data['photo3'] = $nomOriginal3;
-            
-           
-            
-            
+            if (null != $uploadedFile2) {
+                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
+                $tmpPathName2 = $uploadedFile2->getPathname();
+                $directory2 = $this->getParameter('pathImageEducation') . "photo2/";
+                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
+                $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
+                $data['photo2'] = $nomPhoto2;
+            }
+
+            if (null != $uploadedFile3) {
+                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
+                $tmpPathName3 = $uploadedFile3->getPathname();
+                $directory3 = $this->getParameter('pathImageEducation') . "photo3/";
+                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
+                $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
+                $data['photo3'] = $nomPhoto3;
+            }
             
             $id = $educationService->addInfrastructureEducation($data);
             

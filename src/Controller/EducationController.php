@@ -62,13 +62,32 @@ class EducationController extends AbstractController
             $data['infoSupplementaire' ]['existenceCantine'] = $request->get('existenceCantine');
             $data['infoSupplementaire' ]['nombreEnseignant'] = $request->get('nombreEnseignant');
             $data['infoSupplementaire' ]['nombreEleve'] = $request->get('nombreEleve');
+            
+            $uploadedFile1 = $request->files->get('photo1');
+            $uploadedFile2 = $request->files->get('photo2');
+            $uploadedFile3 = $request->files->get('photo3');
 
-            $uploadedFile = $request->files->get('photo');
-            $nomOriginal = $uploadedFile->getClientOriginalName();
-            $tmpPathName = $uploadedFile->getPathname();
-            $directory = $this->getParameter('kernel.project_dir') . "/public/images/infrastructures/education/photo/";
-            //dd($tmpPathName, $nomOriginal);
-            move_uploaded_file($tmpPathName, $directory.$nomOriginal);
+            $nomOriginal1 = $uploadedFile1->getClientOriginalName();
+            $tmpPathName1 = $uploadedFile1->getPathname();
+            $directory1 = $this->getParameter('pathImageEducation') . "photo1/";
+            move_uploaded_file($tmpPathName1, $directory1.$tmpPathName1);
+            $data['photo1'] = $nomOriginal1;
+
+            $nomOriginal2 = $uploadedFile2->getClientOriginalName();
+            $tmpPathName2 = $uploadedFile2->getPathname();
+            $directory2 = $this->getParameter('pathImageEducation') . "photo2/";
+            move_uploaded_file($tmpPathName2, $directory2.$tmpPathName2);
+            $data['photo2'] = $nomOriginal2;
+            
+            $nomOriginal3 = $uploadedFile3->getClientOriginalName();
+            $tmpPathName3 = $uploadedFile3->getPathname();
+            $directory3 = $this->getParameter('pathImageEducation') . "photo3/";
+            move_uploaded_file($tmpPathName3, $directory3.$tmpPathName3);
+            $data['photo3'] = $nomOriginal3;
+            
+            dd($tmpPathName1, $tmpPathName1);
+            
+            
             
             $id = $educationService->addInfrastructureEducation($data);
             

@@ -69,19 +69,19 @@ class EducationController extends AbstractController
 
             $nomOriginal1 = $uploadedFile1->getClientOriginalName();
             $tmpPathName1 = $uploadedFile1->getPathname();
-            $directory1 = $this->getParameter('pathImageEducation') . "photo1";
+            $directory1 = $this->getParameter('pathImageEducation') . "photo1/";
             move_uploaded_file($tmpPathName1, $directory1.$nomOriginal1);
             $data['photo1'] = $nomOriginal1;
 
             $nomOriginal2 = $uploadedFile2->getClientOriginalName();
             $tmpPathName2 = $uploadedFile2->getPathname();
-            $directory2 = $this->getParameter('pathImageEducation') . "photo2";
+            $directory2 = $this->getParameter('pathImageEducation') . "photo2/";
             move_uploaded_file($tmpPathName2, $directory2.$nomOriginal2);
             $data['photo2'] = $nomOriginal2;
             
             $nomOriginal3 = $uploadedFile3->getClientOriginalName();
             $tmpPathName3 = $uploadedFile3->getPathname();
-            $directory3 = $this->getParameter('pathImageEducation') . "photo3";
+            $directory3 = $this->getParameter('pathImageEducation') . "photo3/";
             move_uploaded_file($tmpPathName3, $directory3.$nomOriginal3);
             $data['photo3'] = $nomOriginal3;
             

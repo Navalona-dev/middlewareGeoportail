@@ -70,6 +70,8 @@ class EducationController extends AbstractController
             $nomOriginal1 = $uploadedFile1->getClientOriginalName();
             $tmpPathName1 = $uploadedFile1->getPathname();
             $directory1 = $this->getParameter('pathImageEducation') . "photo1/";
+            $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+            dd($uploadedFile1->getClientOriginalExtension(), $name_temp.".".$uploadedFile1->getClientOriginalExtension());
             move_uploaded_file($tmpPathName1, $directory1.$nomOriginal1);
             $data['photo1'] = $nomOriginal1;
 
@@ -85,7 +87,7 @@ class EducationController extends AbstractController
             move_uploaded_file($tmpPathName3, $directory3.$nomOriginal3);
             $data['photo3'] = $nomOriginal3;
             
-            dd($tmpPathName1, $directory1.$nomOriginal1);
+           
             
             
             

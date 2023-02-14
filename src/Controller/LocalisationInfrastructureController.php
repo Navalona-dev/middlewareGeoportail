@@ -296,26 +296,87 @@ class LocalisationInfrastructureController extends AbstractController
 
         try {
             $data = [];
-
+            
             $regionsInfrastructure = $localisationInfrastructureService->getAllRegions();
-
+            
             $districtsInfrastructure = $localisationInfrastructureService->getAllDistricts();
 
             $communesInfrastructure = $localisationInfrastructureService->getAllCommunes();
 
             $localitesInfrastructure = $localisationInfrastructureService->getAllLocalites();
+            
+            $tabLocalisation = [];
+            if (count($regionsInfrastructure) > 0) {
+                foreach($regionsInfrastructure as $region) {
+                    $unRegion = [];
+                    $unDistrict = [];
+                    $unCommune = [];
+                    $unRegion['region'] = $region['region'];
+                    $unRegion['reg_ceni'] = $region['reg_ceni'];
+                    $unRegion['districts'] = [];
+                    $unRegionFilter = [];
+                    $unCommuneFilter = [];
+                    $unCommuneFilter['communesFilter'] = [];
+                    $unCommuneFilter['communesFilter']['communes'] = [];
+                    $unRegionFilter['districtsFilter'] = [];
+                    $unRegionFilter['districtsFilter']['communes'] = [];
 
+                    if (count($districtsInfrastructure) > 0) {
+                        $unRegionFilter['districtsFilter']  = array_filter($districtsInfrastructure, function ($district) use ($region) {
+                            return $district['reg_ceni'] === $region['reg_ceni'];
+                        });
+
+                        if (count($unRegionFilter['districtsFilter']) > 0) {
+                            foreach($unRegionFilter['districtsFilter'] as $district) {
+                                $unDistrict['district'] = $district['district'];
+                                $unDistrict['dist_ceni'] = $district['dist_ceni'];
+                                $unDistrict['reg_ceni'] = $district['reg_ceni'];
+                                $unDistrict['communes'] = [];
+
+                                $tabCommunes = array_filter($communesInfrastructure, function ($commune) use ($district) {
+                                    return $district['dist_ceni'] === $commune['dist_ceni'];
+                                });
+                          
+                                if (count($tabCommunes) > 0) {
+                                    foreach($tabCommunes as $commune) {
+                                        $unCommune['commune'] = $commune['commune'];
+                                        $unCommune['com_ceni'] = $commune['com_ceni'];
+                                        $unCommune['reg_ceni'] = $commune['reg_ceni'];
+                                        $unCommune['dist_ceni'] = $commune['dist_ceni'];
+                                        $unCommune['localites'] = [];
+                                        $tabLocalites = array_filter($localitesInfrastructure, function ($localite) use ($commune) {
+                                            return $localite['c_com'] === $commune['com_ceni'];
+                                        });
+                                        if (count($tabLocalites) > 0) {
+                                            foreach($tabLocalites as $localite) {
+                                                $unLocalite['localite'] = $localite['nom_loca'];
+                                                $unLocalite['com_ceni'] = $localite['c_com'];
+                                                array_push($unCommune['localites'], $unLocalite);
+                                            }
+                                        }
+                                        array_push($unDistrict['communes'], $unCommune);
+                                    }
+                                    $unRegion['districts'][] = $unDistrict;
+                                }
+                            }
+                            
+                        }
+                    } 
+                    $tabLocalisation[] = $unRegion;
+                }
+            }
+            /*dd($tabLocalisation, $regionsInfrastructure, $districtsInfrastructure, $communesInfrastructure);
 
             $data["regions"] = $regionsInfrastructure;
             $data["districts"] = $districtsInfrastructure;
             $data["communes"] = $communesInfrastructure;
-            $data["localites"] = $localitesInfrastructure;
+            $data["localites"] = $localitesInfrastructure;*/
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "Localiation list_successfull",
-                'data' => $data
+                'data' => $tabLocalisation
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

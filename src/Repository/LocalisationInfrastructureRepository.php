@@ -29,7 +29,7 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
 
     public function getAllDistricts()
     {
-        $sql = "SELECT DISTINCT district, dist_ceni  FROM couche_commune";
+        $sql = "SELECT DISTINCT district, dist_ceni, reg_ceni  FROM couche_commune";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -41,7 +41,7 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
 
     public function getAllCommunes()
     {
-        $sql = "SELECT commune, com_ceni  FROM couche_commune";
+        $sql = "SELECT commune, com_ceni, reg_ceni, dist_ceni  FROM couche_commune";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

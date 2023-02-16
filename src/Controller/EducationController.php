@@ -73,9 +73,9 @@ class EducationController extends AbstractController
                 $directory1 = $this->getParameter('pathImageEducation') . "photo1/";
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
-
+                
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                $data['photo1'] = $nomPhoto1;
+                $data['photo1'] = $this->getParameter('pathForNamePhotoEducation') .$nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
@@ -85,7 +85,7 @@ class EducationController extends AbstractController
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                $data['photo2'] = $nomPhoto2;
+                $data['photo2'] = $this->getParameter('pathForNamePhotoEducation') .$nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
@@ -95,7 +95,7 @@ class EducationController extends AbstractController
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                $data['photo3'] = $nomPhoto3;
+                $data['photo3'] = $this->getParameter('pathForNamePhotoEducation') .$nomPhoto3;
             }
             
             $id = $educationService->addInfrastructureEducation($data);

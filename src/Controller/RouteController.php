@@ -63,6 +63,7 @@ class RouteController extends AbstractController
             $data['procedureTravaux'] = $request->get('procedureTravaux');
             $data['etat'] = $request->get('etat');
             $data['fonctionnel'] = $request->get('fonctionnel');
+            $data['causeNonFonctionel'] = $request->get('causeNonFonctionel');
             $data['surfaceRevetement'] = $request->get('surfaceRevetement');
             $data['surfaceNidPoule'] = $request->get('surfaceNidPoule');
             $data['surfaceArrachement'] = $request->get('surfaceArrachement');

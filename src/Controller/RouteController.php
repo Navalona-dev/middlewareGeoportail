@@ -46,6 +46,7 @@ class RouteController extends AbstractController
             $data['district' ] = $request->get('district');
             $data['commune' ] = $request->get('commune');
             $data['localite' ] = $request->get('localite');
+            $data['categorie' ] = $request->get('categorie');
             $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['pkDebut' ] = $request->get('pkDebut');
             $data['pkFin' ] = $request->get('pkFin');

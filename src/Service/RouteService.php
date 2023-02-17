@@ -30,7 +30,7 @@ class RouteService
     
     public function addInfrastructureRoute($data)
     {
-        $result = $this->routeRepository->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['communeTerrain'], $data['pk']['debut'], $data['numeroRoute'], $data['gestionnaire'], $data['modeGestion'], $data['pk']['fin'], $data['largeur']['hausse'], $data['largeur']['accotement'], $data['structure'], $data['region'], $data['district'], $data['longitude'], $data['latitude'], $data['photo1'], $data['photo2'], $data['photo3']);
+        $result = $this->routeRepository->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['commune'], $data['pkDebut'], $data['rattache'], $data['gestionnaire'], $data['modeGestion'], $data['pkFin'], $data['largeurHausse'], $data['largeurAccotement'], $data['structure'], $data['region'], $data['district'], $data['longitude'], $data['latitude'], $data['photo1'], $data['photo2'], $data['photo3']);
         return $result;
     }
 

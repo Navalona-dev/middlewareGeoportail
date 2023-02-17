@@ -93,7 +93,7 @@ class RouteService
 
     public function addInfrastructureRouteStructure($idInfrastructure = null, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteStructure($idInfrastructure, $data['structure']['deformation'], $data['structureFissure'], $data['structureFaiencage'], $data['structureNidPouleStructure'], $data['structureDeformation'], $data['structureTeteOndule'], $data['structureRavines'], $data['structureOrnierage'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
+        $result = $this->routeRepository->addInfrastructureRouteStructure($idInfrastructure, $data['structureDeformation'], $data['structureFissure'], $data['structureFaiencage'], $data['structureNidPouleStructure'], $data['structureDeformation'], $data['structureTeteOndule'], $data['structureRavines'], $data['structureOrnierage'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
         
         if ($result) {
             return $result;

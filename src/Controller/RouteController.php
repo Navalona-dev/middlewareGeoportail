@@ -59,6 +59,7 @@ class RouteController extends AbstractController
             $data['latitude'] = $request->get('latitudePKDebut');
             $data['longitude'] = $request->get('longitudePKDebut');
             $data['axe'] = $request->get('axe');
+            $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
             $data['etat'] = $request->get('etat');
             $data['fonctionnel'] = $request->get('fonctionnel');

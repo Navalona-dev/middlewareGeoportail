@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    base_url: 'https://www.resources.geo-infrastructure-mg.com/'
+    base_url: 'https://resources.geo-infrastructure-mg.com/'
     pathImageEducation: '/home/qgis/projects/saisie/media/upload/ec_ecole/t_ec_01_infrastructure/'
     pathForNamePhotoEducation: 'media/upload/ec_ecole/t_ec_01_infrastructure/'
     pathImageRoute: '/home/qgis/projects/saisie/media/upload/ro_route/t_ro_01_infrastructure/'

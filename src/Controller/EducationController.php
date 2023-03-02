@@ -189,17 +189,15 @@ class EducationController extends AbstractController
 
             $infrastructures = $educationRepository->getAllInfrastructuresEducation();
 
-            if ($infrastructures != false && count($infrastructures) > 0 ) {
-                foreach ($infrastructures as $unEcole) {
-                   
-                }
-            }
+            $directoryImagePublic = $this->getParameter('pathPublic') . "education/";
 
+            
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "education list_successfull",
-                'data' => $infrastructures
+                'data' => $infrastructures,
+                'pathImage' => $request->getSchemeAndHttpHost().$directoryImagePublic
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

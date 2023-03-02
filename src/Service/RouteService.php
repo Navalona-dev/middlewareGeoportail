@@ -135,6 +135,50 @@ class RouteService
         return false;
     }
 
+    public function addInfrastructureRouteFoncier($idInfrastructure = null, $data)
+    {
+        $result = $this->routeRepository->addInfrastructureRouteFoncier($data['statut'], $data['numeroReference'], $data['nomProprietaire'], $idInfrastructure);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function addInfrastructureRouteTravaux($idInfrastructure = null, $data)
+    {
+        $result = $this->routeRepository->addInfrastructureRouteTravaux($idInfrastructure, $data['objetTravaux'], $data['consistanceTravaux'], $data['modeRealisationTravaux'], $data['maitreOuvrageTravaux'], $data['maitreOuvrageDelegueTravaux'], $data['maitreOeuvreTravaux'], $data['idControleSurveillanceTravaux'], $data['modePassationTravaux'], $data['porteAppelOffreTravaux'], $data['montantTravaux'], $data['numeroContratTravaux'], $data['dateContratTravaux'], $data['dateOrdreServiceTravaux'], $data['idTitulaireTravaux'], $data['resultatTravauxTravaux'], $data['motifRuptureContratTravaux'], $data['dateReceptionProvisoireTravaux'], $data['dateReceptionDefinitiveTravaux'], $data['ingenieurReceptionProvisoireTravaux'], $data['ingenieurReceptionDefinitiveTravaux'], $data['dateInformationTravaux'], $data['sourceInformationTravaux'], $data['modeAcquisitionInformationTravaux']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function addInfrastructureRouteFourniture($idInfrastructure = null, $data)
+    {
+        $result = $this->routeRepository->addInfrastructureRouteFourniture($data['objetContratFourniture'], $data['consistanceContratFourniture'], $data['materielsFourniture'], $data['entiteFourniture'], $data['modePassationFourniture'], $data['porteAppelOffreFourniture'], $data['montantFourniture'], $data['idTitulaireFourniture'], $data['numeroContratFourniture'], $data['dateContratFourniture'], $data['dateOrdreFourniture'], $data['resultatFourniture'], $data['raisonResiliation'], $data['ingenieurReceptionProvisoireFourniture'], $data['ingenieurReceptionDefinitiveFourniture'], $data['dateReceptionProvisoireFourniture'], $data['dateReceptionDefinitiveFourniture'], $idInfrastructure);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function addInfrastructureRouteEtudes($idInfrastructure = null, $data)
+    {
+        $result = $this->routeRepository->addInfrastructureRouteEtudes($idInfrastructure, $data['objetContratEtude'], $data['consistanceContratEtude'], $data['entiteEtude'], $data['idTitulaireEtude'], $data['montantContratEtude'], $data['numeroContratEtude'], $data['modePassationEtude'], $data['porteAppelOffre'], $data['dateContratEtude'], $data['dateOrdreServiceEtude'], $data['resultatPrestationEtude'], $data['motifRuptureContratEtude'], $data['dateInformationEtude'], $data['sourceInformationEtude'], $data['modeAcquisitionInformationEtude']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
     public function update()
     {
         $this->entityManager->flush();

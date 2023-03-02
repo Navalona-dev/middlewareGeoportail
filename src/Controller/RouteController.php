@@ -95,6 +95,7 @@ class RouteController extends AbstractController
             $data['fosseNonRevetuFosseProfil'] = $request->get('fosseNonRevetuFosseProfil');
             $data['fosseNonRevetuEncombrement'] = $request->get('fosseNonRevetuEncombrement');
             
+            
             $uploadedFile1 = $request->files->get('photo1');
             $uploadedFile2 = $request->files->get('photo2');
             $uploadedFile3 = $request->files->get('photo3');
@@ -149,6 +150,83 @@ class RouteController extends AbstractController
 
                     $idFosse = $routeService->addInfrastructureRouteFosse($idCollecteDonne, $data);
                 }
+
+                /**
+                 * Administrative data
+                 */
+                //Foncier
+                $data['statut'] = $request->get('statutFoncier');
+                $data['numeroReference'] = $request->get('numeroReferenceFoncier');
+                $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
+
+                $idFoncier = $routeService->addInfrastructureRouteFoncier($idInfra, $data);
+
+                //Travaux 
+                $data['objetTravaux'] = $request->get('objetTravaux');
+                $data['consistanceTravaux'] = $request->get('consistanceTravaux');
+                $data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
+                $data['maitreOuvrageTravaux'] = $request->get('maitreOuvrageTravaux');
+                $data['maitreOuvrageDelegueTravaux'] = $request->get('maitreOuvrageDelegueTravaux');
+                $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
+                $data['modePassationTravaux'] = $request->get('modePassationTravaux');
+                $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
+                $data['montantTravauxTravaux'] = $request->get('montantTravauxTravaux');
+                $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
+                $data['dateContratTravaux'] = $request->get('dateContratTravaux');
+                $data['dateOrdreServiceTravaux'] = $request->get('dateOrdreServiceTravaux');
+                $data['idTitulaireTravaux'] = $request->get('idTitulaireTravaux');//idTitulaire
+                $data['resultatTravaux'] = $request->get('resultatTravaux');
+                $data['motifRuptureContratTravaux'] = $request->get('motifRuptureContratTravaux');
+                $data['dateReceptionProvisoireTravaux'] = $request->get('dateReceptionProvisoireTravaux');
+                $data['dateReceptionDefinitiveTravaux'] = $request->get('dateReceptionDefinitiveTravaux');
+                $data['ingenieurReceptionProvisoireTravaux'] = $request->get('ingenieurReceptionProvisoireTravaux');
+                $data['ingenieurReceptionDefinitiveTravaux'] = $request->get('ingenieurReceptionDefinitiveTravaux');
+                $data['dateInformationTravaux'] = new \DateTime();
+                $data['sourceInformationTravaux'] = $request->get('sourceInformationTravaux');
+                $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
+                
+                $idTravaux = $routeService->addInfrastructureRouteTravaux($idInfra, $data);
+                // Fournitures
+                $data['objetContratFourniture'] = $request->get('objetContratFourniture');
+                $data['consistanceContratFourniture'] = $request->get('consistanceContratFourniture');
+                $data['materielsFourniture'] = $request->get('materielsFourniture');
+                $data['entiteFourniture'] = $request->get('entiteFourniture');
+                $data['modePassationFourniture'] = $request->get('modePassationFourniture');
+                $data['porteAppelOffreFourniture'] = $request->get('porteAppelOffreFourniture');
+                $data['montantFourniture'] = $request->get('montantFourniture');
+                $data['idTitulaireFourniture'] = $request->get('idTitulaireFourniture');
+                $data['numeroContratFourniture'] = $request->get('numeroContratFourniture');
+                $data['dateContratFourniture'] = $request->get('dateContratFourniture');
+                $data['dateOrdreFourniture'] = $request->get('dateOrdreFourniture');
+                $data['resultatFourniture'] = $request->get('resultatFourniture');
+                $data['raisonResiliationFourniture'] = $request->get('raisonResiliationFourniture');
+                $data['ingenieurReceptionProvisoireFourniture'] = $request->get('ingenieurReceptionProvisoireFourniture');
+                $data['ingenieurReceptionDefinitiveFourniture'] = $request->get('ingenieurReceptionDefinitiveFourniture');
+                $data['dateReceptionProvisoireFourniture'] = $request->get('dateReceptionProvisoireFourniture');
+                $data['dateReceptionDefinitiveFourniture'] = $request->get('dateReceptionDefinitiveFourniture');
+                
+                $idFourniture = $routeService->addInfrastructureRouteFourniture($idInfra, $data);
+                // Etudes
+                $data['objetContratEtude'] = $request->get('objetContratEtude');
+                $data['consistanceContratEtude'] = $request->get('consistanceContratEtude');
+                $data['entiteEtude'] = $request->get('entiteEtude');
+                $data['idTitulaireEtude'] = $request->get('idTitulaireEtude');
+                $data['montantContratEtude'] = $request->get('montantContratEtude');
+                $data['numeroContratEtude'] = $request->get('numeroContratEtude');
+                $data['modePassationEtude'] = $request->get('modePassationEtude');
+                $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
+                $data['dateContratEtude'] = $request->get('dateContratEtude');
+                $data['dateOrdreServiceEtude'] = $request->get('dateOrdreServiceEtude');
+                $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
+                $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');
+                $data['dateInformationEtude'] = $request->get('dateInformationEtude');
+                $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
+                $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
+
+                $idEtude = $routeService->addInfrastructureRouteEtudes($idInfra, $data);
+                /**
+                 * End Administrative data
+                */
                 //$idDonneAnnexe = $routeService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 

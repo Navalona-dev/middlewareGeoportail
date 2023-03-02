@@ -147,6 +147,28 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
+     * @Route("/api/prestataire/information", name="infrastructure_prestataire_information", methods={"GET"})
+     */
+    public function getAllPrestataireInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $prestataireInfrastructure = $infrastructureService->getAllPrestataireInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "prestataire information list_successfull",
+            'data' => $prestataireInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    
+    /**
      * @Route("/api/indicatif/niveau3", name="indicatif_niveau3", methods={"GET"})
      */
     public function indicatifNiveau3Infrastructure(Request $request, InfrastructureService $infrastructureService)

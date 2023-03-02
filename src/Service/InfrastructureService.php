@@ -94,6 +94,16 @@ class InfrastructureService
         return 0;
     }
 
+    public function getAllPrestataireInfo()
+    {
+        $prestatairesInfo = $this->infrastructureRepository->getAllPrestataireInfo();
+        if (count($prestatairesInfo) > 0) {
+            return $prestatairesInfo;
+        }
+        return 0;
+    }
+
+    
     public function update()
     {
         $this->entityManager->flush();

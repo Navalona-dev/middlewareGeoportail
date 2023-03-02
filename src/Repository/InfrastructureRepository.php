@@ -98,6 +98,19 @@ class InfrastructureRepository extends ServiceEntityRepository
         return $result->fetchAll();
        
     }
+
+    public function getAllPrestataireInfo()
+    {
+        $sql = "select id, nom from x_prestataires";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     /*public function getAllCommunesByRegion($region)
     {
         $sql = "SELECT * FROM commune as c where region_id = " . $region . " order by c.nom";

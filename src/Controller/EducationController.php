@@ -27,13 +27,14 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Exception\UnsufficientPrivilegeException;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class EducationController extends AbstractController
 {
     private $pathImage = null;
 
-    public function __construct() {
-        $this->pathImage = $this->container->get('base_url') . "education/";
+    public function __construct(ParameterBagInterface $params) {
+        $this->pathImage = $params->get('base_url') . "education/";
     }
 
     /**

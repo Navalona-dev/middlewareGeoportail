@@ -71,10 +71,14 @@ class EducationController extends AbstractController
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
                 $directory1 = $this->getParameter('pathImageEducation') . "photo1/";
+                $directoryPublic = $this->getParameter('pathPublic') . "education/photo1/";
+
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
+                move_uploaded_file($tmpPathName1, $directoryPublic.$nomPhoto1);
+                
                 $data['photo1'] = $this->getParameter('pathForNamePhotoEducation')."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
             }
@@ -83,9 +87,13 @@ class EducationController extends AbstractController
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
                 $directory2 = $this->getParameter('pathImageEducation') . "photo2/";
+                $directoryPublic = $this->getParameter('pathPublic') . "education/photo2/";
+
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
+                move_uploaded_file($tmpPathName2, $directoryPublic.$nomPhoto2);
+
                 $data['photo2'] = $this->getParameter('pathForNamePhotoEducation')."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
             }
@@ -94,9 +102,13 @@ class EducationController extends AbstractController
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
                 $directory3 = $this->getParameter('pathImageEducation') . "photo3/";
+                $directoryPublic = $this->getParameter('pathPublic') . "education/photo3/";
+
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
+                move_uploaded_file($tmpPathName3, $directoryPublic.$nomPhoto3);
+
                 $data['photo3'] = $this->getParameter('pathForNamePhotoEducation')."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }

@@ -197,7 +197,7 @@ class EducationController extends AbstractController
                 'status' => true,
                 'message' => "education list_successfull",
                 'data' => $infrastructures,
-                'pathImage' => $request->getSchemeAndHttpHost().$directoryImagePublic
+                'pathImage' => $request->getSchemeAndHttpHost()."/".$directoryImagePublic
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

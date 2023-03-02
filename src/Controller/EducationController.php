@@ -189,15 +189,15 @@ class EducationController extends AbstractController
 
             $infrastructures = $educationRepository->getAllInfrastructuresEducation();
 
-            $directoryImagePublic = $this->getParameter('pathPublic') . "education/";
+            $pathImagePublic = $this->getParameter('base_url') . "education/";
 
             
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "education list_successfull",
-                'data' => $infrastructures,
-                'pathImage' => $request->getSchemeAndHttpHost()."/".$directoryImagePublic
+                'pathImage' => $pathImagePublic,
+                'data' => $infrastructures
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

@@ -30,6 +30,12 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 
 class EducationController extends AbstractController
 {
+    private $pathImage = null;
+
+    public function __construct() {
+        $this->pathImage = $this->getParameter('base_url') . "education/";
+    }
+
     /**
      * @Route("/api/education/add", name="education_add", methods={"POST"})
      */
@@ -189,14 +195,11 @@ class EducationController extends AbstractController
 
             $infrastructures = $educationRepository->getAllInfrastructuresEducation();
 
-            $pathImagePublic = $this->getParameter('base_url') . "education/";
-
-            
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "education list_successfull",
-                'pathImage' => $pathImagePublic,
+                'pathImage' => $this->pathImage,
                 'data' => $infrastructures
             ]));
 

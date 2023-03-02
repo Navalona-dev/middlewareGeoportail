@@ -15,11 +15,11 @@ class EducationRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructureEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null, $sousCategorie= null, $district = null, $photo1 = null, $photo2 = null, $photo3 = null )
+    public function addInfrastructureEducation($nom = null, $indicatif = null, $categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $numeroSequence = null, $codeProduit = null, $codeCommune = null, $latitude = null, $longitude = null, $sousCategorie= null, $district = null, $photo1 = null, $photo2 = null, $photo3 = null, $photoName1 = null, $photoName2 = null, $photoName3 = null )
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district, photo1, photo2, photo3 ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."', '".$photo1."', '".$photo2."', '".$photo3."')";
+        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district, photo1, photo2, photo3, photoName1, photoName2, photoName3 ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photoName1."', '".$photoName2."', '".$photoName2."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -73,7 +73,7 @@ class EducationRepository extends ServiceEntityRepository
     
     public function getAllInfrastructuresEducation()
     {
-        $sql = "SELECT id, nom, indicatif, categorie, localite, commune_terrain, date_information, source_information, mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, numero_sequence, code_produit, code_commune  FROM t_ec_01_infrastructure as infra";
+        $sql = "SELECT infra.id, infra.nom, infra.indicatif, infra.categorie, infra.localite, infra.commune_terrain, infra.date_information, infra.source_information, infra.mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.numero_sequence, infra.code_produit, infra.code_commune, infra.sous_categorie, infra.district, infra.photoName1, infra.photoName2, infra.photoName3, e.etat, s.fonctionnel, s.raison,d.existence_cantine, d.nombre_enseignant, d.nombre_eleve  FROM t_ec_01_infrastructure as infra JOIN t_ec_04_etat as e ON infra.id = e.id_infrastructure JOIN t_ec_03_situation as s ON infra.id = s.id_infrastructure JOIN t_ec_14_donnees_annexes as d ON infra.id = d.id_infrastructure ";
 
         //$sql = "SELECT ST_X(infra.geom) AS X1, ST_Y(infra.geom) AS Y1, ST_X(ST_TRANSFORM(infra.geom,4674)) AS LONG, ST_Y(ST_TRANSFORM(infra.geom,4674)) AS LAT FROM t_ec_01_infrastructure as infra";
 

@@ -76,6 +76,7 @@ class EducationController extends AbstractController
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 $data['photo1'] = $this->getParameter('pathForNamePhotoEducation')."photo1/" .$nomPhoto1;
+                $data['photoName1'] = $nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
@@ -86,6 +87,7 @@ class EducationController extends AbstractController
                 $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 $data['photo2'] = $this->getParameter('pathForNamePhotoEducation')."photo2/" .$nomPhoto2;
+                $data['photoName2'] = $nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
@@ -96,6 +98,7 @@ class EducationController extends AbstractController
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 $data['photo3'] = $this->getParameter('pathForNamePhotoEducation')."photo3/" .$nomPhoto3;
+                $data['photoName3'] = $nomPhoto3;
             }
             
             $id = $educationService->addInfrastructureEducation($data);
@@ -173,6 +176,12 @@ class EducationController extends AbstractController
         try {
 
             $infrastructures = $educationRepository->getAllInfrastructuresEducation();
+
+            if ($infrastructures != false && count($infrastructures) > 0 ) {
+                foreach ($infrastructures as $unEcole) {
+                   
+                }
+            }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

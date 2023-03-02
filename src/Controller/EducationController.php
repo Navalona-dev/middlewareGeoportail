@@ -33,7 +33,7 @@ class EducationController extends AbstractController
     private $pathImage = null;
 
     public function __construct() {
-        $this->pathImage = $this->getParameter('base_url') . "education/";
+        $this->pathImage = $this->container->get('base_url') . "education/";
     }
 
     /**

@@ -71,9 +71,59 @@ class EducationRepository extends ServiceEntityRepository
         return $id;
     }
     
+    public function addInfrastructureEducationFoncier($idInfrastructure = null, $statutFoncier = null, $proprietaire = null, $referenceDossier = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sql = "INSERT into t_ec_05_foncier (id_infrastructure, statut_foncier, proprietaire, reference_dossier, date_information, source_information) VALUES (".$idInfrastructure.", '".$statutFoncier."', '".$proprietaire."', '".$referenceDossier."', '".$dateInformation."', '".$sourceInformation."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureEducationTravaux($idInfrastructure = null, $objet = null, $consistanceTravaux = null, $maitreOuvrage = null, $maitreOuvrageDelegue = null, $maitreOeuvre = null, $idControleSurveillance = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $numeroContrat = null, $dateContrat = null, $dateOrdreService = null, $idTitulaire = null, $resultatTravaux = null, $motifRuptureContrat = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sql = "INSERT into t_ec_08_travaux (id_infrastructure, objet, consistance_travaux, maitre_ouvrage, maitre_ouvrage_delegue, maitre_oeuvre, id_controle_surveillance, mode_passation, porte_appel_offre, montant, numero_contrat, date_contrat, date_ordre_service, id_titulaire, resultat_travaux, motif_rupture_contrat, date_reception_provisoire, date_reception_definitive, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_information, source_information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$objet."', '".$consistanceTravaux."', '".$maitreOuvrage."', '".$maitreOuvrageDelegue."', '".$maitreOeuvre."', '".$idControleSurveillance."', '".$modePassation."', '".$porteAppelOffre."', '".$montant."', '".$numeroContrat."', '".$dateContrat."', '".$dateOrdreService."', '".$idTitulaire."', '".$resultatTravaux."', '".$motifRuptureContrat."', '".$dateReceptionProvisoire."', '".$dateReceptionDefinitive."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateInformation."', '".$sourceInformation."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureEducationFourniture($idInfrastructure = null, $objetContrat = null, $consistanceContrat = null, $materiels = null, $entite = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $idTitulaire = null, $numeroContrat = null, $dateContrat = null, $dateOrdre = null, $resultat = null, $motifRuptureContrat = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sql = "INSERT into t_ec_10_fourniture (id_infrastructure, objet, consistance_contrat, materiel_concerne, entite, id_titulaire, mode_passation, porte_appel_offre, montant, numero_contrat, date_contrat, date_ordre_service, resultat_service, motif_rupture_contrat, date_reception_provisoire, date_reception_definitive, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_information, source_information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$objetContrat."', '".$consistanceContrat."', '".$materiels."', '".$entite."', '".$idTitulaire."', '".$modePassation."', '".$porteAppelOffre."', '".$montant."', '".$numeroContrat."', '".$dateContrat."', '".$dateOrdre."', '".$resultat."', '".$motifRuptureContrat."', '".$dateReceptionProvisoire."', '".$dateReceptionDefinitive."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateInformation."', '".$sourceInformation."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructureEducationEtudes($idInfrastructure = null, $objetContrat = null, $consistanceContrat = null, $entite = null, $idTitulaire = null, $montantContrat = null, $numeroContrat = null, $modePassation = null, $porteAppelOffre = null, $dateContrat = null, $dateOrdreService = null, $resultatPrestation = null, $motifRuptureContrat = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null)
+    {   
+        $sql = "INSERT into t_ec_12_etudes (id_infrastructure, objet_contrat, consistance_contrat, entite, id_titulaire, montant_contrat, numero_contrat, mode_passation, porte_appel_offre, date_contrat, date_ordre_service, resultat_prestation, motif_rupture_contrat, date_information, source_information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$objetContrat."', '".$consistanceContrat."', '".$entite."', '".$idTitulaire."', '".$montantContrat."', '".$numeroContrat."', '".$modePassation."', '".$porteAppelOffre."', '".$dateContrat."', '".$dateOrdreService."', '".$resultatPrestation."', '".$motifRuptureContrat."', '".$dateInformation."', '".$sourceInformation."', '".$modeAcquisitionInformation."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
     public function getAllInfrastructuresEducation()
     {
-        $sql = "SELECT infra.id, infra.nom, infra.indicatif, infra.categorie, infra.localite, infra.commune_terrain, infra.date_information, infra.source_information, infra.mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.numero_sequence, infra.code_produit, infra.code_commune, infra.sous_categorie, infra.district, infra.photo_name1, infra.photo_name2, infra.photo_name3, e.etat, s.fonctionnel, s.raison,d.existence_cantine, d.nombre_enseignant, d.nombre_eleve  FROM t_ec_01_infrastructure as infra JOIN t_ec_04_etat as e ON infra.id = e.id_infrastructure JOIN t_ec_03_situation as s ON infra.id = s.id_infrastructure JOIN t_ec_14_donnees_annexes as d ON infra.id = d.id_infrastructure ";
+        $sql = "SELECT infra.id, infra.nom, infra.indicatif, infra.categorie, infra.localite, infra.commune_terrain, infra.date_information, infra.source_information, infra.mode_acquisition_information, ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.numero_sequence, infra.code_produit, infra.code_commune, infra.sous_categorie, infra.district, infra.photo_name1, infra.photo_name2, infra.photo_name3, e.etat, s.fonctionnel, s.raison,d.existence_cantine, d.nombre_enseignant, d.nombre_eleve, f.statut_foncier as status_foncier, f.proprietaire as proprietaire_foncier, f.reference_dossier as reference_dossier_foncier, f.date_information as data_info_foncier, f.source_information as src_info_foncier, f.mode_acquisition_information as mode_acqui_foncier, trav.objet as objet_travaux, trav.consistance_travaux as consistance_travaux, trav.maitre_ouvrage as maitre_ouvrage_travaux, trav.maitre_ouvrage_delegue as maitre_ouvrage_delegue_travaux, trav.maitre_oeuvre as maitre_oeuvre_travaux, trav.id_controle_surveillance as id_controle_surveillance_travaux, trav.mode_passation as mode_passation_travaux, trav.porte_appel_offre as porte_appel_offre_travaux, trav.montant as montant_travaux, trav.numero_contrat as numero_contrat_travaux, trav.date_contrat as date_contrat_travaux, trav.date_ordre_service as date_ordre_service_travaux, trav.id_titulaire as id_titulaire_travaux, trav.resultat_travaux as resultat_travaux_travaux, trav.motif_rupture_contrat as motif_rupture_contrat_travaux, trav.date_reception_provisoire as date_reception_provisoire_travaux, trav.date_reception_definitive as date_reception_definitive_travaux, trav.ingenieur_reception_provisoire as ingenieur_reception_provisoire_travaux, trav.ingenieur_reception_definitive as ingenieur_reception_definitive_travaux, trav.date_information as date_information_travaux, trav.source_information as source_information_travaux, trav.mode_acquisition_information as mode_acquisition_information_travaux, four.objet as objet_fourniture,
+        four.consistance_contrat as consistance_contrat_fourniture, four.materiel_concerne as materiel_concerne_fourniture, four.entite as entite_fourniture, four.id_titulaire as id_titulaire_fourniture, four.mode_passation as mode_passation_fourniture, four.porte_appel_offre as porte_appel_offre_fourniture, four.montant as montant_fourniture, four.numero_contrat as numero_contrat_fourniture, four.date_contrat as date_contrat_fourniture, four.date_ordre_service as date_ordre_service_fourniture, four.resultat_service as resultat_service_fourniture, four.motif_rupture_contrat as motif_rupture_contrat_fourniture, four.date_reception_provisoire as date_reception_provisoire_fourniture, four.date_reception_definitive as date_reception_definitive_fourniture, four.ingenieur_reception_provisoire as ingenieur_reception_provisoire_fourniture, four.ingenieur_reception_definitive as ingenieur_reception_definitive_fourniture, four.date_information as date_information_fourniture, four.source_information as source_information_fourniture, four.mode_acquisition_information as mode_acquisition_information_fourniture
+          FROM t_ec_01_infrastructure as infra JOIN t_ec_04_etat as e ON infra.id = e.id_infrastructure JOIN t_ec_03_situation as s ON infra.id = s.id_infrastructure JOIN t_ec_14_donnees_annexes as d ON infra.id = d.id_infrastructure JOIN t_ec_05_foncier as f ON infra.id = f.id_infrastructure JOIN t_ec_08_travaux as trav ON infra.id = trav.id_infrastructure JOIN t_ec_10_fourniture as four ON infra.id = four.id_infrastructure JOIN t_ec_12_etudes as et ON infra.id = et.id_infrastructure";
 
         //$sql = "SELECT ST_X(infra.geom) AS X1, ST_Y(infra.geom) AS Y1, ST_X(ST_TRANSFORM(infra.geom,4674)) AS LONG, ST_Y(ST_TRANSFORM(infra.geom,4674)) AS LAT FROM t_ec_01_infrastructure as infra";
 
@@ -180,9 +230,9 @@ class EducationRepository extends ServiceEntityRepository
         return $query->fetchAll();
     }
 
-    public function calculDistance($plof, $tableName, $routeTable)
+    public function calculDistance($plof, $tableName, $EducationTable)
     {
-        $sql = "SELECT rt.linewt, st_distance(rt.geom,p.geom) AS al FROM " . $tableName . " as p, " . $routeTable . " as rt";
+        $sql = "SELECT rt.linewt, st_distance(rt.geom,p.geom) AS al FROM " . $tableName . " as p, " . $EducationTable . " as rt";
         $sql .= " WHERE  p.id_plof_bypass = " . $plof . " ORDER BY al ASC LIMIT 1";
 
         $conn = $this->entityManager->getConnection();
@@ -202,7 +252,7 @@ class EducationRepository extends ServiceEntityRepository
         return $query->fetchAll();
     }
 
-    public function getRoutePrimaire($id_plof = null, $xV = "", $yV = "")
+    public function getEducationPrimaire($id_plof = null, $xV = "", $yV = "")
     {
         $sql = "SELECT a.linewt, st_distance(a.geom,b.geom) AS al, st_x(st_centroid(st_shortestline(a.geom, b.geom))) AS x_lalana, st_y(st_centroid(st_shortestline(a.geom, b.geom))) AS y_lalana FROM plof_avaradrano b, voie_primaire_shp a ";
         $sql .= "WHERE b.id_plof_bypass = " . $id_plof . "";

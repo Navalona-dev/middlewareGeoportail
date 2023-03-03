@@ -29,9 +29,22 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Exception\UnsufficientPrivilegeException;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class RouteController extends AbstractController
 {
+    private $pathImage = null;
+    private $pathImageRoute = null;
+    private $pathPublic = null;
+    private $pathForNamePhotoRoute = null;
+
+    public function __construct(ParameterBagInterface $params) {
+        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "route/";
+        $this->pathImageRoute = $params->get('pathImageRoute');
+        $this->pathPublic = $params->get('pathPublic');
+        $this->pathForNamePhotoRoute = $params->get('pathForNamePhotoRoute');
+    }
+
     /**
      * @Route("/api/route/add", name="route_add", methods={"POST"})
      */
@@ -103,32 +116,47 @@ class RouteController extends AbstractController
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->getParameter('pathImageRoute') . "photo1/";
+                $directory1 = $this->pathImageRoute . "photo1/";
+                $directoryPublic = $this->pathPublic . "route/photo1/";
+
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                $data['photo1'] = $this->getParameter('pathForNamePhotoRoute')."photo1/" .$nomPhoto1;
+                move_uploaded_file($tmpPathName1, $directoryPublic.$nomPhoto1);
+
+                $data['photo1'] = $this->pathForNamePhotoRoute."photo1/" .$nomPhoto1;
+                $data['photoName1'] = $nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->getParameter('pathImageRoute') . "photo2/";
+                $directory2 = $this->pathImageRoute . "photo2/";
+                $directoryPublic = $this->pathPublic . "route/photo2/";
+
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                $data['photo2'] = $this->getParameter('pathForNamePhotoRoute')."photo2/" .$nomPhoto2;
+                move_uploaded_file($tmpPathName2, $directoryPublic.$nomPhoto2);
+                
+                $data['photo2'] = $this->pathForNamePhotoRoute."photo2/" .$nomPhoto2;
+                $data['photoName2'] = $nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->getParameter('pathImageRoute') . "photo3/";
+                $directory3 = $this->pathImageRoute . "photo3/";
+                $directoryPublic = $this->pathPublic . "route/photo3/";
+
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                $data['photo3'] = $this->getParameter('pathForNamePhotoRoute')."photo3/" .$nomPhoto3;
+                move_uploaded_file($tmpPathName3, $directoryPublic.$nomPhoto3);
+
+                $data['photo3'] = $this->pathForNamePhotoRoute."photo3/" .$nomPhoto3;
+                $data['photoName3'] = $nomPhoto3;
             }
 
             $idInfra = $routeService->addInfrastructureRoute($data);

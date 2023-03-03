@@ -44,7 +44,7 @@ class EducationController extends AbstractController
     }
 
     /**
-     * @Education("/api/education/add", name="education_add", methods={"POST"})
+     * @Route("/api/education/add", name="education_add", methods={"POST"})
      */
     public function create(Request $request, EducationService $educationService)
     {    
@@ -272,7 +272,7 @@ class EducationController extends AbstractController
     }
 
     /**
-     * @Education("/api/infra/education/liste", name="education_list", methods={"GET"})
+     * @Route("/api/infra/education/liste", name="education_list", methods={"GET"})
      */
     public function listeEducation(Request $request, EducationRepository $educationRepository)
     {    

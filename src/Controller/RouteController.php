@@ -200,7 +200,7 @@ class RouteController extends AbstractController
                 $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
                 $data['modePassationTravaux'] = $request->get('modePassationTravaux');
                 $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
-                $data['montantTravauxTravaux'] = $request->get('montantTravauxTravaux');
+                $data['montantTravaux'] = $request->get('montantTravaux');
                 $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
                 $data['dateContratTravaux'] = $request->get('dateContratTravaux');
                 $data['dateOrdreServiceTravaux'] = $request->get('dateOrdreServiceTravaux');

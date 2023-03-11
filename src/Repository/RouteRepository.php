@@ -156,7 +156,7 @@ class RouteRepository extends ServiceEntityRepository
 
     public function addInfrastructureRouteFoncier($statut = null, $numeroReference = null, $nomProprietaire = null, $idInfrastructure = null)
     {   
-        $sql = "INSERT into t_ro_13_foncier (\"Statut\", \"cote\", numero_de_reference, nom_proprietaire, id_infrastructure) VALUES (".$statut.", '".$numeroReference."', '".$nomProprietaire."', '".$idInfrastructure."')";
+        $sql = "INSERT into t_ro_13_foncier (\"Statut\", numero_de_reference, nom_proprietaire, id_infrastructure) VALUES (".$statut.", '".$numeroReference."', '".$nomProprietaire."', '".$idInfrastructure."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

@@ -27,6 +27,7 @@ use App\Exception\PropertyVideException;
 use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Exception\UnsufficientPrivilegeException;
+use DateTime;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -202,7 +203,9 @@ class RouteController extends AbstractController
                 $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
                 $data['montantTravaux'] = $request->get('montantTravaux');
                 $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
-                $data['dateContratTravaux'] = $request->get('dateContratTravaux');
+
+                $dateContratTravaux = new DateTime();
+                $data['dateContratTravaux'] = $dateContratTravaux->createFromFormat('Y/m/d', $request->get('dateContratTravaux'));
                 $data['dateOrdreServiceTravaux'] = $request->get('dateOrdreServiceTravaux');
                 $data['idTitulaireTravaux'] = $request->get('idTitulaireTravaux');//idTitulaire
                 $data['resultatTravaux'] = $request->get('resultatTravaux');

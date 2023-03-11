@@ -30,7 +30,7 @@ class RouteService
     
     public function addInfrastructureRoute($data)
     {
-        $result = $this->routeRepository->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['commune'], $data['pkDebut'], $data['rattache'], $data['gestionnaire'], $data['modeGestion'], $data['pkFin'], $data['largeurHausse'], $data['largeurAccotement'],$data['structure'], $data['region'], $data['district'], $data['longitude'], $data['latitude'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3']);
+        $result = $this->routeRepository->addInfrastructureRoute($data['categorie'], $data['localite'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['commune'], $data['pkDebut'], $data['rattache'], $data['gestionnaire'], $data['modeGestion'], $data['pkFin'], $data['largeurHausse'], $data['largeurAccotement'],$data['structure'], $data['region'], $data['district'], $data['longitude'], $data['latitude'], $data['photo1'], $data['photo2'], $data['photo3'], $data['precisionStructure'], $data['precisionModeGestion'], $data['photoName1'], $data['photoName2'], $data['photoName3']);
         return $result;
     }
 
@@ -71,7 +71,7 @@ class RouteService
     
     public function addInfrastructureRouteSituation($idInfrastructure, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteSituation($idInfrastructure, $data['fonctionnel'], $data['causeNonFonctionel'], $data['sourceInformation'], $data['modeAcquisitionInformation']);
+        $result = $this->routeRepository->addInfrastructureRouteSituation($idInfrastructure, $data['fonctionnel'], $data['causeNonFonctionel'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['etat']);
         
         if ($result) {
             return $result;

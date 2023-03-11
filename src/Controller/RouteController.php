@@ -74,6 +74,8 @@ class RouteController extends AbstractController
             $data['axe'] = $request->get('axe');
             $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
+            $data['precisionStructure'] = $request->get('precisionStructure');
+            $data['precisionModeGestion'] = $request->get('precisionModeGestion');
             $data['etat'] = $request->get('etat');
             $data['fonctionnel'] = $request->get('fonctionnel');
             $data['causeNonFonctionel'] = $request->get('causeNonFonctionel');
@@ -163,7 +165,7 @@ class RouteController extends AbstractController
 
             if ($idInfra != false) {
                 // add situation et etat
-                $idEtat = $routeService->addInfrastructureRouteEtat($idInfra, $data);
+                //$idEtat = $routeService->addInfrastructureRouteEtat($idInfra, $data);
 
                 $idSituation = $routeService->addInfrastructureRouteSituation($idInfra, $data);
 

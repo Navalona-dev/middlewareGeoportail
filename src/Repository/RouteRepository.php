@@ -15,10 +15,10 @@ class RouteRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructureRoute($categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $pkDebut = null, $rattache = null, $gestionnaire = null, $modeGestion = null, $pkFin = null, $largeurHausse = null, $largeurAccotement = null,$structure = null, $region = null, $district = null, $longitude = null, $latitude = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
+    public function addInfrastructureRoute($categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $pkDebut = null, $rattache = null, $gestionnaire = null, $modeGestion = null, $pkFin = null, $largeurHausse = null, $largeurAccotement = null,$structure = null, $region = null, $district = null, $longitude = null, $latitude = null, $photo1 = null, $photo2 = null, $photo3 = null, $precisionStructure = null, $precisionModeGestion = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
     {
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ro_01_infrastructure (pk_debut, rattache, categorie, localite,  commune_terrain, gestionnaire, mode_gestion, date_information, source_Information, mode_acquisition_infromation, pk_fin, \"Largeur_chaussée\", \"Largeur_accotements\", \"Structure\", region, district, geom, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$pkDebut."', '".$rattache."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$gestionnaire."', '".$modeGestion."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$pkFin."', '".$largeurHausse."', '".$largeurAccotement."', '".$structure."', '".$region."', '".$district."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
+        $sql = "INSERT into t_ro_01_infrastructure (pk_debut, rattache, categorie, localite,  commune_terrain, gestionnaire, mode_gestion, date_information, source_Information, mode_acquisition_infromation, pk_fin, \"Largeur_chaussée\", \"Largeur_accotements\", \"Structure\", region, district, geom, photo1, photo2, photo3, precision_structure, precision_mode_gestion, photo_name1, photo_name2, photo_name3) VALUES ('".$pkDebut."', '".$rattache."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$gestionnaire."', '".$modeGestion."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$pkFin."', '".$largeurHausse."', '".$largeurAccotement."', '".$structure."', '".$region."', '".$district."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$photo1."', '".$photo2."', '".$photo3."', '".$precisionStructure."', '".$precisionModeGestion."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -74,11 +74,11 @@ class RouteRepository extends ServiceEntityRepository
         return $id;
     }
 
-    public function addInfrastructureRouteSituation($idInfrastructure = null, $fonctionnel = null, $raison, $sourceInformation = null, $modeAcquisitionInformation = null)
+    public function addInfrastructureRouteSituation($idInfrastructure = null, $fonctionnel = null, $raison, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ro_02_situation (id_infrastructure, fonctionnel, raison, date_information, source_Information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$fonctionnel."', '".$raison."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
+        $sql = "INSERT into t_ro_02_situation (id_infrastructure, fonctionnel, raison, date_information, source_Information, mode_acquisition_information, etat) VALUES (".$idInfrastructure.", '".$fonctionnel."', '".$raison."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', '".$etat."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

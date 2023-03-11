@@ -188,7 +188,7 @@ class RouteController extends AbstractController
                 $data['statut'] = $request->get('statutFoncier');
                 $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                 $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
-dd($data);
+
                 $idFoncier = $routeService->addInfrastructureRouteFoncier($idInfra, $data);
 
                 //Travaux 

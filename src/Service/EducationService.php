@@ -116,6 +116,7 @@ class EducationService
 
     public function addInfrastructureEducationEtudes($idInfrastructure = null, $data)
     {
+        dd($data);
         $result = $this->educationRepository->addInfrastructureEducationEtudes($idInfrastructure, $data['objetContratEtude'], $data['consistanceContratEtude'], $data['entiteEtude'], $data['idTitulaireEtude'], $data['montantContratEtude'], $data['numeroContratEtude'], $data['modePassationEtude'], $data['porteAppelOffreEtude'], $data['dateContratEtude'], $data['dateOrdreServiceEtude'], $data['resultatPrestationEtude'], $data['motifRuptureContratEtude'], $data['dateInformationEtude'], $data['sourceInformationEtude'], $data['modeAcquisitionInformationEtude']);
         
         if ($result) {

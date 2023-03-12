@@ -203,7 +203,9 @@ class RouteController extends AbstractController
                 $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
                 $data['montantTravaux'] = $request->get('montantTravaux');
                 $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
-
+                $data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
+                $data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
+                
                 $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
                 $dateContratTravaux->format('Y-m-d H:i:s');
                 $data['dateContratTravaux'] = $dateContratTravaux;

@@ -256,7 +256,12 @@ class EducationController extends AbstractController
                 $dateOrdreServiceEtude->format('Y-m-d H:i:s');
 
                 $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
-                $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
+
+                if (null != $request->get('resultatPrestationEtude') && strlen($request->get('resultatPrestationEtude')) <= 20) {
+                    $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
+                } else {
+                   throw new \Exception("Resultat prestation doit etre une chaine inférieure à 20");
+                }
                 $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');
                 $dateInformationEtude = new \DateTime($request->get('dateInformationEtude'));
                 $dateInformationEtude->format('Y-m-d H:i:s');

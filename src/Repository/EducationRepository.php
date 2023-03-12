@@ -19,7 +19,7 @@ class EducationRepository extends ServiceEntityRepository
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district, photo1, photo2, photo3, photoName1, photoName2, photoName3 ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photoName1."', '".$photoName2."', '".$photoName3."')";
+        $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3 ) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photoName1."', '".$photoName2."', '".$photoName3."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -73,7 +73,7 @@ class EducationRepository extends ServiceEntityRepository
     
     public function addInfrastructureEducationFoncier($idInfrastructure = null, $statutFoncier = null, $proprietaire = null, $referenceDossier = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null)
     {   
-        $sql = "INSERT into t_ec_05_foncier (id_infrastructure, statut_foncier, proprietaire, reference_dossier, date_information, source_information) VALUES (".$idInfrastructure.", '".$statutFoncier."', '".$proprietaire."', '".$referenceDossier."', '".$dateInformation."', '".$sourceInformation."', '".$modeAcquisitionInformation."')";
+        $sql = "INSERT into t_ec_05_foncier (id_infrastructure, statut_foncier, proprietaire, reference_dossier, date_information, source_information, mode_acquisition_information) VALUES (".$idInfrastructure.", '".$statutFoncier."', '".$proprietaire."', '".$referenceDossier."', '".$dateInformation."', '".$sourceInformation."', '".$modeAcquisitionInformation."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

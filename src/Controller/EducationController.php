@@ -247,7 +247,7 @@ class EducationController extends AbstractController
                 $data['modePassationEtude'] = $request->get('modePassationEtude');
                 $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
                
-                $dateContratEtude = new \DateTime($request->get('dateContratEtude'));
+                $dateContratEtude = new \DateTime(trim($request->get('dateContratEtude')));
 
                 $dateContratEtude->format('Y-m-d H:i:s');
                 dd($request->get('dateContratEtude'), $dateContratEtude);

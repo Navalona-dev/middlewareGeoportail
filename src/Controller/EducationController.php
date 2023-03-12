@@ -143,7 +143,9 @@ class EducationController extends AbstractController
                 $data['statut'] = $request->get('statutFoncier');
                 $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                 $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
-                $data['dateInformationFoncier'] = new \DateTime();
+                $dateInformationFoncier = new \DateTime($request->get('dateInformationFoncier'));
+                $dateInformationFoncier->format('Y-m-d H:i:s');
+                $data['dateInformationFoncier'] = $dateInformationFoncier;
                 $data['sourceInformationFoncier'] = $request->get('sourceInformationFoncier');
                 $data['modeAcquisitionInformationFoncier'] = $request->get('modeAcquisitionInformationFoncier');
 
@@ -160,16 +162,34 @@ class EducationController extends AbstractController
                 $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
                 $data['montantTravauxTravaux'] = $request->get('montantTravauxTravaux');
                 $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
-                $data['dateContratTravaux'] = $request->get('dateContratTravaux');
-                $data['dateOrdreServiceTravaux'] = $request->get('dateOrdreServiceTravaux');
+                
+                $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
+                $dateContratTravaux->format('Y-m-d H:i:s');
+                $data['dateContratTravaux'] = $dateContratTravaux;
+
+                $dateOrdreServiceTravaux = new \DateTime($request->get('dateOrdreServiceTravaux'));
+                $dateOrdreServiceTravaux->format('Y-m-d H:i:s');
+
+                $data['dateOrdreServiceTravaux'] = $dateOrdreServiceTravaux;
                 $data['idTitulaireTravaux'] = $request->get('idTitulaireTravaux');//idTitulaire
                 $data['resultatTravaux'] = $request->get('resultatTravaux');
                 $data['motifRuptureContratTravaux'] = $request->get('motifRuptureContratTravaux');
-                $data['dateReceptionProvisoireTravaux'] = $request->get('dateReceptionProvisoireTravaux');
-                $data['dateReceptionDefinitiveTravaux'] = $request->get('dateReceptionDefinitiveTravaux');
+                
+                $dateReceptionProvisoireTravaux = new \DateTime($request->get('dateReceptionProvisoireTravaux'));
+                $dateReceptionProvisoireTravaux->format('Y-m-d H:i:s');
+
+                $data['dateReceptionProvisoireTravaux'] = $dateReceptionProvisoireTravaux;
+                $dateReceptionDefinitiveTravaux = new \DateTime($request->get('dateReceptionDefinitiveTravaux'));
+                $dateReceptionDefinitiveTravaux->format('Y-m-d H:i:s');
+
+                $data['dateReceptionDefinitiveTravaux'] = $dateReceptionDefinitiveTravaux;
                 $data['ingenieurReceptionProvisoireTravaux'] = $request->get('ingenieurReceptionProvisoireTravaux');
                 $data['ingenieurReceptionDefinitiveTravaux'] = $request->get('ingenieurReceptionDefinitiveTravaux');
-                $data['dateInformationTravaux'] = new \DateTime();
+               
+                $dateInformationTravaux = new \DateTime($request->get('dateInformationTravaux'));
+                $dateInformationTravaux->format('Y-m-d H:i:s');
+
+                $data['dateInformationTravaux'] = $dateInformationTravaux;
                 $data['sourceInformationTravaux'] = $request->get('sourceInformationTravaux');
                 $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
                 
@@ -184,14 +204,29 @@ class EducationController extends AbstractController
                 $data['montantFourniture'] = $request->get('montantFourniture');
                 $data['idTitulaireFourniture'] = $request->get('idTitulaireFourniture');
                 $data['numeroContratFourniture'] = $request->get('numeroContratFourniture');
-                $data['dateContratFourniture'] = $request->get('dateContratFourniture');
-                $data['dateOrdreFourniture'] = $request->get('dateOrdreFourniture');
+                
+                $dateContratFourniture = new \DateTime($request->get('dateContratFourniture'));
+                $dateContratFourniture->format('Y-m-d H:i:s');
+
+
+                $data['dateContratFourniture'] = $dateContratFourniture;
+                $dateOrdreFourniture = new \DateTime($request->get('dateOrdreFourniture'));
+                $dateOrdreFourniture->format('Y-m-d H:i:s');
+
+                $data['dateOrdreFourniture'] = $dateOrdreFourniture;
                 $data['resultatFourniture'] = $request->get('resultatFourniture');
                 $data['raisonResiliationFourniture'] = $request->get('raisonResiliationFourniture');
                 $data['ingenieurReceptionProvisoireFourniture'] = $request->get('ingenieurReceptionProvisoireFourniture');
                 $data['ingenieurReceptionDefinitiveFourniture'] = $request->get('ingenieurReceptionDefinitiveFourniture');
-                $data['dateReceptionProvisoireFourniture'] = $request->get('dateReceptionProvisoireFourniture');
-                $data['dateReceptionDefinitiveFourniture'] = $request->get('dateReceptionDefinitiveFourniture');
+                $dateReceptionProvisoireFourniture = new \DateTime($request->get('dateReceptionProvisoireFourniture'));
+                $dateReceptionProvisoireFourniture->format('Y-m-d H:i:s');
+
+                $data['dateReceptionProvisoireFourniture'] = $dateReceptionProvisoireFourniture;
+                
+                $dateReceptionDefinitiveFourniture = new \DateTime($request->get('dateReceptionDefinitiveFourniture'));
+                $dateReceptionDefinitiveFourniture->format('Y-m-d H:i:s');
+
+                $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 
                 $idFourniture = $educationService->addInfrastructureEducationFourniture($idInfra, $data);
                 // Etudes
@@ -203,11 +238,21 @@ class EducationController extends AbstractController
                 $data['numeroContratEtude'] = $request->get('numeroContratEtude');
                 $data['modePassationEtude'] = $request->get('modePassationEtude');
                 $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
-                $data['dateContratEtude'] = $request->get('dateContratEtude');
-                $data['dateOrdreServiceEtude'] = $request->get('dateOrdreServiceEtude');
+                
+                $dateContratEtude = new \DateTime($request->get('dateContratEtude'));
+                $dateContratEtude->format('Y-m-d H:i:s');
+
+                $data['dateContratEtude'] = $dateContratEtude;
+                $dateOrdreServiceEtude = new \DateTime($request->get('dateOrdreServiceEtude'));
+                $dateOrdreServiceEtude->format('Y-m-d H:i:s');
+
+                $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
                 $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
                 $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');
-                $data['dateInformationEtude'] = $request->get('dateInformationEtude');
+                $dateInformationEtude = new \DateTime($request->get('dateInformationEtude'));
+                $dateInformationEtude->format('Y-m-d H:i:s');
+
+                $data['dateInformationEtude'] = $dateInformationEtude;
                 $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
                 $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
 

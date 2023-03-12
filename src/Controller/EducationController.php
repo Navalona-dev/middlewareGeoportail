@@ -246,12 +246,15 @@ class EducationController extends AbstractController
                 $data['numeroContratEtude'] = $request->get('numeroContratEtude');
                 $data['modePassationEtude'] = $request->get('modePassationEtude');
                 $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
-                
+                dd($request->get('dateContratEtude'));
                 $dateContratEtude = new \DateTime($request->get('dateContratEtude'));
+
+              
+
                 $dateContratEtude->format('Y-m-d H:i:s');
 
                 $data['dateContratEtude'] = $dateContratEtude;
-                dd($data);
+                
                 $dateOrdreServiceEtude = new \DateTime($request->get('dateOrdreServiceEtude'));
                 $dateOrdreServiceEtude->format('Y-m-d H:i:s');
 

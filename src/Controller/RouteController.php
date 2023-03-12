@@ -208,21 +208,21 @@ class RouteController extends AbstractController
                 
                 $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
                 $dateContratTravaux->format('Y-m-d H:i:s');
-                $data['dateContratTravaux'] = "2023-03-06";
+                $data['dateContratTravaux'] = $dateContratTravaux;
 
                 $dateOrdreServiceTravaux = new \DateTime($request->get('dateOrdreServiceTravaux'));
                 $dateOrdreServiceTravaux->format('Y-m-d H:i:s');
 
-                $data['dateOrdreServiceTravaux'] = "2023-03-06";
+                $data['dateOrdreServiceTravaux'] = $dateOrdreServiceTravaux;
                 $data['idTitulaireTravaux'] = $request->get('idTitulaireTravaux');//idTitulaire
                 $data['resultatTravaux'] = $request->get('resultatTravaux');
                 $data['motifRuptureContratTravaux'] = $request->get('motifRuptureContratTravaux');
                 $dateReceptionProvisoireTravaux = new \DateTime($request->get('dateReceptionProvisoireTravaux'));
                 $dateReceptionProvisoireTravaux->format('Y-m-d H:i:s');
-                $data['dateReceptionProvisoireTravaux'] = "2023-03-06";
+                $data['dateReceptionProvisoireTravaux'] = $dateReceptionProvisoireTravaux;
                 $dateReceptionDefinitiveTravaux = new \DateTime($request->get('dateReceptionDefinitiveTravaux'));
                 $dateReceptionDefinitiveTravaux->format('Y-m-d H:i:s');
-                $data['dateReceptionDefinitiveTravaux'] = "2023-03-06";
+                $data['dateReceptionDefinitiveTravaux'] = $dateReceptionDefinitiveTravaux;
                 $data['ingenieurReceptionProvisoireTravaux'] = $request->get('ingenieurReceptionProvisoireTravaux');
                 $data['ingenieurReceptionDefinitiveTravaux'] = $request->get('ingenieurReceptionDefinitiveTravaux');
                 $data['dateInformationTravaux'] = new \DateTime();

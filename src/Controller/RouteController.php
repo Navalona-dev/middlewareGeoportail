@@ -240,14 +240,29 @@ class RouteController extends AbstractController
                 $data['montantFourniture'] = $request->get('montantFourniture');
                 $data['idTitulaireFourniture'] = $request->get('idTitulaireFourniture');
                 $data['numeroContratFourniture'] = $request->get('numeroContratFourniture');
-                $data['dateContratFourniture'] = $request->get('dateContratFourniture');
-                $data['dateOrdreFourniture'] = $request->get('dateOrdreFourniture');
+                $dateContratFourniture = new \DateTime($request->get('dateContratFourniture'));
+                $dateContratFourniture->format('Y-m-d H:i:s');
+
+                $data['dateContratFourniture'] = $dateContratFourniture;
+
+                $dateOrdreFourniture = new \DateTime($request->get('dateOrdreFourniture'));
+                $dateOrdreFourniture->format('Y-m-d H:i:s');
+
+                $data['dateOrdreFourniture'] = $dateOrdreFourniture;
                 $data['resultatFourniture'] = $request->get('resultatFourniture');
                 $data['raisonResiliationFourniture'] = $request->get('raisonResiliationFourniture');
                 $data['ingenieurReceptionProvisoireFourniture'] = $request->get('ingenieurReceptionProvisoireFourniture');
                 $data['ingenieurReceptionDefinitiveFourniture'] = $request->get('ingenieurReceptionDefinitiveFourniture');
-                $data['dateReceptionProvisoireFourniture'] = $request->get('dateReceptionProvisoireFourniture');
-                $data['dateReceptionDefinitiveFourniture'] = $request->get('dateReceptionDefinitiveFourniture');
+                
+                $dateReceptionProvisoireFourniture = new \DateTime($request->get('dateReceptionProvisoireFourniture'));
+                $dateReceptionProvisoireFourniture->format('Y-m-d H:i:s');
+
+                $data['dateReceptionProvisoireFourniture'] = $dateReceptionProvisoireFourniture;
+                
+                $dateReceptionDefinitiveFourniture = new \DateTime($request->get('dateReceptionDefinitiveFourniture'));
+                $dateReceptionDefinitiveFourniture->format('Y-m-d H:i:s');
+
+                $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 
                 $idFourniture = $routeService->addInfrastructureRouteFourniture($idInfra, $data);
                 // Etudes
@@ -259,11 +274,23 @@ class RouteController extends AbstractController
                 $data['numeroContratEtude'] = $request->get('numeroContratEtude');
                 $data['modePassationEtude'] = $request->get('modePassationEtude');
                 $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
-                $data['dateContratEtude'] = $request->get('dateContratEtude');
-                $data['dateOrdreServiceEtude'] = $request->get('dateOrdreServiceEtude');
+
+                $dateContratEtude = new \DateTime($request->get('dateContratEtude'));
+                $dateContratEtude->format('Y-m-d H:i:s');
+
+                $data['dateContratEtude'] = $dateContratEtude;
+
+                $dateOrdreServiceEtude = new \DateTime($request->get('dateOrdreServiceEtude'));
+                $dateOrdreServiceEtude->format('Y-m-d H:i:s');
+
+                $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
                 $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
                 $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');
-                $data['dateInformationEtude'] = $request->get('dateInformationEtude');
+                
+                $dateInformationEtude = new \DateTime($request->get('dateInformationEtude'));
+                $dateInformationEtude->format('Y-m-d H:i:s');
+                
+                $data['dateInformationEtude'] = $dateInformationEtude;
                 $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
                 $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
 

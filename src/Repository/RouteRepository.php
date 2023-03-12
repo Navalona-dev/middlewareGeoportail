@@ -181,7 +181,7 @@ class RouteRepository extends ServiceEntityRepository
     public function addInfrastructureRouteFourniture($objetContrat = null, $consistanceContrat = null, $materiels = null, $entite = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $idTitulaire = null, $numeroContrat = null, $dateContrat = null, $dateOrdre = null, $resultat = null, $raisonResiliation = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $idInfrastructure = null)
     {   
         $sql = "INSERT into t_ro_14_fourniture (objet_contrat, consistance_contrat, materiels, entite, mode_passation, porte_appel_offre, montant, id_titulaire, numero_contrat, date_contrat, date_ordre, resultat, raison_resiliation, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_reception_provisoire, date_reception_definitive, id_infrastructure) VALUES (".$objetContrat.", '".$consistanceContrat."', '".$materiels."', '".$entite."', '".$modePassation."', '".$porteAppelOffre."', '".$montant."', '".$idTitulaire."', '".$numeroContrat."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdre->format("Y-m-d")."', '".$resultat."', '".$raisonResiliation."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateReceptionProvisoire->format("Y-m-d")."', '".$dateReceptionDefinitive->format("Y-m-d")."', '".$idInfrastructure."')";
-        
+        dd($sql);
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();

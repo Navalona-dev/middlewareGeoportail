@@ -211,8 +211,12 @@ class RouteController extends AbstractController
                 $data['idTitulaireTravaux'] = $request->get('idTitulaireTravaux');//idTitulaire
                 $data['resultatTravaux'] = $request->get('resultatTravaux');
                 $data['motifRuptureContratTravaux'] = $request->get('motifRuptureContratTravaux');
-                $data['dateReceptionProvisoireTravaux'] = $request->get('dateReceptionProvisoireTravaux');
-                $data['dateReceptionDefinitiveTravaux'] = $request->get('dateReceptionDefinitiveTravaux');
+                $dateReceptionProvisoireTravaux = new \DateTime($request->get('dateReceptionProvisoireTravaux'));
+                $dateReceptionProvisoireTravaux->format('Y-m-d H:i:s');
+                $data['dateReceptionProvisoireTravaux'] = $dateReceptionProvisoireTravaux;
+                $dateReceptionDefinitiveTravaux = new \DateTime($request->get('dateReceptionDefinitiveTravaux'));
+                $dateReceptionDefinitiveTravaux->format('Y-m-d H:i:s');
+                $data['dateReceptionDefinitiveTravaux'] = $dateReceptionDefinitiveTravaux;
                 $data['ingenieurReceptionProvisoireTravaux'] = $request->get('ingenieurReceptionProvisoireTravaux');
                 $data['ingenieurReceptionDefinitiveTravaux'] = $request->get('ingenieurReceptionDefinitiveTravaux');
                 $data['dateInformationTravaux'] = new \DateTime();

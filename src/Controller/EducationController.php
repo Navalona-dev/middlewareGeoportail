@@ -251,6 +251,7 @@ class EducationController extends AbstractController
                 $dateContratEtude->format('Y-m-d H:i:s');
 
                 $data['dateContratEtude'] = $dateContratEtude;
+                dd($data);
                 $dateOrdreServiceEtude = new \DateTime($request->get('dateOrdreServiceEtude'));
                 $dateOrdreServiceEtude->format('Y-m-d H:i:s');
 

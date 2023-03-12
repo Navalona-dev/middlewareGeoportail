@@ -288,7 +288,7 @@ class RouteController extends AbstractController
                 if (null != $request->get('resultatPrestationEtude') && strlen($request->get('resultatPrestationEtude')) <= 20) {
                     $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
                 } else {
-                   throw new \Exception("Resultat prestation doit etre une chaine inférieure à 20");
+                   throw new \Exception("Resultat prestation etude doit etre une chaine au maximal 20 caractere");
                 }
                 
                 $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');

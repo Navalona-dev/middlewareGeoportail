@@ -228,6 +228,14 @@ class EducationController extends AbstractController
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 
+                $dateInformationFourniture = new \DateTime($request->get('dateInformationFourniture'));
+                $dateInformationFourniture->format('Y-m-d H:i:s');
+
+                $data['dateInformationFourniture'] = $dateInformationFourniture;
+
+                $data['sourceInformationFourniture'] = $request->get('sourceInformationFourniture');
+                $data['modeAcquisitionInformationFourniture'] = $request->get('modeAcquisitionInformationFourniture');
+
                 $idFourniture = $educationService->addInfrastructureEducationFourniture($idInfra, $data);
                 // Etudes
                 $data['objetContratEtude'] = $request->get('objetContratEtude');

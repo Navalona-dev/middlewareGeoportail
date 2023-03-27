@@ -23,8 +23,8 @@ class EducationRepository extends ServiceEntityRepository
 
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ec_01_infrastructure (nom, indicatif, categorie, localite, commune_terrain, date_information, source_Information, mode_acquisition_information, geom,  numero_sequence, code_produit, code_commune, sous_categorie, district, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3 ) VALUES ('".$nom."', '".$conn->quote($indicatif)."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$numeroSequence."', ".$codeProduit.", ".$codeCommune.", '".$sousCategorie."', '".$district."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photoName1."', '".$photoName2."', '".$photoName3."')";
-        
         dd($sql);
+       
         $query = $conn->prepare($sql);
         $query->execute();
         $id = $conn->lastInsertId();

@@ -214,7 +214,6 @@ class RouteController extends AbstractController
                 $data['montantTravaux'] = $request->get('montantTravaux');
                 $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
                 $data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
-                $data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
                 
                 $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
                 $dateContratTravaux->format('Y-m-d H:i:s');
@@ -295,12 +294,12 @@ class RouteController extends AbstractController
                 $dateOrdreServiceEtude->format('Y-m-d H:i:s');
 
                 $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
-
-                if (null != $request->get('resultatPrestationEtude') && strlen($request->get('resultatPrestationEtude')) <= 20) {
+                $data['resultatPrestationEtude'] = $data['resultatPrestationEtude'];
+                /*if (null != $request->get('resultatPrestationEtude') && strlen($request->get('resultatPrestationEtude')) <= 20) {
                     $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
                 } else {
                    throw new \Exception("Resultat prestation etude doit etre une chaine au maximal 20 caractere");
-                }
+                }*/
                 
                 $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');
                 

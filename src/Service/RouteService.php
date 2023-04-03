@@ -101,21 +101,10 @@ class RouteService
 
         return false;
     }
-
-    public function addInfrastructureRouteCollecte($idInfrastructure = null, $data)
-    {
-        $result = $this->routeRepository->addInfrastructureRouteCollecte($idInfrastructure, $data['sourceInformation'], $data['modeAcquisitionInformation']);
-        
-        if ($result) {
-            return $result;
-        }
-
-        return false;
-    }
     
-    public function addInfrastructureRouteAccotement($idCollecteDonne = null, $data)
+    public function addInfrastructureRouteAccotement($idInfrastructure = null, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteAccotement($idCollecteDonne, $data['accotementTypeRevetementAccotement'], $data['accotementDegrationSurface'], $data['accotementDentelleRive'], $data['accotementDenivellationChausseAccotement'], $data['accotementDestructionAffouillementAccotement'], $data['accotementNonRevetueDeformationProfil'], $data['accotementHasAccotementRevetue']);
+        $result = $this->routeRepository->addInfrastructureRouteAccotement($idInfrastructure, $data['accotementTypeRevetementAccotement'], $data['accotementDegrationSurface'], $data['accotementDentelleRive'], $data['accotementDenivellationChausseAccotement'], $data['accotementDestructionAffouillementAccotement'], $data['accotementNonRevetueDeformationProfil'], $data['accotementHasAccotementRevetue'], $data['dateInformationAccotement'], $data['sourceInformationAccotement'], $data['modeAcquisitionInformationAccotement']);
         
         if ($result) {
             return $result;
@@ -124,9 +113,9 @@ class RouteService
         return false;
     }
 
-    public function addInfrastructureRouteFosse($idCollecteDonne = null, $data)
+    public function addInfrastructureRouteFosse($idInfrastructure = null, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteFosse($idCollecteDonne, $data['accotementTypeRevetementAccotement'], $data['fosseRevetuDegradationFosse'], $data['fosseRevetuSectionBouche'], $data['fosseNonRevetuFosseProfil'], $data['fosseNonRevetuEncombrement'], null);
+        $result = $this->routeRepository->addInfrastructureRouteFosse($idInfrastructure, $data['accotementTypeRevetementAccotement'], $data['fosseRevetuDegradationFosse'], $data['fosseRevetuSectionBouche'], $data['fosseNonRevetuFosseProfil'], $data['fosseNonRevetuEncombrement'], null, $data['dateInformationFosse'], $data['sourceInformationFosse'], $data['modeAcquisitionInformationFosse']);
         
         if ($result) {
             return $result;
@@ -148,7 +137,7 @@ class RouteService
 
     public function addInfrastructureRouteTravaux($idInfrastructure = null, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteTravaux($idInfrastructure, $data['objetTravaux'], $data['consistanceTravaux'], $data['modeRealisationTravaux'], $data['maitreOuvrageTravaux'], $data['maitreOuvrageDelegueTravaux'], $data['maitreOuvrageTravaux'], $data['idControleSurveillanceTravaux'], $data['modePassationTravaux'], $data['porteAppelOffreTravaux'], $data['montantTravaux'], $data['numeroContratTravaux'], $data['dateContratTravaux'], $data['dateOrdreServiceTravaux'], $data['idTitulaireTravaux'], $data['resultatTravaux'], $data['motifRuptureContratTravaux'], $data['dateReceptionProvisoireTravaux'], $data['dateReceptionDefinitiveTravaux'], $data['ingenieurReceptionProvisoireTravaux'], $data['ingenieurReceptionDefinitiveTravaux'], $data['dateInformationTravaux'], $data['sourceInformationTravaux'], $data['modeAcquisitionInformationTravaux'], $data['precisionConsistanceTravaux'], $data['modeRealisationTravaux']);
+        $result = $this->routeRepository->addInfrastructureRouteTravaux($idInfrastructure, $data['objetTravaux'], $data['consistanceTravaux'], $data['modeRealisationTravaux'], $data['maitreOuvrageTravaux'], $data['maitreOuvrageDelegueTravaux'], $data['maitreOuvrageTravaux'], $data['idControleSurveillanceTravaux'], $data['modePassationTravaux'], $data['porteAppelOffreTravaux'], $data['montantTravaux'], $data['numeroContratTravaux'], $data['dateContratTravaux'], $data['dateOrdreServiceTravaux'], $data['idTitulaireTravaux'], $data['resultatTravaux'], $data['motifRuptureContratTravaux'], $data['dateReceptionProvisoireTravaux'], $data['dateReceptionDefinitiveTravaux'], $data['ingenieurReceptionProvisoireTravaux'], $data['ingenieurReceptionDefinitiveTravaux'], $data['dateInformationTravaux'], $data['sourceInformationTravaux'], $data['modeAcquisitionInformationTravaux'], $data['precisionConsistanceTravaux'], $data['modeRealisationTravaux'], $data['bailleurTravaux']);
         
         if ($result) {
             return $result;
@@ -159,7 +148,7 @@ class RouteService
 
     public function addInfrastructureRouteFourniture($idInfrastructure = null, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteFourniture($data['objetContratFourniture'], $data['consistanceContratFourniture'], $data['materielsFourniture'], $data['entiteFourniture'], $data['modePassationFourniture'], $data['porteAppelOffreFourniture'], $data['montantFourniture'], $data['idTitulaireFourniture'], $data['numeroContratFourniture'], $data['dateContratFourniture'], $data['dateOrdreFourniture'], $data['resultatFourniture'], $data['raisonResiliationFourniture'], $data['ingenieurReceptionProvisoireFourniture'], $data['ingenieurReceptionDefinitiveFourniture'], $data['dateReceptionProvisoireFourniture'], $data['dateReceptionDefinitiveFourniture'], $idInfrastructure);
+        $result = $this->routeRepository->addInfrastructureRouteFourniture($data['objetContratFourniture'], $data['consistanceContratFourniture'], $data['materielsFourniture'], $data['entiteFourniture'], $data['modePassationFourniture'], $data['porteAppelOffreFourniture'], $data['montantFourniture'], $data['idTitulaireFourniture'], $data['numeroContratFourniture'], $data['dateContratFourniture'], $data['dateOrdreFourniture'], $data['resultatFourniture'], $data['raisonResiliationFourniture'], $data['ingenieurReceptionProvisoireFourniture'], $data['ingenieurReceptionDefinitiveFourniture'], $data['dateReceptionProvisoireFourniture'], $data['dateReceptionDefinitiveFourniture'], $idInfrastructure, $data['bailleurFourniture']);
         
         if ($result) {
             return $result;
@@ -170,7 +159,7 @@ class RouteService
 
     public function addInfrastructureRouteEtudes($idInfrastructure = null, $data)
     {
-        $result = $this->routeRepository->addInfrastructureRouteEtudes($idInfrastructure, $data['objetContratEtude'], $data['consistanceContratEtude'], $data['entiteEtude'], $data['idTitulaireEtude'], $data['montantContratEtude'], $data['numeroContratEtude'], $data['modePassationEtude'], $data['porteAppelOffreEtude'], $data['dateContratEtude'], $data['dateOrdreServiceEtude'], $data['resultatPrestationEtude'], $data['motifRuptureContratEtude'], $data['dateInformationEtude'], $data['sourceInformationEtude'], $data['modeAcquisitionInformationEtude']);
+        $result = $this->routeRepository->addInfrastructureRouteEtudes($idInfrastructure, $data['objetContratEtude'], $data['consistanceContratEtude'], $data['entiteEtude'], $data['idTitulaireEtude'], $data['montantContratEtude'], $data['numeroContratEtude'], $data['modePassationEtude'], $data['porteAppelOffreEtude'], $data['dateContratEtude'], $data['dateOrdreServiceEtude'], $data['resultatPrestationEtude'], $data['motifRuptureContratEtude'], $data['dateInformationEtude'], $data['sourceInformationEtude'], $data['modeAcquisitionInformationEtude'], $data['precisionConsistanceContratEtude'], $data['bailleurEtude']);
         
         if ($result) {
             return $result;

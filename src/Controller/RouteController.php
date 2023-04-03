@@ -106,10 +106,23 @@ class RouteController extends AbstractController
             $data['accotementDenivellationChausseAccotement'] = $request->get('accotementDenivellationChausseAccotement');
             $data['accotementDestructionAffouillementAccotement'] = $request->get('accotementDestructionAffouillementAccotement');
             $data['accotementNonRevetueDeformationProfil'] = $request->get('accotementNonRevetueDeformationProfil');
+
+            $dateInformationAccotement = new \DateTime($request->get('dateInformationAccotement'));
+            $dateInformationAccotement->format('Y-m-d H:i:s');
+            $data['dateInformationAccotement'] = $dateInformationAccotement;
+            $data['sourceInformationAccotement' ] = $request->get('sourceInformationAccotement');
+            $data['modeAcquisitionInformationAccotement' ] = $request->get('modeAcquisitionInformationAccotement');
+
             $data['fosseRevetuDegradationFosse'] = $request->get('fosseRevetuDegradationFosse');
             $data['fosseRevetuSectionBouche'] = $request->get('fosseRevetuSectionBouche');
             $data['fosseNonRevetuFosseProfil'] = $request->get('fosseNonRevetuFosseProfil');
             $data['fosseNonRevetuEncombrement'] = $request->get('fosseNonRevetuEncombrement');
+
+            $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
+            $dateInformationFosse->format('Y-m-d H:i:s');
+            $data['dateInformationFosse'] = $dateInformationFosse;
+            $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
+            $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
             
             
             $uploadedFile1 = $request->files->get('photo1');
@@ -174,13 +187,10 @@ class RouteController extends AbstractController
 
                 $idStructure = $routeService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idCollecteDonne = $routeService->addInfrastructureRouteCollecte($idInfra, $data);
+                $idAccotement = $routeService->addInfrastructureRouteAccotement($idInfra, $data);
 
-                if ($idCollecteDonne != false) {
-                    $idAccotement = $routeService->addInfrastructureRouteAccotement($idCollecteDonne, $data);
-
-                    $idFosse = $routeService->addInfrastructureRouteFosse($idCollecteDonne, $data);
-                }
+                $idFosse = $routeService->addInfrastructureRouteFosse($idInfra, $data);
+            
 
                 /**
                  * Administrative data
@@ -228,7 +238,8 @@ class RouteController extends AbstractController
                 $data['dateInformationTravaux'] = new \DateTime();
                 $data['sourceInformationTravaux'] = $request->get('sourceInformationTravaux');
                 $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
-                
+                $data['bailleurTravaux'] = $request->get('bailleurTravaux');
+
                 $idTravaux = $routeService->addInfrastructureRouteTravaux($idInfra, $data);
                 // Fournitures
                 $data['objetContratFourniture'] = $request->get('objetContratFourniture');
@@ -263,7 +274,7 @@ class RouteController extends AbstractController
                 $dateReceptionDefinitiveFourniture->format('Y-m-d H:i:s');
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
-                
+                $data['bailleurFourniture'] = $request->get('bailleurFourniture');
                 $idFourniture = $routeService->addInfrastructureRouteFourniture($idInfra, $data);
                 // Etudes
                 $data['objetContratEtude'] = $request->get('objetContratEtude');
@@ -299,7 +310,8 @@ class RouteController extends AbstractController
                 $data['dateInformationEtude'] = $dateInformationEtude;
                 $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
                 $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
-
+                $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
+                $data['bailleurEtude'] = $request->get('bailleurEtude');
                 $idEtude = $routeService->addInfrastructureRouteEtudes($idInfra, $data);
                 /**
                  * End Administrative data

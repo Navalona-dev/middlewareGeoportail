@@ -294,7 +294,7 @@ class RouteController extends AbstractController
                 $dateOrdreServiceEtude->format('Y-m-d H:i:s');
 
                 $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
-                $data['resultatPrestationEtude'] = $request->get['resultatPrestationEtude'];
+                $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
                 /*if (null != $request->get('resultatPrestationEtude') && strlen($request->get('resultatPrestationEtude')) <= 20) {
                     $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
                 } else {

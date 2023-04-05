@@ -128,7 +128,12 @@ class RouteController extends AbstractController
             $uploadedFile1 = $request->files->get('photo1');
             $uploadedFile2 = $request->files->get('photo2');
             $uploadedFile3 = $request->files->get('photo3');
-
+            $data['photo1'] = null;
+            $data['photo2'] = null;
+            $data['photo3'] = null;
+            $data['photoName1'] = null;
+            $data['photoName2'] = null;
+            $data['photoName3'] = null;
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();

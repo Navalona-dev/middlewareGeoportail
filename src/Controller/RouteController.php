@@ -94,15 +94,16 @@ class RouteController extends AbstractController
             $data['structureDeformation'] = $request->get('structureDeformation');
             $data['structureTeteOndule'] = $request->get('structureTeteOndule');
             $data['structureRavines'] = $request->get('structureRavines');
-            $data['structureOrnierage'] = $request->get('structureOrnierage');
-            $data['accotementHasAccotementGauche'] = $request->get('accotementHasAccotementGauche');
-            $data['accotementGauche'] = $request->get('accotementGauche');
-            $data['accotementDroite'] = $request->get('accotementDroite');
-            $data['accotementIsAccotementNonRevetu'] = $request->get('accotementIsAccotementNonRevetu');
-            $data['accotementHasAccotementRevetue'] = $request->get('accotementHasAccotementRevetue');
+            //$data['structureOrnierage'] = $request->get('structureOrnierage');
+            //$data['accotementHasAccotementGauche'] = $request->get('accotementHasAccotementGauche');
+            $data['accotement'] = $request->get('accotement');
+            //$data['accotementIsAccotementNonRevetu'] = $request->get('accotementIsAccotementNonRevetu');
+            $data['accotementRevetue'] = $request->get('accotementRevetue');
             $data['accotementTypeRevetementAccotement'] = $request->get('accotementTypeRevetementAccotement');
             $data['accotementDegrationSurface'] = $request->get('accotementDegrationSurface');
             $data['accotementDentelleRive'] = $request->get('accotementDentelleRive');
+            $data['accotementPrecisionTypeAccotement'] = $data['accotementPrecisionTypeAccotement'];
+
             $data['accotementDenivellationChausseAccotement'] = $request->get('accotementDenivellationChausseAccotement');
             $data['accotementDestructionAffouillementAccotement'] = $request->get('accotementDestructionAffouillementAccotement');
             $data['accotementNonRevetueDeformationProfil'] = $request->get('accotementNonRevetueDeformationProfil');
@@ -113,6 +114,7 @@ class RouteController extends AbstractController
             $data['sourceInformationAccotement' ] = $request->get('sourceInformationAccotement');
             $data['modeAcquisitionInformationAccotement' ] = $request->get('modeAcquisitionInformationAccotement');
 
+            $data['fosseRevetu'] = $request->get('fosseRevetu');
             $data['fosseRevetuDegradationFosse'] = $request->get('fosseRevetuDegradationFosse');
             $data['fosseRevetuSectionBouche'] = $request->get('fosseRevetuSectionBouche');
             $data['fosseNonRevetuFosseProfil'] = $request->get('fosseNonRevetuFosseProfil');
@@ -123,6 +125,7 @@ class RouteController extends AbstractController
             $data['dateInformationFosse'] = $dateInformationFosse;
             $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
             $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
+            $data['coteFosse'] = $request->get('coteFosse');
             
             
             $uploadedFile1 = $request->files->get('photo1');

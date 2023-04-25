@@ -74,6 +74,80 @@ class RouteRepository extends ServiceEntityRepository
         return $id;
     }
 
+    public function cleanTablesByIdInfrastructure($idInfrastructure = null, $type = null)
+    {
+        if (null != $idInfrastructure && $type = null) {
+
+            $table = 't_ro_01_infrastructure';
+            $colonne = "id";
+            switch ($type) {
+                case 'situation':
+                    $table = "t_ro_02_situation";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'surface':
+                    $table = "t_ro_04_surface";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'structure':
+                    $table = "t_ro_05_structure";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'etat':
+                    $table = "t_ro_03_etat";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'accotement':
+                    $table = "t_ro_07_accotement";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'fosse':
+                    $table = "t_ro_08_fosse";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'foncier':
+                    $table = "t_ro_13_foncier";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'travaux':
+                    $table = "t_ro_09_travaux";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'fourniture':
+                    $table = "t_ro_14_fourniture";
+                    $colonne = "id_infrastructure";
+                    break;
+                case 'etude':
+                    $table = "t_ro_11_etudes";
+                    $colonne = "id_infrastructure";
+                    break;
+                default:
+                    $table = 't_ro_01_infrastructure';
+                    $colonne = "id";
+                    break;
+            }
+
+            $sql = "SELECT id FROM $table where $colonne = ".intval($idInfrastructure)."";
+            $conn = $this->entityManager->getConnection();
+            $query = $conn->prepare($sql);
+
+            $query->execute();
+            if (null != $query->fetchAll()[0] && null != $query->fetchAll()[0]['id']) {
+                $this->deleteByIdInfrastructure($query->fetchAll()[0]['id'], $table, $colonne);
+            }
+        }
+    }
+
+    public function deleteByIdInfrastructure($id = null, $table = null, $colonne = null)
+    {
+        if (null != $table && null != $id) {
+            $sql = "DELETE FROM $table where $colonne = ".$id."";
+            $conn = $this->entityManager->getConnection();
+            $query = $conn->prepare($sql);
+            $query->execute();
+        }  
+    }
+
     public function addInfrastructureRouteSituation($idInfrastructure = null, $fonctionnel = null, $raison, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);

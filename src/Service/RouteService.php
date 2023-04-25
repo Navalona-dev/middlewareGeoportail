@@ -168,6 +168,11 @@ class RouteService
         return false;
     }
 
+    public function cleanTablesByIdInfrastructure($idInfrastructure = null, $type = null)
+    {
+        $this->routeRepository->cleanTablesByIdInfrastructure($idInfrastructure, $type);
+    }
+
     public function update()
     {
         $this->entityManager->flush();

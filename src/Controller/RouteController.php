@@ -52,7 +52,8 @@ class RouteController extends AbstractController
     public function create(Request $request, RouteService $routeService)
     {    
         $response = new Response();
-
+        $hasException = false;
+        $idInfra = null;
         try {
 
             $data = [];
@@ -335,26 +336,31 @@ class RouteController extends AbstractController
             $response->headers->set('Content-Type', 'application/json');
 
         } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
             $response->setContent(json_encode([
                 'status' => false,
                 'message' => $PropertyVideException->getMessage()
             ]));
         } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
             $response->setContent(json_encode([
                 'status' => false,
                 'message' => $UniqueConstraintViolationException->getMessage()
             ]));
         } catch (MappingException $MappingException) {
+            $hasException = true;
             $response->setContent(json_encode([
                 'status' => false,
                 'message' => $MappingException->getMessage()
             ]));
         } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
             $response->setContent(json_encode([
                 'status' => false,
                 'message' => $ORMInvalidArgumentException->getMessage()
             ]));
         } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
             $response->setContent(json_encode([
                 'status' => false,
                 'message' => $UnsufficientPrivilegeException->getMessage(),
@@ -365,17 +371,33 @@ class RouteController extends AbstractController
                 'message' => $ServerException->getMessage(),
             ]));*/
         } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
             $response->setContent(json_encode([
                 'status' => false,
                 'message' => $NotNullConstraintViolationException->getMessage(),
             ]));
         } catch (\Exception $Exception) {
+            $hasException = true;
             $response->setContent(json_encode([
                 'status' => false,
                 'message' => $Exception->getMessage(),
             ]));
         }
 
+        if ($hasException) {// Clean database
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+        }
+        
         return $response;
     }
 

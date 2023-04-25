@@ -143,8 +143,13 @@ class RouteRepository extends ServiceEntityRepository
             $conn = $this->entityManager->getConnection();
             $query = $conn->prepare($sql);
 
-            $query->execute();
-            if (null != $query->fetchAll()[0] && null != $query->fetchAll()[0][$selectedcolonne]) {
+            //$query->execute();
+
+            $result = $query->executeQuery();
+
+            $row = $result->fetchAllAssociative();
+
+            if (null != $row && count($row) > 0 && null != $row[0] && null != $row[0][$selectedcolonne]) {
                 $this->deleteByIdInfrastructure($query->fetchAll()[0][$selectedcolonne], $table, $colonne);
             }
         }

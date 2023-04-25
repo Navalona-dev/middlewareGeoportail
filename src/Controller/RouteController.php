@@ -103,7 +103,7 @@ class RouteController extends AbstractController
             $data['accotementTypeRevetementAccotement'] = $request->get('accotementTypeRevetementAccotement');
             $data['accotementDegrationSurface'] = $request->get('accotementDegrationSurface');
             $data['accotementDentelleRive'] = $request->get('accotementDentelleRive');
-            $data['accotementPrecisionTypeAccotement'] = $data['accotementPrecisionTypeAccotement'];
+            $data['accotementPrecisionTypeAccotement'] = $request->get('accotementPrecisionTypeAccotement');
 
             $data['accotementDenivellationChausseAccotement'] = $request->get('accotementDenivellationChausseAccotement');
             $data['accotementDestructionAffouillementAccotement'] = $request->get('accotementDestructionAffouillementAccotement');

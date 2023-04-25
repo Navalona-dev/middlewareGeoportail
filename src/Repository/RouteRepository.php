@@ -150,7 +150,7 @@ class RouteRepository extends ServiceEntityRepository
             $row = $result->fetchAllAssociative();
 
             if (null != $row && count($row) > 0 && null != $row[0] && null != $row[0][$selectedcolonne]) {
-                $this->deleteByIdInfrastructure($query->fetchAll()[0][$selectedcolonne], $table, $colonne);
+                $this->deleteByIdInfrastructure($row[0][$selectedcolonne], $table, $colonne);
             }
         }
     }

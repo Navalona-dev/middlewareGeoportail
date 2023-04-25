@@ -389,7 +389,7 @@ class RouteController extends AbstractController
             $routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
             $routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
             $routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
             $routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
             $routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
             $routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');

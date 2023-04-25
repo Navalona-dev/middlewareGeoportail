@@ -144,9 +144,10 @@ class RouteRepository extends ServiceEntityRepository
             $query = $conn->prepare($sql);
 
             $query->execute();
-            if (null != $query->fetchAll()[0] && null != $query->fetchAll()[0]['id']) {
+            return $query->fetchAll();
+            /*if (null != $query->fetchAll()[0] && null != $query->fetchAll()[0]['id']) {
                 $this->deleteByIdInfrastructure($query->fetchAll()[0]['id'], $table, $colonne);
-            }
+            }*/
         }
     }
 

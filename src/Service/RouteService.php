@@ -170,7 +170,8 @@ class RouteService
 
     public function cleanTablesByIdInfrastructure($idInfrastructure = null, $type = null)
     {
-        $this->routeRepository->cleanTablesByIdInfrastructure($idInfrastructure, $type);
+        $res = $this->routeRepository->cleanTablesByIdInfrastructure($idInfrastructure, $type);
+        dd($res);
     }
 
     public function update()

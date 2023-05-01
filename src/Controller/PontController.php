@@ -123,6 +123,7 @@ class PontController extends AbstractController
             $data['poutreBoisFissure' ] = $request->get('poutreBoisFissure');
             $data['poutreBoisAgents' ] = $request->get('poutreBoisAgents');
             $data['poutreBoisGonflement' ] = $request->get('poutreBoisGonflement');
+            $data['culesExistenceFissure' ] = $request->get('culesExistenceFissure');
             
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');

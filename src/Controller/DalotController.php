@@ -87,8 +87,8 @@ class DalotController extends AbstractController
             $data['niveauEnsablementOuverture'] = $request->get('niveauEnsablementOuverture');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
+            $data['autreDegradation' ] = $request->get('autreDegradation');
             
-
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
             $data['precisionStructure'] = $request->get('precisionStructure');

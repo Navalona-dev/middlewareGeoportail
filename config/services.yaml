@@ -12,6 +12,8 @@ parameters:
     pathPublic: 'images/infrastructures/'
     pathImageDalot: '/home/qgis/projects/saisie/media/upload/dar_dalot_route/t_dar_01_infrastructure/'
     pathForNamePhotoDalot: 'media/upload/dar_dalot_route/t_dar_01_infrastructure/'
+    pathImagePont: '/home/qgis/projects/saisie/media/upload/dar_dalot_route/t_dar_01_infrastructure/'
+    pathForNamePhotoPont: 'media/upload/dar_dalot_route/t_dar_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -53,6 +55,11 @@ services:
         class: App\Repository\DalotRepository
     App\Service\DalotService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@dalotrepository.service']
+        public: true
+    pontrepository.service:
+        class: App\Repository\DalotRepository
+    App\Service\PontService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@pontrepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

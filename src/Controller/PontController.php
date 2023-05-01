@@ -103,6 +103,7 @@ class PontController extends AbstractController
             $data['decalageJointureTablierChausseeAffaissement' ] = $request->get('decalageJointureTablierChausseeAffaissement');
             $data['decalageJointureTablierChausseeEcartement' ] = $request->get('decalageJointureTablierChausseeEcartement');
             $data['typeTablier' ] = $request->get('typeTablier');
+            $data['tablierMetalliqueCompletude' ] = $request->get('tablierMetalliqueCompletude');
             
             $data['tablierBetonExistenceFerraillageVisible' ] = $request->get('tablierBetonExistenceFerraillageVisible');
             $data['tablierBetonExistenceFissure' ] = $request->get('tablierBetonExistenceFissure');

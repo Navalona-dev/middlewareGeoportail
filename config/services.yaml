@@ -57,7 +57,7 @@ services:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@dalotrepository.service']
         public: true
     pontrepository.service:
-        class: App\Repository\DalotRepository
+        class: App\Repository\PontRepository
     App\Service\PontService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@pontrepository.service']
         public: true

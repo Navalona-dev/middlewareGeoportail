@@ -609,4 +609,25 @@ class RouteController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * @Route("/api/routes/information", name="infrastructure_consistance_information", methods={"GET"})
+     */
+    public function getAllyRouteInfo(Request $request, RouteService $routeService)
+    {    
+        $routesInfrastructure = $routeService->getAllyRouteInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "route information list_successfull",
+            'data' => $routesInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
 }

@@ -171,6 +171,18 @@ class InfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getAllMaitreOuvrageInfo()
+    {
+        $sql = "select nom from x_maitre_ouvrage";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     public function getMotifRuptureContratInfo($type = null)
     {
         $sql = "select motif from x_motif_rupture_contrat_".$type;

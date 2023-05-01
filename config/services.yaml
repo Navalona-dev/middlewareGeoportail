@@ -49,5 +49,10 @@ services:
     App\Service\RefreshTokenService:
         arguments: ['@gesdinet.jwtrefreshtoken.authenticator', "@gesdinet.jwtrefreshtoken.user_provider", '@gesdinet.jwtrefreshtoken.security.authentication.success_handler', '@gesdinet.jwtrefreshtoken.security.authentication.failure_handler', '@gesdinet.jwtrefreshtoken.refresh_token_manager', 360, 'username',false, '@event_dispatcher']
         public: true
+    dalotrepository.service:
+        class: App\Repository\DalotRepository
+    App\Service\DalotService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@dalotrepository.service']
+        public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

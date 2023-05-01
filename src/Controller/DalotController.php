@@ -59,7 +59,7 @@ class DalotController extends AbstractController
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');
-            $data['commune' ] = $request->get('commune');
+            $data['communeTerrain' ] = $request->get('commune');
             $data['nom' ] = $request->get('nom');
             $data['localite' ] = $request->get('localite');
             
@@ -434,7 +434,7 @@ class DalotController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "route list_successfull",
+                'message' => "dalot route list_successfull",
                 'data' => $routes
             ]));
             

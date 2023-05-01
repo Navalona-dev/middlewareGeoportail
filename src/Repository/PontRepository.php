@@ -78,12 +78,12 @@ class PontRepository extends ServiceEntityRepository
     {
         if (null != $idInfrastructure && $type != null) {
 
-            $table = 't_dar_01_infrastructure';
+            $table = 't_pnr_01_infrastructure';
             $colonne = "id";
             $selectedcolonne = "id";
             switch ($type) {
                 case 'situation':
-                    $table = "t_ro_02_situation";
+                    $table = "t_pnr_02_situation";
                     $colonne = "id_infrastructure";
                     $selectedcolonne = "id";
                     break;
@@ -93,7 +93,7 @@ class PontRepository extends ServiceEntityRepository
                     $selectedcolonne = "id";
                     break;*/
                 case 'data':
-                    $table = "t_dar_04_donnees_collectees";
+                    $table = "t_pnr_04_donnees_collectees";
                     $colonne = "id_infrastructure";
                     $selectedcolonne = "id";
                     break;
@@ -118,7 +118,7 @@ class PontRepository extends ServiceEntityRepository
                     $selectedcolonne = "id";
                     break;*/
                 case 'travaux':
-                    $table = "t_dar_05_travaux";
+                    $table = "t_pnr_05_travaux";
                     $colonne = "id_infrastructure";
                     $selectedcolonne = "id";
                     break;
@@ -128,12 +128,12 @@ class PontRepository extends ServiceEntityRepository
                     $selectedcolonne = "id";
                     break;*/
                 case 'etude':
-                    $table = "t_dar_07_etudes";
+                    $table = "t_pnr_07_etudes";
                     $colonne = "id_infrastructure";
                     $selectedcolonne = "id";
                     break;
                 default:
-                    $table = 't_dar_01_infrastructure';
+                    $table = 't_pnr_01_infrastructure';
                     $colonne = "id";
                     $selectedcolonne = "id";
                     break;

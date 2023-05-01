@@ -173,6 +173,15 @@ class RouteService
         $this->routeRepository->cleanTablesByIdInfrastructure($idInfrastructure, $type);
     }
 
+    public function getAllyRouteInfo()
+    {
+        $routeyInfo = $this->routeRepository->getAllyRouteInfo();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
     public function update()
     {
         $this->entityManager->flush();

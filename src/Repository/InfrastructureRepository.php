@@ -111,6 +111,102 @@ class InfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getAllCategorieInfo()
+    {
+        $sql = "select infrastucture, categorie from x_categorie";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getOuiNonInfo()
+    {
+        $sql = "select reponse from y_oui_non";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getMotifNonFonctionnelInfo()
+    {
+        $sql = "select motif from x_raison_non_fonctionnel";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getModeAcquisitionInfo()
+    {
+        $sql = "select mode from x_mode_acquisition_information";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getModePassationMarcheInfo()
+    {
+        $sql = "select designation from x_mode_passation_marche";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getMotifRuptureContratInfo($type = null)
+    {
+        $sql = "select motif from x_motif_rupture_contrat_".$type;
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getConsistanceTravauxInfo($type = null)
+    {
+        $sql = "select consistance from x_consistance_contrat_".$type;
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
+    public function getAllIngenieursInfo()
+    {
+        $sql = "select nom_prenoms from x_ingenieurs";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     /*public function getAllCommunesByRegion($region)
     {
         $sql = "SELECT * FROM commune as c where region_id = " . $region . " order by c.nom";

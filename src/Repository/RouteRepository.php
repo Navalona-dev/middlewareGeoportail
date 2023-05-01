@@ -283,6 +283,19 @@ class RouteRepository extends ServiceEntityRepository
         return $id;
     }
 
+
+    public function getAllyRouteInfo()
+    {
+        $sql = "select gid, geom, nom from y_liste_route";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     /*public function getAllCommunesByRegion($region)
     {
         $sql = "SELECT * FROM commune as c where region_id = " . $region . " order by c.nom";

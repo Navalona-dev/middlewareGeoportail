@@ -210,5 +210,196 @@ class InfrastructuresController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/api/categorie/information", name="infrastructure_categorie_information", methods={"GET"})
+     */
+    public function getAllCategorieInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $categoryInfrastructure = $infrastructureService->getAllCategorieInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "categorie information list_successfull",
+            'data' => $categoryInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
     
+    /**
+     * @Route("/api/ouinon/information", name="infrastructure_ouinon_information", methods={"GET"})
+     */
+    public function getOuiNonInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $ouinonInfrastructure = $infrastructureService->getOuiNonInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "OU/NON information list_successfull",
+            'data' => $ouinonInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/motifnonfonctionnel/information", name="infrastructure_raison_information", methods={"GET"})
+     */
+    public function getMotifNonFonctionnelInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $motifnonfonctionnelInfrastructure = $infrastructureService->getMotifNonFonctionnelInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Motif Non Fonctionnel information list_successfull",
+            'data' => $motifnonfonctionnelInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+     /**
+     * @Route("/api/modeacquisition/information", name="infrastructure_mode_acquisition_information", methods={"GET"})
+     */
+    public function getModeAcquisitionInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $modeAcquisitionInfrastructure = $infrastructureService->getModeAcquisitionInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Mode acquisition information list_successfull",
+            'data' => $modeAcquisitionInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/modepassationmarche/information", name="infrastructure_mode_passationmarche_information", methods={"GET"})
+     */
+    public function getModePassationMarcheInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $modePassationMarcheInfrastructure = $infrastructureService->getModePassationMarcheInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Mode passation marche information list_successfull",
+            'data' => $modePassationMarcheInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/ingenieurs/information", name="infrastructure_ingenieurs_information", methods={"GET"})
+     */
+    public function getAllIngenieursInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $ingenieursInfrastructure = $infrastructureService->getAllIngenieursInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Mode passation marche information list_successfull",
+            'data' => $ingenieursInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+     /**
+     * @Route("/api/maitreouvrage/information", name="infrastructure_maitre_ouvrage_information", methods={"GET"})
+     */
+    public function getAllMaitreOuvrageInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $maitreouvrageInfrastructure = $infrastructureService->getAllMaitreOuvrageInfo();
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Mode passation marche information list_successfull",
+            'data' => $maitreouvrageInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/motifrupturecontrat/information", name="infrastructure_motifrupturecontrat_information", methods={"GET"})
+     */
+    public function getMotifRuptureContratInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $data = json_decode($request->getContent(), true);
+
+        $motifrupturecontratInfrastructure = $infrastructureService->getMotifRuptureContratInfo($data['type']);
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Motif rupture contrat ".$data['type']." information list_successfull",
+            'data' => $motifrupturecontratInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+
+    /**
+     * @Route("/api/consistance/information", name="infrastructure_consistance_information", methods={"GET"})
+     */
+    public function getConsistanceTravauxInfo(Request $request, InfrastructureService $infrastructureService)
+    {    
+        $data = json_decode($request->getContent(), true);
+
+        $consistanceInfrastructure = $infrastructureService->getConsistanceTravauxInfo($data['type']);
+        
+        $response = new Response();
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Consistance ".$data['type']." information list_successfull",
+            'data' => $consistanceInfrastructure
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
 }

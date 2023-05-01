@@ -46,7 +46,7 @@ class InfrastructureService
         if (count($domainesInfrastructures) > 0) {
             return $domainesInfrastructures;
         }
-        return 0;
+        return false;
     }
 
     public function getAllNiveauInfrastructureByDomaine($domaine = null)
@@ -55,7 +55,7 @@ class InfrastructureService
         if (count($niveauxInfrastructures) > 0) {
             return $niveauxInfrastructures;
         }
-        return 0;
+        return false;
     }
 
     public function getAllNiveauInfrastructureByDomaineNiveau3($domaine = null)
@@ -64,7 +64,7 @@ class InfrastructureService
         if (count($niveauxInfrastructures) > 0) {
             return $niveauxInfrastructures;
         }
-        return 0;
+        return false;
     }
 
     public function getAllSourceInfo()
@@ -73,7 +73,7 @@ class InfrastructureService
         if (count($sourceInformations) > 0) {
             return $sourceInformations;
         }
-        return 0;
+        return false;
     }
 
     public function getAllIndicatifNiveau3()
@@ -82,7 +82,7 @@ class InfrastructureService
         if (count($indicatifNiveau3) > 0) {
             return $indicatifNiveau3;
         }
-        return 0;
+        return false;
     }
     
     public function getAllIndicatifNiveau2()
@@ -91,7 +91,7 @@ class InfrastructureService
         if (count($indicatifNiveau3) > 0) {
             return $indicatifNiveau3;
         }
-        return 0;
+        return false;
     }
 
     public function getAllPrestataireInfo()
@@ -100,10 +100,90 @@ class InfrastructureService
         if (count($prestatairesInfo) > 0) {
             return $prestatairesInfo;
         }
-        return 0;
+        return false;
     }
 
+    public function getAllCategorieInfo()
+    {
+        $categorieInfo = $this->infrastructureRepository->getAllCategorieInfo();
+        if (count($categorieInfo) > 0) {
+            return $categorieInfo;
+        }
+        return false;
+    }
+
+    public function getOuiNonInfo()
+    {
+        $ouiNonInfo = $this->infrastructureRepository->getOuiNonInfo();
+        if (count($ouiNonInfo) > 0) {
+            return $ouiNonInfo;
+        }
+        return false;
+    }
+
+    public function getMotifNonFonctionnelInfo()
+    {
+        $motifNonFonctionnelInfo = $this->infrastructureRepository->getMotifNonFonctionnelInfo();
+        if (count($motifNonFonctionnelInfo) > 0) {
+            return $motifNonFonctionnelInfo;
+        }
+        return false;
+    }
+
+    public function getModeAcquisitionInfo()
+    {
+        $modeAcquisitionInfo = $this->infrastructureRepository->getModeAcquisitionInfo();
+        if (count($modeAcquisitionInfo) > 0) {
+            return $modeAcquisitionInfo;
+        }
+        return false;
+    }
+
+    public function getModePassationMarcheInfo()
+    {
+        $modePassationMarcheInfo = $this->infrastructureRepository->getModePassationMarcheInfo();
+        if (count($modePassationMarcheInfo) > 0) {
+            return $modePassationMarcheInfo;
+        }
+        return false;
+    }
+
+    public function getAllIngenieursInfo()
+    {
+        $ingenieursInfo = $this->infrastructureRepository->getAllIngenieursInfo();
+        if (count($ingenieursInfo) > 0) {
+            return $ingenieursInfo;
+        }
+        return false;
+    }
+
+    public function getAllMaitreOuvrageInfo()
+    {
+        $maitreOuvrageInfo = $this->infrastructureRepository->getAllMaitreOuvrageInfo();
+        if (count($maitreOuvrageInfo) > 0) {
+            return $maitreOuvrageInfo;
+        }
+        return false;
+    }
     
+    public function getMotifRuptureContratInfo($type = null)
+    {
+        $motifRuptureContratInfo = $this->infrastructureRepository->getMotifRuptureContratInfo($type);
+        if (count($motifRuptureContratInfo) > 0) {
+            return $motifRuptureContratInfo;
+        }
+        return false;
+    }
+    
+    public function getConsistanceTravauxInfo($type = null)
+    {
+        $consistanceTravauxInfo = $this->infrastructureRepository->getConsistanceTravauxInfo($type);
+        if (count($consistanceTravauxInfo) > 0) {
+            return $consistanceTravauxInfo;
+        }
+        return false;
+    }
+
     public function update()
     {
         $this->entityManager->flush();

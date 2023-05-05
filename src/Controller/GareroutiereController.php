@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\RouteService;
+use App\Service\GareroutiereService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -33,26 +33,26 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class RouteController extends AbstractController
+class GareroutiereController extends AbstractController
 {
     private $pathImage = null;
-    private $pathImageRoute = null;
+    private $pathImageGareroutiere = null;
     private $pathPublic = null;
-    private $pathForNamePhotoRoute = null;
+    private $pathForNamePhotoGareroutiere = null;
     private $kernelInterface;
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
-        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "route/";
-        $this->pathImageRoute = $params->get('pathImageRoute');
+        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "Gareroutiere/";
+        $this->pathImageGareroutiere = $params->get('pathImageGareroutiere');
         $this->pathPublic = $params->get('pathPublic');
-        $this->pathForNamePhotoRoute = $params->get('pathForNamePhotoRoute');
+        $this->pathForNamePhotoGareroutiere = $params->get('pathForNamePhotoGareroutiere');
         $this->kernelInterface = $kernelInterface;
     }
 
     /**
-     * @Route("/api/route/add", name="route_add", methods={"POST"})
+     * @Route("/api/gareroutiere/add", name="Gareroutiere_add", methods={"POST"})
      */
-    public function create(Request $request, RouteService $routeService)
+    public function create(Request $request, GareroutiereService $gareroutiereService)
     {    
         $response = new Response();
         $hasException = false;
@@ -62,28 +62,42 @@ class RouteController extends AbstractController
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');
-            $data['commune' ] = $request->get('commune');
+            $data['communeTerrain' ] = $request->get('commune');
+            $data['nom' ] = $request->get('nom');
             $data['localite' ] = $request->get('localite');
-            $data['rattache' ] = $request->get('rattache');
-            $data['categorie' ] = $request->get('categorie');
+            $data['code' ] = $request->get('code');
             $data['sourceInformation' ] = $request->get('sourceInformation');
-            $data['pkDebut' ] = $request->get('pkDebut');
-            $data['pkFin' ] = $request->get('pkFin');
-            $data['largeurHausse' ] = $request->get('largeurHausse');
-            $data['largeurAccotement' ] = $request->get('largeurAccotement');
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
-            $data['gestionnaire'] = $request->get('gestionnaire');
-            $data['modeGestion'] = $request->get('modeGestion');
-            $data['latitude'] = $request->get('latitudePKDebut');
-            $data['longitude'] = $request->get('longitudePKDebut');
-            $data['axe'] = $request->get('axe');
-            $data['structure'] = $request->get('structure');
+            $data['categorie' ] = $request->get('categorie');
+            $data['capaciteVoitureAccueillies'] = $request->get('capaciteVoitureAccueillies');
+            $data['categoriePrecision'] = $request->get('categoriePrecision');
+            $data['latitude'] = $request->get('latitude');
+            $data['longitude'] = $request->get('longitude');
+            
+
+            // Situation
+            $data['etat'] = $request->get('etat');
+            $data['fonctionnel'] = $request->get('fonctionnel');
+            $data['motif'] = $request->get('motifNonFonctionel');
+            $data['sourceInformationSituation' ] = $request->get('sourceInformationSituation');
+            $data['modeAcquisitionInformationSituation' ] = $request->get('modeAcquisitionInformationSituation');
+           
+
+            // Data collecte
+            $data['etatParking'] = $request->get('etatParking');
+            $data['revetementParking'] = $request->get('revetementParking');
+            $data['sourceInformationData'] = $request->get('sourceInformationData');
+            $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
+            $data['etatGlobalAccessoires' ] = $request->get('etatGlobalAccessoires');
+            
+            
+            /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
             $data['precisionStructure'] = $request->get('precisionStructure');
             $data['precisionModeGestion'] = $request->get('precisionModeGestion');
-            $data['etat'] = $request->get('etat');
-            $data['fonctionnel'] = $request->get('fonctionnel');
-            $data['causeNonFonctionel'] = $request->get('causeNonFonctionel');
+           
+            
+            
             $data['surfaceRevetement'] = $request->get('surfaceRevetement');
             $data['surfaceNidPoule'] = $request->get('surfaceNidPoule');
             $data['surfaceArrachement'] = $request->get('surfaceArrachement');
@@ -129,7 +143,7 @@ class RouteController extends AbstractController
             $data['dateInformationFosse'] = $dateInformationFosse;
             $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
             $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
-            $data['coteFosse'] = $request->get('coteFosse');
+            $data['coteFosse'] = $request->get('coteFosse');*/
             
             
             $uploadedFile1 = $request->files->get('photo1');
@@ -144,7 +158,7 @@ class RouteController extends AbstractController
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageRoute . "photo1/";
+                $directory1 = $this->pathImageGareroutiere . "photo1/";
                 $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo1/";
 
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
@@ -153,14 +167,14 @@ class RouteController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 move_uploaded_file($tmpPathName1, $directoryPublic.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotoRoute."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoGareroutiere."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageRoute . "photo2/";
+                $directory2 = $this->pathImageGareroutiere . "photo2/";
                 $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
@@ -168,14 +182,14 @@ class RouteController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 move_uploaded_file($tmpPathName2, $directoryPublic.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotoRoute."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoGareroutiere."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageRoute . "photo3/";
+                $directory3 = $this->pathImageGareroutiere . "photo3/";
                 $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
@@ -183,25 +197,25 @@ class RouteController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 move_uploaded_file($tmpPathName3, $directoryPublic.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoRoute."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoGareroutiere."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }
 
-            $idInfra = $routeService->addInfrastructureRoute($data);
+            $idInfra = $gareroutiereService->addInfrastructure($data);
 
             if ($idInfra != false) {
                 // add situation et etat
-                //$idEtat = $routeService->addInfrastructureRouteEtat($idInfra, $data);
+                //$idEtat = $gareroutiereService->addInfrastructureRouteEtat($idInfra, $data);
 
-                $idSituation = $routeService->addInfrastructureRouteSituation($idInfra, $data);
+                $idEtat = $gareroutiereService->addInfrastructureSituation($idInfra, $data);
 
-                $idSurface = $routeService->addInfrastructureRouteSurface($idInfra, $data);
+                $idDataCollected = $gareroutiereService->addInfrastructureDonneCollecte($idInfra, $data);
 
-                $idStructure = $routeService->addInfrastructureRouteStructure($idInfra, $data);
+                /*$idStructure = $gareroutiereService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idAccotement = $routeService->addInfrastructureRouteAccotement($idInfra, $data);
+                $idAccotement = $gareroutiereService->addInfrastructureRouteAccotement($idInfra, $data);
 
-                $idFosse = $routeService->addInfrastructureRouteFosse($idInfra, $data);
+                $idFosse = $gareroutiereService->addInfrastructureRouteFosse($idInfra, $data);*/
             
 
                 /**
@@ -211,13 +225,15 @@ class RouteController extends AbstractController
                 $data['statut'] = $request->get('statutFoncier');
                 $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                 $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
-
-                $idFoncier = $routeService->addInfrastructureRouteFoncier($idInfra, $data);
+                $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
+                $data['sourceInformationFoncier'] = $request->get('sourceInformationFoncier');
+                $data['modeAcquisitionInformationFoncier'] = $request->get('modeAcquisitionInformationFoncier');
+                $idFoncier = $gareroutiereService->addInfrastructureRouteFoncier($idInfra, $data);
 
                 //Travaux 
                 $data['objetTravaux'] = $request->get('objetTravaux');
                 $data['consistanceTravaux'] = $request->get('consistanceTravaux');
-                $data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
+                //$data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
                 $data['maitreOuvrageTravaux'] = $request->get('maitreOuvrageTravaux');
                 $data['maitreOuvrageDelegueTravaux'] = $request->get('maitreOuvrageDelegueTravaux');
                 $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
@@ -225,7 +241,7 @@ class RouteController extends AbstractController
                 $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
                 $data['montantTravaux'] = $request->get('montantTravaux');
                 $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
-                $data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
+                //$data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
                 
                 $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
                 $dateContratTravaux->format('Y-m-d H:i:s');
@@ -251,9 +267,9 @@ class RouteController extends AbstractController
                 $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
                 $data['bailleurTravaux'] = $request->get('bailleurTravaux');
 
-                $idTravaux = $routeService->addInfrastructureRouteTravaux($idInfra, $data);
+                $idTravaux = $gareroutiereService->addInfrastructureTravaux($idInfra, $data);
                 // Fournitures
-                $data['objetContratFourniture'] = $request->get('objetContratFourniture');
+                /*$data['objetContratFourniture'] = $request->get('objetContratFourniture');
                 $data['consistanceContratFourniture'] = $request->get('consistanceContratFourniture');
                 $data['materielsFourniture'] = $request->get('materielsFourniture');
                 $data['entiteFourniture'] = $request->get('entiteFourniture');
@@ -286,7 +302,7 @@ class RouteController extends AbstractController
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
-                $idFourniture = $routeService->addInfrastructureRouteFourniture($idInfra, $data);
+                $idFourniture = $gareroutiereService->addInfrastructureRouteFourniture($idInfra, $data);*/
                 // Etudes
                 $data['objetContratEtude'] = $request->get('objetContratEtude');
                 $data['consistanceContratEtude'] = $request->get('consistanceContratEtude');
@@ -321,19 +337,19 @@ class RouteController extends AbstractController
                 $data['dateInformationEtude'] = $dateInformationEtude;
                 $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
                 $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
-                $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
+                $data['precisionConsitanceContratEtude'] = $request->get('precisionConsitanceContratEtude');
                 $data['bailleurEtude'] = $request->get('bailleurEtude');
-                $idEtude = $routeService->addInfrastructureRouteEtudes($idInfra, $data);
+                $idEtude = $gareroutiereService->addInfrastructureEtudes($idInfra, $data);
                 /**
                  * End Administrative data
                 */
-                //$idDonneAnnexe = $routeService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
+                //$idDonneAnnexe = $gareroutiereService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "route created_successfull"
+                'message' => "Gare routiere created_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -388,37 +404,42 @@ class RouteController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            /*
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+           
+            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+           
         }
         
         return $response;
     }
 
     /**
-     * @Route("/api/infra/route/liste", name="route_list", methods={"GET"})
+     * @Route("/api/infra/gareroutiere/liste", name="Gareroutiere_list", methods={"GET"})
      */
-    public function listeRoute(Request $request, RouteService $routeService)
+    public function listeDalot(Request $request, GareroutiereService $gareroutiereService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $routeService->getAllInfrastructuresRoute();
+            $routes = $gareroutiereService->getAllInfrastructures();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "route list_successfull",
+                'message' => "Gare routiere list_successfull",
                 'data' => $routes
             ]));
             
@@ -469,168 +490,4 @@ class RouteController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/api/infra/route/base/liste", name="route_base_list", methods={"GET"})
-     */
-    public function listeBaseRoute(Request $request, RouteService $routeService)
-    {   
-        $response = new Response();
-        
-        try {
-
-            $baseRoutes = $routeService->getAllInfrastructuresBaseRoute();
-
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
-                'message' => "route base list_successfull",
-                'data' => $baseRoutes
-            ]));
-            
-            $response->headers->set('Content-Type', 'application/json');
-
-        } catch (PropertyVideException $PropertyVideException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $PropertyVideException->getMessage()
-            ]));
-        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UniqueConstraintViolationException->getMessage()
-            ]));
-        } catch (MappingException $MappingException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $MappingException->getMessage()
-            ]));
-        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ORMInvalidArgumentException->getMessage()
-            ]));
-        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UnsufficientPrivilegeException->getMessage(),
-            ]));
-        /*} catch (ServerException $ServerException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ServerException->getMessage(),
-            ]));*/
-        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $NotNullConstraintViolationException->getMessage(),
-            ]));
-        } catch (\Exception $Exception) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $Exception->getMessage(),
-            ]));
-        }
-
-        return $response;
-    }
-
-     /**
-     * @Route("/api/route/base/add", name="route_base_add", methods={"POST"})
-     */
-    public function createBaseRoute(Request $request, RouteService $routeService)
-    {    
-        $response = new Response();
-        
-        try {
-
-            $data = json_decode($request->getContent(), true);
-        
-            $multipleCoordonne = "";
-            if (count($data['localisation']) > 0) {
-                
-                foreach ($data['localisation'] as $key => $value) {
-                    if (count($data['localisation']) - 1 == $key) {
-                        $multipleCoordonne .= $value['latitude']." ".$value['longitude'];
-                    } else {
-                        $multipleCoordonne .= $value['latitude']." ".$value['longitude'].", ";
-                    }
-                    
-                }
-            }
-            
-            $result = $routeService->addInfrastructureBaseRoute($multipleCoordonne, $data['nom']);
-            
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
-                'message' => "route created_successfull"
-            ]));
-            
-            $response->headers->set('Content-Type', 'application/json');
-
-        } catch (PropertyVideException $PropertyVideException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $PropertyVideException->getMessage()
-            ]));
-        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UniqueConstraintViolationException->getMessage()
-            ]));
-        } catch (MappingException $MappingException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $MappingException->getMessage()
-            ]));
-        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ORMInvalidArgumentException->getMessage()
-            ]));
-        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UnsufficientPrivilegeException->getMessage(),
-            ]));
-        /*} catch (ServerException $ServerException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ServerException->getMessage(),
-            ]));*/
-        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $NotNullConstraintViolationException->getMessage(),
-            ]));
-        } catch (\Exception $Exception) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $Exception->getMessage(),
-            ]));
-        }
-
-        return $response;
-    }
-
-    /**
-     * @Route("/api/routes/information", name="infrastructure_consistance_information", methods={"GET"})
-     */
-    public function getAllyRouteInfo(Request $request, RouteService $routeService)
-    {    
-        $routesInfrastructure = $routeService->getAllyRouteInfo();
-        
-        $response = new Response();
-
-        $response->setContent(json_encode([
-            'code'  => Response::HTTP_OK,
-            'status' => true,
-            'message' => "route information list_successfull",
-            'data' => $routesInfrastructure
-        ]));
-
-        $response->headers->set('Content-Type', 'application/json');
-        
-        return $response;
-    }
 }

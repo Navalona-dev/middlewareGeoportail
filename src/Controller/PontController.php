@@ -31,6 +31,7 @@ use DateTime;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class PontController extends AbstractController
 {
@@ -38,12 +39,14 @@ class PontController extends AbstractController
     private $pathImagePont = null;
     private $pathPublic = null;
     private $pathForNamePhotoPont = null;
+    private $kernelInterface;
 
-    public function __construct(ParameterBagInterface $params) {
+    public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "pont/";
         $this->pathImagePont = $params->get('pathImagePont');
         $this->pathPublic = $params->get('pathPublic');
         $this->pathForNamePhotoPont = $params->get('pathForNamePhotoPont');
+        $this->kernelInterface = $kernelInterface;
     }
 
     /**
@@ -193,7 +196,7 @@ class PontController extends AbstractController
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
                 $directory1 = $this->pathImagePont . "photo1/";
-                $directoryPublic = $this->pathPublic . "route/photo1/";
+                $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo1/";
 
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
@@ -209,7 +212,7 @@ class PontController extends AbstractController
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
                 $directory2 = $this->pathImagePont . "photo2/";
-                $directoryPublic = $this->pathPublic . "route/photo2/";
+                $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
@@ -224,7 +227,7 @@ class PontController extends AbstractController
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
                 $directory3 = $this->pathImagePont . "photo3/";
-                $directoryPublic = $this->pathPublic . "route/photo3/";
+                $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();

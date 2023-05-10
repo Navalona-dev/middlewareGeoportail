@@ -440,6 +440,7 @@ class GareroutiereController extends AbstractController
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "Gare routiere list_successfull",
+                'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
             

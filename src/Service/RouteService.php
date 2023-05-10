@@ -102,9 +102,9 @@ class RouteService
         return false;
     }
     
-    public function addInfrastructureRouteAccotement($idInfrastructure = null, $data)
+    public function addInfrastructureRouteAccotement($idInfrastructure = null, $data, $cote = null)
     {
-        $result = $this->routeRepository->addInfrastructureRouteAccotement($idInfrastructure, $data['accotement'], $data['accotementDegrationSurface'], $data['accotementDentelleRive'], $data['accotementDenivellationChausseAccotement'], $data['accotementDestructionAffouillementAccotement'], $data['accotementNonRevetueDeformationProfil'], $data['accotementRevetue'], $data['accotementTypeRevetementAccotement'], $data['accotementPrecisionTypeAccotement'], $data['dateInformationAccotement'], $data['sourceInformationAccotement'], $data['modeAcquisitionInformationAccotement']);
+        $result = $this->routeRepository->addInfrastructureRouteAccotement($idInfrastructure, $data['accotement'.$cote], $data['accotementDegrationSurface'.$cote], $data['accotementDentelleRive'.$cote], $data['accotementDenivellationChausseAccotement'.$cote], $data['accotementDestructionAffouillementAccotement'.$cote], $data['accotementNonRevetueDeformationProfil'.$cote], $data['accotementRevetue'.$cote], $data['accotementTypeRevetementAccotement'.$cote], $data['accotementPrecisionTypeAccotement'], $data['dateInformationAccotement'], $data['sourceInformationAccotement'], $data['modeAcquisitionInformationAccotement']);
         
         if ($result) {
             return $result;
@@ -113,9 +113,9 @@ class RouteService
         return false;
     }
 
-    public function addInfrastructureRouteFosse($idInfrastructure = null, $data)
+    public function addInfrastructureRouteFosse($idInfrastructure = null, $data, $cote = null)
     {
-        $result = $this->routeRepository->addInfrastructureRouteFosse($idInfrastructure, $data['coteFosse'], $data['fosseRevetuDegradationFosse'], $data['fosseRevetuSectionBouche'], $data['fosseNonRevetuFosseProfil'], $data['fosseNonRevetuEncombrement'], $data['fosseRevetu'], $data['dateInformationFosse'], $data['sourceInformationFosse'], $data['modeAcquisitionInformationFosse']);
+        $result = $this->routeRepository->addInfrastructureRouteFosse($idInfrastructure, $data['coteFosse'.$cote], $data['fosseRevetuDegradationFosse'.$cote], $data['fosseRevetuSectionBouche'.$cote], $data['fosseNonRevetuFosseProfil'.$cote], $data['fosseNonRevetuEncombrement'.$cote], $data['fosseRevetu'.$cote], $data['dateInformationFosse'], $data['sourceInformationFosse'], $data['modeAcquisitionInformationFosse']);
         
         if ($result) {
             return $result;

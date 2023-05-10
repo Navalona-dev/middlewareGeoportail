@@ -438,6 +438,7 @@ class DalotController extends AbstractController
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "dalot route list_successfull",
+                'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
             

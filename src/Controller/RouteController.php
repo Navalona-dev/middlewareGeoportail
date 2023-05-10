@@ -99,18 +99,7 @@ class RouteController extends AbstractController
             $data['structureTeteOndule'] = $request->get('structureTeteOndule');
             $data['structureRavines'] = $request->get('structureRavines');
             //$data['structureOrnierage'] = $request->get('structureOrnierage');
-            //$data['accotementHasAccotementGauche'] = $request->get('accotementHasAccotementGauche');
-            $data['accotement'] = $request->get('accotement');
-            //$data['accotementIsAccotementNonRevetu'] = $request->get('accotementIsAccotementNonRevetu');
-            $data['accotementRevetue'] = $request->get('accotementRevetue');
-            $data['accotementTypeRevetementAccotement'] = $request->get('accotementTypeRevetementAccotement');
-            $data['accotementDegrationSurface'] = $request->get('accotementDegrationSurface');
-            $data['accotementDentelleRive'] = $request->get('accotementDentelleRive');
-            $data['accotementPrecisionTypeAccotement'] = $request->get('accotementPrecisionTypeAccotement');
-
-            $data['accotementDenivellationChausseAccotement'] = $request->get('accotementDenivellationChausseAccotement');
-            $data['accotementDestructionAffouillementAccotement'] = $request->get('accotementDestructionAffouillementAccotement');
-            $data['accotementNonRevetueDeformationProfil'] = $request->get('accotementNonRevetueDeformationProfil');
+            
 
             $dateInformationAccotement = new \DateTime($request->get('dateInformationAccotement'));
             $dateInformationAccotement->format('Y-m-d H:i:s');
@@ -118,19 +107,6 @@ class RouteController extends AbstractController
             $data['sourceInformationAccotement' ] = $request->get('sourceInformationAccotement');
             $data['modeAcquisitionInformationAccotement' ] = $request->get('modeAcquisitionInformationAccotement');
 
-            $data['fosseRevetu'] = $request->get('fosseRevetu');
-            $data['fosseRevetuDegradationFosse'] = $request->get('fosseRevetuDegradationFosse');
-            $data['fosseRevetuSectionBouche'] = $request->get('fosseRevetuSectionBouche');
-            $data['fosseNonRevetuFosseProfil'] = $request->get('fosseNonRevetuFosseProfil');
-            $data['fosseNonRevetuEncombrement'] = $request->get('fosseNonRevetuEncombrement');
-
-            $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
-            $dateInformationFosse->format('Y-m-d H:i:s');
-            $data['dateInformationFosse'] = $dateInformationFosse;
-            $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
-            $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
-            $data['coteFosse'] = $request->get('coteFosse');
-            
             
             $uploadedFile1 = $request->files->get('photo1');
             $uploadedFile2 = $request->files->get('photo2');
@@ -199,9 +175,77 @@ class RouteController extends AbstractController
 
                 $idStructure = $routeService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idAccotement = $routeService->addInfrastructureRouteAccotement($idInfra, $data);
+                $data['accotementHasAccotementGauche'] = $request->get('accotementHasAccotementGauche');
 
-                $idFosse = $routeService->addInfrastructureRouteFosse($idInfra, $data);
+                $data['accotementHasAccotementDroite'] = $request->get('accotementHasAccotementDroite');
+
+                if ($data['accotementHasAccotementGauche'] == "OUI") {
+                    $data['accotementGauche'] = "Gauche";
+                    //$data['accotement'] = $request->get('accotement');
+                    //$data['accotementIsAccotementNonRevetu'] = $request->get('accotementIsAccotementNonRevetu');
+                    $data['accotementRevetueGauche'] = $request->get('accotementRevetueGauche');
+                    $data['accotementTypeRevetementAccotementGauche'] = $request->get('accotementTypeRevetementAccotementGauche');
+                    $data['accotementDegrationSurfaceGauche'] = $request->get('accotementDegrationSurfaceGauche');
+                    $data['accotementDentelleRiveGauche'] = $request->get('accotementDentelleRiveGauche');
+                    $data['accotementPrecisionTypeAccotement'] = null; //$request->get('accotementPrecisionTypeAccotement');
+
+                    $data['accotementDenivellationChausseAccotementGauche'] = $request->get('accotementDenivellationChausseAccotementGauche');
+                    $data['accotementDestructionAffouillementAccotementGauche'] = $request->get('accotementDestructionAffouillementAccotementGauche');
+                    $data['accotementNonRevetueDeformationProfilGauche'] = $request->get('accotementNonRevetueDeformationProfilGauche');
+                    $idAccotementGauche = $routeService->addInfrastructureRouteAccotement($idInfra, $data, "Gauche");
+                }
+
+                $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
+                $dateInformationFosse->format('Y-m-d H:i:s');
+                $data['dateInformationFosse'] = $dateInformationFosse;
+                $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
+                $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
+
+                if ($data['accotementHasAccotementDroite'] == "OUI") {
+                    $data['accotementDroite'] = "Droite";
+                    //$data['accotement'] = $request->get('accotement');
+                    //$data['accotementIsAccotementNonRevetu'] = $request->get('accotementIsAccotementNonRevetu');
+                    $data['accotementRevetueDroite'] = $request->get('accotementRevetueDroite');
+                    $data['accotementTypeRevetementAccotementDroite'] = $request->get('accotementTypeRevetementAccotementDroite');
+                    $data['accotementDegrationSurfaceDroite'] = $request->get('accotementDegrationSurfaceDroite');
+                    $data['accotementDentelleRiveDroite'] = $request->get('accotementDentelleRiveDroite');
+                    $data['accotementPrecisionTypeAccotement'] = null; //$request->get('accotementPrecisionTypeAccotement');
+
+                    $data['accotementDenivellationChausseAccotementDroite'] = $request->get('accotementDenivellationChausseAccotementDroite');
+                    $data['accotementDestructionAffouillementAccotementDroite'] = $request->get('accotementDestructionAffouillementAccotementDroite');
+                    $data['accotementNonRevetueDeformationProfilDroite'] = $request->get('accotementNonRevetueDeformationProfilDroite');
+                    $idAccotementDroite = $routeService->addInfrastructureRouteAccotement($idInfra, $data, "Droite");
+                }
+
+                
+
+                if ($request->get('coteFosseGauche') == "OUI") {
+                    $data['fosseRevetuGauche'] = $request->get('fosseRevetuGauche');
+                    $data['fosseRevetuDegradationFosseGauche'] = $request->get('fosseRevetuDegradationFosseGauche');
+                    $data['fosseRevetuSectionBoucheGauche'] = $request->get('fosseRevetuSectionBoucheGauche');
+                    $data['fosseNonRevetuFosseProfilGauche'] = $request->get('fosseNonRevetuFosseProfilGauche');
+                    $data['fosseNonRevetuEncombrementGauche'] = $request->get('fosseNonRevetuEncombrementGauche');
+        
+                    
+                    $data['coteFosseGauche'] = $request->get('coteFosseGauche');
+
+                    $idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
+                }
+
+                if ($request->get('coteFosseDroite') == "OUI") {
+                    $data['fosseRevetuDroite'] = $request->get('fosseRevetuDroite');
+                    $data['fosseRevetuDegradationFosseDroite'] = $request->get('fosseRevetuDegradationFosseDroite');
+                    $data['fosseRevetuSectionBoucheDroite'] = $request->get('fosseRevetuSectionBoucheDroite');
+                    $data['fosseNonRevetuFosseProfilDroite'] = $request->get('fosseNonRevetuFosseProfilDroite');
+                    $data['fosseNonRevetuEncombrementDroite'] = $request->get('fosseNonRevetuEncombrementDroite');
+        
+                    
+                    $data['coteFosseDroite'] = $request->get('coteFosseDroite');
+
+                    $idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
+                }
+
+                
             
 
                 /**
@@ -419,6 +463,7 @@ class RouteController extends AbstractController
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "route list_successfull",
+                'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
             

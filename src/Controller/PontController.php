@@ -474,6 +474,7 @@ class PontController extends AbstractController
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "Pont route list_successfull",
+                'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
             

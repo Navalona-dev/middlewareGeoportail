@@ -358,7 +358,7 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
-     * @Route("/api/motifrupturecontrat/information", name="infrastructure_motifrupturecontrat_information", methods={"GET"})
+     * @Route("/api/motifrupturecontrat/information", name="infrastructure_motifrupturecontrat_information", methods={"POST"})
      */
     public function getMotifRuptureContratInfo(Request $request, InfrastructureService $infrastructureService)
     {    
@@ -381,7 +381,7 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
-     * @Route("/api/consistance/information", name="infrastructure_consistance_information", methods={"GET"})
+     * @Route("/api/consistance/information", name="infrastructure_consistance_information", methods={"POST"})
      */
     public function getConsistanceTravauxInfo(Request $request, InfrastructureService $infrastructureService)
     {    

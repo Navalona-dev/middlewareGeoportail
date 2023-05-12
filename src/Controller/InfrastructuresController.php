@@ -381,7 +381,7 @@ class InfrastructuresController extends AbstractController
     }
 
     /**
-     * @Route("/api/consistance/info/information", name="infrastructure_consistance_information", methods={"POST"})
+     * @Route("/api/consistance-info/information", name="infrastructure_consistance_information", methods={"POST"})
      */
     public function getConsistanceTravauxInfo(Request $request, InfrastructureService $infrastructureService)
     {    

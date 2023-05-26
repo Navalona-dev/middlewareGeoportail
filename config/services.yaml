@@ -12,10 +12,10 @@ parameters:
     pathPublic: '/images/infrastructures/'
     pathImageDalot: '/home/qgis/projects/saisie/media/upload/dar_dalot_route/t_dar_01_infrastructure/'
     pathForNamePhotoDalot: 'media/upload/dar_dalot_route/t_dar_01_infrastructure/'
-    pathImagePont: '/home/qgis/projects/saisie/media/upload/dar_dalot_route/t_dar_01_infrastructure/'
-    pathForNamePhotoPont: 'media/upload/dar_dalot_route/t_dar_01_infrastructure/'
-    pathImageGareroutiere: '/home/qgis/projects/saisie/media/upload/dar_dalot_route/t_dar_01_infrastructure/'
-    pathForNamePhotoGareroutiere: 'media/upload/dar_dalot_route/t_dar_01_infrastructure/'
+    pathImagePont: '/home/qgis/projects/saisie/media/upload/pnr_pont_route/t_pnr_01_infrastructure/'
+    pathForNamePhotoPont: 'media/upload/pnr_pont_route/t_pnr_01_infrastructure/'
+    pathImageGareroutiere: '/home/qgis/projects/saisie/media/upload/gr_gare_routiere/t_gr_01_infrastructure/'
+    pathForNamePhotoGareroutiere: 'media/upload/gr_gare_routiere/t_gr_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:

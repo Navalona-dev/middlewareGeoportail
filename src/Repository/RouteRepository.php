@@ -19,7 +19,7 @@ class RouteRepository extends ServiceEntityRepository
     {
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ro_01_infrastructure (pk_debut, rattache, categorie, localite,  commune_terrain, gestionnaire, mode_gestion, date_information, source_Information, mode_acquisition_infromation, pk_fin, \"Largeur_chaussée\", \"Largeur_accotements\", \"Structure\", region, district, geom, photo1, photo2, photo3, precision_structure, precision_mode_gestion, photo_name1, photo_name2, photo_name3) VALUES (".intval($pkDebut).", '".$rattache."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$gestionnaire."', '".$modeGestion."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ".intval($pkFin).", ".floatval($largeurHausse).", ".$largeurAccotement.", '".$structure."', '".$region."', '".$district."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$photo1."', '".$photo2."', '".$photo3."', '".$precisionStructure."', '".$precisionModeGestion."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
-        
+        dd($sql);
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();
@@ -226,7 +226,8 @@ class RouteRepository extends ServiceEntityRepository
         $sourceInfo = pg_escape_string($sourceInformation);
 
         $sql = "INSERT into t_ro_08_fosse (cote, revetue_degradation_du_fosse, revetue_section_bouche, non_revetue_profil, non_revetue_encombrement, id_infrastructure,  revetu, date_information, source_information, mode_acquisition_information) VALUES ('".$cote."', '".$revetueDegradationFosse."', '".$revetueSectionBouche."', '".$nonRevetueProfil."', '".$nonRevetueEncombrement."', ".intval($idInfrastructure).", '".$revetu."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
-        
+
+
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();

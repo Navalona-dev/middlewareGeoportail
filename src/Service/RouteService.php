@@ -46,7 +46,31 @@ class RouteService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
+    }
+
+    public function getAccotementRoute($idRoute = null)
+    {
+        if (null != $idRoute) {
+            $accotements = $this->routeRepository->getAccotementRoute($idRoute);
+            if (count($accotements) > 0) {
+                return $accotements;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public function getFosseRoute($idRoute = null)
+    {
+        if (null != $idRoute) {
+            $fosses = $this->routeRepository->getFosseRoute($idRoute);
+            if (count($fosses) > 0) {
+                return $fosses;
+            }
+            return false;
+        }
+        return false;
     }
 
     public function getAllInfrastructuresBaseRoute()

@@ -169,11 +169,11 @@ class RouteController extends AbstractController
                 // add situation et etat
                 //$idEtat = $routeService->addInfrastructureRouteEtat($idInfra, $data);
 
-                $idSituation = $routeService->addInfrastructureRouteSituation($idInfra, $data);
+                //$idSituation = $routeService->addInfrastructureRouteSituation($idInfra, $data);
 
-                $idSurface = $routeService->addInfrastructureRouteSurface($idInfra, $data);
+                //$idSurface = $routeService->addInfrastructureRouteSurface($idInfra, $data);
 
-                $idStructure = $routeService->addInfrastructureRouteStructure($idInfra, $data);
+                //$idStructure = $routeService->addInfrastructureRouteStructure($idInfra, $data);
 
                 $data['accotementHasAccotementGauche'] = $request->get('accotementHasAccotementGauche');
 
@@ -214,7 +214,7 @@ class RouteController extends AbstractController
                     $data['accotementDenivellationChausseAccotementDroite'] = $request->get('accotementDenivellationChausseAccotementDroite');
                     $data['accotementDestructionAffouillementAccotementDroite'] = $request->get('accotementDestructionAffouillementAccotementDroite');
                     $data['accotementNonRevetueDeformationProfilDroite'] = $request->get('accotementNonRevetueDeformationProfilDroite');
-                    $idAccotementDroite = $routeService->addInfrastructureRouteAccotement($idInfra, $data, "Droite");
+                    //$idAccotementDroite = $routeService->addInfrastructureRouteAccotement($idInfra, $data, "Droite");
                 }
 
                 
@@ -229,7 +229,7 @@ class RouteController extends AbstractController
                     
                     $data['coteFosseGauche'] = $request->get('coteFosseGauche');
 
-                    $idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
+                    //$idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
                 }
 
                 if ($request->get('coteFosseDroite') == "OUI") {
@@ -242,7 +242,7 @@ class RouteController extends AbstractController
                     
                     $data['coteFosseDroite'] = $request->get('coteFosseDroite');
 
-                    $idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
+                 //   $idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
                 }
 
                 
@@ -367,7 +367,7 @@ class RouteController extends AbstractController
                 $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
                 $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
                 $data['bailleurEtude'] = $request->get('bailleurEtude');
-                $idEtude = $routeService->addInfrastructureRouteEtudes($idInfra, $data);
+                //$idEtude = $routeService->addInfrastructureRouteEtudes($idInfra, $data);
                 /**
                  * End Administrative data
                 */
@@ -377,6 +377,7 @@ class RouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
+                'sql' => $idInfra,
                 'message' => "route created_successfull"
             ]));
 

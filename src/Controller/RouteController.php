@@ -168,6 +168,10 @@ class RouteController extends AbstractController
             $idFoncier = null;
             $idEtude = null;
             $idFourniture = null;
+            $idAccotementGauche = null;
+            $idAccotementDroite = null;
+            $idFosseGauche = null;
+            $idFosseDroite = null;
             if ($idInfra != false) {
                 // add situation et etat
                 //$idEtat = $routeService->addInfrastructureRouteEtat($idInfra, $data);
@@ -385,7 +389,10 @@ class RouteController extends AbstractController
                 */
                 //$idDonneAnnexe = $routeService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
-
+            $idAccotementGauche = null;
+            $idAccotementDroite = null;
+            $idFosseGauche = null;
+            $idFosseDroite = null;
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
@@ -393,6 +400,10 @@ class RouteController extends AbstractController
                 'sqlFoncier'=> $idFoncier,
                 'sqlEtude'=> $idEtude,
                 'sqlFourniture'=> $idFourniture,
+                'sqlAccotementGauche'=> $idAccotementGauche,
+                'sqlAccotementGauche'=> $idAccotementDroite,
+                'sqlFosseGauche'=> $idFosseGauche,
+                'sqlFosseDroite'=> $idFosseDroite,
                 'message' => "route created_successfull"
             ]));
 

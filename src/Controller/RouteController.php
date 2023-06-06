@@ -236,7 +236,7 @@ class RouteController extends AbstractController
                     
                     $data['coteFosseGauche'] = $request->get('coteFosseGauche');
 
-                    $idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
+                    //$idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
                 }
 
                 if ($request->get('coteFosseDroite') == "OUI") {
@@ -249,7 +249,7 @@ class RouteController extends AbstractController
                     
                     $data['coteFosseDroite'] = $request->get('coteFosseDroite');
 
-                    $idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
+                    //$idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
                 }
 
                 

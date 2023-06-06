@@ -263,48 +263,48 @@ class RouteRepository extends ServiceEntityRepository
     {   
         $sql = "INSERT into t_ro_13_foncier (\"Statut\", numero_de_reference, nom_proprietaire, id_infrastructure) VALUES ('".$statut."', '".$numeroReference."', '".$nomProprietaire."', ".intval($idInfrastructure).")";
        // dd($sql, $statut);
-        $conn = $this->entityManager->getConnection();
+        /*$conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();
-        $id = $conn->lastInsertId();
+        $id = $conn->lastInsertId();*/
 
-        return $id;
+        return $sql;
     }
 
     public function addInfrastructureRouteTravaux($idInfrastructure = null, $objet = null, $consistanceTravaux = null, $modeRealisationTravaux = null, $maitreOuvrage = null, $maitreOuvrageDelegue = null, $maitreOeuvre = null, $idControleSurveillance = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $numeroContrat = null, $dateContrat = null, $dateOrdreService = null, $idTitulaire = null, $resultatTravaux = null, $motifRuptureContrat = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $precisionConsistance = null, $modeRealisation = null, $bailleurTravaux = null)
     {   
         $sql = "INSERT into t_ro_09_travaux (id_infrastructure, objet, consistance_travaux, mode_realisation_travaux, maitre_ouvrage, maitre_ouvrage_delegue, maitre_oeuvre, id_controle_surveillance, mode_passation, porte_appel_offre, montant, numero_contrat, date_contrat, date_ordre_service, id_titulaire, resultat_travaux, motif_rupture_contrat, date_reception_provisoire, date_reception_definitive, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_information, source_information, mode_acquisition_information, precision_consistance, mode_realisation, bailleur ) VALUES (".intval($idInfrastructure).", '".$objet."', '".$consistanceTravaux."', '".$modeRealisationTravaux."', '".$maitreOuvrage."', '".$maitreOuvrageDelegue."', '".$maitreOeuvre."', ".intval($idControleSurveillance).", '".$modePassation."', '".$porteAppelOffre."', ".intval($montant).", '".$numeroContrat."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', ".intval($idTitulaire).", '".$resultatTravaux."', '".$motifRuptureContrat."','".$dateReceptionProvisoire->format("Y-m-d")."', '".$dateReceptionDefinitive->format("Y-m-d")."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$precisionConsistance."', '".$modeRealisation."', '".$bailleurTravaux."')";
      
-        $conn = $this->entityManager->getConnection();
+        /*$conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();
-        $id = $conn->lastInsertId();
+        $id = $conn->lastInsertId();*/
 
-        return $id;
+        return $sql;
     }
 
     public function addInfrastructureRouteFourniture($objetContrat = null, $consistanceContrat = null, $materiels = null, $entite = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $idTitulaire = null, $numeroContrat = null, $dateContrat = null, $dateOrdre = null, $resultat = null, $raisonResiliation = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $idInfrastructure = null, $bailleur = null)
     {   
         $sql = "INSERT into t_ro_14_fourniture (objet_contrat, consistance_contrat, materiels, entite, mode_passation, porte_appel_offre, montant, id_titulaire, numero_contrat, date_contrat, date_ordre, resultat, raison_resiliation, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_reception_provisoire, date_reception_definitive, id_infrastructure, bailleur) VALUES ('".$objetContrat."', '".$consistanceContrat."', '".$materiels."', '".$entite."', '".$modePassation."', '".$porteAppelOffre."', ".intval($montant).", ".intval($idTitulaire).", '".$numeroContrat."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdre->format("Y-m-d")."', '".$resultat."', '".$raisonResiliation."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateReceptionProvisoire->format("Y-m-d")."', '".$dateReceptionDefinitive->format("Y-m-d")."', '".intval($idInfrastructure)."', '".$bailleur."')";
         
-        $conn = $this->entityManager->getConnection();
+        /*$conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();
-        $id = $conn->lastInsertId();
+        $id = $conn->lastInsertId();*/
 
-        return $id;
+        return $sql;
     }
 
     public function addInfrastructureRouteEtudes($idInfrastructure = null, $objetContrat = null, $consistanceContrat = null, $entite = null, $idTitulaire = null, $montantContrat = null, $numeroContrat = null, $modePassation = null, $porteAppelOffre = null, $dateContrat = null, $dateOrdreService = null, $resultatPrestation = null, $motifRuptureContrat = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $precisionConsistanceContrat = null, $bailleur = null)
     {   
         $sql = "INSERT into t_ro_11_etudes (id_infrastructure, objet_contrat, consistance_contrat, entite, id_titulaire, montant_contrat, numero_contrat, mode_passation, porte_appel_offre, date_contrat, date_ordre_service, resultat_prestation, motif_rupture_contrat, date_information, source_information, mode_acquisition_information, precision_consistance_contrat, bailleur) VALUES (".intval($idInfrastructure).", '".$objetContrat."', '".$consistanceContrat."', '".$entite."', ".intval($idTitulaire).", ".intval($montantContrat).", '".$numeroContrat."', '".$modePassation."', '".$porteAppelOffre."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', '".$resultatPrestation."', '".$motifRuptureContrat."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$precisionConsistanceContrat."', '".$bailleur."')";
         
-        $conn = $this->entityManager->getConnection();
+        /*$conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();
-        $id = $conn->lastInsertId();
+        $id = $conn->lastInsertId();*/
 
-        return $id;
+        return $sql;
     }
 
 

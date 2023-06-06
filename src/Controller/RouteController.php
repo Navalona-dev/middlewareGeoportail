@@ -164,7 +164,10 @@ class RouteController extends AbstractController
             }
 
             $idInfra = $routeService->addInfrastructureRoute($data);
-
+            $idTravaux = null;
+            $idFoncier = null;
+            $idEtude = null;
+            $idFourniture = null;
             if ($idInfra != false) {
                 // add situation et etat
                 //$idEtat = $routeService->addInfrastructureRouteEtat($idInfra, $data);
@@ -386,6 +389,10 @@ class RouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
+                'sqlTravaux'=> $idTravaux,
+                'sqlFoncier'=> $idFoncier,
+                'sqlEtude'=> $idEtude,
+                'sqlFourniture'=> $idFourniture,
                 'message' => "route created_successfull"
             ]));
 
@@ -441,17 +448,17 @@ class RouteController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             ////$routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
         }
         
         return $response;

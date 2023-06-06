@@ -432,17 +432,17 @@ class RouteController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
-            $routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            ////$routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
+            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
         }
         
         return $response;

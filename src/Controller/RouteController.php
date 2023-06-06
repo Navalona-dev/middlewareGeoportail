@@ -265,7 +265,12 @@ class RouteController extends AbstractController
                 $data['maitreOuvrageTravaux'] = $request->get('maitreOuvrageTravaux');
                 $data['maitreOuvrageDelegueTravaux'] = $request->get('maitreOuvrageDelegueTravaux');
                 $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
-                $data['modePassationTravaux'] = $request->get('modePassationTravaux');
+                $data['modePassationTravaux'] = null;
+
+                if (null != $request->get('modePassationTravaux')) {
+                    $data['modePassationTravaux'] = $request->get('modePassationTravaux');
+                }
+                
                 $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
                 $data['montantTravaux'] = $request->get('montantTravaux');
                 $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
@@ -337,7 +342,11 @@ class RouteController extends AbstractController
                 $data['entiteEtude'] = $request->get('entiteEtude');
                 $data['idTitulaireEtude'] = $request->get('idTitulaireEtude');
                 $data['montantContratEtude'] = $request->get('montantContratEtude');
-                $data['numeroContratEtude'] = $request->get('numeroContratEtude');
+                $data['numeroContratEtude'] = null ;
+                if (null != $request->get('numeroContratEtude')) {
+                    $data['numeroContratEtude'] = $request->get('numeroContratEtude');
+                }
+                
                 $data['modePassationEtude'] = $request->get('modePassationEtude');
                 $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
 
@@ -432,17 +441,17 @@ class RouteController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             ////$routeService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
-            //$routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
+            $routeService->cleanTablesByIdInfrastructure($idInfra, 'etude');
         }
         
         return $response;

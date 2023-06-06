@@ -401,7 +401,7 @@ class RouteController extends AbstractController
                 'sqlEtude'=> $idEtude,
                 'sqlFourniture'=> $idFourniture,
                 'sqlAccotementGauche'=> $idAccotementGauche,
-                'sqlAccotementGauche'=> $idAccotementDroite,
+                'sqlAccotementDroite'=> $idAccotementDroite,
                 'sqlFosseGauche'=> $idFosseGauche,
                 'sqlFosseDroite'=> $idFosseDroite,
                 'message' => "route created_successfull"

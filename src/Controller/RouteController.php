@@ -403,7 +403,7 @@ class RouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'idInfra'=> $idInfra,
+                /*'idInfra'=> $idInfra,
                 'sqlTravaux'=> $idTravaux,
                 'sqlFoncier'=> $idFoncier,
                 'sqlEtude'=> $idEtude,
@@ -411,7 +411,7 @@ class RouteController extends AbstractController
                 'sqlAccotementGauche'=> $idAccotementGauche,
                 'sqlAccotementDroite'=> $idAccotementDroite,
                 'sqlFosseGauche'=> $idFosseGauche,
-                'sqlFosseDroite'=> $idFosseDroite,
+                'sqlFosseDroite'=> $idFosseDroite,*/
                 'message' => "route created_successfull"
             ]));
 

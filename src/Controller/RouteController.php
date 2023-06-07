@@ -227,7 +227,12 @@ class RouteController extends AbstractController
                 
 
                 if ($request->get('coteFosseGauche') == "OUI") {
-                    $data['fosseRevetuGauche'] = $request->get('fosseRevetuGauche');
+
+                    $data['fosseRevetuGauche'] = null;
+                    if (null != $request->get('fosseRevetuGauche')) {
+                        $data['fosseRevetuGauche'] = $request->get('fosseRevetuGauche');
+                    }
+                    
                     $data['fosseRevetuDegradationFosseGauche'] = $request->get('fosseRevetuDegradationFosseGauche');
                     $data['fosseRevetuSectionBoucheGauche'] = $request->get('fosseRevetuSectionBoucheGauche');
                     $data['fosseNonRevetuFosseProfilGauche'] = $request->get('fosseNonRevetuFosseProfilGauche');
@@ -236,11 +241,15 @@ class RouteController extends AbstractController
                     
                     $data['coteFosseGauche'] = $request->get('coteFosseGauche');
 
-                    //$idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
+                    $idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
                 }
 
                 if ($request->get('coteFosseDroite') == "OUI") {
-                    $data['fosseRevetuDroite'] = $request->get('fosseRevetuDroite');
+                    $data['fosseRevetuDroite'] = null;
+                    if (null != $request->get('fosseRevetuDroite')) {
+                        $data['fosseRevetuDroite'] = $request->get('fosseRevetuDroite');
+                    }
+
                     $data['fosseRevetuDegradationFosseDroite'] = $request->get('fosseRevetuDegradationFosseDroite');
                     $data['fosseRevetuSectionBoucheDroite'] = $request->get('fosseRevetuSectionBoucheDroite');
                     $data['fosseNonRevetuFosseProfilDroite'] = $request->get('fosseNonRevetuFosseProfilDroite');
@@ -249,7 +258,7 @@ class RouteController extends AbstractController
                     
                     $data['coteFosseDroite'] = $request->get('coteFosseDroite');
 
-                    //$idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
+                    $idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
                 }
 
                 

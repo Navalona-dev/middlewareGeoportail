@@ -202,11 +202,7 @@ class RouteController extends AbstractController
                     $idAccotementGauche = $routeService->addInfrastructureRouteAccotement($idInfra, $data, "Gauche");
                 }
 
-                $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
-                $dateInformationFosse->format('Y-m-d H:i:s');
-                $data['dateInformationFosse'] = $dateInformationFosse;
-                $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
-                $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
+                
 
                 if ($data['accotementHasAccotementDroite'] == "OUI") {
                     $data['accotementDroite'] = "Droite";
@@ -225,6 +221,11 @@ class RouteController extends AbstractController
                 }
 
                 
+                $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
+                $dateInformationFosse->format('Y-m-d H:i:s');
+                $data['dateInformationFosse'] = $dateInformationFosse;
+                $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
+                $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
 
                 if ($request->get('coteFosseGauche') == "OUI") {
 
@@ -239,7 +240,7 @@ class RouteController extends AbstractController
                     $data['fosseNonRevetuEncombrementGauche'] = $request->get('fosseNonRevetuEncombrementGauche');
         
                     
-                    $data['coteFosseGauche'] = $request->get('coteFosseGauche');
+                    $data['coteFosseGauche'] = "Gauche";
 
                     $idFosseGauche = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Gauche");
                 }
@@ -256,7 +257,7 @@ class RouteController extends AbstractController
                     $data['fosseNonRevetuEncombrementDroite'] = $request->get('fosseNonRevetuEncombrementDroite');
         
                     
-                    $data['coteFosseDroite'] = $request->get('coteFosseDroite');
+                    $data['coteFosseDroite'] = "Droite";
 
                     $idFosseDroite = $routeService->addInfrastructureRouteFosse($idInfra, $data, "Droite");
                 }
@@ -398,13 +399,11 @@ class RouteController extends AbstractController
                 */
                 //$idDonneAnnexe = $routeService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
-            $idAccotementGauche = null;
-            $idAccotementDroite = null;
-            $idFosseGauche = null;
-            $idFosseDroite = null;
+
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
+                'idInfra'=> $idInfra,
                 'sqlTravaux'=> $idTravaux,
                 'sqlFoncier'=> $idFoncier,
                 'sqlEtude'=> $idEtude,

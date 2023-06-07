@@ -230,7 +230,7 @@ class RouteController extends AbstractController
                 if ($request->get('coteFosseGauche') == "OUI") {
 
                     $data['fosseRevetuGauche'] = null;
-                    if (null != $request->get('fosseRevetuGauche') && '' != $request->get('fosseRevetuDroite') && !empty($request->get('fosseRevetuDroite'))) {
+                    if (null != $request->get('fosseRevetuGauche') && '' != $request->get('fosseRevetuGauche') && !empty($request->get('fosseRevetuGauche'))) {
                         $data['fosseRevetuGauche'] = $request->get('fosseRevetuGauche');
                     }
                     

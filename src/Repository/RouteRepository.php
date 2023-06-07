@@ -251,12 +251,12 @@ class RouteRepository extends ServiceEntityRepository
         $sql = "INSERT into t_ro_08_fosse (cote, revetue_degradation_du_fosse, revetue_section_bouche, non_revetue_profil, non_revetue_encombrement, id_infrastructure,  revetu, date_information, source_information, mode_acquisition_information) VALUES ('".$cote."', '".$revetueDegradationFosse."', '".$revetueSectionBouche."', '".$nonRevetueProfil."', '".$nonRevetueEncombrement."', ".intval($idInfrastructure).", '".$revetu."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
 
 
-        /*$conn = $this->entityManager->getConnection();
+        $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();
-        $id = $conn->lastInsertId();*/
+        $id = $conn->lastInsertId();
 
-        return $sql;
+        return $id;
     }
 
     public function addInfrastructureRouteFoncier($statut = null, $numeroReference = null, $nomProprietaire = null, $idInfrastructure = null)

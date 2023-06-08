@@ -400,9 +400,7 @@ class RouteController extends AbstractController
                 //$idDonneAnnexe = $routeService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
+
                 /*'idInfra'=> $idInfra,
                 'sqlTravaux'=> $idTravaux,
                 'sqlFoncier'=> $idFoncier,
@@ -412,6 +410,9 @@ class RouteController extends AbstractController
                 'sqlAccotementDroite'=> $idAccotementDroite,
                 'sqlFosseGauche'=> $idFosseGauche,
                 'sqlFosseDroite'=> $idFosseDroite,*/
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
                 'message' => "route created_successfull"
             ]));
 

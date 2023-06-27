@@ -230,43 +230,46 @@ class DalotController extends AbstractController
                 $idFoncier = $dalotService->addInfrastructureRouteFoncier($idInfra, $data);*/
 
                 //Travaux 
-                $data['objetTravaux'] = $request->get('objetTravaux');
-                $data['consistanceTravaux'] = $request->get('consistanceTravaux');
-                //$data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
-                $data['maitreOuvrageTravaux'] = $request->get('maitreOuvrageTravaux');
-                $data['maitreOuvrageDelegueTravaux'] = $request->get('maitreOuvrageDelegueTravaux');
-                $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
-                $data['modePassationTravaux'] = $request->get('modePassationTravaux');
-                $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
-                $data['montantTravaux'] = $request->get('montantTravaux');
-                $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
-                //$data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
+                if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true")) {
+                    $data['objetTravaux'] = $request->get('objetTravaux');
+                    $data['consistanceTravaux'] = $request->get('consistanceTravaux');
+                    //$data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
+                    $data['maitreOuvrageTravaux'] = $request->get('maitreOuvrageTravaux');
+                    $data['maitreOuvrageDelegueTravaux'] = $request->get('maitreOuvrageDelegueTravaux');
+                    $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
+                    $data['modePassationTravaux'] = $request->get('modePassationTravaux');
+                    $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
+                    $data['montantTravaux'] = $request->get('montantTravaux');
+                    $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
+                    //$data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
+                    
+                    $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
+                    $dateContratTravaux->format('Y-m-d H:i:s');
+                    $data['dateContratTravaux'] = $dateContratTravaux;
+
+                    $dateOrdreServiceTravaux = new \DateTime($request->get('dateOrdreServiceTravaux'));
+                    $dateOrdreServiceTravaux->format('Y-m-d H:i:s');
+
+                    $data['dateOrdreServiceTravaux'] = $dateOrdreServiceTravaux;
+                    $data['idTitulaireTravaux'] = $request->get('idTitulaireTravaux');//idTitulaire
+                    $data['resultatTravaux'] = $request->get('resultatTravaux');
+                    $data['motifRuptureContratTravaux'] = $request->get('motifRuptureContratTravaux');
+                    $dateReceptionProvisoireTravaux = new \DateTime($request->get('dateReceptionProvisoireTravaux'));
+                    $dateReceptionProvisoireTravaux->format('Y-m-d H:i:s');
+                    $data['dateReceptionProvisoireTravaux'] = $dateReceptionProvisoireTravaux;
+                    $dateReceptionDefinitiveTravaux = new \DateTime($request->get('dateReceptionDefinitiveTravaux'));
+                    $dateReceptionDefinitiveTravaux->format('Y-m-d H:i:s');
+                    $data['dateReceptionDefinitiveTravaux'] = $dateReceptionDefinitiveTravaux;
+                    $data['ingenieurReceptionProvisoireTravaux'] = $request->get('ingenieurReceptionProvisoireTravaux');
+                    $data['ingenieurReceptionDefinitiveTravaux'] = $request->get('ingenieurReceptionDefinitiveTravaux');
+                    $data['dateInformationTravaux'] = new \DateTime();
+                    $data['sourceInformationTravaux'] = $request->get('sourceInformationTravaux');
+                    $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
+                    $data['bailleurTravaux'] = $request->get('bailleurTravaux');
+
+                    $idTravaux = $dalotService->addInfrastructureTravaux($idInfra, $data);
+                }
                 
-                $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
-                $dateContratTravaux->format('Y-m-d H:i:s');
-                $data['dateContratTravaux'] = $dateContratTravaux;
-
-                $dateOrdreServiceTravaux = new \DateTime($request->get('dateOrdreServiceTravaux'));
-                $dateOrdreServiceTravaux->format('Y-m-d H:i:s');
-
-                $data['dateOrdreServiceTravaux'] = $dateOrdreServiceTravaux;
-                $data['idTitulaireTravaux'] = $request->get('idTitulaireTravaux');//idTitulaire
-                $data['resultatTravaux'] = $request->get('resultatTravaux');
-                $data['motifRuptureContratTravaux'] = $request->get('motifRuptureContratTravaux');
-                $dateReceptionProvisoireTravaux = new \DateTime($request->get('dateReceptionProvisoireTravaux'));
-                $dateReceptionProvisoireTravaux->format('Y-m-d H:i:s');
-                $data['dateReceptionProvisoireTravaux'] = $dateReceptionProvisoireTravaux;
-                $dateReceptionDefinitiveTravaux = new \DateTime($request->get('dateReceptionDefinitiveTravaux'));
-                $dateReceptionDefinitiveTravaux->format('Y-m-d H:i:s');
-                $data['dateReceptionDefinitiveTravaux'] = $dateReceptionDefinitiveTravaux;
-                $data['ingenieurReceptionProvisoireTravaux'] = $request->get('ingenieurReceptionProvisoireTravaux');
-                $data['ingenieurReceptionDefinitiveTravaux'] = $request->get('ingenieurReceptionDefinitiveTravaux');
-                $data['dateInformationTravaux'] = new \DateTime();
-                $data['sourceInformationTravaux'] = $request->get('sourceInformationTravaux');
-                $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
-                $data['bailleurTravaux'] = $request->get('bailleurTravaux');
-
-                $idTravaux = $dalotService->addInfrastructureTravaux($idInfra, $data);
                 // Fournitures
                 /*$data['objetContratFourniture'] = $request->get('objetContratFourniture');
                 $data['consistanceContratFourniture'] = $request->get('consistanceContratFourniture');
@@ -303,42 +306,45 @@ class DalotController extends AbstractController
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
                 $idFourniture = $dalotService->addInfrastructureRouteFourniture($idInfra, $data);*/
                 // Etudes
-                $data['objetContratEtude'] = $request->get('objetContratEtude');
-                $data['consistanceContratEtude'] = $request->get('consistanceContratEtude');
-                $data['entiteEtude'] = $request->get('entiteEtude');
-                $data['idTitulaireEtude'] = $request->get('idTitulaireEtude');
-                $data['montantContratEtude'] = $request->get('montantContratEtude');
-                $data['numeroContratEtude'] = $request->get('numeroContratEtude');
-                $data['modePassationEtude'] = $request->get('modePassationEtude');
-                $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
+                if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true")) {
+                    $data['objetContratEtude'] = $request->get('objetContratEtude');
+                    $data['consistanceContratEtude'] = $request->get('consistanceContratEtude');
+                    $data['entiteEtude'] = $request->get('entiteEtude');
+                    $data['idTitulaireEtude'] = $request->get('idTitulaireEtude');
+                    $data['montantContratEtude'] = $request->get('montantContratEtude');
+                    $data['numeroContratEtude'] = $request->get('numeroContratEtude');
+                    $data['modePassationEtude'] = $request->get('modePassationEtude');
+                    $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
 
-                $dateContratEtude = new \DateTime($request->get('dateContratEtude'));
-                $dateContratEtude->format('Y-m-d H:i:s');
+                    $dateContratEtude = new \DateTime($request->get('dateContratEtude'));
+                    $dateContratEtude->format('Y-m-d H:i:s');
 
-                $data['dateContratEtude'] = $dateContratEtude;
+                    $data['dateContratEtude'] = $dateContratEtude;
 
-                $dateOrdreServiceEtude = new \DateTime($request->get('dateOrdreServiceEtude'));
-                $dateOrdreServiceEtude->format('Y-m-d H:i:s');
+                    $dateOrdreServiceEtude = new \DateTime($request->get('dateOrdreServiceEtude'));
+                    $dateOrdreServiceEtude->format('Y-m-d H:i:s');
 
-                $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
-                $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
-                /*if (null != $request->get('resultatPrestationEtude') && strlen($request->get('resultatPrestationEtude')) <= 20) {
+                    $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
                     $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
-                } else {
-                   throw new \Exception("Resultat prestation etude doit etre une chaine au maximal 20 caractere");
-                }*/
+                    /*if (null != $request->get('resultatPrestationEtude') && strlen($request->get('resultatPrestationEtude')) <= 20) {
+                        $data['resultatPrestationEtude'] = $request->get('resultatPrestationEtude');
+                    } else {
+                    throw new \Exception("Resultat prestation etude doit etre une chaine au maximal 20 caractere");
+                    }*/
+                    
+                    $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');
+                    
+                    $dateInformationEtude = new \DateTime($request->get('dateInformationEtude'));
+                    $dateInformationEtude->format('Y-m-d H:i:s');
+                    
+                    $data['dateInformationEtude'] = $dateInformationEtude;
+                    $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
+                    $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
+                // $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
+                    $data['bailleurEtude'] = $request->get('bailleurEtude');
+                    $idEtude = $dalotService->addInfrastructureEtudes($idInfra, $data);
+                }
                 
-                $data['motifRuptureContratEtude'] = $request->get('motifRuptureContratEtude');
-                
-                $dateInformationEtude = new \DateTime($request->get('dateInformationEtude'));
-                $dateInformationEtude->format('Y-m-d H:i:s');
-                
-                $data['dateInformationEtude'] = $dateInformationEtude;
-                $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
-                $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
-               // $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
-                $data['bailleurEtude'] = $request->get('bailleurEtude');
-                $idEtude = $dalotService->addInfrastructureEtudes($idInfra, $data);
                 /**
                  * End Administrative data
                 */

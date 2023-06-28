@@ -364,8 +364,7 @@ class RouteController extends AbstractController
                 }
                 
                 // Etudes
-                dd($request->get('hasEtude'), $request);
-                if (('null' != $request->get('hasEtude') && null != $request->get('hasEtude')) ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
+                if (('null' != $request->get('hasEtude') && null != $request->get('hasEtude')) && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
                     $data['consistanceContratEtude'] = $request->get('consistanceContratEtude');
                     $data['entiteEtude'] = $request->get('entiteEtude');

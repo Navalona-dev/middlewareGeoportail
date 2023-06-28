@@ -270,7 +270,7 @@ class RouteController extends AbstractController
                  */
                 //Foncier
                 
-                if (('null' != $request->get('hasFoncier') && null != $request->get('hasFoncier'))) {
+                if (('null' != $request->get('hasFoncier') && null != $request->get('hasFoncier')) && ($request->get('hasFoncier') == true || $request->get('hasFoncier') == "true") && "false" != $request->get('hasFoncier')) {
 
                     dd($request->get('hasFoncier'));
                     $data['statut'] = $request->get('statutFoncier');

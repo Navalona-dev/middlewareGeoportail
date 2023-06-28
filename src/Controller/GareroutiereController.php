@@ -222,7 +222,7 @@ class GareroutiereController extends AbstractController
                  * Administrative data
                  */
                 //Foncier
-                if (null != $request->get('hasFoncier') && ($request->get('hasFoncier') == true || $request->get('hasFoncier') == "true")) {
+                if (null != $request->get('hasFoncier') && ($request->get('hasFoncier') == true || $request->get('hasFoncier') == "true") && "false" != $request->get('hasFoncier')) {
                     $data['statut'] = $request->get('statutFoncier');
                     $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                     $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
@@ -234,7 +234,7 @@ class GareroutiereController extends AbstractController
                 
 
                 //Travaux 
-                if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true")) {
+                if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true") && "false" != $request->get('hasTravaux')) {
                     $data['objetTravaux'] = $request->get('objetTravaux');
                     $data['consistanceTravaux'] = $request->get('consistanceTravaux');
                     //$data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
@@ -310,7 +310,7 @@ class GareroutiereController extends AbstractController
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
                 $idFourniture = $gareroutiereService->addInfrastructureRouteFourniture($idInfra, $data);*/
                 // Etudes
-                if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true")) {
+                if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
                     $data['consistanceContratEtude'] = $request->get('consistanceContratEtude');
                     $data['entiteEtude'] = $request->get('entiteEtude');

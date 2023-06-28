@@ -271,8 +271,6 @@ class RouteController extends AbstractController
                 //Foncier
                 
                 if (('null' != $request->get('hasFoncier') && null != $request->get('hasFoncier')) && ($request->get('hasFoncier') == true || $request->get('hasFoncier') == "true") && "false" != $request->get('hasFoncier')) {
-
-                    dd($request->get('hasFoncier'));
                     $data['statut'] = $request->get('statutFoncier');
                     $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                     $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
@@ -281,7 +279,7 @@ class RouteController extends AbstractController
                 }
                
                 //Travaux 
-                if (('null' != $request->get('hasTravaux') && null != $request->get('hasTravaux')) && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true")) {
+                if (('null' != $request->get('hasTravaux') && null != $request->get('hasTravaux')) && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true") && "false" != $request->get('hasTravaux')) {
 
                     $data['objetTravaux'] = $request->get('objetTravaux');
                     $data['consistanceTravaux'] = $request->get('consistanceTravaux');
@@ -328,7 +326,7 @@ class RouteController extends AbstractController
                 }
                 
                 // Fournitures
-                if (('null' != $request->get('hasFourniture') && null != $request->get('hasFourniture')) && ($request->get('hasFourniture') == true || $request->get('hasFourniture') == "true")) {
+                if (('null' != $request->get('hasFourniture') && null != $request->get('hasFourniture')) && ($request->get('hasFourniture') == true || $request->get('hasFourniture') == "true") && "false" != $request->get('hasFourniture')) {
                     $data['objetContratFourniture'] = $request->get('objetContratFourniture');
                     $data['consistanceContratFourniture'] = $request->get('consistanceContratFourniture');
                     $data['materielsFourniture'] = $request->get('materielsFourniture');
@@ -366,7 +364,7 @@ class RouteController extends AbstractController
                 }
                 
                 // Etudes
-                if (('null' != $request->get('hasEtude') && null != $request->get('hasEtude')) ($request->get('hasEtude') == true || $request->get('hasEtude') == "true")) {
+                if (('null' != $request->get('hasEtude') && null != $request->get('hasEtude')) ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
                     $data['consistanceContratEtude'] = $request->get('consistanceContratEtude');
                     $data['entiteEtude'] = $request->get('entiteEtude');

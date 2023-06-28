@@ -270,11 +270,12 @@ class RouteController extends AbstractController
                  */
                 //Foncier
                 
-                if (('null' != $request->get('hasFoncier') && null != $request->get('hasFoncier')) && ($request->get('hasFoncier') == true || $request->get('hasFoncier') == "true")) {
+                if (('null' != $request->get('hasFoncier') && null != $request->get('hasFoncier'))) {
+
+                    dd($request->get('hasFoncier'));
                     $data['statut'] = $request->get('statutFoncier');
                     $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                     $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
-                    dd($request->get('hasFoncier'));
                     $idFoncier = $routeService->addInfrastructureRouteFoncier($idInfra, $data);
     
                 }

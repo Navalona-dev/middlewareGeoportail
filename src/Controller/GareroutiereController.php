@@ -40,6 +40,7 @@ class GareroutiereController extends AbstractController
     private $pathPublic = null;
     private $pathForNamePhotoGareroutiere = null;
     private $kernelInterface;
+    private $directoryCopy = null;
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "Gareroutiere/";
@@ -47,6 +48,7 @@ class GareroutiereController extends AbstractController
         $this->pathPublic = $params->get('pathPublic');
         $this->pathForNamePhotoGareroutiere = $params->get('pathForNamePhotoGareroutiere');
         $this->kernelInterface = $kernelInterface;
+        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic')."Gareroutiere/";
     }
 
     /**
@@ -159,13 +161,13 @@ class GareroutiereController extends AbstractController
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
                 $directory1 = $this->pathImageGareroutiere . "photo1/";
-                $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo1/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
 
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                move_uploaded_file($tmpPathName1, $directoryPublic.$nomPhoto1);
+                copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
                 $data['photo1'] = $this->pathForNamePhotoGareroutiere."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
@@ -175,12 +177,12 @@ class GareroutiereController extends AbstractController
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
                 $directory2 = $this->pathImageGareroutiere . "photo2/";
-                $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo2/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                move_uploaded_file($tmpPathName2, $directoryPublic.$nomPhoto2);
+                copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
                 $data['photo2'] = $this->pathForNamePhotoGareroutiere."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
@@ -190,12 +192,12 @@ class GareroutiereController extends AbstractController
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
                 $directory3 = $this->pathImageGareroutiere . "photo3/";
-                $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "route/photo3/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                move_uploaded_file($tmpPathName3, $directoryPublic.$nomPhoto3);
+                copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
                 $data['photo3'] = $this->pathForNamePhotoGareroutiere."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;

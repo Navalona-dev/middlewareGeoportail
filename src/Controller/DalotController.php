@@ -161,7 +161,7 @@ class DalotController extends AbstractController
                 $tmpPathName1 = $uploadedFile1->getPathname();
                 $directory1 = $this->pathImageDalot . "photo1/";
                 $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "dalot/photo1/";
-                $directoryPublicCopy = $this->kernelInterface->getProjectDir()."public".$this->pathPublic . "dalot/photo1/";
+                $directoryPublicCopy = $this->kernelInterface->getProjectDir()."/public".$this->pathPublic . "dalot/photo1/";
 
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
@@ -179,7 +179,7 @@ class DalotController extends AbstractController
                 $tmpPathName2 = $uploadedFile2->getPathname();
                 $directory2 = $this->pathImageDalot . "photo2/";
                 $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "dalot/photo2/";
-                $directoryPublicCopy = $this->kernelInterface->getProjectDir()."public".$this->pathPublic . "dalot/photo2/";
+                $directoryPublicCopy = $this->kernelInterface->getProjectDir()."/public".$this->pathPublic . "dalot/photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
@@ -196,7 +196,7 @@ class DalotController extends AbstractController
                 $tmpPathName3 = $uploadedFile3->getPathname();
                 $directory3 = $this->pathImageDalot . "photo3/";
                 $directoryPublic = $this->kernelInterface->getProjectDir().$this->pathPublic . "dalot/photo3/";
-                $directoryPublicCopy = $this->kernelInterface->getProjectDir()."public".$this->pathPublic . "dalot/photo3/";
+                $directoryPublicCopy = $this->kernelInterface->getProjectDir()."/public".$this->pathPublic . "dalot/photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();

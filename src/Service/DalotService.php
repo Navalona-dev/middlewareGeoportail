@@ -51,7 +51,7 @@ class DalotService
 
     public function getOneInfraInfo($infraId)
     {
-        $routes = $this->dalotRepository->getOneInfraInfo($infraId);
+        $routes = $this->dalotRepository->getOneInfraInfo(intval($infraId));
         if (count($routes) > 0) {
             return $routes;
         }

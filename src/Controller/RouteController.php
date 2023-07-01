@@ -772,7 +772,7 @@ class RouteController extends AbstractController
         try {
             $infraId = $request->get('id');
 
-            $routes = $routeService->getOneInfraInfo($infraId);
+            $routes = $routeService->getOneInfraInfo(intval($infraId));
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

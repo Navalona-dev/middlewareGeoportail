@@ -578,7 +578,7 @@ class GareroutiereController extends AbstractController
         try {
             $infraId = $request->get('id');
 
-            $routes = $gareroutiereService->getOneInfraInfo($infraId);
+            $routes = $gareroutiereService->getOneInfraInfo(intval($infraId));
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

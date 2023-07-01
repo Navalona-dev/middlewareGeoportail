@@ -443,7 +443,7 @@ class DalotController extends AbstractController
         try {
             $infraId = $request->get('id');
 
-            $routes = $dalotService->getOneInfraInfo($infraId);
+            $routes = $dalotService->getOneInfraInfo(intval($infraId));
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

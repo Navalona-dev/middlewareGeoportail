@@ -60,7 +60,7 @@ class PontService
 
     public function getOneInfraInfo($infraId)
     {
-        $routes = $this->pontRepository->getOneInfraInfo($infraId);
+        $routes = $this->pontRepository->getOneInfraInfo(intval($infraId));
         if (count($routes) > 0) {
             return $routes;
         }

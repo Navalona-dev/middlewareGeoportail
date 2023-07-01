@@ -60,7 +60,7 @@ class GareroutiereService
 
     public function getOneInfraInfo($infraId)
     {
-        $routes = $this->gareroutiereRepository->getOneInfraInfo($infraId);
+        $routes = $this->gareroutiereRepository->getOneInfraInfo(intval($infraId));
         if (count($routes) > 0) {
             return $routes;
         }

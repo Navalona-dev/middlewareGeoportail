@@ -609,7 +609,7 @@ class PontController extends AbstractController
         try {
             $infraId = $request->get('id');
 
-            $routes = $pontService->getOneInfraInfo($infraId);
+            $routes = $pontService->getOneInfraInfo(intval($infraId));
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

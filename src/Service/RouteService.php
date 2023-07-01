@@ -49,6 +49,24 @@ class RouteService
         return false;
     }
 
+    public function getAllInfrastructuresRouteMinifie()
+    {
+        $routes = $this->routeRepository->getAllInfrastructuresRouteMinifie();
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
+    }
+    
+    public function getOneInfraInfo($infraId)
+    {
+        $routes = $this->routeRepository->getOneInfraInfo($infraId);
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function getAccotementRoute($idRoute = null)
     {
         if (null != $idRoute) {

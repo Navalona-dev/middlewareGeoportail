@@ -49,6 +49,24 @@ class PontService
         return 0;
     }
 
+    public function getAllInfrastructuresMinifie()
+    {
+        $routes = $this->pontRepository->getAllInfrastructuresMinifie();
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
+    public function getOneInfraInfo($infraId)
+    {
+        $routes = $this->pontRepository->getOneInfraInfo($infraId);
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function getAllInfrastructuresBaseRoute()
     {
         $routes = $this->pontRepository->getAllInfrastructuresBaseRoute();

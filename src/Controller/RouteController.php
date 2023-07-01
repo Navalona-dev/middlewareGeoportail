@@ -697,6 +697,139 @@ class RouteController extends AbstractController
     }
 
     /**
+     * @Route("/api/infra/route/liste/minifie", name="route_list_minifie", methods={"GET"})
+     */
+    public function listeRouteMinifie(Request $request, RouteService $routeService)
+    {    
+        $response = new Response();
+        
+        try {
+
+            $routes = $routeService->getAllInfrastructuresRouteMinifie();
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "route list_successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $routes
+            ]));
+            
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
+     * @Route("/api/infra/route/info", name="route_info", methods={"POST"})
+     */
+    public function getOneInfraInfo(Request $request, RouteService $routeService)
+    {    
+        $response = new Response();
+        
+        try {
+            $infraId = $request->get('id');
+
+            $routes = $routeService->getOneInfraInfo($infraId);
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $routes
+            ]));
+            
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
      * @Route("/api/infra/route/base/liste", name="route_base_list", methods={"GET"})
      */
     public function listeBaseRoute(Request $request, RouteService $routeService)

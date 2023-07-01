@@ -39,6 +39,28 @@ class GareroutiereRepository extends ServiceEntityRepository
         return $result->fetchAll();
     }
 
+    public function getAllInfrastructuresMinifie()
+    {
+        $sql = 'SELECT infra.id as infra_id, infra.capacite_de_voiture_accueillies, infra.nom, infra.localite, infra.code, infra.date_information,  ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_gr_01_infrastructure as infra';
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+    }
+
+    public function getOneInfraInfo($infraId)
+    {
+        $sql = "SELECT infra.id as infra_id, infra.categorie, infra.capacite_de_voiture_accueillies, infra.nom, infra.localite, infra.commune_terrain, infra.precision_categorie, infra.code, infra.date_information, infra.source_information as source_info_infra, infra.district, infra.region,  ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.photo_name1, infra.photo_name2, infra.photo_name3, situation.id as situation_id, situation.etat as etat, situation.fonctionnel as situation_fonctionnel, situation.raison as motif_etat, situation.date_information as situation_data_info, situation.source_information as situation_src_info, situation.mode_acquisition_information as situation_mode_aquis_info, dc.id as data_id, dc.revetement_du_parking as revetement_du_parking, dc.etat_du_parking, dc.etat_global_des_accessoires, dc.date_information, dc.source_information as source_information_data, dc.mode_acquisition_information as mode_acquisition_information_data, trav.id as travaux_id, trav.bailleur as bailleur_travaux, trav.objet as travaux_objet, trav.consistance_travaux as travaux_consistance_travaux, trav.maitre_ouvrage as travaux_maitre_ouvrage, trav.maitre_ouvrage_delegue as travaux_maitre_ouvrage_delegue, trav.maitre_oeuvre as travaux_maitre_oeuvre, trav.id_controle_surveillance as travaux_id_controle_surveillance, trav.mode_passation as travaux_mode_passation, trav.porte_appel_offre as travaux_porte_appel_offre, trav.montant as travaux_montant, trav.numero_contrat as travaux_numero_contrat, trav.date_contrat as travaux_date_contrat, trav.date_ordre_service as travaux_date_ordre_service, trav.id_titulaire as travaux_id_titulaire, trav.resultat_travaux as travaux_resultat_travaux, trav.motif_rupture_contrat as travaux_motif_rupture_contrat, trav.date_reception_provisoire as travaux_date_reception_provisoire, trav.date_reception_definitive as travaux_date_reception_definitive, trav.ingenieur_reception_provisoire as travaux_ingenieur_reception_provisoire, trav.ingenieur_reception_definitive as travaux_ingenieur_reception_definitive, trav.date_information as travaux_date_information, trav.source_information as travaux_source_information, trav.mode_acquisition_information as travaux_mode_acquisition_information, etude.id as etude_id, etude.consistance_contrat as consistance_contrat_etude, etude.bailleur as bailleur_etude, etude.objet_contrat as etude_objet_contrat, etude.entite as etude_entite, etude.id_titulaire as etude_id_titulaire, etude.montant_contrat as etude_montant_contrat, etude.numero_contrat as etude_numero_contrat, etude.mode_passation as etude_mode_passation, etude.porte_appel_offre as etude_porte_appel_offre, etude.date_contrat as etude_date_contrat, etude.date_ordre_service as etude_date_ordre_service, etude.resultat_prestation as etude_resultat_prestation, etude.motif_rupture_contrat as etude_motif_rupture_contrat, etude.date_information as etude_date_information, etude.source_information as etude_source_information, etude.mode_acquisition_information as etude_mode_acquisition_information, etude.precision_consitance_contrat as etude_precision_consitance_contrat, foncier.id as foncier_id, foncier.statut_foncier as foncier_statut_foncier, foncier.proprietaire as foncier_proprietaire, foncier.reference_dossier as foncier_reference_dossier, foncier.date_information as foncier_date_information, foncier.source_information as foncier_source_information, foncier.mode_acquisition_information as foncier_mode_acquisition_information  FROM t_gr_01_infrastructure as infra LEFT JOIN t_gr_03_situation as situation ON infra.id = situation.id_infrastructure  LEFT JOIN t_gr_06_donnees_collectees as dc ON infra.id = dc.id_infrastructure  LEFT JOIN t_gr_08_travaux as trav ON infra.id = trav.id_infrastructure LEFT JOIN t_gr_10_etudes as etude ON infra.id = etude.id_infrastructure LEFT JOIN t_gr_05_foncier as foncier ON infra.id = foncier.id_infrastructure where infra.id = ".$infraId."";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+    }
+
    /* public function getAllInfrastructuresBaseRoute()
     {
         $sql = "SELECT ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infrabaseroute.nom as rattache  FROM y_liste_route as infrabaseroute";

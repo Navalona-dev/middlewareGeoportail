@@ -49,6 +49,24 @@ class DalotService
         return 0;
     }
 
+    public function getOneInfraInfo($infraId)
+    {
+        $routes = $this->dalotRepository->getOneInfraInfo($infraId);
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
+    public function getAllInfrastructuresMinifie()
+    {
+        $routes = $this->dalotRepository->getAllInfrastructuresMinifie();
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function getAllInfrastructuresBaseRoute()
     {
         $routes = $this->dalotRepository->getAllInfrastructuresBaseRoute();

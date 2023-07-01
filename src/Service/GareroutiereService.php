@@ -49,6 +49,24 @@ class GareroutiereService
         return 0;
     }
 
+    public function getAllInfrastructuresMinifie()
+    {
+        $routes = $this->gareroutiereRepository->getAllInfrastructuresMinifie();
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
+    public function getOneInfraInfo($infraId)
+    {
+        $routes = $this->gareroutiereRepository->getOneInfraInfo($infraId);
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function getAllInfrastructuresBaseRoute()
     {
         $routes = $this->gareroutiereRepository->getAllInfrastructuresBaseRoute();

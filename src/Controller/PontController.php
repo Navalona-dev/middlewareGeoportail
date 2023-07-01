@@ -235,7 +235,7 @@ class PontController extends AbstractController
                 $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
-                
+
                 $data['photo3'] = $this->pathForNamePhotoPont."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }
@@ -470,7 +470,7 @@ class PontController extends AbstractController
     /**
      * @Route("/api/infra/pont/liste", name="pont_list", methods={"GET"})
      */
-    public function listeDalot(Request $request, PontService $pontService)
+    public function listePont(Request $request, PontService $pontService)
     {    
         $response = new Response();
         
@@ -533,4 +533,136 @@ class PontController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/api/infra/pont/liste/minifie", name="pont_list_minifie", methods={"GET"})
+     */
+    public function listePontMinifie(Request $request, PontService $pontService)
+    {    
+        $response = new Response();
+        
+        try {
+
+            $routes = $pontService->getAllInfrastructuresMinifie();
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Pont route list_successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $routes
+            ]));
+            
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
+     * @Route("/api/infra/pont/info", name="pont_info", methods={"POST"})
+     */
+    public function getOneInfraInfo(Request $request, PontService $pontService)
+    {    
+        $response = new Response();
+        
+        try {
+            $infraId = $request->get('id');
+
+            $routes = $pontService->getOneInfraInfo($infraId);
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $routes
+            ]));
+            
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
 }

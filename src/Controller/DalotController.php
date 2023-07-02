@@ -653,7 +653,7 @@ class DalotController extends AbstractController
                 $colonneInteger = ['id', 'gid', 'id_infrastructure', 'id_controle_surveillance', 'montant', 'id_titulaire', 'id_ingenieurs_reception_provisoire',
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
                 $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
-                
+
                 if (count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
@@ -716,7 +716,120 @@ class DalotController extends AbstractController
                         $i++;
                     }
 
-                    $idEtat = $dalotService->updateInfrastructureEtat($idEtat, $updateColonneEtat);
+                    $idEtat = $dalotService->updateInfrastructureTables('t_dar_03_etat', $idEtat, $updateColonneEtat);
+                }
+
+                // Data collecte
+                $hasDataChanged = false;
+                $updateColonneData = "";
+                $idData = 0;
+                if (count($data['data_collecte']) > 0) {
+                    $hasDataChanged = true;
+                    $i = 0;
+                    foreach ($data['data_collecte'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idData = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['data_collecte']) - 1 != $i) {
+                                $updateColonneData .= $colonne."="."$value".", ";
+                            } else {
+                                $updateColonneData .= $colonne."="."$value";
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $idData = $dalotService->updateInfrastructureTables('t_dar_04_donnees_collectees', $idData, $updateColonneData);
+                }
+                // Travaux
+                $hasTravauxChanged = false;
+                $updateColonneTravaux = "";
+                $idTravaux = 0;
+                if (count($data['travaux']) > 0) {
+                    $hasTravauxChanged = true;
+                    $i = 0;
+                    foreach ($data['travaux'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idTravaux = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['travaux']) - 1 != $i) {
+                                $updateColonneTravaux .= $colonne."="."$value".", ";
+                            } else {
+                                $updateColonneTravaux .= $colonne."="."$value";
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $idTravaux = $dalotService->updateInfrastructureTables('t_dar_05_travaux', $idTravaux, $updateColonneTravaux);
+                }
+
+                // Travaux
+                $hasEtudeChanged = false;
+                $updateColonneEtudes = "";
+                $idEtudes = 0;
+                if (count($data['etudes']) > 0) {
+                    $hasEtudeChanged = true;
+                    $i = 0;
+                    foreach ($data['etudes'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idEtudes = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['etudes']) - 1 != $i) {
+                                $updateColonneEtudes .= $colonne."="."$value".", ";
+                            } else {
+                                $updateColonneEtudes .= $colonne."="."$value";
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $idEtudes = $dalotService->updateInfrastructureTables('t_dar_07_etudes', $idEtudes, $updateColonneEtudes);
                 }
             }
         

@@ -40,16 +40,16 @@ class DalotRepository extends ServiceEntityRepository
         return $idInfra;
     }
 
-    public function updateInfrastructureEtat($idEtat = null, $updateColonneEtat = null)
+    public function updateInfrastructureTables($table = null, $idRow = null, $updateColonne = null)
     {
         $dateInfo = new \DateTime();
-        $sql = "UPDATE t_dar_03_etat SET ".$updateColonneEtat." where id = ".$idEtat."";
+        $sql = "UPDATE ".$table." SET ".$updateColonne." where id = ".$idRow."";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->executeQuery();
 
-        return $idEtat;
+        return $idRow;
     }
 
     public function getAllInfrastructures()

@@ -649,7 +649,11 @@ class DalotController extends AbstractController
                 $hasInfraChanged = false;
                 $updateColonneInfra = "";
                 $idInfra = 0;
-                $colonneInteger = ['id', 'gid'];
+                
+                $colonneInteger = ['id', 'gid', 'id_infrastructure', 'id_controle_surveillance', 'montant', 'id_titulaire', 'id_ingenieurs_reception_provisoire',
+                'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
+                $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
+                
                 if (count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
@@ -660,6 +664,8 @@ class DalotController extends AbstractController
                                 $idInfra = $value;
                             }
 
+                        } elseif(in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
                         } else {
                             $value = "'$value'";
                         }
@@ -684,7 +690,7 @@ class DalotController extends AbstractController
                     $i = 0;
                     foreach ($data['etat'] as $colonne => $value) {
 
-                        $tabColonne = explode("_", $colonne);
+                        $tabColonne = explode("__", $colonne);
                         $colonne = $tabColonne[1];
 
                         if ($colonne == "id" || $colonne == "gid") {
@@ -693,6 +699,8 @@ class DalotController extends AbstractController
                         
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
                         } else {
                             $value = "'$value'";
                         }

@@ -40,6 +40,12 @@ class DalotService
         return $result;
     }
 
+    public function addInfoInTableByInfrastructure($table, $colonnes, $values)
+    {
+        $result = $this->dalotRepository->addInfoInTableByInfrastructure($table, $colonnes, $values);
+        return $result;
+    }
+
     public function updateInfrastructureTables($table , $idRow, $updateColonne)
     {
         $result = $this->dalotRepository->updateInfrastructureTables($table, $idRow, $updateColonne);

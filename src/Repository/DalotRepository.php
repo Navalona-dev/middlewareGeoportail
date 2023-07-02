@@ -212,6 +212,18 @@ class DalotRepository extends ServiceEntityRepository
         }  
     }
 
+    public function addInfoInTableByInfrastructure($table, $colonnes, $values)
+    {   
+        $sql = "INSERT into ".$table." (".$colonnes.") VALUES (".$values.")";
+        dd($sql);
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
     public function addInfrastructureEtat($idInfrastructure = null, $etat = null, $sourceInformation = null, $modeAcquisitionInformation = null, $fonctionnel = null, $motif = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);

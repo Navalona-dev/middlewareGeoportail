@@ -684,6 +684,8 @@ class DalotController extends AbstractController
                 // Etat
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
                 $idEtat = 0;
                 if (array_key_exists('etat', $data) && count($data['etat']) > 0) {
                     $hasEtatChanged = true;
@@ -708,15 +710,22 @@ class DalotController extends AbstractController
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etat']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
                             } else {
                                 $updateColonneEtat .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
                             }
-                            
                         } 
                         $i++;
                     }
-
-                    $idEtat = $dalotService->updateInfrastructureTables('t_dar_03_etat', $idEtat, $updateColonneEtat);
+                    if ($idEtat == 0) {
+                        $idEtat = $dalotService->addInfoInTableByInfrastructure('t_dar_03_etat', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idEtat = $dalotService->updateInfrastructureTables('t_dar_03_etat', $idEtat, $updateColonneEtat);
+                    } 
+                    
                 }
 
                 // Data collecte

@@ -44,7 +44,7 @@ class DalotRepository extends ServiceEntityRepository
     {
         $dateInfo = new \DateTime();
         $sql = "UPDATE t_dar_03_etat SET ".$updateColonneEtat." where id = ".$idEtat."";
-        
+        dd($sql);
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->executeQuery();

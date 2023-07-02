@@ -658,9 +658,9 @@ class DalotController extends AbstractController
                         }
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                $updateColonneInfra .= $colonne."="."$value".", ";
+                                $updateColonneInfra .= $colonne."="."`$value`".", ";
                             } else {
-                                $updateColonneInfra .= $colonne."="."$value";
+                                $updateColonneInfra .= $colonne."="."`$value`";
                             }
                             
                         } 
@@ -684,9 +684,9 @@ class DalotController extends AbstractController
                         $colonne = $tabColonne[1];
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etat']) - 1 != $i) {
-                                $updateColonneEtat .= $colonne."="."$value".", ";
+                                $updateColonneEtat .= $colonne."="."`$value`".", ";
                             } else {
-                                $updateColonneEtat .= $colonne."="."$value";
+                                $updateColonneEtat .= $colonne."="."`$value`";
                             }
                             
                         } 

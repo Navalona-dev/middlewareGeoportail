@@ -653,9 +653,9 @@ class DalotController extends AbstractController
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                $updateColonneInfra = $colonne."=".`$value`.", ";
+                                $updateColonneInfra .= $colonne."=".`$value`.", ";
                             } else {
-                                $updateColonneInfra = $colonne."=".`$value`;
+                                $updateColonneInfra .= $colonne."=".`$value`;
                             }
                             
                         } 

@@ -696,7 +696,7 @@ class DalotController extends AbstractController
                     $idEtat = $dalotService->updateInfrastructureEtat($idEtat, $updateColonneEtat);
                 }
             }
-            dd($updateColonneInfra, $updateColonneEtat);
+            dd($idInfra, $idEtat);
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');

@@ -663,7 +663,7 @@ class DalotController extends AbstractController
                     }
                 }
             }
-            dd($hasInfraChanged, $updateColonneInfra, $data['etat']['etat'], count($data['etat']));
+            dd($hasInfraChanged, $updateColonneInfra);
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');

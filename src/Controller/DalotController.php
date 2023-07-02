@@ -657,11 +657,11 @@ class DalotController extends AbstractController
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
                             if ($colonne == "id" || $colonne == "gid") {
-                                $idEtat = $value;
+                                $idInfra = $value;
                             }
 
                         } else {
-                            $value = "'.$value.'";
+                            $value = "'$value'";
                         }
 
                         if ($colonne != "id" && $colonne != "gid") {
@@ -694,7 +694,7 @@ class DalotController extends AbstractController
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
                         } else {
-                            $value = "'.$value.'";
+                            $value = "'$value'";
                         }
 
                         if ($colonne != "id" && $colonne != "gid") {

@@ -215,7 +215,7 @@ class DalotRepository extends ServiceEntityRepository
     public function addInfoInTableByInfrastructure($table, $colonnes, $values)
     {   
         $sql = "INSERT into ".$table." (".$colonnes.") VALUES (".$values.")";
-        
+        dd($sql);
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();

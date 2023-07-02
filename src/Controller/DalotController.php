@@ -650,6 +650,7 @@ class DalotController extends AbstractController
                 if (count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
+                    dd($data['infrastructure'], count($data['infrastructure']));
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {

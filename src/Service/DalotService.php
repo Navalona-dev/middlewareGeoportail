@@ -34,6 +34,12 @@ class DalotService
         return $result;
     }
 
+    public function updateInfrastructure($idInfra, $updateColonneInfra)
+    {
+        $result = $this->dalotRepository->updateInfrastructure($idInfra, $updateColonneInfra);
+        return $result;
+    }
+
     public function addInfrastructureBaseRoute($multipleCoordonnée, $nom)
     {
         $result = $this->dalotRepository->addInfrastructureBaseRoute($multipleCoordonnée, $nom);

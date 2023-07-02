@@ -28,6 +28,19 @@ class DalotRepository extends ServiceEntityRepository
         return $id;
     }
     
+    public function updateInfrastructure($idInfra = null, $updateColonneInfra = null)
+    {
+        $dateInfo = new \DateTime();
+        $sql = "UPDATE t_dar_01_infrastructure SET ".$updateColonneInfra." where gid = ".$idInfra."";
+        dd($sql);
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
     public function getAllInfrastructures()
     {
         $sql = 'SELECT infra.id, infra.nom, infra.localite, infra.commune_terrain, infra.pk_implantation, infra.date_information, infra.source_information as source_info_infra, infra.type, infra.district, infra.materiaux_radier, infra.precision_materiaux_radier, infra.materiaux_piedroit, infra.materiaux_dalle, infra.precision_materiaux_dalle, infra.precision_materiaux_piedroit, infra.region,  ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.photo_name1, infra.photo_name2, infra.photo_name3, etat.etat as etat, etat.fonctionnel as etat_fonctionnel, etat.raison as motif_etat, etat.date_information as etat_data_info, etat.source_information as etat_src_info, etat.mode_acquisition_information as etat_mode_aquis_info, dc.existence_de_fissures, dc.niveau_ensablement_de_l_ouverture, dc.date_information as date_information_data, dc.source_information as source_information_data, dc.mode_acquisition_information as mode_acquisition_information_data, dc.autre_degradation, trav.bailleur as bailleur_travaux, trav.objet as travaux_objet, trav.consistance_travaux as travaux_consistance_travaux, trav.maitre_ouvrage as travaux_maitre_ouvrage, trav.maitre_ouvrage_delegue as travaux_maitre_ouvrage_delegue, trav.maitre_oeuvre as travaux_maitre_oeuvre, trav.id_controle_surveillance as travaux_id_controle_surveillance, trav.mode_passation as travaux_mode_passation, trav.porte_appel_offre as travaux_porte_appel_offre, trav.montant as travaux_montant, trav.numero_contrat as travaux_numero_contrat, trav.date_contrat as travaux_date_contrat, trav.date_ordre_service as travaux_date_ordre_service, trav.id_titulaire as travaux_id_titulaire, trav.resultat_travaux as travaux_resultat_travaux, trav.motif_rupture_contrat as travaux_motif_rupture_contrat, trav.date_reception_provisoire as travaux_date_reception_provisoire, trav.date_reception_definitive as travaux_date_reception_definitive, trav.ingenieur_reception_provisoire as travaux_ingenieur_reception_provisoire, trav.ingenieur_reception_definitive as travaux_ingenieur_reception_definitive, trav.date_information as travaux_date_information, trav.source_information as travaux_source_information, trav.mode_acquisition_information as travaux_mode_acquisition_information, etude.consistance_contrat as consistance_contrat_etude, etude.bailleur as bailleur_etude, etude.objet_contrat as etude_objet_contrat, etude.entite as etude_entite, etude.id_titulaire as etude_id_titulaire, etude.montant_contrat as etude_montant_contrat, etude.numero_contrat as etude_numero_contrat, etude.mode_passation as etude_mode_passation, etude.porte_appel_offre as etude_porte_appel_offre, etude.date_contrat as etude_date_contrat, etude.date_ordre_service as etude_date_ordre_service, etude.resultat_prestation as etude_resultat_prestation, etude.motif_rupture_contrat as etude_motif_rupture_contrat, etude.date_information as etude_date_information, etude.source_information as etude_source_information, etude.mode_acquisition_information as etude_mode_acquisition_information  FROM t_dar_01_infrastructure as infra LEFT JOIN t_dar_03_etat as etat ON infra.id = etat.id_infrastructure  LEFT JOIN t_dar_04_donnees_collectees as dc ON infra.id = dc.id_infrastructure  LEFT JOIN t_dar_05_travaux as trav ON infra.id = trav.id_infrastructure LEFT JOIN t_dar_07_etudes as etude ON infra.id = etude.id_infrastructure';

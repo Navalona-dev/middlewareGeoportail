@@ -648,10 +648,14 @@ class DalotController extends AbstractController
                 // Infrastructure
                 $hasInfraChanged = false;
                 $updateColonneInfra = "";
+                $idInfra = 0;
                 if (count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
                     foreach ($data['infrastructure'] as $colonne => $value) {
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idInfra = $value;
+                        }
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {
                                 $updateColonneInfra .= $colonne."="."`$value`".", ";
@@ -662,18 +666,24 @@ class DalotController extends AbstractController
                         } 
                         $i++;
                     }
+                    $idInfra = $dalotService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Etat
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";
+                $idEtat = 0;
                 if (count($data['etat']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
                     foreach ($data['etat'] as $colonne => $value) {
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idEtat = $value;
+                        }
+                        
                         $tabColonne = explode("_", $colonne);
                         $colonne = $tabColonne[1];
                         if ($colonne != "id" && $colonne != "gid") {
-                            if (count($data['infrastructure']) - 1 != $i) {
+                            if (count($data['etat']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."`$value`".", ";
                             } else {
                                 $updateColonneEtat .= $colonne."="."`$value`";
@@ -682,6 +692,8 @@ class DalotController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $idEtat = $dalotService->updateInfrastructureEtat($idEtat, $updateColonneEtat);
                 }
             }
             dd($updateColonneInfra, $updateColonneEtat);

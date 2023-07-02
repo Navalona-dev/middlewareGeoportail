@@ -654,7 +654,7 @@ class DalotController extends AbstractController
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
                 $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
 
-                if (count($data['infrastructure']) > 0) {
+                if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
                     foreach ($data['infrastructure'] as $colonne => $value) {
@@ -685,7 +685,7 @@ class DalotController extends AbstractController
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";
                 $idEtat = 0;
-                if (count($data['etat']) > 0) {
+                if (array_key_exists('etat', $data) && count($data['etat']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
                     foreach ($data['etat'] as $colonne => $value) {
@@ -723,7 +723,7 @@ class DalotController extends AbstractController
                 $hasDataChanged = false;
                 $updateColonneData = "";
                 $idData = 0;
-                if (count($data['data_collecte']) > 0) {
+                if (array_key_exists('data_collecte', $data) && count($data['data_collecte']) > 0) {
                     $hasDataChanged = true;
                     $i = 0;
                     foreach ($data['data_collecte'] as $colonne => $value) {
@@ -760,7 +760,7 @@ class DalotController extends AbstractController
                 $hasTravauxChanged = false;
                 $updateColonneTravaux = "";
                 $idTravaux = 0;
-                if (count($data['travaux']) > 0) {
+                if (array_key_exists('travaux', $data) && count($data['travaux']) > 0) {
                     $hasTravauxChanged = true;
                     $i = 0;
                     foreach ($data['travaux'] as $colonne => $value) {
@@ -798,7 +798,7 @@ class DalotController extends AbstractController
                 $hasEtudeChanged = false;
                 $updateColonneEtudes = "";
                 $idEtudes = 0;
-                if (count($data['etudes']) > 0) {
+                if (array_key_exists('etudes', $data) && count($data['etudes']) > 0) {
                     $hasEtudeChanged = true;
                     $i = 0;
                     foreach ($data['etudes'] as $colonne => $value) {
@@ -892,11 +892,11 @@ class DalotController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
             $dalotService->cleanTablesByIdInfrastructure($idInfra, 'surface');
             $dalotService->cleanTablesByIdInfrastructure($idInfra, 'structure');

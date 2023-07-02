@@ -649,18 +649,26 @@ class DalotController extends AbstractController
                 $hasInfraChanged = false;
                 $updateColonneInfra = "";
                 $idInfra = 0;
+                $colonneInteger = ['id', 'gid'];
                 if (count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
                     foreach ($data['infrastructure'] as $colonne => $value) {
-                        if ($colonne == "id" || $colonne == "gid") {
-                            $idInfra = intval($value);
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                            if ($colonne == "id" || $colonne == "gid") {
+                                $idEtat = $value;
+                            }
+
+                        } else {
+                            $value = "'.$value.'";
                         }
+
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                $updateColonneInfra .= $colonne."="."'$value'".", ";
+                                $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {
-                                $updateColonneInfra .= $colonne."="."'$value'";
+                                $updateColonneInfra .= $colonne."="."$value";
                             }
                         } 
                         $i++;
@@ -683,11 +691,17 @@ class DalotController extends AbstractController
                             $idEtat = intval($value);
                         }
                         
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } else {
+                            $value = "'.$value.'";
+                        }
+
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etat']) - 1 != $i) {
-                                $updateColonneEtat .= $colonne."="."'$value'".", ";
+                                $updateColonneEtat .= $colonne."="."$value".", ";
                             } else {
-                                $updateColonneEtat .= $colonne."="."'$value'";
+                                $updateColonneEtat .= $colonne."="."$value";
                             }
                             
                         } 

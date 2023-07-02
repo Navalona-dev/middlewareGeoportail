@@ -31,7 +31,7 @@ class DalotRepository extends ServiceEntityRepository
     public function updateInfrastructure($idInfra = null, $updateColonneInfra = null)
     {
         $dateInfo = new \DateTime();
-        $sql = "UPDATE t_dar_01_infrastructure SET ".$updateColonneInfra." where gid = ".$idInfra."";
+        $sql = "UPDATE t_dar_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

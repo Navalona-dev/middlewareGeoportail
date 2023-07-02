@@ -35,7 +35,7 @@ class DalotRepository extends ServiceEntityRepository
        
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
-        $query->execute();
+        $query->executeQuery();
 
         return $idInfra;
     }
@@ -47,7 +47,7 @@ class DalotRepository extends ServiceEntityRepository
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
-        $query->execute();
+        $query->executeQuery();
 
         return $idEtat;
     }

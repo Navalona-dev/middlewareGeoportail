@@ -645,9 +645,25 @@ class DalotController extends AbstractController
             $data = array();
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $data = json_decode($request->getContent(), true);
-                
+                $hasInfraChanged = false;
+                $updateColonneInfra = "";
+                if (count($data['infrastructure']) > 0) {
+                    $hasInfraChanged = true;
+                    $i = 0;
+                    foreach ($data['infrastructure'] as $colonne => $value) {
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['infrastructure']) - 1 != $i) {
+                                $updateColonneInfra = $colonne."=".`$value`.", ";
+                            } else {
+                                $updateColonneInfra = $colonne."=".`$value`;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+                }
             }
-            dd($data['etat']['etat'], count($data['etat']));
+            dd($hasInfraChanged, $updateColonneInfra, $data['etat']['etat'], count($data['etat']));
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');

@@ -654,13 +654,13 @@ class DalotController extends AbstractController
                     $i = 0;
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if ($colonne == "id" || $colonne == "gid") {
-                            $idInfra = $value;
+                            $idInfra = intval($value);
                         }
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                $updateColonneInfra .= $colonne."="."`$value`".", ";
+                                $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {
-                                $updateColonneInfra .= $colonne."="."`$value`";
+                                $updateColonneInfra .= $colonne."="."$value";
                             }
                             
                         } 
@@ -677,16 +677,16 @@ class DalotController extends AbstractController
                     $i = 0;
                     foreach ($data['etat'] as $colonne => $value) {
                         if ($colonne == "id" || $colonne == "gid") {
-                            $idEtat = $value;
+                            $idEtat = intval($value);
                         }
                         
                         $tabColonne = explode("_", $colonne);
                         $colonne = $tabColonne[1];
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etat']) - 1 != $i) {
-                                $updateColonneEtat .= $colonne."="."`$value`".", ";
+                                $updateColonneEtat .= $colonne."="."$value".", ";
                             } else {
-                                $updateColonneEtat .= $colonne."="."`$value`";
+                                $updateColonneEtat .= $colonne."="."$value";
                             }
                             
                         } 

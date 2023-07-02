@@ -645,12 +645,12 @@ class DalotController extends AbstractController
             $data = array();
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $data = json_decode($request->getContent(), true);
+                // Infrastructure
                 $hasInfraChanged = false;
                 $updateColonneInfra = "";
                 if (count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
-                    //dd($data['infrastructure'], count($data['infrastructure']));
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {
@@ -663,8 +663,26 @@ class DalotController extends AbstractController
                         $i++;
                     }
                 }
+                // Etat
+                $hasEtatChanged = false;
+                $updateColonneEtat = "";
+                if (count($data['etat']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['etat'] as $colonne => $value) {
+                        if ($colonne != "etat_id" && $colonne != "etat_gid") {
+                            if (count($data['infrastructure']) - 1 != $i) {
+                                $updateColonneEtat .= $colonne."="."`$value`".", ";
+                            } else {
+                                $updateColonneEtat .= $colonne."="."`$value`";
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+                }
             }
-            dd($hasInfraChanged, $updateColonneInfra);
+            dd($updateColonneInfra, $updateColonneEtat);
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');

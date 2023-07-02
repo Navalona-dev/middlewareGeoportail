@@ -675,12 +675,14 @@ class DalotController extends AbstractController
                     $hasEtatChanged = true;
                     $i = 0;
                     foreach ($data['etat'] as $colonne => $value) {
+
+                        $tabColonne = explode("_", $colonne);
+                        $colonne = $tabColonne[1];
+
                         if ($colonne == "id" || $colonne == "gid") {
                             $idEtat = intval($value);
                         }
                         
-                        $tabColonne = explode("_", $colonne);
-                        $colonne = $tabColonne[1];
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etat']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."'$value'".", ";

@@ -641,7 +641,7 @@ class DalotController extends AbstractController
         $hasException = false;
         $idInfra = null;
         try {
-            dd($request, $request->request->get("etat"));
+            dd($request->query->get("etat"), $request->request->get("etat"));
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');

@@ -647,7 +647,7 @@ class DalotController extends AbstractController
                 $data = json_decode($request->getContent(), true);
                 
             }
-            dd($data['etat']);
+            dd($data['etat']['etat'], count($data['etat']));
             $data = [];
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');

@@ -738,6 +738,8 @@ class DalotController extends AbstractController
                 // Data collecte
                 $hasDataChanged = false;
                 $updateColonneData = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
                 $idData = 0;
                 if (array_key_exists('data_collecte', $data) && count($data['data_collecte']) > 0) {
                     $hasDataChanged = true;
@@ -755,6 +757,13 @@ class DalotController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
                         } else {
                             $value = "'$value'";
                         }
@@ -762,19 +771,29 @@ class DalotController extends AbstractController
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['data_collecte']) - 1 != $i) {
                                 $updateColonneData .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
                             } else {
                                 $updateColonneData .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
                             }
                             
                         } 
                         $i++;
                     }
 
-                    $idData = $dalotService->updateInfrastructureTables('t_dar_04_donnees_collectees', $idData, $updateColonneData);
+                    if ($idData == 0) {
+                        $idData = $dalotService->addInfoInTableByInfrastructure('t_dar_04_donnees_collectees', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idData = $dalotService->updateInfrastructureTables('t_dar_04_donnees_collectees', $idData, $updateColonneData);
+                    }
                 }
                 // Travaux
                 $hasTravauxChanged = false;
                 $updateColonneTravaux = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
                 $idTravaux = 0;
                 if (array_key_exists('travaux', $data) && count($data['travaux']) > 0) {
                     $hasTravauxChanged = true;
@@ -792,6 +811,13 @@ class DalotController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
                         } else {
                             $value = "'$value'";
                         }
@@ -799,20 +825,30 @@ class DalotController extends AbstractController
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['travaux']) - 1 != $i) {
                                 $updateColonneTravaux .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
                             } else {
                                 $updateColonneTravaux .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
                             }
                             
                         } 
                         $i++;
                     }
 
-                    $idTravaux = $dalotService->updateInfrastructureTables('t_dar_05_travaux', $idTravaux, $updateColonneTravaux);
+                    if ($idTravaux == 0) {
+                        $idTravaux = $dalotService->addInfoInTableByInfrastructure('t_dar_05_travaux', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idTravaux = $dalotService->updateInfrastructureTables('t_dar_05_travaux', $idTravaux, $updateColonneTravaux);
+                    }
                 }
 
                 // Travaux
                 $hasEtudeChanged = false;
                 $updateColonneEtudes = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
                 $idEtudes = 0;
                 if (array_key_exists('etudes', $data) && count($data['etudes']) > 0) {
                     $hasEtudeChanged = true;
@@ -830,6 +866,13 @@ class DalotController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
                         } else {
                             $value = "'$value'";
                         }
@@ -837,15 +880,23 @@ class DalotController extends AbstractController
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etudes']) - 1 != $i) {
                                 $updateColonneEtudes .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
                             } else {
                                 $updateColonneEtudes .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
                             }
                             
                         } 
                         $i++;
                     }
 
-                    $idEtudes = $dalotService->updateInfrastructureTables('t_dar_07_etudes', $idEtudes, $updateColonneEtudes);
+                    if ($idEtudes == 0) {
+                        $idEtudes = $dalotService->addInfoInTableByInfrastructure('t_dar_07_etudes', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idEtudes = $dalotService->updateInfrastructureTables('t_dar_07_etudes', $idEtudes, $updateColonneEtudes);
+                    }
                 }
             }
         

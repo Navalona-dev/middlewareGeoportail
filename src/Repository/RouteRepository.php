@@ -99,7 +99,7 @@ class RouteRepository extends ServiceEntityRepository
     
     public function getAccotementRoute($idRoute)
     {
-       $sql = "SELECT accote.cote as cote_accote, accote.revetue_degradation_de_la_surface as revetue_degradation_de_la_surface_accote, accote.revetue_dentelle_de_rive as revetue_dentelle_de_rive_accote, accote.revetue_denivellation_entre_chaussée_et_accotement as revetue_denivellation_entre_chaussée_et_accotement, accote.revetue_destruction_par_affouillement_de_accotement as revetue_destruction_par_affouillement_de_accotement, accote.non_revetue_deformation_du_profil as non_revetue_deformation_du_profil_accote, accote.revetu as revetu_accote, accote.date_information as date_information_accote, accote.source_information as source_information_accote, accote.mode_acquisition_information as mode_acquisition_information_accote  FROM t_ro_07_accotement as accote WHERE accote.id_infrastructure = ".intval($idRoute)."";
+       $sql = "SELECT accote.cote as accotement__cote, accote.revetue_degradation_de_la_surface as accotement__revetue_degradation_de_la_surface_accote, accote.revetue_dentelle_de_rive as accotement__revetue_dentelle_de_rive, accote.revetue_denivellation_entre_chaussée_et_accotement as accotement__revetue_denivellation_entre_chaussée_et_accotement, accote.revetue_destruction_par_affouillement_de_accotement as accotement__revetue_destruction_par_affouillement_de_accotement, accote.non_revetue_deformation_du_profil as accotement__non_revetue_deformation_du_profil, accote.revetu as accotement__revetu, accote.type as accotement__type, accote.precision_type as accotement__precision_type, accote.id_infrastructure as accotement__id_infrastructure, accote.date_information as accotement__date_information, accote.source_information as accotement__source_information, accote.mode_acquisition_information as accotement__mode_acquisition_information  FROM t_ro_07_accotement as accote WHERE accote.id_infrastructure = ".intval($idRoute)."";
       
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -110,7 +110,7 @@ class RouteRepository extends ServiceEntityRepository
 
     public function getFosseRoute($idRoute)
     {
-       $sql = "SELECT fosse.cote as cote_fosse, fosse.revetue_degradation_du_fosse as revetue_degradation_du_fosse, fosse.revetue_section_bouche as revetue_section_bouche_fosse, fosse.non_revetue_profil as non_revetue_profil_fosse, fosse.non_revetue_encombrement as non_revetue_encombrement_fosse, fosse.revetu as revetu_fosse, fosse.date_information as date_information_fosse, fosse.source_information as source_information_fosse, fosse.mode_acquisition_information as mode_acquisition_information_fosse   FROM t_ro_08_fosse as fosse WHERE fosse.id_infrastructure = ".intval($idRoute)."";
+       $sql = "SELECT fosse.cote as fosse__cote, fosse.revetue_degradation_du_fosse as fosse__revetue_degradation_du_fosse, fosse.revetue_section_bouche as fosse__revetue_section_bouche, fosse.non_revetue_profil as fosse__non_revetue_profil, fosse.non_revetue_encombrement as fosse__non_revetue_encombrement, fosse.revetu as fosse__revetu, fosse.id_infrastructure as fosse__id_infrastructure, fosse.date_information as fosse__date_information, fosse.source_information as fosse__source_information, fosse.mode_acquisition_information as fosse__mode_acquisition_information   FROM t_ro_08_fosse as fosse WHERE fosse.id_infrastructure = ".intval($idRoute)."";
       
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

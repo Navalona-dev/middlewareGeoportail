@@ -190,7 +190,7 @@ class PontRepository extends ServiceEntityRepository
     public function updateInfrastructure($idInfra = null, $updateColonneInfra = null)
     {
         $dateInfo = new \DateTime();
-        $sql = "UPDATE t_gr_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
+        $sql = "UPDATE t_pnr_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
        
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -222,7 +222,7 @@ class PontRepository extends ServiceEntityRepository
 
         return $idRow;
     }
-    
+
     public function addInfrastructureSituation($idInfrastructure = null, $fonctionnel = null, $motif = null, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null, $raisonPrecision = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);

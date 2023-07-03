@@ -58,6 +58,24 @@ class RouteService
         return false;
     }
     
+    public function updateInfrastructure($idInfra, $updateColonneInfra)
+    {
+        $result = $this->routeRepository->updateInfrastructure($idInfra, $updateColonneInfra);
+        return $result;
+    }
+
+    public function addInfoInTableByInfrastructure($table, $colonnes, $values)
+    {
+        $result = $this->routeRepository->addInfoInTableByInfrastructure($table, $colonnes, $values);
+        return $result;
+    }
+
+    public function updateInfrastructureTables($table , $idRow, $updateColonne)
+    {
+        $result = $this->routeRepository->updateInfrastructureTables($table, $idRow, $updateColonne);
+        return $result;
+    }
+
     public function getOneInfraInfo($infraId)
     {
         $routes = $this->routeRepository->getOneInfraInfo($infraId);

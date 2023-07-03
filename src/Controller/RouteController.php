@@ -1043,6 +1043,223 @@ class RouteController extends AbstractController
                     }
                     $idInfra = $routeService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
+
+                // Fosse Gauche
+                $hasEtatChanged = false;
+                $updateColonneFosse = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idFosseGauche = 0;
+                if (array_key_exists('fosseGauche', $data) && count($data['fosseGauche']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['fosseGauche'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idFosseGauche = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['fosseGauche']) - 1 != $i) {
+                                $updateColonneFosse .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneFosse .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+                    if ($idFosseGauche == 0) {
+                        $idFosseGauche = $routeService->addInfoInTableByInfrastructure('t_ro_08_fosse', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idFosseGauche = $routeService->updateInfrastructureTables('t_ro_08_fosse', $idFosseGauche, $updateColonneFosse);
+                    } 
+                    
+                }
+
+                // Fosse Gauche
+                $hasEtatChanged = false;
+                $updateColonneFosse = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idFosseDroite = 0;
+                if (array_key_exists('fosseDroite', $data) && count($data['fosseDroite']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['fosseDroite'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idFosseDroite = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['fosseDroite']) - 1 != $i) {
+                                $updateColonneFosse .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneFosse .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+                    if ($idFosseDroite == 0) {
+                        $idFosseDroite = $routeService->addInfoInTableByInfrastructure('t_ro_08_fosse', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idFosseDroite = $routeService->updateInfrastructureTables('t_ro_08_fosse', $idFosseGauche, $updateColonneFosse);
+                    } 
+                    
+                }
+
+                // Accotement Gauche
+                $hasEtatChanged = false;
+                $updateColonneAccote = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idAccoteGauche = 0;
+                if (array_key_exists('accotementGauche', $data) && count($data['accotementGauche']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['accotementGauche'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idAccoteGauche = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['accotementGauche']) - 1 != $i) {
+                                $updateColonneAccote .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneAccote .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+                    if ($idAccoteGauche == 0) {
+                        $idAccoteGauche = $routeService->addInfoInTableByInfrastructure('t_ro_07_accotement', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idAccoteGauche = $routeService->updateInfrastructureTables('t_ro_07_accotement', $idAccoteGauche, $updateColonneAccote);
+                    } 
+                    
+                }
+
+                // Accotement Droite
+                $hasEtatChanged = false;
+                $updateColonneAccote = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idAccoteDroite = 0;
+                if (array_key_exists('accotementDroite', $data) && count($data['accotementDroite']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['accotementDroite'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idAccoteDroite = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['accotementDroite']) - 1 != $i) {
+                                $updateColonneAccote .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneAccote .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+                    if ($idAccoteDroite == 0) {
+                        $idAccoteDroite = $routeService->addInfoInTableByInfrastructure('t_ro_07_accotement', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idAccoteDroite = $routeService->updateInfrastructureTables('t_ro_07_accotement', $idAccoteDroite, $updateColonneAccote);
+                    } 
+                    
+                }
+
                 // Situation
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";

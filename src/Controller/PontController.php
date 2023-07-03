@@ -665,4 +665,351 @@ class PontController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * @Route("/api/pont/update", name="pont_update", methods={"POST"})
+     */
+    public function update(Request $request, PontService $pontService)
+    {    
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            $data = $request->getContent();
+            $data = array();
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                // Infrastructure
+                $hasInfraChanged = false;
+                $updateColonneInfra = "";
+                $idInfra = 0;
+                
+                $colonneInteger = ['id', 'gid', 'id_infrastructure', 'id_controle_surveillance', 'montant', 'id_titulaire', 'id_ingenieurs_reception_provisoire',
+                'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
+                $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
+
+                if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
+                    $hasInfraChanged = true;
+                    $i = 0;
+                    foreach ($data['infrastructure'] as $colonne => $value) {
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                            if ($colonne == "id" || $colonne == "gid") {
+                                $idInfra = $value;
+                            }
+
+                        } elseif(in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['infrastructure']) - 1 != $i) {
+                                $updateColonneInfra .= $colonne."="."$value".", ";
+                            } else {
+                                $updateColonneInfra .= $colonne."="."$value";
+                            }
+                        } 
+                        $i++;
+                    }
+                    $idInfra = $pontService->updateInfrastructure($idInfra, $updateColonneInfra);
+                }
+                // Situation
+                $hasEtatChanged = false;
+                $updateColonneEtat = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idSituation = 0;
+                if (array_key_exists('situations', $data) && count($data['situations']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['situations'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idSituation = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['etat']) - 1 != $i) {
+                                $updateColonneEtat .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneEtat .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+                    if ($idSituation == 0) {
+                        $idSituation = $pontService->addInfoInTableByInfrastructure('t_pnr_02_situation', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idSituation = $pontService->updateInfrastructureTables('t_pnr_02_situation', $idSituation, $updateColonneEtat);
+                    } 
+                    
+                }
+
+                // Data collecte
+                $hasDataChanged = false;
+                $updateColonneData = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idData = 0;
+                if (array_key_exists('data_collecte', $data) && count($data['data_collecte']) > 0) {
+                    $hasDataChanged = true;
+                    $i = 0;
+                    foreach ($data['data_collecte'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idData = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['data_collecte']) - 1 != $i) {
+                                $updateColonneData .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneData .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    if ($idData == 0) {
+                        $idData = $pontService->addInfoInTableByInfrastructure('t_pnr_04_donnees_collectees', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idData = $pontService->updateInfrastructureTables('t_pnr_04_donnees_collectees', $idData, $updateColonneData);
+                    }
+                }
+                // Travaux
+                $hasTravauxChanged = false;
+                $updateColonneTravaux = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idTravaux = 0;
+                if (array_key_exists('travaux', $data) && count($data['travaux']) > 0) {
+                    $hasTravauxChanged = true;
+                    $i = 0;
+                    foreach ($data['travaux'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idTravaux = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['travaux']) - 1 != $i) {
+                                $updateColonneTravaux .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneTravaux .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    if ($idTravaux == 0) {
+                        $idTravaux = $pontService->addInfoInTableByInfrastructure('t_pnr_05_travaux', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idTravaux = $pontService->updateInfrastructureTables('t_pnr_05_travaux', $idTravaux, $updateColonneTravaux);
+                    }
+                }
+
+                // Etudes
+                $hasEtudeChanged = false;
+                $updateColonneEtudes = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idEtudes = 0;
+                if (array_key_exists('etudes', $data) && count($data['etudes']) > 0) {
+                    $hasEtudeChanged = true;
+                    $i = 0;
+                    foreach ($data['etudes'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idEtudes = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif ($colonne == "date_information") {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } elseif ($colonne == "source_information") {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        } else {
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['etudes']) - 1 != $i) {
+                                $updateColonneEtudes .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneEtudes .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    if ($idEtudes == 0) {
+                        $idEtudes = $pontService->addInfoInTableByInfrastructure('t_pnr_07_etudes', $colonneInsert, $valuesInsert);
+                    } else {
+                        $idEtudes = $pontService->updateInfrastructureTables('t_pnr_07_etudes', $idEtudes, $updateColonneEtudes);
+                    }
+                }
+            }
+        
+        
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Pont update_successfull"
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            /*
+            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+           
+            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+           
+        }
+        
+        return $response;
+    }
 }

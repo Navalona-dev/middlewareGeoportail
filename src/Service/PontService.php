@@ -58,6 +58,24 @@ class PontService
         return 0;
     }
 
+    public function updateInfrastructure($idInfra, $updateColonneInfra)
+    {
+        $result = $this->pontRepository->updateInfrastructure($idInfra, $updateColonneInfra);
+        return $result;
+    }
+
+    public function addInfoInTableByInfrastructure($table, $colonnes, $values)
+    {
+        $result = $this->pontRepository->addInfoInTableByInfrastructure($table, $colonnes, $values);
+        return $result;
+    }
+
+    public function updateInfrastructureTables($table , $idRow, $updateColonne)
+    {
+        $result = $this->pontRepository->updateInfrastructureTables($table, $idRow, $updateColonne);
+        return $result;
+    }
+    
     public function getOneInfraInfo($infraId)
     {
         $routes = $this->pontRepository->getOneInfraInfo(intval($infraId));

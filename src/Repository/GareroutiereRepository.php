@@ -39,6 +39,42 @@ class GareroutiereRepository extends ServiceEntityRepository
         return $result->fetchAll();
     }
 
+    public function updateInfrastructure($idInfra = null, $updateColonneInfra = null)
+    {
+        $dateInfo = new \DateTime();
+        $sql = "UPDATE t_gr_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
+       
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->executeQuery();
+
+        return $idInfra;
+    }
+
+    public function addInfoInTableByInfrastructure($table, $colonnes, $values)
+    {   
+        $sql = "INSERT into ".$table." (".$colonnes.") VALUES (".$values.")";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+    
+    public function updateInfrastructureTables($table = null, $idRow = null, $updateColonne = null)
+    {
+        $dateInfo = new \DateTime();
+        $sql = "UPDATE ".$table." SET ".$updateColonne." where id = ".$idRow."";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->executeQuery();
+
+        return $idRow;
+    }
+    
     public function getAllInfrastructuresMinifie()
     {
         $sql = 'SELECT infra.id as infra_id, infra.capacite_de_voiture_accueillies, infra.nom, infra.localite, infra.code, infra.date_information,  ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_gr_01_infrastructure as infra';

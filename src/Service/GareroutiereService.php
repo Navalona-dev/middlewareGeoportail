@@ -58,6 +58,24 @@ class GareroutiereService
         return 0;
     }
 
+    public function updateInfrastructure($idInfra, $updateColonneInfra)
+    {
+        $result = $this->gareroutiereRepository->updateInfrastructure($idInfra, $updateColonneInfra);
+        return $result;
+    }
+
+    public function addInfoInTableByInfrastructure($table, $colonnes, $values)
+    {
+        $result = $this->gareroutiereRepository->addInfoInTableByInfrastructure($table, $colonnes, $values);
+        return $result;
+    }
+
+    public function updateInfrastructureTables($table , $idRow, $updateColonne)
+    {
+        $result = $this->gareroutiereRepository->updateInfrastructureTables($table, $idRow, $updateColonne);
+        return $result;
+    }
+
     public function getOneInfraInfo($infraId)
     {
         $routes = $this->gareroutiereRepository->getOneInfraInfo(intval($infraId));

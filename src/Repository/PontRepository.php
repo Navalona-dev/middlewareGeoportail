@@ -187,6 +187,42 @@ class PontRepository extends ServiceEntityRepository
         }  
     }
 
+    public function updateInfrastructure($idInfra = null, $updateColonneInfra = null)
+    {
+        $dateInfo = new \DateTime();
+        $sql = "UPDATE t_gr_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
+       
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->executeQuery();
+
+        return $idInfra;
+    }
+
+    public function addInfoInTableByInfrastructure($table, $colonnes, $values)
+    {   
+        $sql = "INSERT into ".$table." (".$colonnes.") VALUES (".$values.")";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+    
+    public function updateInfrastructureTables($table = null, $idRow = null, $updateColonne = null)
+    {
+        $dateInfo = new \DateTime();
+        $sql = "UPDATE ".$table." SET ".$updateColonne." where id = ".$idRow."";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->executeQuery();
+
+        return $idRow;
+    }
+    
     public function addInfrastructureSituation($idInfrastructure = null, $fonctionnel = null, $motif = null, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null, $raisonPrecision = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);

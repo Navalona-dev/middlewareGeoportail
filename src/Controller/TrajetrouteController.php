@@ -240,7 +240,7 @@ class TrajetrouteController extends AbstractController
             }
            
             $idInfra = $trajetrouteService->addInfrastructure($data);
-
+dd($data['coordonnees']);
             if ($idInfra != false) {
                 // add situation et etat
                

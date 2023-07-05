@@ -16,6 +16,8 @@ parameters:
     pathForNamePhotoPont: 'media/upload/pnr_pont_route/t_pnr_01_infrastructure/'
     pathImageGareroutiere: '/home/qgis/projects/saisie/media/upload/gr_gare_routiere/t_gr_01_infrastructure/'
     pathForNamePhotoGareroutiere: 'media/upload/gr_gare_routiere/t_gr_01_infrastructure/'
+    pathImageTrajetroute: '/home/qgis/projects/saisie/media/upload/tj_trajet_route/t_tj_01_infrastructure/'
+    pathForNamePhotoTrajetroute: 'media/upload/tj_trajet_route/t_tj_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -67,6 +69,11 @@ services:
         class: App\Repository\GareroutiereRepository
     App\Service\GareroutiereService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@gareroutiererepository.service']
+        public: true
+    trajetrouterepository.service:
+        class: App\Repository\TrajetrouteRepository
+    App\Service\TrajetrouteService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@trajetrouterepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

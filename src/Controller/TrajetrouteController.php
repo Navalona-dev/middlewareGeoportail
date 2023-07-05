@@ -220,6 +220,12 @@ class TrajetrouteController extends AbstractController
             $data['categorie' ] = $infos['categorie'];
             $data['sourceInformation' ] = $infos['sourceInformation'];
             $data['modeAcquisitionInformation' ] = $infos['modeAcquisitionInformation'];
+            $data['photo1'] = null;
+            $data['photo2'] = null;
+            $data['photo3'] = null;
+            $data['photoName1'] = null;
+            $data['photoName2'] = null;
+            $data['photoName3'] = null;
             $data['coordonnees'] = "";
             if (count($infos['localisations']) > 0) {
                 

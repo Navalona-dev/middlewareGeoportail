@@ -230,7 +230,7 @@ class TrajetrouteController extends AbstractController
                     
                 }
             }
-
+dd($data, $infos);
             $idInfra = $trajetrouteService->addInfrastructure($data);
 
             if ($idInfra != false) {

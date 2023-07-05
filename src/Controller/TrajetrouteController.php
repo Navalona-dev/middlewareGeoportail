@@ -218,11 +218,12 @@ class TrajetrouteController extends AbstractController
             $data['pkDepart' ] = $infos['pkDepart'];
             $data['pkArrive' ] = $infos['pkArrive'];
             $data['categorie' ] = $infos['categorie'];
-            dd($data, $infos);
+            
             $multipleCoordonne['coordonnees'] = "";
             if (count($infos['localisations']) > 0) {
                 
                 foreach ($infos['localisations'] as $key => $value) {
+                    dd($value);
                     if (count($infos['localisations']) - 1 == $key) {
                         $multipleCoordonne .= $value['latitude']." ".$value['longitude'];
                     } else {
@@ -231,7 +232,7 @@ class TrajetrouteController extends AbstractController
                     
                 }
             }
-
+            dd($data, $infos);
             $idInfra = $trajetrouteService->addInfrastructure($data);
 
             if ($idInfra != false) {

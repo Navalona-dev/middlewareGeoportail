@@ -52,7 +52,7 @@ class TrajetrouteRepository extends ServiceEntityRepository
 
     public function getAllInfrastructuresMinifie()
     {
-        $sql = 'SELECT infra.id as infra_id, ST_AsText(infra.geom) as coordonnees, infra.nom as nom, infra.nom_de_la_route_a_qui_il_est_rattache, infra.localite_depart, infra.localite_arrive, infra.pk_depart, infra.pk_arrive, infra.categorie, infra.date_information, infra.source_information, infra.mode_acquisition_information,  infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_pnr_01_infrastructure as infra';
+        $sql = 'SELECT infra.id as infra_id, ST_AsText(infra.geom) as coordonnees, infra.nom as nom, infra.nom_de_la_route_a_qui_il_est_rattache, infra.localite_depart, infra.localite_arrive, infra.pk_depart, infra.pk_arrive, infra.categorie, infra.date_information, infra.source_information, infra.mode_acquisition_information,  infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_tj_01_infrastructure as infra';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -201,7 +201,7 @@ class TrajetrouteRepository extends ServiceEntityRepository
     public function updateInfrastructure($idInfra = null, $updateColonneInfra = null)
     {
         $dateInfo = new \DateTime();
-        $sql = "UPDATE t_pnr_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
+        $sql = "UPDATE t_tj_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
        
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

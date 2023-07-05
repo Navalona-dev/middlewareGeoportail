@@ -218,7 +218,8 @@ class TrajetrouteController extends AbstractController
             $data['pkDepart' ] = $infos['pkDepart'];
             $data['pkArrive' ] = $infos['pkArrive'];
             $data['categorie' ] = $infos['categorie'];
-            
+            $data['sourceInformation' ] = $infos['sourceInformation'];
+            $data['modeAcquisitionInformation' ] = $infos['modeAcquisitionInformation'];
             $data['coordonnees'] = "";
             if (count($infos['localisations']) > 0) {
                 

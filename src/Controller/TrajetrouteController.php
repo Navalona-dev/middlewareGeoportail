@@ -223,7 +223,7 @@ class TrajetrouteController extends AbstractController
             if (count($infos['localisations']) > 0) {
                 
                 foreach ($infos['localisations'] as $key => $value) {
-                    dd($value['latitude'], $value['longitude']);
+                    dd(count($infos['localisations']), (string) $value['latitude']." ". (string) $value['longitude']);
                     if (count($infos['localisations']) - 1 == $key) {
                         $multipleCoordonne .= (string) $value['latitude']." ". (string) $value['longitude'];
                     } else {

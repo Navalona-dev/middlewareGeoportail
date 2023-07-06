@@ -338,6 +338,8 @@ class TrajetrouteController extends AbstractController
                 if (null != $infos['etude'] && count($infos['etude']) > 0) {
                     // Fourniture
                     $data['objetContratFourniture'] = $infos['fourniture']['objetContratFourniture'];
+                    $data['materielsFouriniture'] = $infos['fourniture']['materielsFouriniture'];
+                    
                     $data['consistanceContratFourniture'] = $infos['fourniture']['consistanceContratFourniture'];
                     $data['entiteFourniture'] = $infos['fourniture']['entiteFourniture'];
                     $data['modePassationFourniture'] = $infos['fourniture']['modePassationFourniture'];
@@ -356,7 +358,7 @@ class TrajetrouteController extends AbstractController
                     $data['resultatFourniture'] = $infos['fourniture']['resultatFourniture'];
                     $data['raisonResiliationFourniture'] = $infos['fourniture']['raisonResiliationFourniture'];
                     $data['bailleurFourniture'] = $infos['fourniture']['bailleurFourniture'];
-                    $data['precisionConsitanceFourniture'] = $infos['fourniture']['precisionConsitanceFourniture'];
+                    
                     $data['precisionPassationFourniture'] = $infos['fourniture']['precisionPassationFourniture'];
                     $idFourniture = $trajetrouteService->addInfrastructureRouteFourniture($idInfra, $data);
                 }

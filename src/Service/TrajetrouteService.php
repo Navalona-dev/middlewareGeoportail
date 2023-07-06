@@ -195,7 +195,7 @@ class TrajetrouteService
 
     public function addInfrastructureRouteFourniture($idInfrastructure = null, $data)
     {
-        $result = $this->trajetrouteRepository->addInfrastructureRouteFourniture($data['objetContratFourniture'], $data['consistanceContratFourniture'], $data['entiteFourniture'], $data['modePassationFourniture'], $data['porteAppelOffreFourniture'], $data['montantFourniture'], $data['idTitulaireFourniture'], $data['numeroContratFourniture'], $data['dateContratFourniture'], $data['dateOrdreFourniture'], $data['resultatFourniture'], $data['raisonResiliationFourniture'], $idInfrastructure, $data['bailleurFourniture'], $data['precisionConsitanceFourniture'], $data['precisionPassationFourniture']);
+        $result = $this->trajetrouteRepository->addInfrastructureRouteFourniture($data['objetContratFourniture'], $data['materielsFouriniture'], $data['entiteFourniture'], $data['modePassationFourniture'], $data['porteAppelOffreFourniture'], $data['montantFourniture'], $data['idTitulaireFourniture'], $data['numeroContratFourniture'], $data['dateContratFourniture'], $data['dateOrdreFourniture'], $data['resultatFourniture'], $data['raisonResiliationFourniture'], $idInfrastructure, $data['bailleurFourniture'], $data['consistanceContratFourniture'], $data['precisionPassationFourniture']);
         
         if ($result) {
             return $result;

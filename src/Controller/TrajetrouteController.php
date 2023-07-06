@@ -257,8 +257,8 @@ class TrajetrouteController extends AbstractController
                     $data['sourceInformationData'] = $infos['data']['sourceInformationData'];
                     $data['modeAcquisitionInformationData'] = $infos['data']['modeAcquisitionInformationData'];
                     $data['revetementData'] = $infos['data']['revetementData'];
-                    $dateInformationData = new \DateTime($infos['data']['dateInformationData']);
-                    $data['dateInformationData'] = $dateInformationData->format('Y-m-d H:i:s');
+                    //$dateInformationData = new \DateTime($infos['data']['dateInformationData']);
+                    //$data['dateInformationData'] = $dateInformationData;
                     $idDataCollected = $trajetrouteService->addInfrastructureDonneCollecte($idInfra, $data);
 
                  }
@@ -300,27 +300,27 @@ class TrajetrouteController extends AbstractController
                     $data['montantTravaux'] = $infos['travaux']['montantTravaux'];
                     $data['numeroContratTravaux'] = $infos['travaux']['numeroContratTravaux'];
                     $dateContratTravaux = new \DateTime($infos['travaux']['dateContratTravaux']);
-                    $data['dateContratTravaux'] = $dateContratTravaux->format('Y-m-d H:i:s');
+                    $data['dateContratTravaux'] = $dateContratTravaux;
 
                     $dateOrdreServiceTravaux = new \DateTime($infos['travaux']['dateOrdreServiceTravaux']);
-                    $data['dateOrdreServiceTravaux'] = $dateOrdreServiceTravaux->format('Y-m-d H:i:s');
+                    $data['dateOrdreServiceTravaux'] = $dateOrdreServiceTravaux;
 
                     $data['idTitulaireTravaux'] = $infos['travaux']['idTitulaireTravaux'];
                     $data['resultatTravaux'] = $infos['travaux']['resultatTravaux'];
                     $data['motifRuptureContratTravaux'] = $infos['travaux']['motifRuptureContratTravaux'];
                     
                     $dateReceptionProvisoireTravaux = new \DateTime($infos['travaux']['dateReceptionProvisoireTravaux']);
-                    $data['dateReceptionProvisoireTravaux'] = $dateReceptionProvisoireTravaux->format('Y-m-d H:i:s');
+                    $data['dateReceptionProvisoireTravaux'] = $dateReceptionProvisoireTravaux;
 
                     $dateReceptionDefinitiveTravaux = new \DateTime($infos['travaux']['dateReceptionDefinitiveTravaux']);
-                    $data['dateReceptionDefinitiveTravaux'] = $dateReceptionDefinitiveTravaux->format('Y-m-d H:i:s');
+                    $data['dateReceptionDefinitiveTravaux'] = $dateReceptionDefinitiveTravaux;
 
 
                     $data['ingenieurReceptionProvisoireTravaux'] = $infos['travaux']['ingenieurReceptionProvisoireTravaux'];
                     $data['ingenieurReceptionDefinitiveTravaux'] = $infos['travaux']['ingenieurReceptionDefinitiveTravaux'];
                 
                     $dateInformationTravaux = new \DateTime($infos['travaux']['dateInformationTravaux']);
-                    $data['dateInformationTravaux'] = $dateInformationTravaux->format('Y-m-d H:i:s');
+                    $data['dateInformationTravaux'] = $dateInformationTravaux;
 
 
                     $data['sourceInformationTravaux'] = $infos['travaux']['sourceInformationTravaux'];
@@ -346,10 +346,10 @@ class TrajetrouteController extends AbstractController
                     $data['numeroContratFourniture'] = $infos['fourniture']['numeroContratFourniture'];
                   
                     $dateContratFourniture = new \DateTime($infos['fourniture']['dateContratFourniture']);
-                    $data['dateContratFourniture'] = $dateContratFourniture->format('Y-m-d H:i:s');
+                    $data['dateContratFourniture'] = $dateContratFourniture;
 
                     $dateOrdreFourniture = new \DateTime($infos['fourniture']['dateOrdreFourniture']);
-                    $data['dateOrdreFourniture'] = $dateOrdreFourniture->format('Y-m-d H:i:s');
+                    $data['dateOrdreFourniture'] = $dateOrdreFourniture;
 
 
                     $data['resultatFourniture'] = $infos['fourniture']['resultatFourniture'];
@@ -374,7 +374,7 @@ class TrajetrouteController extends AbstractController
                     $data['porteAppelOffreEtude'] = $infos['etude']['porteAppelOffreEtude'];
            
                     $dateOrdreServiceEtude = new \DateTime($infos['fourniture']['dateOrdreServiceEtude']);
-                    $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude->format('Y-m-d H:i:s');
+                    $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
 
 
                     $data['resultatPrestationEtude'] = $infos['etude']['resultatPrestationEtude'];

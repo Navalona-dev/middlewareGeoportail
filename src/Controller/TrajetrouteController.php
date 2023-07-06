@@ -452,12 +452,13 @@ class TrajetrouteController extends AbstractController
         }
 
         if ($hasException) {// Clean database
+            /*
             $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
             $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
             $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
             $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
             $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
             /*
             $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
             $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');

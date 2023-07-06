@@ -19,6 +19,9 @@ class GareroutiereRepository extends ServiceEntityRepository
     {
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);
+        $communeTerrain = pg_escape_string($communeTerrain);
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_gr_01_infrastructure (nom, categorie,  localite, commune_terrain,  capacite_de_voiture_accueillies, date_information, source_information, mode_acquisition_information, geom, district, precision_categorie, code, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$nom."', '".$categorie."', '".$localite."', '".$communeTerrain."', ".intval($capaciteVoitureAccueillies).", '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$district."', '".$categoriePrecision."', '".$code."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         
         $conn = $this->entityManager->getConnection();
@@ -227,6 +230,7 @@ class GareroutiereRepository extends ServiceEntityRepository
     public function addInfrastructureSituation($idInfrastructure = null, $fonctionnel = null, $motif = null, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_gr_03_situation (id_infrastructure, fonctionnel, raison, date_information, source_information, mode_acquisition_information, etat) VALUES (".intval($idInfrastructure).", '".$fonctionnel."', '".$motif."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', '".$etat."')";
         
@@ -241,6 +245,7 @@ class GareroutiereRepository extends ServiceEntityRepository
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $revetementParking = null, $etatParking = null, $etatGlobalAccessoires = null,  $sourceInformation = null,  $modeAcquisitionInformation = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_gr_06_donnees_collectees (id_infrastructure, revetement_du_parking, etat_du_parking, etat_global_des_accessoires, date_information, source_information, mode_acquisition_information) VALUES (".intval($idInfrastructure).", '".$revetementParking."', '".$etatParking."', '".$etatGlobalAccessoires."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
         
@@ -297,6 +302,7 @@ class GareroutiereRepository extends ServiceEntityRepository
     public function addInfrastructureRouteFoncier($idInfrastructure = null, $statut = null, $numeroReference = null, $nomProprietaire = null, $sourceInformation = null,  $modeAcquisitionInformation = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_gr_05_foncier (id_infrastructure, statut_foncier, proprietaire, reference_dossier, date_information, source_information, mode_acquisition_information) VALUES (".intval($idInfrastructure).", '".$statut."', '".$numeroReference."', '".$nomProprietaire."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
        // dd($sql, $statut);
@@ -310,6 +316,8 @@ class GareroutiereRepository extends ServiceEntityRepository
 
     public function addInfrastructureTravaux($idInfrastructure = null, $objet = null, $consistanceTravaux = null, $maitreOuvrage = null, $maitreOuvrageDelegue = null, $maitreOeuvre = null, $idControleSurveillance = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $numeroContrat = null, $dateContrat = null, $dateOrdreService = null, $idTitulaire = null, $resultatTravaux = null, $motifRuptureContrat = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $bailleurTravaux = null)
     {   
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_gr_08_travaux (id_infrastructure, objet, consistance_travaux, maitre_ouvrage, maitre_ouvrage_delegue, maitre_oeuvre, id_controle_surveillance, mode_passation, porte_appel_offre, montant, numero_contrat, date_contrat, date_ordre_service, id_titulaire, resultat_travaux, motif_rupture_contrat, date_reception_provisoire, date_reception_definitive, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_information, source_information, mode_acquisition_information, bailleur ) VALUES (".intval($idInfrastructure).", '".$objet."', '".$consistanceTravaux."', '".$maitreOuvrage."', '".$maitreOuvrageDelegue."', '".$maitreOeuvre."', ".intval($idControleSurveillance).", '".$modePassation."', '".$porteAppelOffre."', ".intval($montant).", '".$numeroContrat."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', ".intval($idTitulaire).", '".$resultatTravaux."', '".$motifRuptureContrat."','".$dateReceptionProvisoire->format("Y-m-d")."', '".$dateReceptionDefinitive->format("Y-m-d")."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$bailleurTravaux."')";
      
         $conn = $this->entityManager->getConnection();
@@ -334,6 +342,8 @@ class GareroutiereRepository extends ServiceEntityRepository
 
     public function addInfrastructureEtudes($idInfrastructure = null, $objetContrat = null, $consistanceContrat = null, $entite = null, $idTitulaire = null, $montantContrat = null, $numeroContrat = null, $modePassation = null, $porteAppelOffre = null, $dateContrat = null, $dateOrdreService = null, $resultatPrestation = null, $motifRuptureContrat = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $precisionConsitanceContrat = null, $bailleur = null)
     {   
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_gr_10_etudes (id_infrastructure, objet_contrat, consistance_contrat, entite, id_titulaire, montant_contrat, numero_contrat, mode_passation, porte_appel_offre, date_contrat, date_ordre_service, resultat_prestation, motif_rupture_contrat, date_information, source_information, mode_acquisition_information, precision_consitance_contrat, bailleur) VALUES (".intval($idInfrastructure).", '".$objetContrat."', '".$consistanceContrat."', '".$entite."', ".intval($idTitulaire).", ".intval($montantContrat).", '".$numeroContrat."', '".$modePassation."', '".$porteAppelOffre."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', '".$resultatPrestation."', '".$motifRuptureContrat."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$precisionConsitanceContrat."' , '".$bailleur."')";
         
         $conn = $this->entityManager->getConnection();

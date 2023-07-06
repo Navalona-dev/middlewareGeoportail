@@ -18,6 +18,10 @@ class DalotRepository extends ServiceEntityRepository
     public function addInfrastructure($nom = null, $localite = null, $communeTerrain = null, $pkImplantation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $type = null, $district = null, $materiauxRadier = null, $precisionMateriauxRadier = null, $materiauxPiedroit = null, $materiauxDalle = null,$precisionMateriauxDalle = null, $precisionMateriauxPiedroit = null, $region = null, $longitude = null, $latitude = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
     {
         $dateInfo = new \DateTime();
+        $localite = pg_escape_string($localite);
+        $communeTerrain = pg_escape_string($communeTerrain);
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_dar_01_infrastructure (nom, localite,  commune_terrain, pk_implantation,  date_information, source_Information, mode_acquisition_information, geom, \"type\", district, materiaux_radier, precision_materiaux_radier, materiaux_piedroit, materiaux_dalle, precision_materiaux_dalle, precision_materiaux_piedroit, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$nom."', '".$localite."', '".$communeTerrain."', '".$pkImplantation."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$type."', '".$district."', '".$materiauxRadier."', '".$precisionMateriauxRadier."', '".$materiauxPiedroit."', '".$materiauxDalle."', '".$precisionMateriauxDalle."', '".$precisionMateriauxPiedroit."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         
         $conn = $this->entityManager->getConnection();
@@ -227,6 +231,7 @@ class DalotRepository extends ServiceEntityRepository
     public function addInfrastructureEtat($idInfrastructure = null, $etat = null, $sourceInformation = null, $modeAcquisitionInformation = null, $fonctionnel = null, $motif = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_dar_03_etat (id_infrastructure, etat, date_information, source_information, mode_acquisition_information, fonctionnel, raison) VALUES (".intval($idInfrastructure).", '".$etat."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', '".$fonctionnel."', '".$motif."')";
         
@@ -240,7 +245,8 @@ class DalotRepository extends ServiceEntityRepository
 
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $existenceFissures = null, $niveauEnsablementOuverture = null, $sourceInformation = null, $modeAcquisitionInformation = null,  $autreDegradation = null)
     {   
-        $sourceInfo = pg_escape_string($sourceInformation);
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_dar_04_donnees_collectees (id_infrastructure, existence_de_fissures, niveau_ensablement_de_l_ouverture, date_information, source_information, mode_acquisition_information, autre_degradation) VALUES (".intval($idInfrastructure).", '".$existenceFissures."', '".$niveauEnsablementOuverture."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$autreDegradation."')";
         
@@ -308,6 +314,8 @@ class DalotRepository extends ServiceEntityRepository
 
     public function addInfrastructureTravaux($idInfrastructure = null, $objet = null, $consistanceTravaux = null, $maitreOuvrage = null, $maitreOuvrageDelegue = null, $maitreOeuvre = null, $idControleSurveillance = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $numeroContrat = null, $dateContrat = null, $dateOrdreService = null, $idTitulaire = null, $resultatTravaux = null, $motifRuptureContrat = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $bailleurTravaux = null)
     {   
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_dar_05_travaux (id_infrastructure, objet, consistance_travaux, maitre_ouvrage, maitre_ouvrage_delegue, maitre_oeuvre, id_controle_surveillance, mode_passation, porte_appel_offre, montant, numero_contrat, date_contrat, date_ordre_service, id_titulaire, resultat_travaux, motif_rupture_contrat, date_reception_provisoire, date_reception_definitive, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_information, source_information, mode_acquisition_information, bailleur ) VALUES (".intval($idInfrastructure).", '".$objet."', '".$consistanceTravaux."', '".$maitreOuvrage."', '".$maitreOuvrageDelegue."', '".$maitreOeuvre."', ".intval($idControleSurveillance).", '".$modePassation."', '".$porteAppelOffre."', ".intval($montant).", '".$numeroContrat."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', ".intval($idTitulaire).", '".$resultatTravaux."', '".$motifRuptureContrat."','".$dateReceptionProvisoire->format("Y-m-d")."', '".$dateReceptionDefinitive->format("Y-m-d")."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$bailleurTravaux."')";
      
         $conn = $this->entityManager->getConnection();
@@ -332,6 +340,8 @@ class DalotRepository extends ServiceEntityRepository
 
     public function addInfrastructureEtudes($idInfrastructure = null, $objetContrat = null, $consistanceContrat = null, $entite = null, $idTitulaire = null, $montantContrat = null, $numeroContrat = null, $modePassation = null, $porteAppelOffre = null, $dateContrat = null, $dateOrdreService = null, $resultatPrestation = null, $motifRuptureContrat = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $bailleur = null)
     {   
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_dar_07_etudes (id_infrastructure, objet_contrat, consistance_contrat, entite, id_titulaire, montant_contrat, numero_contrat, mode_passation, porte_appel_offre, date_contrat, date_ordre_service, resultat_prestation, motif_rupture_contrat, date_information, source_information, mode_acquisition_information, bailleur) VALUES (".intval($idInfrastructure).", '".$objetContrat."', '".$consistanceContrat."', '".$entite."', ".intval($idTitulaire).", ".intval($montantContrat).", '".$numeroContrat."', '".$modePassation."', '".$porteAppelOffre."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', '".$resultatPrestation."', '".$motifRuptureContrat."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$bailleur."')";
         
         $conn = $this->entityManager->getConnection();

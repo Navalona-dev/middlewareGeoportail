@@ -18,6 +18,9 @@ class RouteRepository extends ServiceEntityRepository
     public function addInfrastructureRoute($categorie = null, $localite = null, $sourceInformation = null, $modeAcquisitionInformation = null, $communeTerrain = null, $pkDebut = null, $rattache = null, $gestionnaire = null, $modeGestion = null, $pkFin = null, $largeurHausse = null, $largeurAccotement = null,$structure = null, $region = null, $district = null, $longitude = null, $latitude = null, $photo1 = null, $photo2 = null, $photo3 = null, $precisionStructure = null, $precisionModeGestion = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
     {
         $dateInfo = new \DateTime();
+        $localite = pg_escape_string($localite);
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_ro_01_infrastructure (pk_debut, rattache, categorie, localite,  commune_terrain, gestionnaire, mode_gestion, date_information, source_Information, mode_acquisition_infromation, pk_fin, \"Largeur_chaussée\", \"Largeur_accotements\", \"Structure\", region, district, geom, photo1, photo2, photo3, precision_structure, precision_mode_gestion, photo_name1, photo_name2, photo_name3) VALUES (".intval($pkDebut).", '".$rattache."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$gestionnaire."', '".$modeGestion."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ".intval($pkFin).", ".floatval($largeurHausse).", ".floatval($largeurAccotement).", '".$structure."', '".$region."', '".$district."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$photo1."', '".$photo2."', '".$photo3."', '".$precisionStructure."', '".$precisionModeGestion."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         
         $conn = $this->entityManager->getConnection();
@@ -249,6 +252,7 @@ class RouteRepository extends ServiceEntityRepository
     public function addInfrastructureRouteSituation($idInfrastructure = null, $fonctionnel = null, $raison, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ro_02_situation (id_infrastructure, fonctionnel, raison, date_information, source_Information, mode_acquisition_information, etat) VALUES (".intval($idInfrastructure).", '".$fonctionnel."', '".$raison."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', '".$etat."')";
         
@@ -263,6 +267,7 @@ class RouteRepository extends ServiceEntityRepository
     public function addInfrastructureRouteSurface($idInfrastructure = null, $revetement = null, $revetueNidDePoule = null, $revetueArrachement = null, $revetueRessuage = null, $revetueFissureLogitudinaleDeJoint = null, $nonRevetueTraverse = null, $nonRevetueBourbier = null, $nonRevetueTeteDeChat = null, $sourceInformation = null, $modeAcquisitionInformation = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ro_04_surface (id_infrastructure, revetement, revetue_nid_de_poule, revetue_arrachement, revetue_ressuage, revetue_fissure_logitudinale_de_joint, non_revetue_traverse, non_revetue_bourbier, non_revetue_tete_de_chat, date_information, source_Information, mode_acquisition_infromation) VALUES (".intval($idInfrastructure).", '".$revetement."', '".$revetueNidDePoule."', '".$revetueArrachement."', '".$revetueRessuage."', '".$revetueFissureLogitudinaleDeJoint."', '".$nonRevetueTraverse."', '".$nonRevetueBourbier."', '".$nonRevetueTeteDeChat."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
         
@@ -277,6 +282,7 @@ class RouteRepository extends ServiceEntityRepository
     public function addInfrastructureRouteStructure($idInfrastructure = null, $revetueDefomation = null, $revetueFissuration = null, $revetueFaiencage = null, $nonRevetueNidsDpoule = null, $nonRevetueDeformation = null,  $nonRevetueToleOndule = null,$nonRevetueRavines = null,  $sourceInformation = null, $modeAcquisitionInformation = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ro_05_structure (id_infrastructure, revetue_defomation, revetue_fissuration, revetue_faiencage, non_revetue_nids_de_poule, non_revetue_deformation, non_revetue_tole_ondule, non_revetue_ravines, date_information, source_Information,  mode_acquisition_information) VALUES (".intval($idInfrastructure).", '".$revetueDefomation."', '".$revetueFissuration."', '".$revetueFaiencage."', '".$nonRevetueNidsDpoule."', '".$nonRevetueDeformation."', '".$nonRevetueToleOndule."', '".$nonRevetueRavines."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
         
@@ -291,6 +297,7 @@ class RouteRepository extends ServiceEntityRepository
     public function addInfrastructureRouteAccotement($idInfrastructure = null, $cote = null, $revetueDegradationSurface = null, $revetueDentelleRive = null,  $revetueDenivellationEntreChausséeAccotement = null,$revetueDestructionAffouillementAccotement = null,  $nonRevetueDeformationProfil = null, $revetu = null, $accotementTypeRevetementAccotement = null, $accotementPrecisionTypeAccotement =null, $dateInfo = null,  $sourceInformation = null, $modeAcquisitionInformation = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
 
         $sql = "INSERT into t_ro_07_accotement (id_infrastructure, cote, revetue_degradation_de_la_surface, revetue_dentelle_de_rive, revetue_denivellation_entre_chaussée_et_accotement, revetue_destruction_par_affouillement_de_accotement, non_revetue_deformation_du_profil, revetu, \"type\", precision_type, date_information, source_information, mode_acquisition_information) VALUES (".intval($idInfrastructure).", '".$cote."', '".$revetueDegradationSurface."', '".$revetueDentelleRive."', '".$revetueDenivellationEntreChausséeAccotement."', '".$revetueDestructionAffouillementAccotement."', '".$nonRevetueDeformationProfil."', '".$revetu."', '".$accotementTypeRevetementAccotement."', '".$accotementPrecisionTypeAccotement."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
         
@@ -305,6 +312,7 @@ class RouteRepository extends ServiceEntityRepository
     public function addInfrastructureRouteFosse($idInfrastructure = null, $cote = null, $revetueDegradationFosse = null,  $revetueSectionBouche = null,$nonRevetueProfil = null,  $nonRevetueEncombrement = null, $revetu = null, $dateInfo = null,  $sourceInformation = null, $modeAcquisitionInformation = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
 
         $sql = "INSERT into t_ro_08_fosse (cote, revetue_degradation_du_fosse, revetue_section_bouche, non_revetue_profil, non_revetue_encombrement, id_infrastructure,  revetu, date_information, source_information, mode_acquisition_information) VALUES ('".$cote."', '".$revetueDegradationFosse."', '".$revetueSectionBouche."', '".$nonRevetueProfil."', '".$nonRevetueEncombrement."', ".intval($idInfrastructure).", '".$revetu."', '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."')";
 
@@ -331,6 +339,9 @@ class RouteRepository extends ServiceEntityRepository
 
     public function addInfrastructureRouteTravaux($idInfrastructure = null, $objet = null, $consistanceTravaux = null, $modeRealisationTravaux = null, $maitreOuvrage = null, $maitreOuvrageDelegue = null, $maitreOeuvre = null, $idControleSurveillance = null, $modePassation = null, $porteAppelOffre = null, $montant = null, $numeroContrat = null, $dateContrat = null, $dateOrdreService = null, $idTitulaire = null, $resultatTravaux = null, $motifRuptureContrat = null, $dateReceptionProvisoire = null, $dateReceptionDefinitive = null, $ingenieurReceptionProvisoire = null, $ingenieurReceptionDefinitive = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $precisionConsistance = null, $modeRealisation = null, $bailleurTravaux = null, $precisionPassation = null)
     {   
+
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_ro_09_travaux (id_infrastructure, objet, consistance_travaux, mode_realisation_travaux, maitre_ouvrage, maitre_ouvrage_delegue, maitre_oeuvre, id_controle_surveillance, mode_passation, porte_appel_offre, montant, numero_contrat, date_contrat, date_ordre_service, id_titulaire, resultat_travaux, motif_rupture_contrat, date_reception_provisoire, date_reception_definitive, ingenieur_reception_provisoire, ingenieur_reception_definitive, date_information, source_information, mode_acquisition_information, precision_consistance, mode_realisation, bailleur, precision_passation ) VALUES (".intval($idInfrastructure).", '".$objet."', '".$consistanceTravaux."', '".$modeRealisationTravaux."', '".$maitreOuvrage."', '".$maitreOuvrageDelegue."', '".$maitreOeuvre."', ".intval($idControleSurveillance).", '".$modePassation."', '".$porteAppelOffre."', ".intval($montant).", '".$numeroContrat."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', ".intval($idTitulaire).", '".$resultatTravaux."', '".$motifRuptureContrat."','".$dateReceptionProvisoire->format("Y-m-d")."', '".$dateReceptionDefinitive->format("Y-m-d")."', '".$ingenieurReceptionProvisoire."', '".$ingenieurReceptionDefinitive."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$precisionConsistance."', '".$modeRealisation."', '".$bailleurTravaux."', '".$precisionPassation."')";
      
         $conn = $this->entityManager->getConnection();
@@ -355,6 +366,9 @@ class RouteRepository extends ServiceEntityRepository
 
     public function addInfrastructureRouteEtudes($idInfrastructure = null, $objetContrat = null, $consistanceContrat = null, $entite = null, $idTitulaire = null, $montantContrat = null, $numeroContrat = null, $modePassation = null, $porteAppelOffre = null, $dateContrat = null, $dateOrdreService = null, $resultatPrestation = null, $motifRuptureContrat = null, $dateInformation = null, $sourceInformation = null, $modeAcquisitionInformation = null, $precisionConsistanceContrat = null, $bailleur = null, $precisionPassation = null)
     {   
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        
         $sql = "INSERT into t_ro_11_etudes (id_infrastructure, objet_contrat, consistance_contrat, entite, id_titulaire, montant_contrat, numero_contrat, mode_passation, porte_appel_offre, date_contrat, date_ordre_service, resultat_prestation, motif_rupture_contrat, date_information, source_information, mode_acquisition_information, precision_consistance_contrat, bailleur, precision_passation) VALUES (".intval($idInfrastructure).", '".$objetContrat."', '".$consistanceContrat."', '".$entite."', ".intval($idTitulaire).", ".intval($montantContrat).", '".$numeroContrat."', '".$modePassation."', '".$porteAppelOffre."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', '".$resultatPrestation."', '".$motifRuptureContrat."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$precisionConsistanceContrat."', '".$bailleur."', '".$precisionPassation."')";
         
         $conn = $this->entityManager->getConnection();

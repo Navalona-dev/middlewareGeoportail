@@ -394,8 +394,8 @@ class TrajetrouteController extends AbstractController
 
                     $dateContratEtude = new \DateTime($infos['etude']['dateContratEtude']);
                     $data['dateContratEtude'] = $dateContratEtude;
-
-                    
+                    $data['motifRuptureContratEtude'] = $infos['etude']['motifRuptureContratEtude'];
+                                        
                     $data['resultatPrestationEtude'] = $infos['etude']['resultatPrestationEtude'];
                     $data['bailleurEtude'] = $infos['etude']['bailleurEtude'];
                     $data['precisionConsitanceEtude'] = $infos['etude']['precisionConsitanceEtude'];

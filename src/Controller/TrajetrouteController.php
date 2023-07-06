@@ -259,6 +259,7 @@ class TrajetrouteController extends AbstractController
                     $data['revetementData'] = $infos['data']['revetementData'];
                     //$dateInformationData = new \DateTime($infos['data']['dateInformationData']);
                     //$data['dateInformationData'] = $dateInformationData;
+                    $data['dateInformationData'] = null;
                     $idDataCollected = $trajetrouteService->addInfrastructureDonneCollecte($idInfra, $data);
 
                  }

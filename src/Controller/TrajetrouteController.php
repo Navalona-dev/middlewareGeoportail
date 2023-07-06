@@ -226,8 +226,7 @@ class TrajetrouteController extends AbstractController
             $data['photoName1'] = null;
             $data['photoName2'] = null;
             $data['photoName3'] = null;
-            $data['coordonnees'] = $infos['localisations'];
-            /*
+            $data['coordonnees'] = "";
             if (count($infos['localisations']) > 0) {
                 
                 foreach ($infos['localisations'] as $key => $value) {
@@ -238,7 +237,7 @@ class TrajetrouteController extends AbstractController
                     }
                     
                 }
-            }*/
+            }
            
             $idInfra = $trajetrouteService->addInfrastructure($data);
 

@@ -355,6 +355,19 @@ class TrajetrouteController extends AbstractController
                     $data['dateOrdreFourniture'] = $dateOrdreFourniture;
 
 
+                    $dateReceptionProvisoireFourniture = new \DateTime($infos['fourniture']['dateReceptionProvisoireFourniture']);
+                    $data['dateReceptionProvisoireFourniture'] = $dateReceptionProvisoireFourniture;
+
+                    $dateReceptionDefinitiveFourniture = new \DateTime($infos['fourniture']['dateReceptionDefinitiveFourniture']);
+                    $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
+
+
+                    $data['ingenieurReceptionProvisoireFourniture'] = $infos['fourniture']['ingenieurReceptionProvisoireFourniture'];
+                    $data['ingenieurReceptionDefinitiveFourniture'] = $infos['fourniture']['ingenieurReceptionDefinitiveFourniture'];
+                
+                    $dateInformationTravaux = new \DateTime($infos['travaux']['dateInformationTravaux']);
+                    $data['dateInformationTravaux'] = $dateInformationTravaux;
+
                     $data['resultatFourniture'] = $infos['fourniture']['resultatFourniture'];
                     $data['raisonResiliationFourniture'] = $infos['fourniture']['raisonResiliationFourniture'];
                     $data['bailleurFourniture'] = $infos['fourniture']['bailleurFourniture'];

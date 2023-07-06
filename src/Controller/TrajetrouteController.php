@@ -389,7 +389,7 @@ class TrajetrouteController extends AbstractController
                     $data['modePassationEtude'] = $infos['etude']['modePassationEtude'];
                     $data['porteAppelOffreEtude'] = $infos['etude']['porteAppelOffreEtude'];
            
-                    $dateOrdreServiceEtude = new \DateTime($infos['fourniture']['dateOrdreServiceEtude']);
+                    $dateOrdreServiceEtude = new \DateTime($infos['etude']['dateOrdreServiceEtude']);
                     $data['dateOrdreServiceEtude'] = $dateOrdreServiceEtude;
 
 

@@ -729,7 +729,7 @@ class GareroutiereController extends AbstractController
                         } else {
                             $value = "'$value'";
                         }
-                        dd($value, $colonne);
+                        
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etat']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."$value".", ";
@@ -763,7 +763,7 @@ class GareroutiereController extends AbstractController
                     } 
                     
                 }
-dd('si');
+
                 // Data collecte
                 $hasDataChanged = false;
                 $updateColonneData = "";

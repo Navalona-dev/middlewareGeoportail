@@ -663,7 +663,7 @@ class GareroutiereController extends AbstractController
 
                     
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
-                        $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")', ";
+                        $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
 
                     foreach ($data['infrastructure'] as $colonne => $value) {
@@ -688,7 +688,7 @@ class GareroutiereController extends AbstractController
                         } 
                         $i++;
                     }
-                    dd($updateColonneInfra);
+                   
                     $idInfra = $gareroutiereService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Situation

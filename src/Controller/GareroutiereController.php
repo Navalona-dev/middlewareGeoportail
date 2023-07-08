@@ -688,6 +688,7 @@ class GareroutiereController extends AbstractController
                         } 
                         $i++;
                     }
+                    $updateColonneInfra = trim($updateColonneInfra);
                    dd($updateColonneInfra[-1]);
                     $idInfra = $gareroutiereService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }

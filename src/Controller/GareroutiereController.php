@@ -705,6 +705,7 @@ class GareroutiereController extends AbstractController
                 if (array_key_exists('situations', $data) && count($data['situations']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
+                    dd($data['situations']);
                     foreach ($data['situations'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);

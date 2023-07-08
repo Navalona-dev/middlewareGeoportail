@@ -691,9 +691,12 @@ class DalotController extends AbstractController
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
 
-                    $idInfra = $dalotService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    if ($updateColonneInfra) {
+                        $idInfra = $dalotService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    }
+                    
                 }
-                dd("ici");
+                
                 // Etat
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";

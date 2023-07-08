@@ -688,12 +688,12 @@ class GareroutiereController extends AbstractController
                         } 
                         $i++;
                     }
-                    
+
                     $updateColonneInfra = trim($updateColonneInfra);
                     if ($updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-
+dd($updateColonneInfra);
                     $idInfra = $gareroutiereService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Situation

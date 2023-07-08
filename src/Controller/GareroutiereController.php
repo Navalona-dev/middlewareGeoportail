@@ -729,7 +729,7 @@ class GareroutiereController extends AbstractController
                         } else {
                             $value = "'$value'";
                         }
-
+                        dd($value, $colonne);
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['etat']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."$value".", ";
@@ -743,7 +743,7 @@ class GareroutiereController extends AbstractController
                         } 
                         $i++;
                     }
-                    dd($updateColonneEtat);
+
                     $updateColonneEtat = trim($updateColonneEtat);
                     if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
                         $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
@@ -755,7 +755,7 @@ class GareroutiereController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-                    dd($updateColonneEtat, $valuesInsert);
+                   
                     if ($idSituation == 0) {
                         $idSituation = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_03_situation', $colonneInsert, $valuesInsert);
                     } else {

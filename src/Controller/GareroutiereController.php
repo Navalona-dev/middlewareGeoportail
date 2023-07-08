@@ -690,7 +690,7 @@ class GareroutiereController extends AbstractController
                     }
 
                     $updateColonneInfra = trim($updateColonneInfra);
-                    if ($updateColonneInfra[-1] == ",") {
+                    if ($updateColonneInfra[-1] && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
 
@@ -742,6 +742,19 @@ class GareroutiereController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+                    
                     if ($idSituation == 0) {
                         $idSituation = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_03_situation', $colonneInsert, $valuesInsert);
                     } else {
@@ -798,6 +811,18 @@ class GareroutiereController extends AbstractController
                         $i++;
                     }
 
+                    $updateColonneData = trim($updateColonneData);
+                    if ($updateColonneData[-1] && $updateColonneData[-1] == ",") {
+                        $updateColonneData = substr($updateColonneData, 0, strlen($updateColonneData) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idData == 0) {
                         $idData = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_06_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
@@ -850,6 +875,18 @@ class GareroutiereController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneTravaux = trim($updateColonneTravaux);
+                    if ($updateColonneTravaux[-1] && $updateColonneTravaux[-1] == ",") {
+                        $updateColonneTravaux = substr($updateColonneTravaux, 0, strlen($updateColonneTravaux) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idTravaux == 0) {
@@ -907,6 +944,18 @@ class GareroutiereController extends AbstractController
                         $i++;
                     }
 
+                    $updateColonneEtudes = trim($updateColonneEtudes);
+                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                        $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idEtudes == 0) {
                         $idEtudes = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_10_etudes', $colonneInsert, $valuesInsert);
                     } else {
@@ -916,7 +965,7 @@ class GareroutiereController extends AbstractController
 
                 // Foncier
                 $hasEtudeChanged = false;
-                $updateColonneEtudes = "";
+                $updateColonneFoncier = "";
                 $colonneInsert = "";
                 $valuesInsert = "";
                 $idFoncier = 0;
@@ -949,11 +998,11 @@ class GareroutiereController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['fonciers']) - 1 != $i) {
-                                $updateColonneEtudes .= $colonne."="."$value".", ";
+                                $updateColonneFoncier .= $colonne."="."$value".", ";
                                 $colonneInsert .= $colonne.", ";
                                 $valuesInsert .= $value.", ";
                             } else {
-                                $updateColonneEtudes .= $colonne."="."$value";
+                                $updateColonneFoncier .= $colonne."="."$value";
                                 $colonneInsert .= $colonne;
                                 $valuesInsert .= $value;
                             }
@@ -962,10 +1011,22 @@ class GareroutiereController extends AbstractController
                         $i++;
                     }
 
+                    $updateColonneFoncier = trim($updateColonneFoncier);
+                    if ($updateColonneFoncier[-1] && $updateColonneFoncier[-1] == ",") {
+                        $updateColonneFoncier = substr($updateColonneFoncier, 0, strlen($updateColonneFoncier) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idFoncier == 0) {
                         $idFoncier = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_05_foncier', $colonneInsert, $valuesInsert);
                     } else {
-                        $idFoncier = $gareroutiereService->updateInfrastructureTables('t_gr_05_foncier', $idFoncier, $updateColonneEtudes);
+                        $idFoncier = $gareroutiereService->updateInfrastructureTables('t_gr_05_foncier', $idFoncier, $updateColonneFoncier);
                     }
                 }
             }

@@ -679,7 +679,7 @@ class GareroutiereController extends AbstractController
                             $value = "'$value'";
                         }
    
-                        if ($colonne != "id" && $colonne != "gid") {
+                        if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
                                 $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {

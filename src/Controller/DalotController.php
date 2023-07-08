@@ -672,6 +672,7 @@ class DalotController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -718,10 +719,8 @@ class DalotController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -785,10 +784,8 @@ class DalotController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -851,10 +848,8 @@ class DalotController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -918,10 +913,8 @@ class DalotController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 

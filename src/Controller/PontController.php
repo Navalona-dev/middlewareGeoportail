@@ -706,6 +706,7 @@ class PontController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -718,12 +719,12 @@ class PontController extends AbstractController
                         } 
                         $i++;
                     }
-dd($updateColonneInfra);
+
                     $updateColonneInfra = trim($updateColonneInfra);
                     if ($updateColonneInfra[-1] && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-
+                    
                     $idInfra = $pontService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Situation

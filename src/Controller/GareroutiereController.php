@@ -705,7 +705,7 @@ class GareroutiereController extends AbstractController
                 if (array_key_exists('situations', $data) && count($data['situations']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
-                    dd($data['situations']);
+                    
                     foreach ($data['situations'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -743,7 +743,7 @@ class GareroutiereController extends AbstractController
                         } 
                         $i++;
                     }
-
+                    dd($updateColonneEtat);
                     $updateColonneEtat = trim($updateColonneEtat);
                     if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
                         $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);

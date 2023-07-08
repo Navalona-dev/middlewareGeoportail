@@ -660,6 +660,12 @@ class GareroutiereController extends AbstractController
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
+
+                    
+                    if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
+                        $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")', ";
+                    }
+
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -672,7 +678,7 @@ class GareroutiereController extends AbstractController
                         } else {
                             $value = "'$value'";
                         }
-
+   
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['infrastructure']) - 1 != $i) {
                                 $updateColonneInfra .= $colonne."="."$value".", ";

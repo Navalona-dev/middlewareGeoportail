@@ -754,7 +754,7 @@ class GareroutiereController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-
+                    dd($updateColonneEtat, $valuesInsert);
                     if ($idSituation == 0) {
                         $idSituation = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_03_situation', $colonneInsert, $valuesInsert);
                     } else {

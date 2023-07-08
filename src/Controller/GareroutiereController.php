@@ -693,7 +693,7 @@ class GareroutiereController extends AbstractController
                     if ($updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-dd($updateColonneInfra);
+
                     $idInfra = $gareroutiereService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Situation

@@ -657,6 +657,11 @@ class DalotController extends AbstractController
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
+
+                    if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
+                        $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
+                    }
+
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -670,7 +675,7 @@ class DalotController extends AbstractController
                             $value = "'$value'";
                         }
 
-                        if ($colonne != "id" && $colonne != "gid") {
+                        if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
                                 $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {
@@ -679,6 +684,12 @@ class DalotController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneInfra = trim($updateColonneInfra);
+                    if ($updateColonneInfra[-1] && $updateColonneInfra[-1] == ",") {
+                        $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
+                    }
+
                     $idInfra = $dalotService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Etat
@@ -703,7 +714,7 @@ class DalotController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -727,6 +738,19 @@ class DalotController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idEtat == 0) {
                         $idEtat = $dalotService->addInfoInTableByInfrastructure('t_dar_03_etat', $colonneInsert, $valuesInsert);
                     } else {
@@ -757,7 +781,7 @@ class DalotController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -781,6 +805,18 @@ class DalotController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneData = trim($updateColonneData);
+                    if ($updateColonneData[-1] && $updateColonneData[-1] == ",") {
+                        $updateColonneData = substr($updateColonneData, 0, strlen($updateColonneData) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idData == 0) {
@@ -811,7 +847,7 @@ class DalotController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -835,6 +871,18 @@ class DalotController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneTravaux = trim($updateColonneTravaux);
+                    if ($updateColonneTravaux[-1] && $updateColonneTravaux[-1] == ",") {
+                        $updateColonneTravaux = substr($updateColonneTravaux, 0, strlen($updateColonneTravaux) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idTravaux == 0) {
@@ -866,7 +914,7 @@ class DalotController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -890,6 +938,18 @@ class DalotController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneEtudes = trim($updateColonneEtudes);
+                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                        $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idEtudes == 0) {

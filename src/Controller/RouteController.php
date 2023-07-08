@@ -1019,6 +1019,11 @@ class RouteController extends AbstractController
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
+
+                    if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
+                        $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
+                    }
+
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1032,7 +1037,7 @@ class RouteController extends AbstractController
                             $value = "'$value'";
                         }
 
-                        if ($colonne != "id" && $colonne != "gid") {
+                        if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
                                 $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {
@@ -1041,6 +1046,12 @@ class RouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneInfra = trim($updateColonneInfra);
+                    if ($updateColonneInfra[-1] && $updateColonneInfra[-1] == ",") {
+                        $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
+                    }
+
                     $idInfra = $routeService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
 
@@ -1066,7 +1077,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1090,6 +1101,19 @@ class RouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneFosse = trim($updateColonneFosse);
+                    if ($updateColonneFosse[-1] && $updateColonneFosse[-1] == ",") {
+                        $updateColonneFosse = substr($updateColonneFosse, 0, strlen($updateColonneFosse) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+                    
                     if ($idFosseGauche == 0) {
                         $idFosseGauche = $routeService->addInfoInTableByInfrastructure('t_ro_08_fosse', $colonneInsert, $valuesInsert);
                     } else {
@@ -1120,7 +1144,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1144,6 +1168,19 @@ class RouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneFosse = trim($updateColonneFosse);
+                    if ($updateColonneFosse[-1] && $updateColonneFosse[-1] == ",") {
+                        $updateColonneFosse = substr($updateColonneFosse, 0, strlen($updateColonneFosse) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idFosseDroite == 0) {
                         $idFosseDroite = $routeService->addInfoInTableByInfrastructure('t_ro_08_fosse', $colonneInsert, $valuesInsert);
                     } else {
@@ -1174,7 +1211,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1198,6 +1235,19 @@ class RouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneAccote = trim($updateColonneAccote);
+                    if ($updateColonneAccote[-1] && $updateColonneAccote[-1] == ",") {
+                        $updateColonneAccote = substr($updateColonneAccote, 0, strlen($updateColonneAccote) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idAccoteGauche == 0) {
                         $idAccoteGauche = $routeService->addInfoInTableByInfrastructure('t_ro_07_accotement', $colonneInsert, $valuesInsert);
                     } else {
@@ -1228,7 +1278,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1252,6 +1302,19 @@ class RouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneAccote = trim($updateColonneAccote);
+                    if ($updateColonneAccote[-1] && $updateColonneAccote[-1] == ",") {
+                        $updateColonneAccote = substr($updateColonneAccote, 0, strlen($updateColonneAccote) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idAccoteDroite == 0) {
                         $idAccoteDroite = $routeService->addInfoInTableByInfrastructure('t_ro_07_accotement', $colonneInsert, $valuesInsert);
                     } else {
@@ -1282,7 +1345,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1294,7 +1357,7 @@ class RouteController extends AbstractController
                         }
 
                         if ($colonne != "id" && $colonne != "gid") {
-                            if (count($data['etat']) - 1 != $i) {
+                            if (count($data['situations']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."$value".", ";
                                 $colonneInsert .= $colonne.", ";
                                 $valuesInsert .= $value.", ";
@@ -1306,6 +1369,19 @@ class RouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idSituation == 0) {
                         $idSituation = $routeService->addInfoInTableByInfrastructure('t_ro_02_situation', $colonneInsert, $valuesInsert);
                     } else {
@@ -1336,7 +1412,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1360,6 +1436,18 @@ class RouteController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneSurface = trim($updateColonneSurface);
+                    if ($updateColonneSurface[-1] && $updateColonneSurface[-1] == ",") {
+                        $updateColonneSurface = substr($updateColonneSurface, 0, strlen($updateColonneSurface) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idSurface == 0) {
@@ -1392,7 +1480,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1416,6 +1504,18 @@ class RouteController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneStructure = trim($updateColonneStructure);
+                    if ($updateColonneStructure[-1] && $updateColonneStructure[-1] == ",") {
+                        $updateColonneStructure = substr($updateColonneStructure, 0, strlen($updateColonneStructure) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idStructure == 0) {
@@ -1447,7 +1547,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1471,6 +1571,18 @@ class RouteController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneTravaux = trim($updateColonneTravaux);
+                    if ($updateColonneTravaux[-1] && $updateColonneTravaux[-1] == ",") {
+                        $updateColonneTravaux = substr($updateColonneTravaux, 0, strlen($updateColonneTravaux) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idTravaux == 0) {
@@ -1502,7 +1614,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1526,6 +1638,18 @@ class RouteController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneEtudes = trim($updateColonneEtudes);
+                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                        $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idEtudes == 0) {
@@ -1557,7 +1681,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1581,6 +1705,18 @@ class RouteController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneEtudes = trim($updateColonneEtudes);
+                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                        $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idFoncier == 0) {
@@ -1612,7 +1748,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1636,6 +1772,19 @@ class RouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idEtat == 0) {
                         $idEtat = $routeService->addInfoInTableByInfrastructure('t_ro_03_etat', $colonneInsert, $valuesInsert);
                     } else {
@@ -1666,7 +1815,7 @@ class RouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -1690,6 +1839,18 @@ class RouteController extends AbstractController
                             
                         } 
                         $i++;
+                    }
+
+                    $updateColonneFourniture = trim($updateColonneFourniture);
+                    if ($updateColonneFourniture[-1] && $updateColonneFourniture[-1] == ",") {
+                        $updateColonneFourniture = substr($updateColonneFourniture, 0, strlen($updateColonneFourniture) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
                     }
 
                     if ($idFourniture == 0) {

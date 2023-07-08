@@ -1049,11 +1049,13 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneInfra = trim($updateColonneInfra);
-                    if ($updateColonneInfra[-1] && $updateColonneInfra[-1] == ",") {
+                    if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
 
+                    if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
                     $idInfra = $routeService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    }
                 }
 
                 // Fosse Gauche
@@ -1167,7 +1169,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneFosse = trim($updateColonneFosse);
-                    if ($updateColonneFosse[-1] && $updateColonneFosse[-1] == ",") {
+                    if (isset($updateColonneFosse[-1]) && $updateColonneFosse[-1] == ",") {
                         $updateColonneFosse = substr($updateColonneFosse, 0, strlen($updateColonneFosse) - 1);
                     }
 
@@ -1181,7 +1183,9 @@ class RouteController extends AbstractController
                     if ($idFosseDroite == 0) {
                         $idFosseDroite = $routeService->addInfoInTableByInfrastructure('t_ro_08_fosse', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneFosse) && !empty($updateColonneFosse)) {
                         $idFosseDroite = $routeService->updateInfrastructureTables('t_ro_08_fosse', $idFosseGauche, $updateColonneFosse);
+                        }
                     } 
                     
                 }
@@ -1232,7 +1236,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneAccote = trim($updateColonneAccote);
-                    if ($updateColonneAccote[-1] && $updateColonneAccote[-1] == ",") {
+                    if (isset($updateColonneAccote[-1]) && $updateColonneAccote[-1] == ",") {
                         $updateColonneAccote = substr($updateColonneAccote, 0, strlen($updateColonneAccote) - 1);
                     }
 
@@ -1246,7 +1250,9 @@ class RouteController extends AbstractController
                     if ($idAccoteGauche == 0) {
                         $idAccoteGauche = $routeService->addInfoInTableByInfrastructure('t_ro_07_accotement', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneAccote) && !empty($updateColonneAccote)) {
                         $idAccoteGauche = $routeService->updateInfrastructureTables('t_ro_07_accotement', $idAccoteGauche, $updateColonneAccote);
+                        }
                     } 
                     
                 }
@@ -1297,7 +1303,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneAccote = trim($updateColonneAccote);
-                    if ($updateColonneAccote[-1] && $updateColonneAccote[-1] == ",") {
+                    if (isset($updateColonneAccote[-1]) && $updateColonneAccote[-1] == ",") {
                         $updateColonneAccote = substr($updateColonneAccote, 0, strlen($updateColonneAccote) - 1);
                     }
 
@@ -1311,7 +1317,9 @@ class RouteController extends AbstractController
                     if ($idAccoteDroite == 0) {
                         $idAccoteDroite = $routeService->addInfoInTableByInfrastructure('t_ro_07_accotement', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneAccote) && !empty($updateColonneAccote)) {
                         $idAccoteDroite = $routeService->updateInfrastructureTables('t_ro_07_accotement', $idAccoteDroite, $updateColonneAccote);
+                        }
                     } 
                     
                 }
@@ -1362,7 +1370,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneEtat = trim($updateColonneEtat);
-                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
                         $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
                     }
 
@@ -1376,7 +1384,9 @@ class RouteController extends AbstractController
                     if ($idSituation == 0) {
                         $idSituation = $routeService->addInfoInTableByInfrastructure('t_ro_02_situation', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
                         $idSituation = $routeService->updateInfrastructureTables('t_ro_02_situation', $idSituation, $updateColonneEtat);
+                        }
                     } 
                     
                 }
@@ -1428,7 +1438,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneSurface = trim($updateColonneSurface);
-                    if ($updateColonneSurface[-1] && $updateColonneSurface[-1] == ",") {
+                    if (isset($updateColonneSurface[-1]) && $updateColonneSurface[-1] == ",") {
                         $updateColonneSurface = substr($updateColonneSurface, 0, strlen($updateColonneSurface) - 1);
                     }
 
@@ -1442,7 +1452,9 @@ class RouteController extends AbstractController
                     if ($idSurface == 0) {
                         $idSurface = $routeService->addInfoInTableByInfrastructure('t_ro_04_surface', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneSurface) && !empty($updateColonneSurface)) {
                         $idSurface = $routeService->updateInfrastructureTables('t_ro_04_surface', $idSurface, $updateColonneSurface);
+                        }
                     }
                 }
 
@@ -1494,7 +1506,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneStructure = trim($updateColonneStructure);
-                    if ($updateColonneStructure[-1] && $updateColonneStructure[-1] == ",") {
+                    if (isset($updateColonneStructure[-1]) && $updateColonneStructure[-1] == ",") {
                         $updateColonneStructure = substr($updateColonneStructure, 0, strlen($updateColonneStructure) - 1);
                     }
 
@@ -1508,7 +1520,9 @@ class RouteController extends AbstractController
                     if ($idStructure == 0) {
                         $idStructure = $routeService->addInfoInTableByInfrastructure('t_ro_05_structure', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneStructure) && !empty($updateColonneStructure)) {
                         $idStructure = $routeService->updateInfrastructureTables('t_ro_05_structure', $idStructure, $updateColonneStructure);
+                        }
                     }
                 }
 
@@ -1559,7 +1573,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneTravaux = trim($updateColonneTravaux);
-                    if ($updateColonneTravaux[-1] && $updateColonneTravaux[-1] == ",") {
+                    if (isset($updateColonneTravaux[-1]) && $updateColonneTravaux[-1] == ",") {
                         $updateColonneTravaux = substr($updateColonneTravaux, 0, strlen($updateColonneTravaux) - 1);
                     }
 
@@ -1573,7 +1587,9 @@ class RouteController extends AbstractController
                     if ($idTravaux == 0) {
                         $idTravaux = $routeService->addInfoInTableByInfrastructure('t_ro_09_travaux', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
                         $idTravaux = $routeService->updateInfrastructureTables('t_ro_09_travaux', $idTravaux, $updateColonneTravaux);
+                        }
                     }
                 }
 
@@ -1624,7 +1640,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneEtudes = trim($updateColonneEtudes);
-                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                    if (isset($updateColonneEtudes[-1]) && $updateColonneEtudes[-1] == ",") {
                         $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
                     }
 
@@ -1638,7 +1654,9 @@ class RouteController extends AbstractController
                     if ($idEtudes == 0) {
                         $idEtudes = $routeService->addInfoInTableByInfrastructure('t_ro_11_etudes', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
                         $idEtudes = $routeService->updateInfrastructureTables('t_ro_11_etudes', $idEtudes, $updateColonneEtudes);
+                        }
                     }
                 }
 
@@ -1689,7 +1707,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneEtudes = trim($updateColonneEtudes);
-                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                    if (isset($updateColonneEtudes[-1]) && $updateColonneEtudes[-1] == ",") {
                         $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
                     }
 
@@ -1703,7 +1721,9 @@ class RouteController extends AbstractController
                     if ($idFoncier == 0) {
                         $idFoncier = $routeService->addInfoInTableByInfrastructure('t_ro_13_foncier', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
                         $idFoncier = $routeService->updateInfrastructureTables('t_ro_13_foncier', $idFoncier, $updateColonneEtudes);
+                        }
                     }
                 }
 
@@ -1753,7 +1773,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneEtat = trim($updateColonneEtat);
-                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
                         $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
                     }
 
@@ -1767,7 +1787,9 @@ class RouteController extends AbstractController
                     if ($idEtat == 0) {
                         $idEtat = $routeService->addInfoInTableByInfrastructure('t_ro_03_etat', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
                         $idEtat = $routeService->updateInfrastructureTables('t_ro_03_etat', $idEtat, $updateColonneEtat);
+                        }
                     } 
                     
                 }
@@ -1819,7 +1841,7 @@ class RouteController extends AbstractController
                     }
 
                     $updateColonneFourniture = trim($updateColonneFourniture);
-                    if ($updateColonneFourniture[-1] && $updateColonneFourniture[-1] == ",") {
+                    if (isset($updateColonneFourniture[-1]) && $updateColonneFourniture[-1] == ",") {
                         $updateColonneFourniture = substr($updateColonneFourniture, 0, strlen($updateColonneFourniture) - 1);
                     }
 
@@ -1833,7 +1855,9 @@ class RouteController extends AbstractController
                     if ($idFourniture == 0) {
                         $idFourniture = $routeService->addInfoInTableByInfrastructure('t_ro_14_fourniture', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneFourniture) && !empty($updateColonneFourniture)) {
                         $idFourniture = $routeService->updateInfrastructureTables('t_ro_14_fourniture', $idFourniture, $updateColonneFourniture);
+                        }
                     }
                 }
             }

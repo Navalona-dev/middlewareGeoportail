@@ -743,13 +743,13 @@ class DalotController extends AbstractController
                     }
 
                     $updateColonneEtat = trim($updateColonneEtat);
-                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
                         $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
                     }
 
                     if ($valuesInsert) {
                         $valuesInsert = trim($valuesInsert);
-                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                        if (isset($valuesInsert[-1]) && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
@@ -757,7 +757,9 @@ class DalotController extends AbstractController
                     if ($idEtat == 0) {
                         $idEtat = $dalotService->addInfoInTableByInfrastructure('t_dar_03_etat', $colonneInsert, $valuesInsert);
                     } else {
-                        $idEtat = $dalotService->updateInfrastructureTables('t_dar_03_etat', $idEtat, $updateColonneEtat);
+                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
+                            $idEtat = $dalotService->updateInfrastructureTables('t_dar_03_etat', $idEtat, $updateColonneEtat);
+                        }
                     } 
                     
                 }
@@ -809,7 +811,7 @@ class DalotController extends AbstractController
                     }
 
                     $updateColonneData = trim($updateColonneData);
-                    if ($updateColonneData[-1] && $updateColonneData[-1] == ",") {
+                    if (isset($updateColonneData[-1]) && $updateColonneData[-1] == ",") {
                         $updateColonneData = substr($updateColonneData, 0, strlen($updateColonneData) - 1);
                     }
 
@@ -823,7 +825,9 @@ class DalotController extends AbstractController
                     if ($idData == 0) {
                         $idData = $dalotService->addInfoInTableByInfrastructure('t_dar_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneData) && !empty($updateColonneData)) {
                         $idData = $dalotService->updateInfrastructureTables('t_dar_04_donnees_collectees', $idData, $updateColonneData);
+                        }
                     }
                 }
                 // Travaux
@@ -873,7 +877,7 @@ class DalotController extends AbstractController
                     }
 
                     $updateColonneTravaux = trim($updateColonneTravaux);
-                    if ($updateColonneTravaux[-1] && $updateColonneTravaux[-1] == ",") {
+                    if (isset($updateColonneTravaux[-1]) && $updateColonneTravaux[-1] == ",") {
                         $updateColonneTravaux = substr($updateColonneTravaux, 0, strlen($updateColonneTravaux) - 1);
                     }
 
@@ -887,7 +891,9 @@ class DalotController extends AbstractController
                     if ($idTravaux == 0) {
                         $idTravaux = $dalotService->addInfoInTableByInfrastructure('t_dar_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
                         $idTravaux = $dalotService->updateInfrastructureTables('t_dar_05_travaux', $idTravaux, $updateColonneTravaux);
+                        }
                     }
                 }
 
@@ -938,7 +944,7 @@ class DalotController extends AbstractController
                     }
 
                     $updateColonneEtudes = trim($updateColonneEtudes);
-                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                    if (isset($updateColonneEtudes[-1]) && $updateColonneEtudes[-1] == ",") {
                         $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
                     }
 
@@ -952,7 +958,9 @@ class DalotController extends AbstractController
                     if ($idEtudes == 0) {
                         $idEtudes = $dalotService->addInfoInTableByInfrastructure('t_dar_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
                         $idEtudes = $dalotService->updateInfrastructureTables('t_dar_07_etudes', $idEtudes, $updateColonneEtudes);
+                        }
                     }
                 }
             }

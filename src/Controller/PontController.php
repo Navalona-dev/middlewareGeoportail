@@ -721,11 +721,13 @@ class PontController extends AbstractController
                     }
 
                     $updateColonneInfra = trim($updateColonneInfra);
-                    if ($updateColonneInfra[-1] && $updateColonneInfra[-1] == ",") {
+                    if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
                     
+                    if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
                     $idInfra = $pontService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    }
                 }
                 // Situation
                 $hasEtatChanged = false;
@@ -773,7 +775,7 @@ class PontController extends AbstractController
                     }
 
                     $updateColonneEtat = trim($updateColonneEtat);
-                    if ($updateColonneEtat[-1] && $updateColonneEtat[-1] == ",") {
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
                         $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
                     }
 
@@ -787,7 +789,9 @@ class PontController extends AbstractController
                     if ($idSituation == 0) {
                         $idSituation = $pontService->addInfoInTableByInfrastructure('t_pnr_02_situation', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
                         $idSituation = $pontService->updateInfrastructureTables('t_pnr_02_situation', $idSituation, $updateColonneEtat);
+                        }
                     } 
                     
                 }
@@ -839,7 +843,7 @@ class PontController extends AbstractController
                     }
 
                     $updateColonneData = trim($updateColonneData);
-                    if ($updateColonneData[-1] && $updateColonneData[-1] == ",") {
+                    if (isset($updateColonneData[-1]) && $updateColonneData[-1] == ",") {
                         $updateColonneData = substr($updateColonneData, 0, strlen($updateColonneData) - 1);
                     }
 
@@ -853,7 +857,9 @@ class PontController extends AbstractController
                     if ($idData == 0) {
                         $idData = $pontService->addInfoInTableByInfrastructure('t_pnr_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneData) && !empty($updateColonneData)) {
                         $idData = $pontService->updateInfrastructureTables('t_pnr_04_donnees_collectees', $idData, $updateColonneData);
+                        }
                     }
                 }
                 // Travaux
@@ -903,7 +909,7 @@ class PontController extends AbstractController
                     }
 
                     $updateColonneTravaux = trim($updateColonneTravaux);
-                    if ($updateColonneTravaux[-1] && $updateColonneTravaux[-1] == ",") {
+                    if (isset($updateColonneTravaux[-1]) && $updateColonneTravaux[-1] == ",") {
                         $updateColonneTravaux = substr($updateColonneTravaux, 0, strlen($updateColonneTravaux) - 1);
                     }
 
@@ -917,7 +923,9 @@ class PontController extends AbstractController
                     if ($idTravaux == 0) {
                         $idTravaux = $pontService->addInfoInTableByInfrastructure('t_pnr_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
                         $idTravaux = $pontService->updateInfrastructureTables('t_pnr_05_travaux', $idTravaux, $updateColonneTravaux);
+                        }
                     }
                 }
 
@@ -968,7 +976,7 @@ class PontController extends AbstractController
                     }
 
                     $updateColonneEtudes = trim($updateColonneEtudes);
-                    if ($updateColonneEtudes[-1] && $updateColonneEtudes[-1] == ",") {
+                    if (isset($updateColonneEtudes[-1]) && $updateColonneEtudes[-1] == ",") {
                         $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
                     }
 
@@ -982,7 +990,9 @@ class PontController extends AbstractController
                     if ($idEtudes == 0) {
                         $idEtudes = $pontService->addInfoInTableByInfrastructure('t_pnr_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
+                        if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
                         $idEtudes = $pontService->updateInfrastructureTables('t_pnr_07_etudes', $idEtudes, $updateColonneEtudes);
+                        }
                     }
                 }
             }

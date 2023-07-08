@@ -786,7 +786,7 @@ class GareroutiereController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";

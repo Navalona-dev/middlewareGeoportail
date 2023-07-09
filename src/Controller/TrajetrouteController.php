@@ -744,11 +744,13 @@ class TrajetrouteController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
+                            if ($colonne != "localisations") {
+                                $value = pg_escape_string($value);
+                                $value = "'$value'";
+                            }
                         }
 
-                        if ($colonne != "id" && $colonne != "gid") {
+                        if ($colonne != "id" && $colonne != "gid"  && $colonne != "localisations") {
                             if (count($data['infrastructure']) - 1 != $i) {
                                 $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {

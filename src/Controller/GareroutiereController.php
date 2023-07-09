@@ -657,6 +657,8 @@ class GareroutiereController extends AbstractController
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
                 $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
 
+                $colonneDate = ["date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
+                
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
@@ -722,7 +724,7 @@ class GareroutiereController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -789,7 +791,7 @@ class GareroutiereController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -855,7 +857,7 @@ class GareroutiereController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -922,7 +924,7 @@ class GareroutiereController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
@@ -989,7 +991,7 @@ class GareroutiereController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information" || $colonne == "date_contrat" || $colonne == "date_ordre_service" || $colonne == "date_reception_provisoire" || $colonne == "date_reception_definitive") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";

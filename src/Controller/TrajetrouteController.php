@@ -710,9 +710,30 @@ class TrajetrouteController extends AbstractController
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies', 'pk_depart', 'pk_arrive'];
                 $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
 
+                $colonneDate = ["date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
+
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
+
+                    if (array_key_exists("localisations", $data['infrastructure'])) {
+                        $coordonnees = "";
+                        if (count($data['infrastructure']['localisations']) > 0) {
+                            
+                            foreach ($data['infrastructure']['localisations'] as $key => $value) {
+                                if (count($data['infrastructure']['localisations']) - 1 == $key) {
+                                    $coordonnees .= (string) $value['latitude']." ". (string) $value['longitude'];
+                                } else {
+                                    $coordonnees .= (string) $value['latitude']." ". (string) $value['longitude'].", ";
+                                }
+                                
+                            }
+                        }
+
+                        $updateColonneInfra .= "geom = ST_GeomFromText('LINESTRING(".$coordonnees.")'), ";
+                    }
+                    
+
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -723,6 +744,7 @@ class TrajetrouteController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -735,6 +757,12 @@ class TrajetrouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneInfra = trim($updateColonneInfra);
+                    if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
+                        $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
+                    }
+
                     $idInfra = $trajetrouteService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Situation
@@ -759,19 +787,17 @@ class TrajetrouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
                         if ($colonne != "id" && $colonne != "gid") {
-                            if (count($data['etat']) - 1 != $i) {
+                            if (count($data['situations']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."$value".", ";
                                 $colonneInsert .= $colonne.", ";
                                 $valuesInsert .= $value.", ";
@@ -783,10 +809,23 @@ class TrajetrouteController extends AbstractController
                         } 
                         $i++;
                     }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idSituation == 0) {
-                        $idSituation = $trajetrouteService->addInfoInTableByInfrastructure('t_pnr_02_situation', $colonneInsert, $valuesInsert);
+                        $idSituation = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_02_situation', $colonneInsert, $valuesInsert);
                     } else {
-                        $idSituation = $trajetrouteService->updateInfrastructureTables('t_pnr_02_situation', $idSituation, $updateColonneEtat);
+                        $idSituation = $trajetrouteService->updateInfrastructureTables('t_tj_02_situation', $idSituation, $updateColonneEtat);
                     } 
                     
                 }
@@ -813,14 +852,12 @@ class TrajetrouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -839,10 +876,22 @@ class TrajetrouteController extends AbstractController
                         $i++;
                     }
 
+                    $updateColonneData = trim($updateColonneData);
+                    if (isset($updateColonneData[-1]) && $updateColonneData[-1] == ",") {
+                        $updateColonneData = substr($updateColonneData, 0, strlen($updateColonneData) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idData == 0) {
-                        $idData = $trajetrouteService->addInfoInTableByInfrastructure('t_pnr_04_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
-                        $idData = $trajetrouteService->updateInfrastructureTables('t_pnr_04_donnees_collectees', $idData, $updateColonneData);
+                        $idData = $trajetrouteService->updateInfrastructureTables('t_tj_04_donnees_collectees', $idData, $updateColonneData);
                     }
                 }
                 // Travaux
@@ -867,14 +916,12 @@ class TrajetrouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -893,10 +940,22 @@ class TrajetrouteController extends AbstractController
                         $i++;
                     }
 
+                    $updateColonneTravaux = trim($updateColonneTravaux);
+                    if (isset($updateColonneTravaux[-1]) && $updateColonneTravaux[-1] == ",") {
+                        $updateColonneTravaux = substr($updateColonneTravaux, 0, strlen($updateColonneTravaux) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idTravaux == 0) {
-                        $idTravaux = $trajetrouteService->addInfoInTableByInfrastructure('t_pnr_05_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
-                        $idTravaux = $trajetrouteService->updateInfrastructureTables('t_pnr_05_travaux', $idTravaux, $updateColonneTravaux);
+                        $idTravaux = $trajetrouteService->updateInfrastructureTables('t_tj_05_travaux', $idTravaux, $updateColonneTravaux);
                     }
                 }
 
@@ -922,14 +981,12 @@ class TrajetrouteController extends AbstractController
                             $value = intval($value);
                         } elseif (in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
-                        } elseif ($colonne == "date_information") {
+                        } elseif (in_array($colonne, $colonneDate)) {
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
-                        } elseif ($colonne == "source_information") {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
                         } else {
+                            $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
 
@@ -948,10 +1005,156 @@ class TrajetrouteController extends AbstractController
                         $i++;
                     }
 
+                    $updateColonneEtudes = trim($updateColonneEtudes);
+                    if (isset($updateColonneEtudes[-1]) && $updateColonneEtudes[-1] == ",") {
+                        $updateColonneEtudes = substr($updateColonneEtudes, 0, strlen($updateColonneEtudes) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
                     if ($idEtudes == 0) {
-                        $idEtudes = $trajetrouteService->addInfoInTableByInfrastructure('t_pnr_07_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
-                        $idEtudes = $trajetrouteService->updateInfrastructureTables('t_pnr_07_etudes', $idEtudes, $updateColonneEtudes);
+                        $idEtudes = $trajetrouteService->updateInfrastructureTables('t_tj_07_etudes', $idEtudes, $updateColonneEtudes);
+                    }
+                }
+
+                // Etat
+                $hasEtatChanged = false;
+                $updateColonneEtat = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idEtat = 0;
+                if (array_key_exists('etat', $data) && count($data['etat']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['etat'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idEtat = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['etat']) - 1 != $i) {
+                                $updateColonneEtat .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneEtat .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idEtat == 0) {
+                        $idEtat = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_03_etat', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
+                        $idEtat = $trajetrouteService->updateInfrastructureTables('t_tj_03_etat', $idEtat, $updateColonneEtat);
+                        }
+                    } 
+                    
+                }
+
+                // Fourniture
+                $hasEtudeChanged = false;
+                $updateColonneFourniture = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idFourniture = 0;
+                if (array_key_exists('fournitures', $data) && count($data['fournitures']) > 0) {
+                    $hasEtudeChanged = true;
+                    $i = 0;
+                    foreach ($data['fournitures'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idFourniture = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['fournitures']) - 1 != $i) {
+                                $updateColonneFourniture .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneFourniture .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneFourniture = trim($updateColonneFourniture);
+                    if (isset($updateColonneFourniture[-1]) && $updateColonneFourniture[-1] == ",") {
+                        $updateColonneFourniture = substr($updateColonneFourniture, 0, strlen($updateColonneFourniture) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idFourniture == 0) {
+                        $idFourniture = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_06_fourniture', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneFourniture) && !empty($updateColonneFourniture)) {
+                        $idFourniture = $trajetrouteService->updateInfrastructureTables('t_tj_06_fourniture', $idFourniture, $updateColonneFourniture);
+                        }
                     }
                 }
             }
@@ -960,7 +1163,7 @@ class TrajetrouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Pont update_successfull"
+                'message' => "Trajet route update_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

@@ -80,7 +80,7 @@ class DalotRepository extends ServiceEntityRepository
 
     public function getAllInfrastructuresMinifie()
     {
-        $sql = 'SELECT infra.id as infra_id, infra.nom as nom, infra.localite, infra.commune_terrain, infra.pk_implantation, infra.date_information,  ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_dar_01_infrastructure as infra';
+        $sql = 'SELECT infra.id as infra_id, infra.nom as nom, infra.localite, infra.commune_terrain, infra.pk_implantation, infra.date_information, infra.mode_acquisition_information as mode_acquisition_information,  ST_X(infra.geom) AS long, ST_Y(infra.geom) AS lat, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_dar_01_infrastructure as infra';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

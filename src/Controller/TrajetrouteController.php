@@ -173,9 +173,10 @@ class TrajetrouteController extends AbstractController
                     }
                 }
                 $toNullPhoto2 = true;
-                if ($toNullPhoto1) {
+                if ($toNullPhoto1 || null != $data['photo1']) {
                     $setUpdate .= ", ";  
                 }
+
                 $setUpdate .= "photo2 = null, photo_name2 = null";
             }
 
@@ -216,7 +217,7 @@ class TrajetrouteController extends AbstractController
                 }
                 $toNullPhoto3 = true;
 
-                if ($toNullPhoto2) {
+                if ($toNullPhoto2  || null != $data['photo2']) {
                     $setUpdate .= ", ";  
                 }
 

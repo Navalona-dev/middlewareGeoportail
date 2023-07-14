@@ -76,7 +76,27 @@ class TrajetrouteController extends AbstractController
             $setUpdate = "";
 
             $infoPhotosInfra = $trajetrouteService->getPhotoInfraInfo($idInfra);
-            dd($infoPhotosInfra);
+            $toDeletePhoto1 = false;
+            $toDeletePhoto2 = false;
+            $toDeletePhoto2 = false;
+            $oldPhotosInfra = [];
+            if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
+                if (isset($infoPhotosInfra[0]["photo1"])) {
+                    $toDeletePhoto1 = true;
+                    $oldPhotosInfra["photo1"] = $infoPhotosInfra[0]["photo1"];
+                }
+
+                if (isset($infoPhotosInfra[0]["photo2"])) {
+                    $toDeletePhoto2 = true;
+                    $oldPhotosInfra["photo2"] = $infoPhotosInfra[0]["photo2"];
+                }
+
+                if (isset($infoPhotosInfra[0]["photo3"])) {
+                    $toDeletePhoto3 = true;
+                    $oldPhotosInfra["photo3"] = $infoPhotosInfra[0]["photo3"];
+                }
+            }
+
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
@@ -92,6 +112,13 @@ class TrajetrouteController extends AbstractController
                 $data['photo1'] = $this->pathForNamePhotoTrajetroute."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
+
+                if ($toDeletePhoto1) {
+                    $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
+                    if (file_exists($directory1.$nomOldFile1)) {
+                        unlink($directory1.$nomOldFile1);
+                    }
+                }
             }
             
             
@@ -112,6 +139,13 @@ class TrajetrouteController extends AbstractController
                     $setUpdate .= ", ";    
                 }
                 $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
+
+                if ($toDeletePhoto2) {
+                    $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
+                    if (file_exists($directory2.$nomOldFile2)) {
+                        unlink($directory2.$nomOldFile2);
+                    }
+                }
             }
 
             if (null != $uploadedFile3) {
@@ -133,6 +167,13 @@ class TrajetrouteController extends AbstractController
                 }
 
                 $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
+
+                if ($toDeletePhoto3) {
+                    $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
+                    if (file_exists($directory3.$nomOldFile3)) {
+                        unlink($directory3.$nomOldFile3);
+                    }
+                }
             }
 
             if (isset($setUpdate) && !empty($setUpdate)) {

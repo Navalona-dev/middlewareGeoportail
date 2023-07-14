@@ -82,7 +82,16 @@ class TrajetrouteService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
+    }
+
+    public function getPhotoInfraInfo($infraId)
+    {
+        $routes = $this->trajetrouteRepository->getPhotoInfraInfo(intval($infraId));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
     }
 
     public function getAllInfrastructuresBaseRoute()
@@ -91,7 +100,7 @@ class TrajetrouteService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
     }
     
     public function addInfrastructureRouteEtat($idInfrastructure, $data)
@@ -138,9 +147,9 @@ class TrajetrouteService
         return false;
     }
 
-    public function addInfrastructurePhoto($idInfrastructure = null, $data)
+    public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
     {
-        $result = $this->trajetrouteRepository->addInfrastructurePhoto($idInfrastructure, $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3']);
+        $result = $this->trajetrouteRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);
         
         if ($result) {
             return $result;

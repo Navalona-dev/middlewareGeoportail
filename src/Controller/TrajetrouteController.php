@@ -54,6 +54,172 @@ class TrajetrouteController extends AbstractController
 
 
     /**
+     * @Route("/api/trajetroute/updatephoto", name="trajetroute_update_photo", methods={"POST"})
+     */
+    public function updatePhoto(Request $request, TrajetrouteService $trajetrouteService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            $data = [];
+            $uploadedFile1 = $request->files->get('photo1');
+            $uploadedFile2 = $request->files->get('photo2');
+            $uploadedFile3 = $request->files->get('photo3');
+            $idInfra = $request->get('infraId');
+            $data['photo1'] = null;
+            $data['photo2'] = null;
+            $data['photo3'] = null;
+            $data['photoName1'] = null;
+            $data['photoName2'] = null;
+            $data['photoName3'] = null;
+            $setUpdate = "";
+
+            $infoPhotosInfra = $trajetrouteService->getPhotoInfraInfo($idInfra);
+            dd($infoPhotosInfra);
+            if (null != $uploadedFile1) {
+                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
+                $tmpPathName1 = $uploadedFile1->getPathname();
+                $directory1 = $this->pathImageTrajetroute . "photo1/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
+
+                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+                $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
+                
+                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
+                copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
+
+                $data['photo1'] = $this->pathForNamePhotoTrajetroute."photo1/" .$nomPhoto1;
+                $data['photoName1'] = $nomPhoto1;
+                $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
+            }
+            
+            
+            if (null != $uploadedFile2) {
+                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
+                $tmpPathName2 = $uploadedFile2->getPathname();
+                $directory2 = $this->pathImageTrajetroute . "photo2/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+
+                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
+                $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
+                copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                
+                $data['photo2'] = $this->pathForNamePhotoTrajetroute."photo2/" .$nomPhoto2;
+                $data['photoName2'] = $nomPhoto2;
+                if (null != $data['photo1']) {
+                    $setUpdate .= ", ";    
+                }
+                $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
+            }
+
+            if (null != $uploadedFile3) {
+                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
+                $tmpPathName3 = $uploadedFile3->getPathname();
+                $directory3 = $this->pathImageTrajetroute . "photo3/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+
+                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
+                $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
+                copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
+
+                $data['photo3'] = $this->pathForNamePhotoTrajetroute."photo3/" .$nomPhoto3;
+                $data['photoName3'] = $nomPhoto3;
+
+                if (null != $data['photo1'] || null != $data['photo2']) {
+                    $setUpdate .= ", ";    
+                }
+
+                $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
+            }
+
+            if (isset($setUpdate) && !empty($setUpdate)) {
+                $idInfra = $trajetrouteService->addInfrastructurePhoto($idInfra, $setUpdate);
+            }
+            
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Photo trajet route updated_successfull"
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
+    }
+
+    /**
      * @Route("/api/trajetroute/addphoto", name="trajetroute_add_photo", methods={"POST"})
      */
     public function addPhoto(Request $request, TrajetrouteService $trajetrouteService)
@@ -73,6 +239,7 @@ class TrajetrouteController extends AbstractController
             $data['photoName1'] = null;
             $data['photoName2'] = null;
             $data['photoName3'] = null;
+            $setUpdate = "";
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
@@ -87,7 +254,9 @@ class TrajetrouteController extends AbstractController
 
                 $data['photo1'] = $this->pathForNamePhotoTrajetroute."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
+                $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
             }
+            
             
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
@@ -102,6 +271,10 @@ class TrajetrouteController extends AbstractController
                 
                 $data['photo2'] = $this->pathForNamePhotoTrajetroute."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
+                if (null != $data['photo1']) {
+                    $setUpdate .= ", ";    
+                }
+                $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
             }
 
             if (null != $uploadedFile3) {
@@ -117,9 +290,17 @@ class TrajetrouteController extends AbstractController
 
                 $data['photo3'] = $this->pathForNamePhotoTrajetroute."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
+
+                if (null != $data['photo1'] || null != $data['photo2']) {
+                    $setUpdate .= ", ";    
+                }
+
+                $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
             }
 
-            $idInfra = $trajetrouteService->addInfrastructurePhoto($idInfra, $data);
+            if (isset($setUpdate) && !empty($setUpdate)) {
+                $idInfra = $trajetrouteService->addInfrastructurePhoto($idInfra, $setUpdate);
+            }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

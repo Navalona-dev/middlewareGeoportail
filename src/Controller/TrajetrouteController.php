@@ -122,14 +122,17 @@ class TrajetrouteController extends AbstractController
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
                     if (file_exists($directory1.$nomOldFile1)) {
                         unlink($directory1.$nomOldFile1);
+                        unlink($directoryPublicCopy.$nomOldFile1);
                     }
                 }
                 
             } else {
                 if ($toDeletePhoto1) {
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo1/";
                     if (file_exists($directory1.$nomOldFile1)) {
                         unlink($directory1.$nomOldFile1);
+                        unlink($directoryPublicCopy.$nomOldFile1);
                     }
                 }
                 $toNullPhoto1 = true;
@@ -163,13 +166,16 @@ class TrajetrouteController extends AbstractController
                     $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
                     if (file_exists($directory2.$nomOldFile2)) {
                         unlink($directory2.$nomOldFile2);
+                        unlink($directoryPublicCopy.$nomOldFile2);
                     }
                 }
             } else {
                 if ($toDeletePhoto2) {
                     $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo2/";
                     if (file_exists($directory2.$nomOldFile2)) {
                         unlink($directory2.$nomOldFile2);
+                        unlink($directoryPublicCopy.$nomOldFile2);
                     }
                 }
                 $toNullPhoto2 = true;
@@ -206,13 +212,16 @@ class TrajetrouteController extends AbstractController
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
                     if (file_exists($directory3.$nomOldFile3)) {
                         unlink($directory3.$nomOldFile3);
+                        unlink($directoryPublicCopy.$nomOldFile3);
                     }
                 }
             } else {
                 if ($toDeletePhoto3) {
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo3/";
                     if (file_exists($directory3.$nomOldFile3)) {
                         unlink($directory3.$nomOldFile3);
+                        unlink($directoryPublicCopy.$nomOldFile3);
                     }
                 }
                 $toNullPhoto3 = true;

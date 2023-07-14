@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
-
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\RouteRepository;
 
@@ -42,14 +42,16 @@ class TrajetrouteController extends AbstractController
     private $pathForNamePhotoTrajetroute = null;
     private $kernelInterface;
     private $directoryCopy = null;
+    private $urlGenerator;
 
-    public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
+    public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface, UrlGeneratorInterface $urlGenerator) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "trajetroute/";
         $this->pathImageTrajetroute = $params->get('pathImageTrajetroute');
         $this->pathPublic = $params->get('pathPublic');
         $this->pathForNamePhotoTrajetroute = $params->get('pathForNamePhotoTrajetroute');
         $this->kernelInterface = $kernelInterface;
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic')."trajetroute/";
+        $this->urlGenerator = $urlGenerator;
     }
 
 
@@ -911,7 +913,7 @@ class TrajetrouteController extends AbstractController
             $infraId = $request->get('id');
 
             $routes = $trajetrouteService->getOneInfraInfo(intval($infraId));
-
+            dd($this->urlGenerator->generate('64b1501d625a7.jpg'));
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,

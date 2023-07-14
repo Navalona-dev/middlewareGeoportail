@@ -10,4 +10,6 @@ api_refresh_token:
     #defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }
     #controller: { _controller: Gesdinet\JWTRefreshTokenBundle\Service\RefreshToken::refresh }
     #controller: gesdinet.jwtrefreshtoken::refresh
-    
+images_route:
+    path: /images/{imageName}
+    controller: App\Controller\ImagesController::displayImage

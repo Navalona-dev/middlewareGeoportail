@@ -79,6 +79,9 @@ class TrajetrouteController extends AbstractController
             $toDeletePhoto1 = false;
             $toDeletePhoto2 = false;
             $toDeletePhoto3 = false;
+            $toNullPhoto1 = false;
+            $toNullPhoto2 = false;
+            $toNullPhoto3 = false;
             $oldPhotosInfra = [];
             if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
                 if (isset($infoPhotosInfra[0]["photo1"])) {
@@ -97,12 +100,14 @@ class TrajetrouteController extends AbstractController
                 }
             }
 
+
+            $directory1 = $this->pathImageTrajetroute . "photo1/";
+
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageTrajetroute . "photo1/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
 
+                $directoryPublicCopy =  $this->directoryCopy. "photo1/";    
                 //$name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
                 
@@ -119,15 +124,28 @@ class TrajetrouteController extends AbstractController
                         unlink($directory1.$nomOldFile1);
                     }
                 }
+                
+            } else {
+                if ($toDeletePhoto1) {
+                    $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
+                    if (file_exists($directory1.$nomOldFile1)) {
+                        unlink($directory1.$nomOldFile1);
+                    }
+                }
+                $toNullPhoto1 = true;
+                $setUpdate .= "photo1 = null, photo_name1 = null";
             }
+
             
             
+
+            $directory2 = $this->pathImageTrajetroute . "photo2/";
+
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageTrajetroute . "photo2/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
 
+                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
@@ -138,6 +156,7 @@ class TrajetrouteController extends AbstractController
                 if (null != $data['photo1']) {
                     $setUpdate .= ", ";    
                 }
+
                 $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
 
                 if ($toDeletePhoto2) {
@@ -146,14 +165,28 @@ class TrajetrouteController extends AbstractController
                         unlink($directory2.$nomOldFile2);
                     }
                 }
+            } else {
+                if ($toDeletePhoto2) {
+                    $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
+                    if (file_exists($directory2.$nomOldFile2)) {
+                        unlink($directory2.$nomOldFile2);
+                    }
+                }
+                $toNullPhoto2 = true;
+                if ($toNullPhoto1) {
+                    $setUpdate .= ", ";  
+                }
+                $setUpdate .= "photo2 = null, photo_name2 = null";
             }
+
+
+            $directory3 = $this->pathImageTrajetroute . "photo3/";
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageTrajetroute . "photo3/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
+                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
@@ -174,6 +207,20 @@ class TrajetrouteController extends AbstractController
                         unlink($directory3.$nomOldFile3);
                     }
                 }
+            } else {
+                if ($toDeletePhoto3) {
+                    $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
+                    if (file_exists($directory3.$nomOldFile3)) {
+                        unlink($directory3.$nomOldFile3);
+                    }
+                }
+                $toNullPhoto3 = true;
+
+                if ($toNullPhoto2) {
+                    $setUpdate .= ", ";  
+                }
+
+                $setUpdate .= "photo3 = null, photo_name3 = null";
             }
 
             if (isset($setUpdate) && !empty($setUpdate)) {

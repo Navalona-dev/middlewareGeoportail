@@ -1,4 +1,4 @@
-<?
+<?php
 // src/Controller/ImagesController.php
 namespace App\Controller;
 

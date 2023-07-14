@@ -103,8 +103,8 @@ class TrajetrouteController extends AbstractController
                 $directory1 = $this->pathImageTrajetroute . "photo1/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";
 
-                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
-                $nomPhoto1 = $name_temp.".".$uploadedFile1->getClientOriginalExtension();
+                //$name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
@@ -129,7 +129,7 @@ class TrajetrouteController extends AbstractController
                 $directoryPublicCopy =  $this->directoryCopy. "photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
-                $nomPhoto2 = $name_temp2.".".$uploadedFile2->getClientOriginalExtension();
+                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
@@ -155,7 +155,7 @@ class TrajetrouteController extends AbstractController
                 $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
-                $nomPhoto3 = $name_temp3.".".$uploadedFile2->getClientOriginalExtension();
+                $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 

@@ -913,7 +913,7 @@ class TrajetrouteController extends AbstractController
             $infraId = $request->get('id');
 
             $routes = $trajetrouteService->getOneInfraInfo(intval($infraId));
-            dd($this->urlGenerator->generate('images_route', ['imageName' => '64b1501d625a7.jpg']));
+            //dd($this->urlGenerator->generate('images_route', ['imageName' => '64b1501d625a7.jpg']));
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,

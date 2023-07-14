@@ -78,7 +78,7 @@ class TrajetrouteController extends AbstractController
             $infoPhotosInfra = $trajetrouteService->getPhotoInfraInfo($idInfra);
             $toDeletePhoto1 = false;
             $toDeletePhoto2 = false;
-            $toDeletePhoto2 = false;
+            $toDeletePhoto3 = false;
             $oldPhotosInfra = [];
             if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
                 if (isset($infoPhotosInfra[0]["photo1"])) {

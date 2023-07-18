@@ -694,6 +694,7 @@ class TrajetrouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
+                'idInfra' => $idInfra,
                 'message' => "Trajet route created_successfull"
             ]));
 

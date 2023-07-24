@@ -512,9 +512,9 @@ class TrajetrouteController extends AbstractController
                 
                 foreach ($infos['localisations'] as $key => $value) {
                     if (count($infos['localisations']) - 1 == $key) {
-                        $data['coordonnees'] .= (string) $value['latitude']." ". (string) $value['longitude'];
+                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'];
                     } else {
-                        $data['coordonnees'] .= (string) $value['latitude']." ". (string) $value['longitude'].", ";
+                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'].", ";
                     }
                     
                 }
@@ -1004,9 +1004,9 @@ class TrajetrouteController extends AbstractController
                             
                             foreach ($data['infrastructure']['localisations'] as $key => $value) {
                                 if (count($data['infrastructure']['localisations']) - 1 == $key) {
-                                    $coordonnees .= (string) $value['latitude']." ". (string) $value['longitude'];
+                                    $coordonnees .= (string) $value['longitude']." ". (string) $value['latitude'];
                                 } else {
-                                    $coordonnees .= (string) $value['latitude']." ". (string) $value['longitude'].", ";
+                                    $coordonnees .= (string) $value['longitude']." ". (string) $value['latitude'].", ";
                                 }
                                 
                             }

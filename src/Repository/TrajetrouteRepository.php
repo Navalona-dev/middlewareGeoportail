@@ -266,8 +266,9 @@ class TrajetrouteRepository extends ServiceEntityRepository
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $praticable_toute_l_annee = null, $mois_d_ouverture = null, $mois_de_fermeture = null, $duree_trajet_en_saison_seche = null,  $duree_trajet_en_saison_de_pluie = null,  $sourceInformation = null,  $modeAcquisitionInformation = null,  $revetement = null, $dateInformation = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_tj_04_donnees_collectees (id_infrastructure, praticable_toute_l_annee, mois_d_ouverture, mois_de_fermeture, duree_trajet_en_saison_seche, duree_trajet_en_saison_de_pluie, date_information, source_information, mode_acquisition_information, revetement) VALUES (".intval($idInfrastructure).", '".$praticable_toute_l_annee."', '".$mois_d_ouverture."', '".$mois_de_fermeture."', ".intval($duree_trajet_en_saison_seche).", ".intval($duree_trajet_en_saison_de_pluie).", '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$revetement."')";
+        $sql = "INSERT into t_tj_04_donnees_collectees (id_infrastructure, praticable_toute_l_annee, mois_d_ouverture, mois_de_fermeture, duree_trajet_en_saison_seche, duree_trajet_en_saison_de_pluie, date_information, source_information, mode_acquisition_information, revetement) VALUES (".intval($idInfrastructure).", '".$praticable_toute_l_annee."', '".$mois_d_ouverture."', '".$mois_de_fermeture."', ".intval($duree_trajet_en_saison_seche).", ".intval($duree_trajet_en_saison_de_pluie).", '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', '".$revetement."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

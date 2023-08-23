@@ -127,7 +127,7 @@ class TrajetrouteService
 
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $data)
     {
-        $result = $this->trajetrouteRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['praticableAnnee'], $data['moisOuverture'], $data['moisFermeture'], $data['dureeTrajetSaisonSeche'], $data['sourceInformationData'], $data['modeAcquisitionInformationData'], $data['revetementData'], $data['dateInformationData']);
+        $result = $this->trajetrouteRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['praticableAnnee'], $data['moisOuverture'], $data['moisFermeture'], $data['dureeTrajetSaisonSeche'], $data['dureeTrajetSaisonPluie'], $data['sourceInformationData'], $data['modeAcquisitionInformationData'], $data['revetementData'], $data['dateInformationData']);
         
         if ($result) {
             return $result;

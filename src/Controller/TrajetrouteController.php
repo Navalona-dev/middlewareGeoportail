@@ -535,6 +535,7 @@ class TrajetrouteController extends AbstractController
                     $data['moisOuverture'] = $infos['data']['moisOuverture'];
                     $data['moisFermeture'] = $infos['data']['moisFermeture'];
                     $data['dureeTrajetSaisonSeche'] = $infos['data']['dureeTrajetSaisonSeche'];
+                    $data['dureeTrajetSaisonPluie'] = $infos['data']['dureeTrajetSaisonPluie'];
                     $data['sourceInformationData'] = $infos['data']['sourceInformationData'];
                     $data['modeAcquisitionInformationData'] = $infos['data']['modeAcquisitionInformationData'];
                     $data['revetementData'] = $infos['data']['revetementData'];

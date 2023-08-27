@@ -66,7 +66,11 @@ class GareroutiereController extends AbstractController
             $data['district' ] = $request->get('district');
             $data['communeTerrain' ] = $request->get('commune');
             $data['nom' ] = $request->get('nom');
-            $data['localite' ] = $request->get('localite');
+            $data['localite'] = null;
+            if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
+                $data['localite'] = $request->get('localite');
+            }
+            
             $data['code' ] = $request->get('code');
             $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');

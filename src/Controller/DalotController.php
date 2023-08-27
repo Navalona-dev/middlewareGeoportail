@@ -66,6 +66,12 @@ class DalotController extends AbstractController
             $data['district' ] = $request->get('district');
             $data['communeTerrain' ] = $request->get('commune');
             $data['nom' ] = $request->get('nom');
+            $data['localite'] = null;
+
+            if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
+                $data['localite'] = $request->get('localite');
+            }
+
             $data['localite' ] = $request->get('localite');
             $data['type' ] = $request->get('typeDalot');
             $data['sourceInformation' ] = $request->get('sourceInformation');
@@ -88,8 +94,16 @@ class DalotController extends AbstractController
             $data['modeAcquisitionInformationEtat' ] = $request->get('modeAcquisitionInformationEtat');
             
             // Data collecte
-            $data['existenceFissures'] = $request->get('existenceFissures');
-            $data['niveauEnsablementOuverture'] = $request->get('niveauEnsablementOuverture');
+            $data['existenceFissures'] = null;
+            if ($request->get('existenceFissures') != "null" && $request->get('existenceFissures') != "undefined") {
+                $data['existenceFissures'] = $request->get('existenceFissures');
+            }
+            
+            $data['niveauEnsablementOuverture'] = null;
+            if ($request->get('niveauEnsablementOuverture') != "null" && $request->get('niveauEnsablementOuverture') != "undefined") {
+                $data['niveauEnsablementOuverture'] = $request->get('niveauEnsablementOuverture');
+            }
+
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
             $data['autreDegradation' ] = $request->get('autreDegradation');

@@ -77,14 +77,41 @@ class DalotController extends AbstractController
             $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
             $data['pkImplantation' ] = $request->get('pkImplantation');
-            $data['materiauxRadier' ] = $request->get('materiauxRadier');
-            $data['precisionMateriauxRadier' ] = $request->get('precisionMateriauxRadier');
-            $data['materiauxPiedroit' ] = $request->get('materiauxPiedroit');
-            $data['materiauxDalle'] = $request->get('materiauxDalle');
-            $data['precisionMateriauxDalle'] = $request->get('precisionMateriauxDalle');
+            $data['materiauxRadier'] = null;
+
+            if ($request->get('materiauxRadier') != "null" && $request->get('materiauxRadier') != "undefined") {
+                $data['materiauxRadier'] = $request->get('materiauxRadier');
+            }
+            $data['precisionMateriauxRadier'] = null;
+
+            if ($request->get('precisionMateriauxRadier') != "null" && $request->get('precisionMateriauxRadier') != "undefined") {
+                $data['precisionMateriauxRadier'] = $request->get('precisionMateriauxRadier');
+            }
+            $data['materiauxPiedroit'] = null;
+
+            if ($request->get('materiauxPiedroit') != "null" && $request->get('materiauxPiedroit') != "undefined") {
+                $data['materiauxPiedroit'] = $request->get('materiauxPiedroit');
+            }
+            $data['materiauxDalle'] = null;
+
+            if ($request->get('materiauxDalle') != "null" && $request->get('materiauxDalle') != "undefined") {
+                $data['materiauxDalle'] = $request->get('materiauxDalle');
+            }
+            
+            $data['precisionMateriauxDalle'] = null;
+
+            if ($request->get('materiauxDalle') != "null" && $request->get('precisionMateriauxDalle') != "undefined") {
+                $data['precisionMateriauxDalle'] = $request->get('precisionMateriauxDalle');
+            }
+
+            $data['precisionMateriauxPiedroit'] = null;
+
+            if ($request->get('precisionMateriauxPiedroit') != "null" && $request->get('precisionMateriauxPiedroit') != "undefined") {
+                $data['precisionMateriauxPiedroit'] = $request->get('precisionMateriauxPiedroit');
+            }
+
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
-            $data['precisionMateriauxPiedroit'] = $request->get('precisionMateriauxPiedroit');
 
             // Etat
             $data['etat'] = $request->get('etat');

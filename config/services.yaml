@@ -18,6 +18,8 @@ parameters:
     pathForNamePhotoGareroutiere: 'media/upload/gr_gare_routiere/t_gr_01_infrastructure/'
     pathImageTrajetroute: '/home/qgis/projects/saisie/media/upload/tj_trajet_route/t_tj_01_infrastructure/'
     pathForNamePhotoTrajetroute: 'media/upload/tj_trajet_route/t_tj_01_infrastructure/'
+    pathImageRadier: '/home/qgis/projects/saisie/media/upload/pnr_pont_route/t_pnr_01_infrastructure/'
+    pathForNamePhotoRadier: 'media/upload/pnr_pont_route/t_pnr_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:

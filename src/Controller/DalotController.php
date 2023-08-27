@@ -239,6 +239,7 @@ class DalotController extends AbstractController
                     $data['consistanceTravaux'] = $request->get('consistanceTravaux');
                     //$data['modeRealisationTravaux'] = $request->get('modeRealisationTravaux');
                     $data['maitreOuvrageTravaux'] = $request->get('maitreOuvrageTravaux');
+                    $data['maitreOeuvreTravaux'] = $request->get('maitreOeuvreTravaux');
                     $data['maitreOuvrageDelegueTravaux'] = $request->get('maitreOuvrageDelegueTravaux');
                     $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
                     $data['modePassationTravaux'] = $request->get('modePassationTravaux');

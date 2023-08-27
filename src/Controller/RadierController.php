@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\GareroutiereService;
+use App\Service\RadierService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -33,28 +33,28 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class GareroutiereController extends AbstractController
+class RadierController extends AbstractController
 {
     private $pathImage = null;
-    private $pathImageGareroutiere = null;
+    private $pathImageRadier = null;
     private $pathPublic = null;
-    private $pathForNamePhotoGareroutiere = null;
+    private $pathForNamePhotoRadier = null;
     private $kernelInterface;
     private $directoryCopy = null;
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
-        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "Gareroutiere/";
-        $this->pathImageGareroutiere = $params->get('pathImageGareroutiere');
+        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "radier/";
+        $this->pathImageRadier = $params->get('pathImageRadier');
         $this->pathPublic = $params->get('pathPublic');
-        $this->pathForNamePhotoGareroutiere = $params->get('pathForNamePhotoGareroutiere');
+        $this->pathForNamePhotoRadier = $params->get('pathForNamePhotoRadier');
         $this->kernelInterface = $kernelInterface;
-        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic')."Gareroutiere/";
+        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic')."radier/";
     }
 
     /**
-     * @Route("/api/gareroutiere/add", name="Gareroutiere_add", methods={"POST"})
+     * @Route("/api/radier/add", name="radier_add", methods={"POST"})
      */
-    public function create(Request $request, GareroutiereService $gareroutiereService)
+    public function create(Request $request, RadierService $radierService)
     {    
         $response = new Response();
         $hasException = false;
@@ -67,12 +67,13 @@ class GareroutiereController extends AbstractController
             $data['communeTerrain' ] = $request->get('commune');
             $data['nom' ] = $request->get('nom');
             $data['localite' ] = $request->get('localite');
-            $data['code' ] = $request->get('code');
+            $data['longueur' ] = $request->get('longueur');
             $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
+            $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
             $data['categorie' ] = $request->get('categorie');
-            $data['capaciteVoitureAccueillies'] = $request->get('capaciteVoitureAccueillies');
-            $data['categoriePrecision'] = $request->get('categoriePrecision');
+            $data['indicatif' ] = $request->get('indicatif');
+            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             
@@ -83,15 +84,16 @@ class GareroutiereController extends AbstractController
             $data['motif'] = $request->get('motifNonFonctionel');
             $data['sourceInformationSituation' ] = $request->get('sourceInformationSituation');
             $data['modeAcquisitionInformationSituation' ] = $request->get('modeAcquisitionInformationSituation');
-           
+       
 
             // Data collecte
-            $data['etatParking'] = $request->get('etatParking');
-            $data['revetementParking'] = $request->get('revetementParking');
+            $data['hauteurDecalageJointureRadierTerrainNaturel'] = $request->get('hauteurDecalageJointureRadierTerrainNaturel');
+            $data['existenceFissures'] = $request->get('existenceFissures');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
-            $data['etatGlobalAccessoires' ] = $request->get('etatGlobalAccessoires');
-            
+            $data['existenceFerraillageVisible' ] = $request->get('existenceFerraillageVisible');
+            $data['denivellationStructureRadierCanalArrivee' ] = $request->get('denivellationStructureRadierCanalArrivee');
+            $data['denivellationChausseeRadier' ] = $request->get('denivellationChausseeRadier');
             
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
@@ -160,7 +162,7 @@ class GareroutiereController extends AbstractController
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageGareroutiere . "photo1/";
+                $directory1 = $this->pathImageRadier . "photo1/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";
 
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
@@ -169,14 +171,14 @@ class GareroutiereController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotoGareroutiere."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoRadier."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageGareroutiere . "photo2/";
+                $directory2 = $this->pathImageRadier . "photo2/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
@@ -184,14 +186,14 @@ class GareroutiereController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotoGareroutiere."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoRadier."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageGareroutiere . "photo3/";
+                $directory3 = $this->pathImageRadier . "photo3/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
@@ -199,41 +201,36 @@ class GareroutiereController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoGareroutiere."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoRadier."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }
 
-            $idInfra = $gareroutiereService->addInfrastructure($data);
+            $idInfra = $radierService->addInfrastructure($data);
 
             if ($idInfra != false) {
                 // add situation et etat
-                //$idEtat = $gareroutiereService->addInfrastructureRouteEtat($idInfra, $data);
+                //$idEtat = $radierService->addInfrastructureRouteEtat($idInfra, $data);
 
-                $idEtat = $gareroutiereService->addInfrastructureSituation($idInfra, $data);
+                $idEtat = $radierService->addInfrastructureSituation($idInfra, $data);
 
-                $idDataCollected = $gareroutiereService->addInfrastructureDonneCollecte($idInfra, $data);
+                $idDataCollected = $radierService->addInfrastructureDonneCollecte($idInfra, $data);
 
-                /*$idStructure = $gareroutiereService->addInfrastructureRouteStructure($idInfra, $data);
+                /*$idStructure = $radierService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idAccotement = $gareroutiereService->addInfrastructureRouteAccotement($idInfra, $data);
+                $idAccotement = $radierService->addInfrastructureRouteAccotement($idInfra, $data);
 
-                $idFosse = $gareroutiereService->addInfrastructureRouteFosse($idInfra, $data);*/
+                $idFosse = $radierService->addInfrastructureRouteFosse($idInfra, $data);*/
             
 
                 /**
                  * Administrative data
                  */
                 //Foncier
-                if (null != $request->get('hasFoncier') && ($request->get('hasFoncier') == true || $request->get('hasFoncier') == "true") && "false" != $request->get('hasFoncier')) {
-                    $data['statut'] = $request->get('statutFoncier');
-                    $data['numeroReference'] = $request->get('numeroReferenceFoncier');
-                    $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
-                    $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
-                    $data['sourceInformationFoncier'] = $request->get('sourceInformationFoncier');
-                    $data['modeAcquisitionInformationFoncier'] = $request->get('modeAcquisitionInformationFoncier');
-                    $idFoncier = $gareroutiereService->addInfrastructureRouteFoncier($idInfra, $data);
-                }
-                
+                /*$data['statut'] = $request->get('statutFoncier');
+                $data['numeroReference'] = $request->get('numeroReferenceFoncier');
+                $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
+
+                $idFoncier = $radierService->addInfrastructureRouteFoncier($idInfra, $data);*/
 
                 //Travaux 
                 if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true") && "false" != $request->get('hasTravaux')) {
@@ -248,8 +245,8 @@ class GareroutiereController extends AbstractController
                     $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
                     $data['montantTravaux'] = $request->get('montantTravaux');
                     $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
-                    //$data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
-                    
+                    $data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
+                    $data['precisionPassationTravaux'] = $request->get('precisionPassationTravaux');
                     $dateContratTravaux = new \DateTime($request->get('dateContratTravaux'));
                     $dateContratTravaux->format('Y-m-d H:i:s');
                     $data['dateContratTravaux'] = $dateContratTravaux;
@@ -274,11 +271,11 @@ class GareroutiereController extends AbstractController
                     $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
                     $data['bailleurTravaux'] = $request->get('bailleurTravaux');
 
-                    $idTravaux = $gareroutiereService->addInfrastructureTravaux($idInfra, $data);
+                    $idTravaux = $radierService->addInfrastructureTravaux($idInfra, $data);
                 }
                 
                 // Fournitures
-                /*$data['objetContratFourniture'] = $request->get('objetContratFourniture');
+                $data['objetContratFourniture'] = $request->get('objetContratFourniture');
                 $data['consistanceContratFourniture'] = $request->get('consistanceContratFourniture');
                 $data['materielsFourniture'] = $request->get('materielsFourniture');
                 $data['entiteFourniture'] = $request->get('entiteFourniture');
@@ -311,7 +308,8 @@ class GareroutiereController extends AbstractController
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
-                $idFourniture = $gareroutiereService->addInfrastructureRouteFourniture($idInfra, $data);*/
+                $data['precisionPassationFourniture'] = $request->get('precisionPassationFourniture');
+                $idFourniture = $radierService->addInfrastructureFourniture($idInfra, $data);
                 // Etudes
                 if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
@@ -347,21 +345,21 @@ class GareroutiereController extends AbstractController
                     $data['dateInformationEtude'] = $dateInformationEtude;
                     $data['sourceInformationEtude'] = $request->get('sourceInformationEtude');
                     $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
-                    $data['precisionConsitanceContratEtude'] = $request->get('precisionConsitanceContratEtude');
+                    $data['precisionConsistanceEtude'] = $request->get('precisionConsistanceEtude');
                     $data['bailleurEtude'] = $request->get('bailleurEtude');
-                    $idEtude = $gareroutiereService->addInfrastructureEtudes($idInfra, $data);
+                    $idEtude = $radierService->addInfrastructureEtudes($idInfra, $data);
                 }
                 
                 /**
                  * End Administrative data
                 */
-                //$idDonneAnnexe = $gareroutiereService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
+                //$idDonneAnnexe = $radierService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Gare routiere created_successfull"
+                'message' => "Radier route created_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -416,21 +414,21 @@ class GareroutiereController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');
             /*
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $gareroutiereService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $radierService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         
@@ -438,20 +436,20 @@ class GareroutiereController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/gareroutiere/liste", name="Gareroutiere_list", methods={"GET"})
+     * @Route("/api/infra/radier/liste", name="radier_list", methods={"GET"})
      */
-    public function listeDalot(Request $request, GareroutiereService $gareroutiereService)
+    public function listeRadier(Request $request, RadierService $radierService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $gareroutiereService->getAllInfrastructures();
+            $routes = $radierService->getAllInfrastructures();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Gare routiere list_successfull",
+                'message' => "Radier route list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -504,20 +502,20 @@ class GareroutiereController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/gareroutiere/liste/minifie", name="Gareroutiere_list_minifie", methods={"GET"})
+     * @Route("/api/infra/radier/liste/minifie", name="radier_list_minifie", methods={"GET"})
      */
-    public function listeGareroutiereMinifie(Request $request, GareroutiereService $gareroutiereService)
+    public function listeRadierMinifie(Request $request, RadierService $radierService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $gareroutiereService->getAllInfrastructuresMinifie();
+            $routes = $radierService->getAllInfrastructuresMinifie();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Gare routiere list_successfull",
+                'message' => "Radier route list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -570,16 +568,16 @@ class GareroutiereController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/gareroutiere/info", name="Gareroutiere_info", methods={"POST"})
+     * @Route("/api/infra/radier/info", name="radier_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, GareroutiereService $gareroutiereService)
+    public function getOneInfraInfo(Request $request, RadierService $radierService)
     {    
         $response = new Response();
         
         try {
             $infraId = $request->get('id');
 
-            $routes = $gareroutiereService->getOneInfraInfo(intval($infraId));
+            $routes = $radierService->getOneInfraInfo(intval($infraId));
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
@@ -637,9 +635,9 @@ class GareroutiereController extends AbstractController
     }
 
     /**
-     * @Route("/api/gareroutiere/update", name="gareroutiere_update", methods={"POST"})
+     * @Route("/api/radier/update", name="radier_update", methods={"POST"})
      */
-    public function update(Request $request, GareroutiereService $gareroutiereService)
+    public function update(Request $request, RadierService $radierService)
     {    
         $response = new Response();
         $hasException = false;
@@ -656,7 +654,7 @@ class GareroutiereController extends AbstractController
                 
                 $colonneInteger = ['id', 'gid', 'id_infrastructure', 'id_controle_surveillance', 'montant', 'id_titulaire', 'id_ingenieurs_reception_provisoire',
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
-                $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
+                $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement', 'longueur_du_radier', 'hauteur_du_decalage_de_la_jointure_radier_terrain_naturel', 'denivellation_de_la_structure_radier_et_canal_d_arrivee', 'denivellation_de_la_structure_radier_et_canal_d_arrivee'];
 
                 $colonneDate = ["date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
                 
@@ -664,7 +662,6 @@ class GareroutiereController extends AbstractController
                     $hasInfraChanged = true;
                     $i = 0;
 
-                    
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
                         $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
@@ -682,7 +679,7 @@ class GareroutiereController extends AbstractController
                             $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
-   
+
                         if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
                                 $updateColonneInfra .= $colonne."="."$value".", ";
@@ -697,9 +694,9 @@ class GareroutiereController extends AbstractController
                     if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-
+                    
                     if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
-                    $idInfra = $gareroutiereService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    $idInfra = $radierService->updateInfrastructure($idInfra, $updateColonneInfra);
                     }
                 }
                 // Situation
@@ -711,7 +708,6 @@ class GareroutiereController extends AbstractController
                 if (array_key_exists('situations', $data) && count($data['situations']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
-                    
                     foreach ($data['situations'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -733,7 +729,7 @@ class GareroutiereController extends AbstractController
                             $value = pg_escape_string($value);
                             $value = "'$value'";
                         }
-                        
+
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['situations']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."$value".", ";
@@ -747,7 +743,7 @@ class GareroutiereController extends AbstractController
                         } 
                         $i++;
                     }
-                    
+
                     $updateColonneEtat = trim($updateColonneEtat);
                     if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
                         $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
@@ -759,12 +755,12 @@ class GareroutiereController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-                   
+
                     if ($idSituation == 0) {
-                        $idSituation = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_03_situation', $colonneInsert, $valuesInsert);
+                        $idSituation = $radierService->addInfoInTableByInfrastructure('t_ra_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
-                        $idSituation = $gareroutiereService->updateInfrastructureTables('t_gr_03_situation', $idSituation, $updateColonneEtat);
+                        $idSituation = $radierService->updateInfrastructureTables('t_ra_02_situation', $idSituation, $updateColonneEtat);
                         }
                     } 
                     
@@ -829,10 +825,10 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $idData = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_06_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $radierService->addInfoInTableByInfrastructure('t_ra_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
-                        $idData = $gareroutiereService->updateInfrastructureTables('t_gr_06_donnees_collectees', $idData, $updateColonneData);
+                        $idData = $radierService->updateInfrastructureTables('t_ra_04_donnees_collectees', $idData, $updateColonneData);
                         }
                     }
                 }
@@ -895,10 +891,77 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $idTravaux = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_08_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $radierService->addInfoInTableByInfrastructure('t_ra_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
-                        $idTravaux = $gareroutiereService->updateInfrastructureTables('t_gr_08_travaux', $idTravaux, $updateColonneTravaux);
+                        $idTravaux = $radierService->updateInfrastructureTables('t_ra_05_travaux', $idTravaux, $updateColonneTravaux);
+                        }
+                    }
+                }
+
+                // Fourniture
+                $hasFournitureChanged = false;
+                $updateColonneFourniture = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idFourniture = 0;
+                if (array_key_exists('fournitures', $data) && count($data['fournitures']) > 0) {
+                    $hasTravauxChanged = true;
+                    $i = 0;
+                    foreach ($data['fournitures'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idFourniture = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['fournitures']) - 1 != $i) {
+                                $updateColonneFourniture .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneFourniture .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneFourniture = trim($updateColonneFourniture);
+                    if (isset($updateColonneFourniture[-1]) && $updateColonneFourniture[-1] == ",") {
+                        $updateColonneFourniture = substr($updateColonneFourniture, 0, strlen($updateColonneFourniture) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idFourniture == 0) {
+                        $idFourniture = $radierService->addInfoInTableByInfrastructure('t_ra_06_fourniture', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneFourniture) && !empty($updateColonneFourniture)) {
+                        $idFourniture = $radierService->updateInfrastructureTables('t_ra_06_fourniture', $idTravaux, $updateColonneFourniture);
                         }
                     }
                 }
@@ -962,77 +1025,10 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $idEtudes = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_10_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $radierService->addInfoInTableByInfrastructure('t_ra_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
-                        $idEtudes = $gareroutiereService->updateInfrastructureTables('t_gr_10_etudes', $idEtudes, $updateColonneEtudes);
-                        }
-                    }
-                }
-
-                // Foncier
-                $hasEtudeChanged = false;
-                $updateColonneFoncier = "";
-                $colonneInsert = "";
-                $valuesInsert = "";
-                $idFoncier = 0;
-                if (array_key_exists('fonciers', $data) && count($data['fonciers']) > 0) {
-                    $hasEtudeChanged = true;
-                    $i = 0;
-                    foreach ($data['fonciers'] as $colonne => $value) {
-
-                        $tabColonne = explode("__", $colonne);
-                        $colonne = $tabColonne[1];
-
-                        if ($colonne == "id" || $colonne == "gid") {
-                            $idFoncier = intval($value);
-                        }
-                        
-                        if (in_array($colonne, $colonneInteger)) {
-                            $value = intval($value);
-                        } elseif (in_array($colonne, $colonneFloat)) {  
-                            $value = floatval($value);
-                        } elseif (in_array($colonne, $colonneDate)) {
-                            $date = new \DateTime($value);
-                            $value = $date->format('Y-m-d H:i:s');
-                            $value = "'$value'";
-                        } else {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
-                        }
-
-                        if ($colonne != "id" && $colonne != "gid") {
-                            if (count($data['fonciers']) - 1 != $i) {
-                                $updateColonneFoncier .= $colonne."="."$value".", ";
-                                $colonneInsert .= $colonne.", ";
-                                $valuesInsert .= $value.", ";
-                            } else {
-                                $updateColonneFoncier .= $colonne."="."$value";
-                                $colonneInsert .= $colonne;
-                                $valuesInsert .= $value;
-                            }
-                            
-                        } 
-                        $i++;
-                    }
-
-                    $updateColonneFoncier = trim($updateColonneFoncier);
-                    if (isset($updateColonneFoncier[-1]) && $updateColonneFoncier[-1] == ",") {
-                        $updateColonneFoncier = substr($updateColonneFoncier, 0, strlen($updateColonneFoncier) - 1);
-                    }
-
-                    if ($valuesInsert) {
-                        $valuesInsert = trim($valuesInsert);
-                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
-                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
-                        }
-                    }
-
-                    if ($idFoncier == 0) {
-                        $idFoncier = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_05_foncier', $colonneInsert, $valuesInsert);
-                    } else {
-                        if (isset($updateColonneFoncier) && !empty($updateColonneFoncier)) {
-                        $idFoncier = $gareroutiereService->updateInfrastructureTables('t_gr_05_foncier', $idFoncier, $updateColonneFoncier);
+                        $idEtudes = $radierService->updateInfrastructureTables('t_ra_07_etudes', $idEtudes, $updateColonneEtudes);
                         }
                     }
                 }
@@ -1042,7 +1038,7 @@ class GareroutiereController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Gare routière update_successfull"
+                'message' => "Radier update_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

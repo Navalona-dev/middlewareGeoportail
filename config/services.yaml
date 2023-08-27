@@ -67,6 +67,11 @@ services:
     App\Service\PontService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@pontrepository.service']
         public: true
+    radierrepository.service:
+        class: App\Repository\RadierRepository
+    App\Service\RadierService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@radierrepository.service']
+        public: true
     gareroutiererepository.service:
         class: App\Repository\GareroutiereRepository
     App\Service\GareroutiereService:

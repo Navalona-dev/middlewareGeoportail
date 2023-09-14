@@ -29,7 +29,7 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
 
     public function getCoordonneeRegion()
     {
-        $sql = "SELECT DISTINCT region, reg_ceni, ST_AsText(infra.geom) as coordonnees  FROM couche_region";
+        $sql = "SELECT DISTINCT region, reg_ceni, ST_AsText(geom) as coordonnees  FROM couche_region";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

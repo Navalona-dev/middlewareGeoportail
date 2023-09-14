@@ -286,7 +286,7 @@ class LocalisationInfrastructureController extends AbstractController
 
         return $response;
     }
-
+    
     /**
      * @Route("/api/localisation/infrastructure", name="localisation_infrastructure", methods={"GET"})
      */
@@ -377,6 +377,85 @@ class LocalisationInfrastructureController extends AbstractController
                 'status' => true,
                 'message' => "Localiation list_successfull",
                 'data' => $tabLocalisation
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
+     * @Route("/api/coordonne/region", name="localisation_region_delimitation", methods={"GET"})
+     */
+    public function getCoordonneeRegion(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)
+    {    
+        $response = new Response();
+
+        try {
+            $data = [];
+            
+            $regionsInfrastructure = $localisationInfrastructureService->getCoordonneeRegion();
+            
+            //$districtsInfrastructure = $localisationInfrastructureService->getAllDistricts();
+
+            //$communesInfrastructure = $localisationInfrastructureService->getAllCommunes();
+
+            //$localitesInfrastructure = $localisationInfrastructureService->getAllLocalites();
+            
+            /*dd($tabLocalisation, $regionsInfrastructure, $districtsInfrastructure, $communesInfrastructure);
+
+            $data["regions"] = $regionsInfrastructure;
+            $data["districts"] = $districtsInfrastructure;
+            $data["communes"] = $communesInfrastructure;
+            $data["localites"] = $localitesInfrastructure;*/
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Localiation region delimitation list_successfull",
+                'data' => $regionsInfrastructure
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

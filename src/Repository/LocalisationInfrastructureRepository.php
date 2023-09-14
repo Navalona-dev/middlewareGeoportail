@@ -27,6 +27,18 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getCoordonneeRegion()
+    {
+        $sql = "SELECT DISTINCT region, reg_ceni, ST_AsText(infra.geom) as coordonnees  FROM couche_region";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     public function getAllDistricts()
     {
         $sql = "SELECT DISTINCT district, dist_ceni, reg_ceni  FROM couche_commune";

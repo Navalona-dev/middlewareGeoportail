@@ -15,7 +15,7 @@ class GareroutiereRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructure($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
+    public function addInfrastructureOld($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
     {
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);
@@ -23,6 +23,23 @@ class GareroutiereRepository extends ServiceEntityRepository
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $sql = "INSERT into t_gr_01_infrastructure (nom, categorie,  localite, commune_terrain,  capacite_de_voiture_accueillies, date_information, source_information, mode_acquisition_information, geom, district, precision_categorie, code, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$nom."', '".$categorie."', '".$localite."', '".$communeTerrain."', ".intval($capaciteVoitureAccueillies).", '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$district."', '".$categoriePrecision."', '".$code."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
+        
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $id = $conn->lastInsertId();
+
+        return $id;
+    }
+
+    public function addInfrastructure($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
+    {
+        $dateInfo = new \DateTime();
+        $localite = pg_escape_string($localite);
+        $communeTerrain = pg_escape_string($communeTerrain);
+        $sourceInformation = pg_escape_string($sourceInformation);
+        $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $sql = "INSERT into t_gr_01_infrastructure (nom, categorie,  localite, commune_terrain,  capacite_de_voiture_accueillies, date_information, source_information, mode_acquisition_information, geom, district, precision_categorie, code, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$nom."', '".$categorie."', '".$localite."', '".$communeTerrain."', ".intval($capaciteVoitureAccueillies).", '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_Transform(ST_SetSRID(ST_MakePoint(" . $longitude . ", " . $latitude . "), 4326), 8441), '".$district."', '".$categoriePrecision."', '".$code."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

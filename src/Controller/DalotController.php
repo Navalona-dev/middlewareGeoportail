@@ -72,7 +72,6 @@ class DalotController extends AbstractController
                 $data['localite'] = $request->get('localite');
             }
 
-            $data['localite' ] = $request->get('localite');
             $data['type' ] = $request->get('typeDalot');
             $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');

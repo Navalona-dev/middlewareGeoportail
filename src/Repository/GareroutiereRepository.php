@@ -15,7 +15,7 @@ class GareroutiereRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructureOld($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
+    public function addInfrastructure($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
     {
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);
@@ -32,7 +32,7 @@ class GareroutiereRepository extends ServiceEntityRepository
         return $id;
     }
 
-    public function addInfrastructure($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
+    public function addInfrastructureLaborde($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
     {
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);

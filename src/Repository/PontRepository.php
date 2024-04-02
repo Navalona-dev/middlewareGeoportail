@@ -22,6 +22,7 @@ class PontRepository extends ServiceEntityRepository
         $communeTerrain = pg_escape_string($communeTerrain);
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $nom = pg_escape_string($nom);
         $sql = "INSERT into t_pnr_01_infrastructure (nom, categorie,  type_pont, nom_de_la_route_a_qui_il_est_rattache,  point_kilometrique_de_son_implantation, localite, commune_terrain, date_information, source_information, mode_acquisition_information, geom, district, categorie_precision, type_precision, longueur, largeur, nombre_voies, charge_maximum, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$nom."', '".$categorie."', '".$typePont."', '".$nomRouteRattache."', '".$pointKmImplantation."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$district."', '".$categoriePrecision."', '".$typePrecision."', '".$longueur."', '".$largeur."', '".$nombreVoies."', '".$chargeMaximum."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         
         $conn = $this->entityManager->getConnection();

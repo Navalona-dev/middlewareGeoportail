@@ -71,9 +71,17 @@ class PontController extends AbstractController
             if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
                 $data['localite'] = $request->get('localite');
             }
+            $data['longueur' ] = null;
+            $data['largeur' ] = null;
 
-            $data['longueur' ] = $request->get('longueur');
-            $data['largeur' ] = $request->get('largeur');
+            if ($request->get('largeur') != "null" && $request->get('largeur') != "undefined") {
+                $data['largeur'] = $request->get('largeur');
+            }
+
+            if ($request->get('longueur') != "null" && $request->get('longueur') != "undefined") {
+                $data['longueur'] = $request->get('longueur');
+            }
+           
             $data['nombreVoies' ] = $request->get('nombreVoies');
             $data['chargeMaximum' ] = $request->get('chargeMaximum');
             $data['sourceInformation' ] = $request->get('sourceInformation');

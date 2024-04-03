@@ -1028,6 +1028,7 @@ class RouteController extends AbstractController
                     }
 
                     foreach ($data['infrastructure'] as $colonne => $value) {
+                       
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
                             if ($colonne == "id" || $colonne == "gid") {
@@ -1043,9 +1044,19 @@ class RouteController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                $updateColonneInfra .= $colonne."="."$value".", ";
+                                if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements") {
+                                    $updateColonneInfra .= "\"$colonne\""."="."$value".", ";
+                                } else {
+                                    $updateColonneInfra .= $colonne."="."$value".", ";
+                                }
+                                
                             } else {
-                                $updateColonneInfra .= $colonne."="."$value";
+                                if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements") {
+                                    $updateColonneInfra .= "\"$colonne\""."="."$value";
+                                } else {
+                                    $updateColonneInfra .= $colonne."="."$value";
+                                }
+                                
                             }
                         } 
                         $i++;
@@ -1055,7 +1066,7 @@ class RouteController extends AbstractController
                     if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-
+                  
                     if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
                     $idInfra = $routeService->updateInfrastructure($idInfra, $updateColonneInfra);
                     }

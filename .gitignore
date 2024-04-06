@@ -8,6 +8,7 @@
 /var/logs/*
 /var/sessions/*
 /vendor/
+/public/images/
 .env
 ###< symfony/framework-bundle ###
 /var/

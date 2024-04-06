@@ -54,7 +54,6 @@ class TrajetrouteController extends AbstractController
         $this->urlGenerator = $urlGenerator;
     }
 
-
     /**
      * @Route("/api/trajetroute/updatephoto", name="trajetroute_update_photo", methods={"POST"})
      */
@@ -102,21 +101,33 @@ class TrajetrouteController extends AbstractController
                 }
             }
 
+            if(!is_dir($this->pathImageTrajetroute)) {
+                mkdir($this->pathImageTrajetroute, 0777, true);
+            }
 
             $directory1 = $this->pathImageTrajetroute . "photo1/";
 
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";    
+
+                if(!is_dir($directory1)) {
+                    mkdir($directory1, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                
                 //$name_temp = hash('sha512', session_id().microtime($nomOriginal1));
                 $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotoTrajetroute."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhototrajetroute."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
 
@@ -151,17 +162,26 @@ class TrajetrouteController extends AbstractController
                 $tmpPathName2 = $uploadedFile2->getPathname();
 
                 $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+
+                if(!is_dir($directory2)) {
+                    mkdir($directory2, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotoTrajetroute."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhototrajetroute."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
-                if (null != $data['photo1']) {
+                //if (null != $data['photo1']) {
                     $setUpdate .= ", ";    
-                }
-
+                //}
+                
                 $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
 
                 if ($toDeletePhoto2) {
@@ -196,17 +216,26 @@ class TrajetrouteController extends AbstractController
                 $tmpPathName3 = $uploadedFile3->getPathname();
 
                 $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+
+                if(!is_dir($directory3)) {
+                    mkdir($directory3, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
-                $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                $nomPhoto3 = uniqid().".".$uploadedFile3->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoTrajetroute."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhototrajetroute."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
 
-                if (null != $data['photo1'] || null != $data['photo2']) {
+                //if (null != $data['photo1'] || null != $data['photo2']) {
                     $setUpdate .= ", ";    
-                }
+                //}
 
                 $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
 
@@ -243,7 +272,7 @@ class TrajetrouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo trajet route updated_successfull"
+                'message' => "Photo trajetroute route updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -1503,20 +1532,20 @@ class TrajetrouteController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            //$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         

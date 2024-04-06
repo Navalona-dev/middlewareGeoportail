@@ -32,6 +32,28 @@ class GareroutiereRepository extends ServiceEntityRepository
         return $id;
     }
 
+    public function addInfrastructurePhoto($idInfra = null, $setUpdate )
+    {
+        $sql = "UPDATE t_gr_01_infrastructure SET ".$setUpdate." where id = ".$idInfra."";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->executeQuery();
+     
+        return $idInfra;
+    }
+
+    public function getPhotoInfraInfo($infraId)
+    {
+        $sql = "SELECT infra.id as infra_id, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3 FROM t_gr_01_infrastructure as infra  where infra.id = ".intval($infraId)."";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+    }
+
     public function addInfrastructureLaborde($nom = null, $categorie = null, $localite = null, $communeTerrain = null, $capaciteVoitureAccueillies = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $code = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null )
     {
         $dateInfo = new \DateTime();

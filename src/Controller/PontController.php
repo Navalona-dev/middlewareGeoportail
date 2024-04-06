@@ -41,14 +41,309 @@ class PontController extends AbstractController
     private $pathForNamePhotoPont = null;
     private $kernelInterface;
     private $directoryCopy = null;
+    private const nameRepertoireImage = 'pnr_pont_route/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
-        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "pont/";
+        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
         $this->pathImagePont = $params->get('pathImagePont');
         $this->pathPublic = $params->get('pathPublic');
         $this->pathForNamePhotoPont = $params->get('pathForNamePhotoPont');
         $this->kernelInterface = $kernelInterface;
-        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic')."pont/";
+        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
+    }
+
+    /**
+     * @Route("/api/pontroute/updatephoto", name="pontroute_update_photo", methods={"POST"})
+     */
+    public function updatePhoto(Request $request, PontService $pontService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            $data = [];
+            $uploadedFile1 = $request->files->get('photo1');
+            $uploadedFile2 = $request->files->get('photo2');
+            $uploadedFile3 = $request->files->get('photo3');
+            $idInfra = $request->get('infraId');
+            $data['photo1'] = null;
+            $data['photo2'] = null;
+            $data['photo3'] = null;
+            $data['photoName1'] = null;
+            $data['photoName2'] = null;
+            $data['photoName3'] = null;
+            $setUpdate = "";
+
+            $infoPhotosInfra = $pontService->getPhotoInfraInfo($idInfra);
+            $toDeletePhoto1 = false;
+            $toDeletePhoto2 = false;
+            $toDeletePhoto3 = false;
+            $toNullPhoto1 = false;
+            $toNullPhoto2 = false;
+            $toNullPhoto3 = false;
+            $oldPhotosInfra = [];
+            if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
+                if (isset($infoPhotosInfra[0]["photo1"])) {
+                    $toDeletePhoto1 = true;
+                    $oldPhotosInfra["photo1"] = $infoPhotosInfra[0]["photo1"];
+                }
+
+                if (isset($infoPhotosInfra[0]["photo2"])) {
+                    $toDeletePhoto2 = true;
+                    $oldPhotosInfra["photo2"] = $infoPhotosInfra[0]["photo2"];
+                }
+
+                if (isset($infoPhotosInfra[0]["photo3"])) {
+                    $toDeletePhoto3 = true;
+                    $oldPhotosInfra["photo3"] = $infoPhotosInfra[0]["photo3"];
+                }
+            }
+
+            if(!is_dir($this->pathImagePont)) {
+                mkdir($this->pathImagePont, 0777, true);
+            }
+
+            $directory1 = $this->pathImagePont . "photo1/";
+
+            if (null != $uploadedFile1) {
+                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
+                $tmpPathName1 = $uploadedFile1->getPathname();
+                $directoryPublicCopy =  $this->directoryCopy. "photo1/";    
+
+                if(!is_dir($directory1)) {
+                    mkdir($directory1, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                
+                //$name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
+                
+                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
+                copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
+
+                $data['photo1'] = $this->pathForNamePhotopont."photo1/" .$nomPhoto1;
+                $data['photoName1'] = $nomPhoto1;
+                $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
+
+                if ($toDeletePhoto1) {
+                    $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
+                    if (file_exists($directory1.$nomOldFile1)) {
+                        unlink($directory1.$nomOldFile1);
+                        unlink($directoryPublicCopy.$nomOldFile1);
+                    }
+                }
+                
+            } else {
+                if ($toDeletePhoto1) {
+                    $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo1/";
+                    if (file_exists($directory1.$nomOldFile1)) {
+                        unlink($directory1.$nomOldFile1);
+                        unlink($directoryPublicCopy.$nomOldFile1);
+                    }
+                }
+                $toNullPhoto1 = true;
+                $setUpdate .= "photo1 = null, photo_name1 = null";
+            }
+
+            
+            
+
+            $directory2 = $this->pathImagePont . "photo2/";
+
+            if (null != $uploadedFile2) {
+                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
+                $tmpPathName2 = $uploadedFile2->getPathname();
+
+                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+
+                if(!is_dir($directory2)) {
+                    mkdir($directory2, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
+                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
+                copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                
+                $data['photo2'] = $this->pathForNamePhotopont."photo2/" .$nomPhoto2;
+                $data['photoName2'] = $nomPhoto2;
+                //if (null != $data['photo1']) {
+                    $setUpdate .= ", ";    
+                //}
+                
+                $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
+
+                if ($toDeletePhoto2) {
+                    $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
+                    if (file_exists($directory2.$nomOldFile2)) {
+                        unlink($directory2.$nomOldFile2);
+                        unlink($directoryPublicCopy.$nomOldFile2);
+                    }
+                }
+            } else {
+                if ($toDeletePhoto2) {
+                    $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+                    if (file_exists($directory2.$nomOldFile2)) {
+                        unlink($directory2.$nomOldFile2);
+                        unlink($directoryPublicCopy.$nomOldFile2);
+                    }
+                }
+                $toNullPhoto2 = true;
+                if ($toNullPhoto1 || null != $data['photo1']) {
+                    $setUpdate .= ", ";  
+                }
+
+                $setUpdate .= "photo2 = null, photo_name2 = null";
+            }
+
+
+            $directory3 = $this->pathImagePont . "photo3/";
+
+            if (null != $uploadedFile3) {
+                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
+                $tmpPathName3 = $uploadedFile3->getPathname();
+
+                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+
+                if(!is_dir($directory3)) {
+                    mkdir($directory3, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
+                $nomPhoto3 = uniqid().".".$uploadedFile3->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
+                copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
+
+                $data['photo3'] = $this->pathForNamePhotopont."photo3/" .$nomPhoto3;
+                $data['photoName3'] = $nomPhoto3;
+
+                //if (null != $data['photo1'] || null != $data['photo2']) {
+                    $setUpdate .= ", ";    
+                //}
+
+                $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
+
+                if ($toDeletePhoto3) {
+                    $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
+                    if (file_exists($directory3.$nomOldFile3)) {
+                        unlink($directory3.$nomOldFile3);
+                        unlink($directoryPublicCopy.$nomOldFile3);
+                    }
+                }
+            } else {
+                if ($toDeletePhoto3) {
+                    $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+                    if (file_exists($directory3.$nomOldFile3)) {
+                        unlink($directory3.$nomOldFile3);
+                        unlink($directoryPublicCopy.$nomOldFile3);
+                    }
+                }
+                $toNullPhoto3 = true;
+
+                if ($toNullPhoto2  || null != $data['photo2']) {
+                    $setUpdate .= ", ";  
+                }
+
+                $setUpdate .= "photo3 = null, photo_name3 = null";
+            }
+
+            if (isset($setUpdate) && !empty($setUpdate)) {
+                $idInfra = $pontService->addInfrastructurePhoto($idInfra, $setUpdate);
+            }
+            
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Photo pont route updated_successfull"
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
     }
 
     /**
@@ -1072,20 +1367,20 @@ class PontController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            //$dalotService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$pontService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$pontService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$pontService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            //$pontService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$pontService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $pontService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $pontService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $pontService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $pontService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $pontService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $pontService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         

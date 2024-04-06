@@ -171,6 +171,26 @@ class GareroutiereService
         return false;
     }
 
+    public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
+    {
+        $result = $this->gareroutiereRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function getPhotoInfraInfo($infraId)
+    {
+        $routes = $this->gareroutiereRepository->getPhotoInfraInfo(intval($infraId));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
+    }
+
     public function addInfrastructureTravaux($idInfrastructure = null, $data)
     {
         $result = $this->gareroutiereRepository->addInfrastructureTravaux($idInfrastructure, $data['objetTravaux'], $data['consistanceTravaux'], $data['maitreOuvrageTravaux'], $data['maitreOuvrageDelegueTravaux'], $data['maitreOeuvreTravaux'], $data['idControleSurveillanceTravaux'], $data['modePassationTravaux'], $data['porteAppelOffreTravaux'], $data['montantTravaux'], $data['numeroContratTravaux'], $data['dateContratTravaux'], $data['dateOrdreServiceTravaux'], $data['idTitulaireTravaux'], $data['resultatTravaux'], $data['motifRuptureContratTravaux'], $data['dateReceptionProvisoireTravaux'], $data['dateReceptionDefinitiveTravaux'], $data['ingenieurReceptionProvisoireTravaux'], $data['ingenieurReceptionDefinitiveTravaux'], $data['dateInformationTravaux'], $data['sourceInformationTravaux'], $data['modeAcquisitionInformationTravaux'], $data['bailleurTravaux']);

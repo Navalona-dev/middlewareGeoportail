@@ -182,6 +182,26 @@ class PontService
         return false;
     }
 
+    public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
+    {
+        $result = $this->pontRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function getPhotoInfraInfo($infraId)
+    {
+        $routes = $this->pontRepository->getPhotoInfraInfo(intval($infraId));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
+    }
+
     public function addInfrastructureRouteFourniture($idInfrastructure = null, $data)
     {
         $result = $this->pontRepository->addInfrastructureRouteFourniture($data['objetContratFourniture'], $data['consistanceContratFourniture'], $data['materielsFourniture'], $data['entiteFourniture'], $data['modePassationFourniture'], $data['porteAppelOffreFourniture'], $data['montantFourniture'], $data['idTitulaireFourniture'], $data['numeroContratFourniture'], $data['dateContratFourniture'], $data['dateOrdreFourniture'], $data['resultatFourniture'], $data['raisonResiliationFourniture'], $data['ingenieurReceptionProvisoireFourniture'], $data['ingenieurReceptionDefinitiveFourniture'], $data['dateReceptionProvisoireFourniture'], $data['dateReceptionDefinitiveFourniture'], $idInfrastructure, $data['bailleurFourniture']);

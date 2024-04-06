@@ -182,6 +182,26 @@ class RadierService
         return false;
     }
 
+    public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
+    {
+        $result = $this->radierRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function getPhotoInfraInfo($infraId)
+    {
+        $routes = $this->radierRepository->getPhotoInfraInfo(intval($infraId));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
+    }
+
     public function addInfrastructureFourniture($idInfrastructure = null, $data)
     {
         $result = $this->radierRepository->addInfrastructureFourniture($data['objetContratFourniture'], $data['consistanceContratFourniture'], $data['materielsFourniture'], $data['entiteFourniture'], $data['modePassationFourniture'], $data['porteAppelOffreFourniture'], $data['montantFourniture'], $data['idTitulaireFourniture'], $data['numeroContratFourniture'], $data['dateContratFourniture'], $data['dateOrdreFourniture'], $data['resultatFourniture'], $data['raisonResiliationFourniture'], $data['ingenieurReceptionProvisoireFourniture'], $data['ingenieurReceptionDefinitiveFourniture'], $data['dateReceptionProvisoireFourniture'], $data['dateReceptionDefinitiveFourniture'], $idInfrastructure, $data['bailleurFourniture'], $data['precisionPassationFourniture']);

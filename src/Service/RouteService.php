@@ -242,6 +242,26 @@ class RouteService
         return false;
     }
 
+    public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
+    {
+        $result = $this->routeRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function getPhotoInfraInfo($infraId)
+    {
+        $routes = $this->routeRepository->getPhotoInfraInfo(intval($infraId));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
+    }
+
     public function update()
     {
         $this->entityManager->flush();

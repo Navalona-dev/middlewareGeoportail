@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\DalotService;
+use App\Service\CunetteService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -33,29 +33,28 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class DalotController extends AbstractController
+class CunetteController extends AbstractController
 {
     private $pathImage = null;
-    private $pathImageDalot = null;
+    private $pathImageCunette = null;
     private $pathPublic = null;
-    private $pathForNamePhotoDalot = null;
+    private $pathForNamePhotoCunette = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'dar_dalot_route/';
-
+    private const nameRepertoireImage = 'cu_cunette/';
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
-        $this->pathImageDalot = $params->get('pathImageDalot');
+        $this->pathImageCunette = $params->get('pathImageCunette');
         $this->pathPublic = $params->get('pathPublic');
-        $this->pathForNamePhotoDalot = $params->get('pathForNamePhotoDalot');
+        $this->pathForNamePhotoCunette = $params->get('pathForNamePhotoCunette');
         $this->kernelInterface = $kernelInterface;
-        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic'). self::nameRepertoireImage;
+        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
-    /**
-     * @Route("/api/dalotroute/updatephoto", name="dalotroute_update_photo", methods={"POST"})
+     /**
+     * @Route("/api/cunetteroute/updatephoto", name="cunetteroute_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, DalotService $dalotService)
+    public function updatePhoto(Request $request, CunetteService $cunetteService)
     { 
         $response = new Response();
         $hasException = false;
@@ -74,7 +73,7 @@ class DalotController extends AbstractController
             $data['photoName3'] = null;
             $setUpdate = "";
 
-            $infoPhotosInfra = $dalotService->getPhotoInfraInfo($idInfra);
+            $infoPhotosInfra = $cunetteService->getPhotoInfraInfo($idInfra);
             $toDeletePhoto1 = false;
             $toDeletePhoto2 = false;
             $toDeletePhoto3 = false;
@@ -99,11 +98,11 @@ class DalotController extends AbstractController
                 }
             }
 
-            if(!is_dir($this->pathImageDalot)) {
-                mkdir($this->pathImageDalot, 0777, true);
+            if(!is_dir($this->pathImageCunette)) {
+                mkdir($this->pathImageCunette, 0777, true);
             }
 
-            $directory1 = $this->pathImageDalot . "photo1/";
+            $directory1 = $this->pathImageCunette . "photo1/";
 
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
@@ -125,7 +124,7 @@ class DalotController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotodalot."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoCunette."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
 
@@ -153,7 +152,7 @@ class DalotController extends AbstractController
             
             
 
-            $directory2 = $this->pathImageDalot . "photo2/";
+            $directory2 = $this->pathImageCunette . "photo2/";
 
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
@@ -174,7 +173,7 @@ class DalotController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotodalot."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoCunette."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
                     $setUpdate .= ", ";    
@@ -207,7 +206,7 @@ class DalotController extends AbstractController
             }
 
 
-            $directory3 = $this->pathImageDalot . "photo3/";
+            $directory3 = $this->pathImageCunette . "photo3/";
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
@@ -228,7 +227,7 @@ class DalotController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotodalot."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoCunette."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
 
                 //if (null != $data['photo1'] || null != $data['photo2']) {
@@ -263,14 +262,14 @@ class DalotController extends AbstractController
             }
 
             if (isset($setUpdate) && !empty($setUpdate)) {
-                $idInfra = $dalotService->addInfrastructurePhoto($idInfra, $setUpdate);
+                $idInfra = $cunetteService->addInfrastructurePhoto($idInfra, $setUpdate);
             }
             
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo dalot route updated_successfull"
+                'message' => "Photo cunette route updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -347,9 +346,9 @@ class DalotController extends AbstractController
     }
 
     /**
-     * @Route("/api/dalot/add", name="dalot_add", methods={"POST"})
+     * @Route("/api/cunette/add", name="cunette_add", methods={"POST"})
      */
-    public function create(Request $request, DalotService $dalotService)
+    public function create(Request $request, CunetteService $CunetteService)
     {    
         $response = new Response();
         $hasException = false;
@@ -366,68 +365,32 @@ class DalotController extends AbstractController
             if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
                 $data['localite'] = $request->get('localite');
             }
-
-            $data['type' ] = $request->get('typeDalot');
+           
+            
             $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
-            $data['pkImplantation' ] = $request->get('pkImplantation');
-            $data['materiauxRadier'] = null;
-
-            if ($request->get('materiauxRadier') != "null" && $request->get('materiauxRadier') != "undefined") {
-                $data['materiauxRadier'] = $request->get('materiauxRadier');
-            }
-            $data['precisionMateriauxRadier'] = null;
-
-            if ($request->get('precisionMateriauxRadier') != "null" && $request->get('precisionMateriauxRadier') != "undefined") {
-                $data['precisionMateriauxRadier'] = $request->get('precisionMateriauxRadier');
-            }
-            $data['materiauxPiedroit'] = null;
-
-            if ($request->get('materiauxPiedroit') != "null" && $request->get('materiauxPiedroit') != "undefined") {
-                $data['materiauxPiedroit'] = $request->get('materiauxPiedroit');
-            }
-            $data['materiauxDalle'] = null;
-
-            if ($request->get('materiauxDalle') != "null" && $request->get('materiauxDalle') != "undefined") {
-                $data['materiauxDalle'] = $request->get('materiauxDalle');
-            }
-            
-            $data['precisionMateriauxDalle'] = null;
-
-            if ($request->get('materiauxDalle') != "null" && $request->get('precisionMateriauxDalle') != "undefined") {
-                $data['precisionMateriauxDalle'] = $request->get('precisionMateriauxDalle');
-            }
-
-            $data['precisionMateriauxPiedroit'] = null;
-
-            if ($request->get('precisionMateriauxPiedroit') != "null" && $request->get('precisionMateriauxPiedroit') != "undefined") {
-                $data['precisionMateriauxPiedroit'] = $request->get('precisionMateriauxPiedroit');
-            }
-
+            $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
+            $data['categorie' ] = $request->get('categorie');
+          
+            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
+            
 
-            // Etat
+            // Situation
             $data['etat'] = $request->get('etat');
             $data['fonctionnel'] = $request->get('fonctionnel');
             $data['motif'] = $request->get('motifNonFonctionel');
-            $data['sourceInformationEtat' ] = $request->get('sourceInformationEtat');
-            $data['modeAcquisitionInformationEtat' ] = $request->get('modeAcquisitionInformationEtat');
-            
-            // Data collecte
-            $data['existenceFissures'] = null;
-            if ($request->get('existenceFissures') != "null" && $request->get('existenceFissures') != "undefined") {
-                $data['existenceFissures'] = $request->get('existenceFissures');
-            }
-            
-            $data['niveauEnsablementOuverture'] = null;
-            if ($request->get('niveauEnsablementOuverture') != "null" && $request->get('niveauEnsablementOuverture') != "undefined") {
-                $data['niveauEnsablementOuverture'] = $request->get('niveauEnsablementOuverture');
-            }
+            $data['sourceInformationSituation' ] = $request->get('sourceInformationSituation');
+            $data['modeAcquisitionInformationSituation' ] = $request->get('modeAcquisitionInformationSituation');
+           
 
+            // Data collecte
+            $data['degradationParoi'] = $request->get('degradationParoi');
+            $data['degradationFond'] = $request->get('degradationFond');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
-            $data['autreDegradation' ] = $request->get('autreDegradation');
+            
             
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
@@ -493,18 +456,18 @@ class DalotController extends AbstractController
             $data['photoName1'] = null;
             $data['photoName2'] = null;
             $data['photoName3'] = null;
-
-            if(!is_dir($this->pathImageDalot)) {
-                mkdir($this->pathImageDalot, 0777, true);
+            
+            if(!is_dir($this->pathImageCunette)) {
+                mkdir($this->pathImageCunette, 0777, true);
             }
 
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageDalot . "photo1/";
-                
+                $directory1 = $this->pathImageCunette . "photo1/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";
-
+              
+                
                 if(!is_dir($directory1)) {
                     mkdir($directory1, 0777, true);
                 }
@@ -519,15 +482,14 @@ class DalotController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotoDalot."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoCunette."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageDalot . "photo2/";
-                
+                $directory2 = $this->pathImageCunette . "photo2/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo2/";
 
                 if(!is_dir($directory2)) {
@@ -536,22 +498,21 @@ class DalotController extends AbstractController
 
                 if(!is_dir($directoryPublicCopy)) {
                     mkdir($directoryPublicCopy, 0777, true);
-                } 
+                }
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotoDalot."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoCunette."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageDalot . "photo3/";
-                
+                $directory3 = $this->pathImageCunette . "photo3/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
                 if(!is_dir($directory3)) {
@@ -560,31 +521,32 @@ class DalotController extends AbstractController
 
                 if(!is_dir($directoryPublicCopy)) {
                     mkdir($directoryPublicCopy, 0777, true);
-                } 
+                }
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoDalot."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoCunette."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }
-
-            $idInfra = $dalotService->addInfrastructure($data);
+           
+            $idInfra = $CunetteService->addInfrastructure($data);
 
             if ($idInfra != false) {
                 // add situation et etat
-                //$idEtat = $dalotService->addInfrastructureRouteEtat($idInfra, $data);
+                //$idEtat = $CunetteService->addInfrastructureRouteEtat($idInfra, $data);
 
-                $idEtat = $dalotService->addInfrastructureEtat($idInfra, $data);
+                $idEtat = $CunetteService->addInfrastructureSituation($idInfra, $data);
 
-                $idDataCollected = $dalotService->addInfrastructureDonneCollecte($idInfra, $data);
+                $idDataCollected = $CunetteService->addInfrastructureDonneCollecte($idInfra, $data);
 
-                /*$idStructure = $dalotService->addInfrastructureRouteStructure($idInfra, $data);
+                /*$idStructure = $CunetteService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idAccotement = $dalotService->addInfrastructureRouteAccotement($idInfra, $data);
-                $idFosse = $dalotService->addInfrastructureRouteFosse($idInfra, $data);*/
+                $idAccotement = $CunetteService->addInfrastructureRouteAccotement($idInfra, $data);
+
+                $idFosse = $CunetteService->addInfrastructureRouteFosse($idInfra, $data);*/
             
 
                 /**
@@ -595,7 +557,7 @@ class DalotController extends AbstractController
                 $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                 $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
 
-                $idFoncier = $dalotService->addInfrastructureRouteFoncier($idInfra, $data);*/
+                $idFoncier = $CunetteService->addInfrastructureRouteFoncier($idInfra, $data);*/
 
                 //Travaux 
                 if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true") && "false" != $request->get('hasTravaux')) {
@@ -636,7 +598,7 @@ class DalotController extends AbstractController
                     $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
                     $data['bailleurTravaux'] = $request->get('bailleurTravaux');
 
-                    $idTravaux = $dalotService->addInfrastructureTravaux($idInfra, $data);
+                    $idTravaux = $CunetteService->addInfrastructureTravaux($idInfra, $data);
                 }
                 
                 // Fournitures
@@ -673,7 +635,7 @@ class DalotController extends AbstractController
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
-                $idFourniture = $dalotService->addInfrastructureRouteFourniture($idInfra, $data);*/
+                $idFourniture = $CunetteService->addInfrastructureRouteFourniture($idInfra, $data);*/
                 // Etudes
                 if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
@@ -711,19 +673,19 @@ class DalotController extends AbstractController
                     $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
                 // $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
                     $data['bailleurEtude'] = $request->get('bailleurEtude');
-                    $idEtude = $dalotService->addInfrastructureEtudes($idInfra, $data);
+                    $idEtude = $CunetteService->addInfrastructureEtudes($idInfra, $data);
                 }
                 
                 /**
                  * End Administrative data
                 */
-                //$idDonneAnnexe = $dalotService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
+                //$idDonneAnnexe = $CunetteService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Dalot route created_successfull"
+                'message' => "Cunette route created_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -778,20 +740,20 @@ class DalotController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $dalotService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $CunetteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         
@@ -799,16 +761,148 @@ class DalotController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/dalot/info", name="dalot_info", methods={"POST"})
+     * @Route("/api/infra/cunette/liste", name="cunette_list", methods={"GET"})
      */
-    public function getOneInfraInfo(Request $request, DalotService $dalotService)
+    public function listeCunette(Request $request, CunetteService $CunetteService)
+    {    
+        $response = new Response();
+        
+        try {
+
+            $routes = $CunetteService->getAllInfrastructures();
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Cunette route list_successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $routes
+            ]));
+            
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
+     * @Route("/api/infra/cunette/liste/minifie", name="cunette_list_minifie", methods={"GET"})
+     */
+    public function listeCunetteMinifie(Request $request, CunetteService $CunetteService)
+    {    
+        $response = new Response();
+        
+        try {
+
+            $routes = $CunetteService->getAllInfrastructuresMinifie();
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Cunette route list_successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $routes
+            ]));
+            
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
+     * @Route("/api/infra/cunette/info", name="cunette_info", methods={"POST"})
+     */
+    public function getOneInfraInfo(Request $request, CunetteService $CunetteService)
     {    
         $response = new Response();
         
         try {
             $infraId = $request->get('id');
 
-            $routes = $dalotService->getOneInfraInfo(intval($infraId));
+            $routes = $CunetteService->getOneInfraInfo(intval($infraId));
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
@@ -866,141 +960,9 @@ class DalotController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/dalot/liste", name="dalot_list", methods={"GET"})
+     * @Route("/api/cunette/update", name="cunette_update", methods={"POST"})
      */
-    public function listeDalot(Request $request, DalotService $dalotService)
-    {    
-        $response = new Response();
-        
-        try {
-
-            $routes = $dalotService->getAllInfrastructures();
-
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
-                'message' => "dalot route list_successfull",
-                'pathImage' => $this->pathImage,
-                'data' => $routes
-            ]));
-            
-            $response->headers->set('Content-Type', 'application/json');
-
-        } catch (PropertyVideException $PropertyVideException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $PropertyVideException->getMessage()
-            ]));
-        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UniqueConstraintViolationException->getMessage()
-            ]));
-        } catch (MappingException $MappingException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $MappingException->getMessage()
-            ]));
-        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ORMInvalidArgumentException->getMessage()
-            ]));
-        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UnsufficientPrivilegeException->getMessage(),
-            ]));
-        /*} catch (ServerException $ServerException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ServerException->getMessage(),
-            ]));*/
-        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $NotNullConstraintViolationException->getMessage(),
-            ]));
-        } catch (\Exception $Exception) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $Exception->getMessage(),
-            ]));
-        }
-
-        return $response;
-    }
-
-    /**
-     * @Route("/api/infra/dalot/liste/minifie", name="dalot_list_minifie", methods={"GET"})
-     */
-    public function listeDalotMinifie(Request $request, DalotService $dalotService)
-    {    
-        $response = new Response();
-        
-        try {
-
-            $routes = $dalotService->getAllInfrastructuresMinifie();
-
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
-                'message' => "dalot route list_successfull",
-                'pathImage' => $this->pathImage,
-                'data' => $routes
-            ]));
-            
-            $response->headers->set('Content-Type', 'application/json');
-
-        } catch (PropertyVideException $PropertyVideException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $PropertyVideException->getMessage()
-            ]));
-        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UniqueConstraintViolationException->getMessage()
-            ]));
-        } catch (MappingException $MappingException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $MappingException->getMessage()
-            ]));
-        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ORMInvalidArgumentException->getMessage()
-            ]));
-        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UnsufficientPrivilegeException->getMessage(),
-            ]));
-        /*} catch (ServerException $ServerException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ServerException->getMessage(),
-            ]));*/
-        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $NotNullConstraintViolationException->getMessage(),
-            ]));
-        } catch (\Exception $Exception) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $Exception->getMessage(),
-            ]));
-        }
-
-        return $response;
-    }
-
-    /**
-     * @Route("/api/dalot/update", name="dalot_update", methods={"POST"})
-     */
-    public function update(Request $request, DalotService $dalotService)
+    public function update(Request $request, CunetteService $CunetteService)
     {    
         $response = new Response();
         $hasException = false;
@@ -1057,29 +1019,27 @@ class DalotController extends AbstractController
                     if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-
-                    if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
-                        $idInfra = $dalotService->updateInfrastructure($idInfra, $updateColonneInfra);
-                    }
                     
+                    if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
+                    $idInfra = $CunetteService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    }
                 }
-                
-                // Etat
+                // Situation
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";
                 $colonneInsert = "";
                 $valuesInsert = "";
-                $idEtat = 0;
-                if (array_key_exists('etat', $data) && count($data['etat']) > 0) {
+                $idSituation = 0;
+                if (array_key_exists('situations', $data) && count($data['situations']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
-                    foreach ($data['etat'] as $colonne => $value) {
+                    foreach ($data['situations'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
                         $colonne = $tabColonne[1];
 
                         if ($colonne == "id" || $colonne == "gid") {
-                            $idEtat = intval($value);
+                            $idSituation = intval($value);
                         }
                         
                         if (in_array($colonne, $colonneInteger)) {
@@ -1096,7 +1056,7 @@ class DalotController extends AbstractController
                         }
 
                         if ($colonne != "id" && $colonne != "gid") {
-                            if (count($data['etat']) - 1 != $i) {
+                            if (count($data['situations']) - 1 != $i) {
                                 $updateColonneEtat .= $colonne."="."$value".", ";
                                 $colonneInsert .= $colonne.", ";
                                 $valuesInsert .= $value.", ";
@@ -1116,16 +1076,16 @@ class DalotController extends AbstractController
 
                     if ($valuesInsert) {
                         $valuesInsert = trim($valuesInsert);
-                        if (isset($valuesInsert[-1]) && $valuesInsert[-1] == ",") {
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
 
-                    if ($idEtat == 0) {
-                        $idEtat = $dalotService->addInfoInTableByInfrastructure('t_dar_03_etat', $colonneInsert, $valuesInsert);
+                    if ($idSituation == 0) {
+                        $idSituation = $CunetteService->addInfoInTableByInfrastructure('t_cu_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
-                            $idEtat = $dalotService->updateInfrastructureTables('t_dar_03_etat', $idEtat, $updateColonneEtat);
+                        $idSituation = $CunetteService->updateInfrastructureTables('t_cu_02_situation', $idSituation, $updateColonneEtat);
                         }
                     } 
                     
@@ -1190,10 +1150,10 @@ class DalotController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $idData = $dalotService->addInfoInTableByInfrastructure('t_dar_04_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $CunetteService->addInfoInTableByInfrastructure('t_cu_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
-                        $idData = $dalotService->updateInfrastructureTables('t_dar_04_donnees_collectees', $idData, $updateColonneData);
+                        $idData = $CunetteService->updateInfrastructureTables('t_cu_04_donnees_collectees', $idData, $updateColonneData);
                         }
                     }
                 }
@@ -1256,15 +1216,15 @@ class DalotController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $idTravaux = $dalotService->addInfoInTableByInfrastructure('t_dar_05_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $CunetteService->addInfoInTableByInfrastructure('t_cu_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
-                        $idTravaux = $dalotService->updateInfrastructureTables('t_dar_05_travaux', $idTravaux, $updateColonneTravaux);
+                        $idTravaux = $CunetteService->updateInfrastructureTables('t_cu_05_travaux', $idTravaux, $updateColonneTravaux);
                         }
                     }
                 }
 
-                // Travaux
+                // Etudes
                 $hasEtudeChanged = false;
                 $updateColonneEtudes = "";
                 $colonneInsert = "";
@@ -1323,10 +1283,10 @@ class DalotController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $idEtudes = $dalotService->addInfoInTableByInfrastructure('t_dar_07_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $CunetteService->addInfoInTableByInfrastructure('t_cu_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
-                        $idEtudes = $dalotService->updateInfrastructureTables('t_dar_07_etudes', $idEtudes, $updateColonneEtudes);
+                        $idEtudes = $CunetteService->updateInfrastructureTables('t_cu_07_etudes', $idEtudes, $updateColonneEtudes);
                         }
                     }
                 }
@@ -1336,7 +1296,7 @@ class DalotController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Dalot route update_successfull"
+                'message' => "Cunette update_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

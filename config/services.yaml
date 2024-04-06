@@ -20,6 +20,8 @@ parameters:
     pathForNamePhotoTrajetroute: 'media/upload/tj_trajet_route/t_tj_01_infrastructure/'
     pathImageRadier: '/home/qgis/projects/saisie/media/upload/ra_radier/t_ra_01_infrastructure/'
     pathForNamePhotoRadier: 'media/upload/ra_radier/t_ra_01_infrastructure/'
+    pathImageCunette: '/home/qgis/projects/saisie/media/upload/cu_cunette/t_cu_01_infrastructure/'
+    pathForNamePhotoCunette: 'media/upload/cu_cunette/t_cu_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -66,6 +68,11 @@ services:
         class: App\Repository\PontRepository
     App\Service\PontService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@pontrepository.service']
+        public: true
+    cunetterepository.service:
+        class: App\Repository\CunetteRepository
+    App\Service\CunetteService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@cunetterepository.service']
         public: true
     radierrepository.service:
         class: App\Repository\RadierRepository

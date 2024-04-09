@@ -41,7 +41,7 @@ class GareroutiereController extends AbstractController
     private $pathForNamePhotoGareroutiere = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'gr_gare_routiere/';
+    private const nameRepertoireImage = 'gr_gare_routiere/t_gr_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;

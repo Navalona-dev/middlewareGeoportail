@@ -41,7 +41,7 @@ class DalotController extends AbstractController
     private $pathForNamePhotoDalot = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'dar_dalot_route/';
+    private const nameRepertoireImage = 'dar_dalot_route/t_dar_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;

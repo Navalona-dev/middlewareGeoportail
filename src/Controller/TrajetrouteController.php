@@ -43,14 +43,15 @@ class TrajetrouteController extends AbstractController
     private $kernelInterface;
     private $directoryCopy = null;
     private $urlGenerator;
+    private const nameRepertoireImage = 'tj_trajet_route/t_tj_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface, UrlGeneratorInterface $urlGenerator) {
-        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . "trajetroute/";
+        $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
         $this->pathImageTrajetroute = $params->get('pathImageTrajetroute');
         $this->pathPublic = $params->get('pathPublic');
         $this->pathForNamePhotoTrajetroute = $params->get('pathForNamePhotoTrajetroute');
         $this->kernelInterface = $kernelInterface;
-        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic')."trajetroute/";
+        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic'). self::nameRepertoireImage;
         $this->urlGenerator = $urlGenerator;
     }
 

@@ -41,7 +41,7 @@ class RadierController extends AbstractController
     private $pathForNamePhotoRadier = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'ra_radier/';
+    private const nameRepertoireImage = 'ra_radier/t_ra_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;

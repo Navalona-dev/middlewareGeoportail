@@ -41,7 +41,7 @@ class PontController extends AbstractController
     private $pathForNamePhotoPont = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'pnr_pont_route/';
+    private const nameRepertoireImage = 'pnr_pont_route/t_pnr_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;

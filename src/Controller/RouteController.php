@@ -41,7 +41,7 @@ class RouteController extends AbstractController
     private $pathForNamePhotoRoute = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'ro_route/';
+    private const nameRepertoireImage = 'ro_route/t_ro_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;

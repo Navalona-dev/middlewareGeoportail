@@ -41,7 +41,7 @@ class CunetteController extends AbstractController
     private $pathForNamePhotoCunette = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'cu_cunette/';
+    private const nameRepertoireImage = 'cu_cunette/t_cu_01_infrastructure/';
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
         $this->pathImageCunette = $params->get('pathImageCunette');

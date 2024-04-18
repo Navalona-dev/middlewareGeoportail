@@ -30,7 +30,7 @@ class CunetteService
     
     public function addInfrastructure($data)
     {
-        $result = $this->cunetteRepository->addInfrastructure($data['nom'], 'IM.H_03_05', $data['categorie'], $data['nomRouteRattache'], $data['pointKmImplantation'], $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['coordonnees'], $data['district'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3']);
+        $result = $this->cunetteRepository->addInfrastructure($data['nom'], 'IM.H_03_05', $data['categorie'], $data['nomRouteRattache'], $data['pointKmImplantation'], $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['longitude'], $data['latitude'], $data['district'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3']);
         return $result;
     }
 

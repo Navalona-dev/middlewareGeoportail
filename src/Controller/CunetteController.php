@@ -346,168 +346,6 @@ class CunetteController extends AbstractController
     }
 
     /**
-     * @Route("/api/cunetteroute/addphoto", name="cunetteroute_add_photo", methods={"POST"})
-     */
-    public function addPhoto(Request $request, CunetteService $cunetteService)
-    { 
-        $response = new Response();
-        $hasException = false;
-        $idInfra = null;
-        try {
-            $data = [];
-            $uploadedFile1 = $request->files->get('photo1');
-            $uploadedFile2 = $request->files->get('photo2');
-            $uploadedFile3 = $request->files->get('photo3');
-            $idInfra = $request->get('infraId');
-            $data['photo1'] = null;
-            $data['photo2'] = null;
-            $data['photo3'] = null;
-            $data['photoName1'] = null;
-            $data['photoName2'] = null;
-            $data['photoName3'] = null;
-            $setUpdate = "";
-            if (null != $uploadedFile1) {
-                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
-                $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageCunette . "photo1/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
-
-                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
-                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
-                
-                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
-
-                $data['photo1'] = $this->pathForNamePhotoCunette."photo1/" .$nomPhoto1;
-                $data['photoName1'] = $nomPhoto1;
-                $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
-            }
-            
-            
-            if (null != $uploadedFile2) {
-                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
-                $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageCunette . "photo2/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
-
-                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
-                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
-                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
-                
-                $data['photo2'] = $this->pathForNamePhotoCunette."photo2/" .$nomPhoto2;
-                $data['photoName2'] = $nomPhoto2;
-                if (null != $data['photo1']) {
-                    $setUpdate .= ", ";    
-                }
-                $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
-            }
-
-            if (null != $uploadedFile3) {
-                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
-                $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageCunette . "photo3/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
-
-                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
-                $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
-                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
-
-                $data['photo3'] = $this->pathForNamePhotoCunette."photo3/" .$nomPhoto3;
-                $data['photoName3'] = $nomPhoto3;
-
-                if (null != $data['photo1'] || null != $data['photo2']) {
-                    $setUpdate .= ", ";    
-                }
-
-                $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
-            }
-
-            if (isset($setUpdate) && !empty($setUpdate)) {
-                $idInfra = $cunetteService->addInfrastructurePhoto($idInfra, $setUpdate);
-            }
-
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
-                'message' => "Photo cunette route created_successfull"
-            ]));
-
-            $response->headers->set('Content-Type', 'application/json');
-
-        } catch (PropertyVideException $PropertyVideException) {
-            $hasException = true;
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $PropertyVideException->getMessage()
-            ]));
-        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
-            $hasException = true;
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UniqueConstraintViolationException->getMessage()
-            ]));
-        } catch (MappingException $MappingException) {
-            $hasException = true;
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $MappingException->getMessage()
-            ]));
-        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
-            $hasException = true;
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ORMInvalidArgumentException->getMessage()
-            ]));
-        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
-            $hasException = true;
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $UnsufficientPrivilegeException->getMessage(),
-            ]));
-        /*} catch (ServerException $ServerException) {
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $ServerException->getMessage(),
-            ]));*/
-        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
-            $hasException = true;
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $NotNullConstraintViolationException->getMessage(),
-            ]));
-        } catch (\Exception $Exception) {
-            $hasException = true;
-            $response->setContent(json_encode([
-                'status' => false,
-                'message' => $Exception->getMessage(),
-            ]));
-        }
-
-        if ($hasException) {// Clean database
-            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
-            /*
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
-            
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
-        
-            */
-        
-        }
-        
-        return $response;
-    }
-
-    /**
      * @Route("/api/cunette/add", name="cunette_add", methods={"POST"})
      */
     public function create(Request $request, CunetteService $CunetteService)
@@ -516,86 +354,43 @@ class CunetteController extends AbstractController
         $hasException = false;
         $idInfra = null;
         try {
-            $infos = json_decode($request->getContent(), true);
+
             $data = [];
-            //$data['region' ] = $request->get('region');
-            //$data['district' ] = $request->get('district');
-            //$data['communeTerrain' ] = $request->get('commune');
-            //$data['nom' ] = $request->get('nom');
-            $data['localite'] = $infos['localite'];;
+            $data['region' ] = $request->get('region');
+            $data['district' ] = $request->get('district');
+            $data['communeTerrain' ] = $request->get('commune');
+            $data['nom' ] = $request->get('nom');
+            $data['localite'] = null;
 
-           /* if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
+            if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
                 $data['localite'] = $request->get('localite');
-            }*/
-
-            $data['nomRouteRattache' ] = $infos['nomRouteRattache'];
-            //$data['localiteDepart' ] = $infos['localiteDepart'];
-            //$data['localiteArrive' ] = $infos['localiteArrive'];
-            $data['nom' ] = $infos['nom'];
-            $data['region' ] = $infos['region'];
-            $data['district' ] = $infos['district'];
-            $data['communeTerrain' ] = $infos['commune'];
-           // $data['pkDepart' ] = $infos['pkDepart'];
-           // $data['pkArrive' ] = $infos['pkArrive'];
-            $data['pointKmImplantation' ] = $infos['pointKmImplantation'];
-            $data['categorie' ] = $infos['categorie'];
-            $data['sourceInformation' ] = $infos['sourceInformation'];
-            $data['modeAcquisitionInformation' ] = $infos['modeAcquisitionInformation'];
-            $data['photo1'] = null;
-            $data['photo2'] = null;
-            $data['photo3'] = null;
-            $data['photoName1'] = null;
-            $data['photoName2'] = null;
-            $data['photoName3'] = null;
-
-            $data['coordonnees'] = "";
-            if (count($infos['localisations']) > 0) {
-                
-                foreach ($infos['localisations'] as $key => $value) {
-                    if (count($infos['localisations']) - 1 == $key) {
-                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'];
-                    } else {
-                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'].", ";
-                    }
-                    
-                }
             }
+           
             
-            /*$data['sourceInformation' ] = $request->get('sourceInformation');
+            $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
-            $data['pointKmImplantation' ] = $request->get('pointKmImplantation');*/
+            $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
+            $data['categorie' ] = $request->get('categorie');
           
+            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
+            $data['latitude'] = $request->get('latitude');
+            $data['longitude'] = $request->get('longitude');
             
 
             // Situation
-            if (null != $infos['situation'] && count($infos['situation']) > 0) {
-                // Situation
-                $data['fonctionnel'] = $infos['situation']['fonctionnel'];
-                $data['motif'] = $infos['situation']['raison'];
-                $data['sourceInformationSituation'] = $infos['situation']['sourceInformationSituation'];
-                $data['modeAcquisitionInformationSituation'] = $infos['situation']['modeAcquisitionInformationSituation'];
-                $data['etat'] = $infos['situation']['etat'];
-
-            }
-            /*$data['etat'] = $request->get('etat');
+            $data['etat'] = $request->get('etat');
             $data['fonctionnel'] = $request->get('fonctionnel');
             $data['motif'] = $request->get('motifNonFonctionel');
             $data['sourceInformationSituation' ] = $request->get('sourceInformationSituation');
-            $data['modeAcquisitionInformationSituation' ] = $request->get('modeAcquisitionInformationSituation');*/
+            $data['modeAcquisitionInformationSituation' ] = $request->get('modeAcquisitionInformationSituation');
            
 
             // Data collecte
-            /*$data['degradationParoi'] = $request->get('degradationParoi');
+            $data['degradationParoi'] = $request->get('degradationParoi');
             $data['degradationFond'] = $request->get('degradationFond');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
-            $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');*/
-            if (null != $infos['data'] && count($infos['data']) > 0) {
-                $data['degradationParoi'] = $infos['data']['degradationParoi'];
-                $data['degradationFond'] = $infos['data']['degradationFond'];
-                $data['sourceInformationData'] = $infos['data']['sourceInformationData'];
-                $data['modeAcquisitionInformationData'] = $infos['data']['modeAcquisitionInformationData'];
-                $data['revetementData'] = $infos['data']['revetementData'];
-            }
+            $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
+            
             
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
@@ -652,7 +447,7 @@ class CunetteController extends AbstractController
             $data['coteFosse'] = $request->get('coteFosse');*/
             
             
-            /*$uploadedFile1 = $request->files->get('photo1');
+            $uploadedFile1 = $request->files->get('photo1');
             $uploadedFile2 = $request->files->get('photo2');
             $uploadedFile3 = $request->files->get('photo3');
             $data['photo1'] = null;
@@ -735,7 +530,7 @@ class CunetteController extends AbstractController
 
                 $data['photo3'] = $this->pathForNamePhotoCunette."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
-            }*/
+            }
            
             $idInfra = $CunetteService->addInfrastructure($data);
 

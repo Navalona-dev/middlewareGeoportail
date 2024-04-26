@@ -242,6 +242,16 @@ class RouteService
         return false;
     }
 
+    public function getAllyRouteInfoMinifie()
+    {
+        $routeyInfo = $this->routeRepository->getAllyRouteInfoMinifie();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
+    
     public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
     {
         $result = $this->routeRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);

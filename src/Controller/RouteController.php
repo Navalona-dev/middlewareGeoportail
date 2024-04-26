@@ -1274,8 +1274,9 @@ class RouteController extends AbstractController
      */
     public function getAllyRouteInfo(Request $request, RouteService $routeService)
     {    
-        $routesInfrastructure = $routeService->getAllyRouteInfo();
-        
+        //$routesInfrastructure = $routeService->getAllyRouteInfo();
+        //
+        $routesInfrastructure = $routeService->getAllyRouteInfoMinifie();
         $response = new Response();
 
         $response->setContent(json_encode([

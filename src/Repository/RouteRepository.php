@@ -418,7 +418,7 @@ class RouteRepository extends ServiceEntityRepository
 
     public function getAllyRouteInfoMinifie()
     {
-        $sql = 'select route.gid as id, route.nom as nom, route."Num" as numero, route."Anc_Nom", route."Classe", route."Nom2020" from y_liste_route as route GROUP BY route.nom';
+        $sql = 'select MAX(route.gid) as id, route.nom as nom, MAX(route."Num") as numero from y_liste_route as route GROUP BY route.nom';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

@@ -397,13 +397,18 @@ class RouteController extends AbstractController
             $data['structureRavines'] = $request->get('structureRavines');
             //$data['structureOrnierage'] = $request->get('structureOrnierage');
             
-
-            $dateInformationAccotement = new \DateTime($request->get('dateInformationAccotement'));
-            $dateInformationAccotement->format('Y-m-d H:i:s');
-            $data['dateInformationAccotement'] = $dateInformationAccotement;
-            $data['sourceInformationAccotement' ] = $request->get('sourceInformationAccotement');
-            $data['modeAcquisitionInformationAccotement' ] = $request->get('modeAcquisitionInformationAccotement');
-
+            $data['dateInformationAccotement'] = null;
+            $data['sourceInformationAccotement'] = null;
+            $data['modeAcquisitionInformationAccotement'] = null;
+            if (null != $request->get('dateInformationAccotement') && $request->get('dateInformationAccotement') != "null") {
+                $dateInformationAccotement = new \DateTime($request->get('dateInformationAccotement'));
+                $dateInformationAccotement->format('Y-m-d H:i:s');
+                $data['dateInformationAccotement'] = $dateInformationAccotement;
+                $data['sourceInformationAccotement' ] = $request->get('sourceInformationAccotement');
+                $data['modeAcquisitionInformationAccotement' ] = $request->get('modeAcquisitionInformationAccotement');
+    
+            }
+           
             
             $uploadedFile1 = $request->files->get('photo1');
             $uploadedFile2 = $request->files->get('photo2');

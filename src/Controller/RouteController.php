@@ -400,7 +400,7 @@ class RouteController extends AbstractController
             $data['dateInformationAccotement'] = null;
             $data['sourceInformationAccotement'] = null;
             $data['modeAcquisitionInformationAccotement'] = null;
-            if (null != $request->get('dateInformationAccotement') && $request->get('dateInformationAccotement') != "null") {
+            if (null != $request->get('dateInformationAccotement') && $request->get('dateInformationAccotement') != "null" && $request->get('dateInformationAccotement') != "undefined") {
                 $dateInformationAccotement = new \DateTime($request->get('dateInformationAccotement'));
                 $dateInformationAccotement->format('Y-m-d H:i:s');
                 $data['dateInformationAccotement'] = $dateInformationAccotement;

@@ -270,7 +270,7 @@ class BacRepository extends ServiceEntityRepository
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
-        $sql = "INSERT into t_bc_04_donnees_collectees (id_infrastructure, etat_du_moteur_du_bac, etat_de_la_coque_du_bac, date_information, source_information, mode_acquisition_information, duree_theorique_de_la_traversee, duree_reelle_de_la_traversee) VALUES (".intval($idInfrastructure).", '".$etatMoteurBac."', '".$etatCoqueBac."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$dureeTheoriqueTraversee."', '".$dureeReelleTraversee."')";
+        $sql = "INSERT into t_bc_04_donnees_collectees (id_infrastructure, etat_du_moteur_du_bac, etat_de_la_coque_du_bac, date_information, source_information, mode_acquisition_information, duree_theorique_de_la_traversee, duree_reelle_de_la_traversee) VALUES (".intval($idInfrastructure).", '".$etatMoteurBac."', '".$etatCoqueBac."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".floatval($dureeTheoriqueTraversee)."', '".floatval($dureeReelleTraversee)."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

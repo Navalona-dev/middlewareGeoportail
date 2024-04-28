@@ -957,7 +957,7 @@ class TrajetrouteController extends AbstractController
             
             }
             
-            if (count($routes) > 0) {
+            if ($routes != false && count($routes) > 0) {
                 $routes[0]['infoRoutes'] = false;
                 if ($infoRoutes != false) {
                     $routes[0]['infoRoutes'] = $infoRoutes;

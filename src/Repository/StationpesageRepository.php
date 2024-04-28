@@ -66,7 +66,7 @@ class StationpesageRepository extends ServiceEntityRepository
         return $result->fetchAll();
     }
 
-    public function getAllyRouteInfo()
+    public function getAllyRouteInfoMinifie()
     {
         $sql = 'select route.gid as id, ST_ASGeoJSON(route.geom) AS geom, route.nom as nom, route."Num" as numero, route."Anc_Nom", route."Classe", route."Nom2020" from y_liste_route as route';
 

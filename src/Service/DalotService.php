@@ -105,6 +105,15 @@ class DalotService
         return false;
     }
     
+    public function getAllyRouteInfoMinifie()
+    {
+        $routeyInfo = $this->dalotRepository->getAllyRouteInfoMinifie();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
     public function addInfrastructureEtat($idInfrastructure, $data)
     {
         $result = $this->dalotRepository->addInfrastructureEtat($idInfrastructure, $data['etat'], $data['sourceInformationEtat'], $data['modeAcquisitionInformationEtat'], $data['fonctionnel'], $data['motif']);

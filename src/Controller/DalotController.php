@@ -810,6 +810,24 @@ class DalotController extends AbstractController
 
             $routes = $dalotService->getOneInfraInfo(intval($infraId));
 
+            $routesInfrastructure = $dalotService->getAllyRouteInfoMinifie();
+            $infoRoutes = [];
+            if ($routes != false && count($routes) > 0 && $routesInfrastructure != false && count($routesInfrastructure) > 0 ) {
+                foreach ($routesInfrastructure as $key => $value) {
+                   if (trim($value['nom']) == trim($routes[0]['nom'])) {
+                    $infoRoutes = $value;
+                   }
+                }
+            
+            }
+            
+            if ($routes != false && count($routes) > 0) {
+                $routes[0]['infoRoutes'] = false;
+                if ($infoRoutes != false) {
+                    $routes[0]['infoRoutes'] = $infoRoutes;
+                }
+            }
+
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,

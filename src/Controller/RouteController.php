@@ -1078,7 +1078,7 @@ class RouteController extends AbstractController
             $routesFosse = $routeService->getFosseRoute(intval($infraId));
             $routesInfrastructure = $routeService->getAllyRouteInfoMinifie();
             $infoRoutes = [];
-            if (count($routes) > 0 && count($routesInfrastructure) > 0 ) {
+            if ($routes != false && $routesInfrastructure != false && count($routes) > 0 && count($routes) > 0 && count($routesInfrastructure) > 0 ) {
                 foreach ($routesInfrastructure as $key => $value) {
                     
                    if (trim($value['nom']) == trim($routes[0]['rattache'])) {
@@ -1088,7 +1088,7 @@ class RouteController extends AbstractController
             
             }
            
-            if (count($routes) > 0) {
+            if ($routes != false && count($routes) > 0) {
                 $routes[0]['accotements'] = false;
                 if ($routesAccottement != false && count($routesAccottement) > 0) {
                     $routes[0]['accotements'] = $routesAccottement;

@@ -182,6 +182,15 @@ class RadierService
         return false;
     }
 
+    public function getAllyRouteInfoMinifie()
+    {
+        $routeyInfo = $this->radierRepository->getAllyRouteInfoMinifie();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
     public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
     {
         $result = $this->radierRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);

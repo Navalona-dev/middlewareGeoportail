@@ -182,6 +182,15 @@ class PontService
         return false;
     }
 
+    public function getAllyRouteInfoMinifie()
+    {
+        $routeyInfo = $this->pontRepository->getAllyRouteInfoMinifie();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
     public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
     {
         $result = $this->pontRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);

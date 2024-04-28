@@ -49,6 +49,15 @@ class CunetteService
         return 0;
     }
 
+    public function getAllyRouteInfoMinifie()
+    {
+        $routeyInfo = $this->cunetteRepository->getAllyRouteInfoMinifie();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
     public function getAllInfrastructuresMinifie()
     {
         $routes = $this->cunetteRepository->getAllInfrastructuresMinifie();

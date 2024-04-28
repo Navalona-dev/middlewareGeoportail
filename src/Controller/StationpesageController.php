@@ -874,6 +874,24 @@ class StationpesageController extends AbstractController
 
             $routes = $stationpesageService->getOneInfraInfo(intval($infraId));
 
+            $routesInfrastructure = $stationpesageService->getAllyRouteInfoMinifie();
+            $infoRoutes = [];
+            if (count($routes) > 0 && count($routesInfrastructure) > 0 ) {
+                foreach ($routesInfrastructure as $key => $value) {
+                   if (trim($value['nom']) == trim($routes[0]['nom_de_la_route_a_qui_il_est_rattache'])) {
+                    $infoRoutes = $value;
+                   }
+                }
+            
+            }
+            
+            if (count($routes) > 0) {
+                $routes[0]['infoRoutes'] = false;
+                if ($infoRoutes != false) {
+                    $routes[0]['infoRoutes'] = $infoRoutes;
+                }
+            }
+
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
@@ -947,6 +965,7 @@ class StationpesageController extends AbstractController
                 $updateColonneInfra = "";
                 $idInfra = 0;
                 
+              
                 $colonneInteger = ['id', 'gid', 'id_infrastructure', 'id_controle_surveillance', 'montant', 'id_titulaire', 'id_ingenieurs_reception_provisoire',
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
                 $colonneFloat = ['longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
@@ -1118,7 +1137,7 @@ class StationpesageController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-
+                  
                     if ($idData == 0) {
                         $idData = $stationpesageService->addInfoInTableByInfrastructure('t_sp_06_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {

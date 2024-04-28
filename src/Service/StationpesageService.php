@@ -64,6 +64,15 @@ class StationpesageService
         return $result;
     }
 
+    public function getAllyRouteInfoMinifie()
+    {
+        $routeyInfo = $this->stationpesageRepository->getAllyRouteInfoMinifie();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
     public function addInfoInTableByInfrastructure($table, $colonnes, $values)
     {
         $result = $this->stationpesageRepository->addInfoInTableByInfrastructure($table, $colonnes, $values);

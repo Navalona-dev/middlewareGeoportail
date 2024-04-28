@@ -880,6 +880,24 @@ class BacController extends AbstractController
 
             $routes = $bacService->getOneInfraInfo(intval($infraId));
 
+            $routesInfrastructure = $bacService->getAllyRouteInfoMinifie();
+            $infoRoutes = [];
+            if (count($routes) > 0 && count($routesInfrastructure) > 0 ) {
+                foreach ($routesInfrastructure as $key => $value) {
+                   if (trim($value['nom']) == trim($routes[0]['nom_de_la_route_a_qui_il_est_rattache'])) {
+                    $infoRoutes = $value;
+                   }
+                }
+            
+            }
+            
+            if (count($routes) > 0) {
+                $routes[0]['infoRoutes'] = false;
+                if ($infoRoutes != false) {
+                    $routes[0]['infoRoutes'] = $infoRoutes;
+                }
+            }
+            
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,

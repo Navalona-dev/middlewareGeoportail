@@ -945,6 +945,25 @@ class TrajetrouteController extends AbstractController
             $infraId = $request->get('id');
 
             $routes = $trajetrouteService->getOneInfraInfo(intval($infraId));
+
+            $routesInfrastructure = $trajetrouteService->getAllyRouteInfoMinifie();
+            $infoRoutes = [];
+            if (count($routes) > 0 && count($routesInfrastructure) > 0 ) {
+                foreach ($routesInfrastructure as $key => $value) {
+                   if (trim($value['nom']) == trim($routes[0]['nom_de_la_route_a_qui_il_est_rattache'])) {
+                    $infoRoutes = $value;
+                   }
+                }
+            
+            }
+            
+            if (count($routes) > 0) {
+                $routes[0]['infoRoutes'] = false;
+                if ($infoRoutes != false) {
+                    $routes[0]['infoRoutes'] = $infoRoutes;
+                }
+            }
+
             //dd($this->urlGenerator->generate('images_route', ['imageName' => '64b1501d625a7.jpg']));
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,

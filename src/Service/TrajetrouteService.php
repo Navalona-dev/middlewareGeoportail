@@ -147,6 +147,15 @@ class TrajetrouteService
         return false;
     }
 
+    public function getAllyRouteInfoMinifie()
+    {
+        $routeyInfo = $this->trajetrouteRepository->getAllyRouteInfoMinifie();
+        if (count($routeyInfo) > 0) {
+            return $routeyInfo;
+        }
+        return false;
+    }
+
     public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
     {
         $result = $this->trajetrouteRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);

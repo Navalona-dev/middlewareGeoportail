@@ -1074,13 +1074,28 @@ class RouteController extends AbstractController
             $infraId = $request->get('id');
 
             $routes = $routeService->getOneInfraInfo(intval($infraId));
-
+            $routesAccottement = $routeService->getAccotementRoute(intval($infraId));
+            $routesFosse = $routeService->getFosseRoute(intval($infraId));
+            $routesInfrastructure = $routeService->getAllyRouteInfoMinifie();
+            $infoRoutes = [];
+            if (count($routes) > 0 && count($routesInfrastructure) > 0 ) {
+                foreach ($routesInfrastructure as $key => $value) {
+                    
+                   if (trim($value['nom']) == trim($routes[0]['rattache'])) {
+                    $infoRoutes = $value;
+                   }
+                }
+            
+            }
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "Info infrastructure successfull",
                 'pathImage' => $this->pathImage,
-                'data' => $routes
+                'data' => $routes,
+                'accotements' => $routesAccottement,
+                'fosses' => $routesFosse,
+                'infoRoutes' => $infoRoutes
             ]));
             
             $response->headers->set('Content-Type', 'application/json');

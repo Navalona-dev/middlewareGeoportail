@@ -1099,7 +1099,7 @@ class RouteController extends AbstractController
                 }
                 $routes[0]['infoRoutes'] = false;
                 if ($infoRoutes != false) {
-                    $routes[0]['infoRoutes'] = $routesFosse;
+                    $routes[0]['infoRoutes'] = $infoRoutes;
                 }
             }
        

@@ -1098,7 +1098,7 @@ class RouteController extends AbstractController
                     $routes[0]['fosses'] = $routesFosse;
                 }
                 $routes[0]['infoRoutes'] = false;
-                if ($infoRoutes != false && count($infoRoutes) > 0) {
+                if ($infoRoutes != false) {
                     $routes[0]['infoRoutes'] = $routesFosse;
                 }
             }
@@ -1108,10 +1108,7 @@ class RouteController extends AbstractController
                 'status' => true,
                 'message' => "Info infrastructure successfull",
                 'pathImage' => $this->pathImage,
-                'data' => $routes,
-                'accotements' => $routesAccottement,
-                'fosses' => $routesFosse,
-                'infoRoutes' => $infoRoutes
+                'data' => $routes
             ]));
             
             $response->headers->set('Content-Type', 'application/json');

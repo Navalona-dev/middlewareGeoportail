@@ -948,7 +948,7 @@ class TrajetrouteController extends AbstractController
 
             $routesInfrastructure = $trajetrouteService->getAllyRouteInfoMinifie();
             $infoRoutes = [];
-            if (count($routes) > 0 && count($routesInfrastructure) > 0 ) {
+            if (count($routes) > 0 && $routesInfrastructure != false && count($routesInfrastructure) > 0 ) {
                 foreach ($routesInfrastructure as $key => $value) {
                    if (trim($value['nom']) == trim($routes[0]['nom_de_la_route_a_qui_il_est_rattache'])) {
                     $infoRoutes = $value;

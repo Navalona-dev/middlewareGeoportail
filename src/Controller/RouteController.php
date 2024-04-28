@@ -1087,6 +1087,22 @@ class RouteController extends AbstractController
                 }
             
             }
+           
+            if (count($routes) > 0) {
+                $routes[0]['accotements'] = false;
+                if ($routesAccottement != false && count($routesAccottement) > 0) {
+                    $routes[0]['accotements'] = $routesAccottement;
+                }
+                $routes[0]['fosses'] = false;
+                if ($routesFosse != false && count($routesFosse) > 0) {
+                    $routes[0]['fosses'] = $routesFosse;
+                }
+                $routes[0]['infoRoutes'] = false;
+                if ($infoRoutes != false && count($infoRoutes) > 0) {
+                    $routes[0]['infoRoutes'] = $routesFosse;
+                }
+            }
+       
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,

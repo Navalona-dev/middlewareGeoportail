@@ -19,6 +19,7 @@ class GareroutiereRepository extends ServiceEntityRepository
     {
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);
+        $nom = pg_escape_string($nom);
         $communeTerrain = pg_escape_string($communeTerrain);
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);

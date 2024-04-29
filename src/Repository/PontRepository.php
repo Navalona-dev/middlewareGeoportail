@@ -78,6 +78,18 @@ class PontRepository extends ServiceEntityRepository
        
     }
 
+    public function getInfoyRouteInfoMinifie($id)
+    {
+        $sql = 'select route.gid as id, route.nom as nom, route."Num" as numero from y_liste_route as route where route.gid = '.$id.'';
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     public function getAllInfrastructuresMinifie()
     {
         $sql = 'SELECT infra.id as infra_id, infra.nom as nom, infra.categorie, infra.localite, infra.commune_terrain, infra.nom_de_la_route_a_qui_il_est_rattache as nom_de_la_route_a_qui_il_est_rattache, infra.point_kilometrique_de_son_implantation, infra.date_information, infra.source_information as source_information, infra.mode_acquisition_information as mode_acquisition_information, infra.district,  ST_X(infra.geom) AS longitude, ST_Y(infra.geom) AS latitude, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_pnr_01_infrastructure as infra';

@@ -522,7 +522,18 @@ class TrajetrouteController extends AbstractController
         try {
             $infos = json_decode($request->getContent(), true);
             $data = [];
-            $data['nomRouteRattache' ] = $infos['nomRouteRattache'];
+            //$data['nomRouteRattache' ] = $infos['nomRouteRattache'];
+
+            $data['nomRouteRattache'] = null;
+
+            if ($infos['nomRouteRattache'] != "null" && $infos['nomRouteRattache'] != "undefined") {
+                    $infoYlisteRoute = $trajetrouteService->getInfoyRouteInfoMinifie($infos['nomRouteRattache']);
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
+
             $data['localiteDepart' ] = $infos['localiteDepart'];
             $data['localiteArrive' ] = $infos['localiteArrive'];
             $data['nom' ] = $infos['nom'];

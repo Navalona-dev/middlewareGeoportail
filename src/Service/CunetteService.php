@@ -58,6 +58,15 @@ class CunetteService
         return false;
     }
 
+    public function getInfoyRouteInfoMinifie($idYlisteRoute)
+    {
+        $routes = $this->cunetteRepository->getInfoyRouteInfoMinifie(intval($idYlisteRoute));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function getAllInfrastructuresMinifie()
     {
         $routes = $this->cunetteRepository->getAllInfrastructuresMinifie();

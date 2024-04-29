@@ -373,7 +373,15 @@ class RadierController extends AbstractController
             $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
             $data['categorie' ] = $request->get('categorie');
             $data['indicatif' ] = $request->get('indicatif');
-            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
+            $data['nomRouteRattache'] = null;
+
+            if ($request->get('nomRouteRattache') != "null" && $request->get('nomRouteRattache') != "undefined") {
+                    $infoYlisteRoute = $radierService->getInfoyRouteInfoMinifie($request->get('nomRouteRattache'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             
@@ -388,11 +396,11 @@ class RadierController extends AbstractController
 
             // Data collecte
             $data['hauteurDecalageJointureRadierTerrainNaturel'] = $request->get('hauteurDecalageJointureRadierTerrainNaturel');
-            $data['existenceFissures'] = null;
+            $data['existenceFissures'] = "Non";
             if ($request->get('existenceFissures') != "null" && $request->get('existenceFissures') != "undefined") {
                 $data['existenceFissures'] = $request->get('existenceFissures');
             }
-            $data['existenceFerraillageVisible'] = null;
+            $data['existenceFerraillageVisible'] = "Non";
             if ($request->get('existenceFerraillageVisible') != "null" && $request->get('existenceFerraillageVisible') != "undefined") {
                 $data['existenceFerraillageVisible'] = $request->get('existenceFerraillageVisible');
             }
@@ -511,7 +519,7 @@ class RadierController extends AbstractController
                 $data['photo3'] = $this->pathForNamePhotoRadier."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }
-
+          
             $idInfra = $radierService->addInfrastructure($data);
 
             if ($idInfra != false) {

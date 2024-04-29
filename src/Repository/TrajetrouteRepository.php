@@ -54,6 +54,18 @@ class TrajetrouteRepository extends ServiceEntityRepository
         return $result->fetchAll();
     }
 
+    public function getInfoyRouteInfoMinifie($id)
+    {
+        $sql = 'select route.gid as id, route.nom as nom, route."Num" as numero from y_liste_route as route where route.gid = '.$id.'';
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+    
     public function getAllyRouteInfoMinifie()
     {
         $sql = 'select MAX(route.gid) as id, route.nom as nom, MAX(route."Num") as numero from y_liste_route as route GROUP BY route.nom';

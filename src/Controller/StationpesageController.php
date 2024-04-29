@@ -372,7 +372,17 @@ class StationpesageController extends AbstractController
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
             $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
             $data['categorie' ] = $request->get('categorie');
-            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
+            //$data['nomRouteRattache'] = $request->get('nomRouteRattache');
+            $data['nomRouteRattache'] = null;
+
+            if ($request->get('nomRouteRattache') != "null" && $request->get('nomRouteRattache') != "undefined") {
+                    $infoYlisteRoute = $stationpesageService->getInfoyRouteInfoMinifie($request->get('nomRouteRattache'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
+
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             $data['indicatif'] = 'IM.H_01_12';

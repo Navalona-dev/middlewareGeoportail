@@ -374,8 +374,23 @@ class BacController extends AbstractController
             $data['categorie' ] = $request->get('categorie');
             $data['moisOuverture' ] = $request->get('moisOuverture');
             $data['moisFermeture' ] = $request->get('moisFermeture');
-            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
-            $data['categoriePrecision'] = $request->get('categoriePrecision');
+            //$data['nomRouteRattache'] = $request->get('nomRouteRattache');
+            $data['nomRouteRattache'] = null;
+
+            if ($request->get('nomRouteRattache') != "null" && $request->get('nomRouteRattache') != "undefined") {
+                    $infoYlisteRoute = $bacService->getInfoyRouteInfoMinifie($request->get('nomRouteRattache'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
+
+            $data['categoriePrecision'] = null;
+            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined" && $request->get('categorie') == "Autres") {
+                if ($request->get('categoriePrecision') != "null" && $request->get('categoriePrecision') != "undefined") {
+                    $data['categoriePrecision'] = $request->get('categoriePrecision');
+                }
+            }
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             $data['indicatif'] = 'IM.H_03_04';

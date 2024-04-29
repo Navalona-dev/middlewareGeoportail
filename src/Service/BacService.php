@@ -40,6 +40,15 @@ class BacService
         return $result;
     }
 
+    public function getInfoyRouteInfoMinifie($idYlisteRoute)
+    {
+        $routes = $this->bacRepository->getInfoyRouteInfoMinifie(intval($idYlisteRoute));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function getAllyRouteInfoMinifie()
     {
         $routeyInfo = $this->bacRepository->getAllyRouteInfoMinifie();

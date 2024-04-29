@@ -85,6 +85,16 @@ class PontService
         return 0;
     }
 
+    public function getInfoyRouteInfoMinifie($idYlisteRoute)
+    {
+        $routes = $this->pontRepository->getInfoyRouteInfoMinifie(intval($idYlisteRoute));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
+    
     public function getAllInfrastructuresBaseRoute()
     {
         $routes = $this->pontRepository->getAllInfrastructuresBaseRoute();

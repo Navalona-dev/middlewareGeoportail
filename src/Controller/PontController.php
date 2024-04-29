@@ -384,8 +384,23 @@ class PontController extends AbstractController
             $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
             $data['categorie' ] = $request->get('categorie');
             $data['typePont' ] = $request->get('typePont');
-            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
-            $data['categoriePrecision'] = $request->get('categoriePrecision');
+            $data['nomRouteRattache'] = null;
+
+            if ($request->get('nomRouteRattache') != "null" && $request->get('nomRouteRattache') != "undefined") {
+                    $infoYlisteRoute = $pontService->getInfoyRouteInfoMinifie($request->get('nomRouteRattache'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
+            
+            $data['categoriePrecision'] = null;
+            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined" && $request->get('categorie') == "Autres") {
+                if ($request->get('categoriePrecision') != "null" && $request->get('categoriePrecision') != "undefined") {
+                    $data['categoriePrecision'] = $request->get('categoriePrecision');
+                }
+            }
+            
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             $data['typePrecision'] = $request->get('typePrecision');

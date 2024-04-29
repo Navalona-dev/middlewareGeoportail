@@ -361,7 +361,17 @@ class RouteController extends AbstractController
             $data['district' ] = $request->get('district');
             $data['commune' ] = $request->get('commune');
             $data['localite' ] = $request->get('localite');
-            $data['rattache' ] = $request->get('rattache');
+            //$data['rattache' ] = $request->get('rattache');
+            $data['rattache'] = null;
+
+            if ($request->get('rattache') != "null" && $request->get('rattache') != "undefined") {
+                    $infoYlisteRoute = $routeService->getInfoyRouteInfoMinifie($request->get('rattache'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['rattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
+
             $data['categorie' ] = $request->get('categorie');
             $data['sourceInformation' ] = $request->get('sourceInformation');
             $data['pkDebut' ] = $request->get('pkDebut');

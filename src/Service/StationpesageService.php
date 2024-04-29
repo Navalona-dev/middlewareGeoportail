@@ -73,6 +73,15 @@ class StationpesageService
         return false;
     }
 
+    public function getInfoyRouteInfoMinifie($idYlisteRoute)
+    {
+        $routes = $this->stationpesageRepository->getInfoyRouteInfoMinifie(intval($idYlisteRoute));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function addInfoInTableByInfrastructure($table, $colonnes, $values)
     {
         $result = $this->stationpesageRepository->addInfoInTableByInfrastructure($table, $colonnes, $values);

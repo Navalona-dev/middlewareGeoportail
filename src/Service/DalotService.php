@@ -114,6 +114,15 @@ class DalotService
         return false;
     }
 
+    public function getInfoyRouteInfoMinifie($idYlisteRoute)
+    {
+        $routes = $this->dalotRepository->getInfoyRouteInfoMinifie(intval($idYlisteRoute));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function addInfrastructureEtat($idInfrastructure, $data)
     {
         $result = $this->dalotRepository->addInfrastructureEtat($idInfrastructure, $data['etat'], $data['sourceInformationEtat'], $data['modeAcquisitionInformationEtat'], $data['fonctionnel'], $data['motif']);

@@ -97,6 +97,15 @@ class RouteService
         return false;
     }
 
+    public function getInfoyRouteInfoMinifie($idYlisteRoute)
+    {
+        $routes = $this->routeRepository->getInfoyRouteInfoMinifie(intval($idYlisteRoute));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function getFosseRoute($idRoute = null)
     {
         if (null != $idRoute) {

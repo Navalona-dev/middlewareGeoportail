@@ -372,7 +372,15 @@ class CunetteController extends AbstractController
             $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
             $data['categorie' ] = $request->get('categorie');
           
-            $data['nomRouteRattache'] = $request->get('nomRouteRattache');
+            $data['nomRouteRattache'] = null;
+
+            if ($request->get('nomRouteRattache') != "null" && $request->get('nomRouteRattache') != "undefined") {
+                    $infoYlisteRoute = $CunetteService->getInfoyRouteInfoMinifie($request->get('nomRouteRattache'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             

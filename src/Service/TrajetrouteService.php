@@ -156,6 +156,15 @@ class TrajetrouteService
         return false;
     }
 
+    public function getInfoyRouteInfoMinifie($idYlisteRoute)
+    {
+        $routes = $this->trajetrouteRepository->getInfoyRouteInfoMinifie(intval($idYlisteRoute));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return 0;
+    }
+
     public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)
     {
         $result = $this->trajetrouteRepository->addInfrastructurePhoto($idInfrastructure, $setUpdate);

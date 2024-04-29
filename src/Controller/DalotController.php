@@ -360,7 +360,18 @@ class DalotController extends AbstractController
             $data['region' ] = $request->get('region');
             $data['district' ] = $request->get('district');
             $data['communeTerrain' ] = $request->get('commune');
-            $data['nom' ] = $request->get('nom');
+            //$data['nom' ] = $request->get('nom');
+
+            $data['nom'] = null;
+
+            if ($request->get('nom') != "null" && $request->get('nom') != "undefined") {
+                    $infoYlisteRoute = $dalotService->getInfoyRouteInfoMinifie($request->get('nom'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nom'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }
+
             $data['localite'] = null;
 
             if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {

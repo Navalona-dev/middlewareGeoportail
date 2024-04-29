@@ -388,10 +388,17 @@ class RadierController extends AbstractController
 
             // Data collecte
             $data['hauteurDecalageJointureRadierTerrainNaturel'] = $request->get('hauteurDecalageJointureRadierTerrainNaturel');
+            $data['existenceFissures'] = null;
+            if ($request->get('existenceFissures') != "null" && $request->get('existenceFissures') != "undefined") {
+                $data['existenceFissures'] = $request->get('localite');
+            }
+            $data['existenceFerraillageVisible'] = null;
+            if ($request->get('existenceFerraillageVisible') != "null" && $request->get('existenceFerraillageVisible') != "undefined") {
+                $data['existenceFerraillageVisible'] = $request->get('localite');
+            }
             $data['existenceFissures'] = $request->get('existenceFissures');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
-            $data['existenceFerraillageVisible' ] = $request->get('existenceFerraillageVisible');
             $data['denivellationStructureRadierCanalArrivee' ] = $request->get('denivellationStructureRadierCanalArrivee');
             $data['denivellationChausseeRadier' ] = $request->get('denivellationChausseeRadier');
             

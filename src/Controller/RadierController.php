@@ -590,41 +590,44 @@ class RadierController extends AbstractController
                 }
                 
                 // Fournitures
-                $data['objetContratFourniture'] = $request->get('objetContratFourniture');
-                $data['consistanceContratFourniture'] = $request->get('consistanceContratFourniture');
-                $data['materielsFourniture'] = $request->get('materielsFourniture');
-                $data['entiteFourniture'] = $request->get('entiteFourniture');
-                $data['modePassationFourniture'] = $request->get('modePassationFourniture');
-                $data['porteAppelOffreFourniture'] = $request->get('porteAppelOffreFourniture');
-                $data['montantFourniture'] = $request->get('montantFourniture');
-                $data['idTitulaireFourniture'] = $request->get('idTitulaireFourniture');
-                $data['numeroContratFourniture'] = $request->get('numeroContratFourniture');
-                $dateContratFourniture = new \DateTime($request->get('dateContratFourniture'));
-                $dateContratFourniture->format('Y-m-d H:i:s');
+                if (null != $request->get('hasFournitures') && ($request->get('hasFournitures') == true || $request->get('hasFournitures') == "true") && "false" != $request->get('hasFournitures')) {
+                    $data['objetContratFourniture'] = $request->get('objetContratFourniture');
+                    $data['consistanceContratFourniture'] = $request->get('consistanceContratFourniture');
+                    $data['materielsFourniture'] = $request->get('materielsFourniture');
+                    $data['entiteFourniture'] = $request->get('entiteFourniture');
+                    $data['modePassationFourniture'] = $request->get('modePassationFourniture');
+                    $data['porteAppelOffreFourniture'] = $request->get('porteAppelOffreFourniture');
+                    $data['montantFourniture'] = $request->get('montantFourniture');
+                    $data['idTitulaireFourniture'] = $request->get('idTitulaireFourniture');
+                    $data['numeroContratFourniture'] = $request->get('numeroContratFourniture');
+                    $dateContratFourniture = new \DateTime($request->get('dateContratFourniture'));
+                    $dateContratFourniture->format('Y-m-d H:i:s');
 
-                $data['dateContratFourniture'] = $dateContratFourniture;
+                    $data['dateContratFourniture'] = $dateContratFourniture;
 
-                $dateOrdreFourniture = new \DateTime($request->get('dateOrdreFourniture'));
-                $dateOrdreFourniture->format('Y-m-d H:i:s');
+                    $dateOrdreFourniture = new \DateTime($request->get('dateOrdreFourniture'));
+                    $dateOrdreFourniture->format('Y-m-d H:i:s');
 
-                $data['dateOrdreFourniture'] = $dateOrdreFourniture;
-                $data['resultatFourniture'] = $request->get('resultatFourniture');
-                $data['raisonResiliationFourniture'] = $request->get('raisonResiliationFourniture');
-                $data['ingenieurReceptionProvisoireFourniture'] = $request->get('ingenieurReceptionProvisoireFourniture');
-                $data['ingenieurReceptionDefinitiveFourniture'] = $request->get('ingenieurReceptionDefinitiveFourniture');
+                    $data['dateOrdreFourniture'] = $dateOrdreFourniture;
+                    $data['resultatFourniture'] = $request->get('resultatFourniture');
+                    $data['raisonResiliationFourniture'] = $request->get('raisonResiliationFourniture');
+                    $data['ingenieurReceptionProvisoireFourniture'] = $request->get('ingenieurReceptionProvisoireFourniture');
+                    $data['ingenieurReceptionDefinitiveFourniture'] = $request->get('ingenieurReceptionDefinitiveFourniture');
+                    
+                    $dateReceptionProvisoireFourniture = new \DateTime($request->get('dateReceptionProvisoireFourniture'));
+                    $dateReceptionProvisoireFourniture->format('Y-m-d H:i:s');
+
+                    $data['dateReceptionProvisoireFourniture'] = $dateReceptionProvisoireFourniture;
+                    
+                    $dateReceptionDefinitiveFourniture = new \DateTime($request->get('dateReceptionDefinitiveFourniture'));
+                    $dateReceptionDefinitiveFourniture->format('Y-m-d H:i:s');
+
+                    $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
+                    $data['bailleurFourniture'] = $request->get('bailleurFourniture');
+                    $data['precisionPassationFourniture'] = $request->get('precisionPassationFourniture');
+                    $idFourniture = $radierService->addInfrastructureFourniture($idInfra, $data);
+                }
                 
-                $dateReceptionProvisoireFourniture = new \DateTime($request->get('dateReceptionProvisoireFourniture'));
-                $dateReceptionProvisoireFourniture->format('Y-m-d H:i:s');
-
-                $data['dateReceptionProvisoireFourniture'] = $dateReceptionProvisoireFourniture;
-                
-                $dateReceptionDefinitiveFourniture = new \DateTime($request->get('dateReceptionDefinitiveFourniture'));
-                $dateReceptionDefinitiveFourniture->format('Y-m-d H:i:s');
-
-                $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
-                $data['bailleurFourniture'] = $request->get('bailleurFourniture');
-                $data['precisionPassationFourniture'] = $request->get('precisionPassationFourniture');
-                $idFourniture = $radierService->addInfrastructureFourniture($idInfra, $data);
                 // Etudes
                 if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');

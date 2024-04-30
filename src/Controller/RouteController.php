@@ -533,14 +533,14 @@ class RouteController extends AbstractController
                 }
 
                 
-                $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
-                $dateInformationFosse->format('Y-m-d H:i:s');
-                $data['dateInformationFosse'] = $dateInformationFosse;
+                
                 $data['sourceInformationFosse' ] = $request->get('sourceInformationFosse');
                 $data['modeAcquisitionInformationFosse' ] = $request->get('modeAcquisitionInformationFosse');
 
                 if ($request->get('coteFosseGauche') == "OUI") {
-
+                    $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
+                    $dateInformationFosse->format('Y-m-d H:i:s');
+                    $data['dateInformationFosse'] = $dateInformationFosse;
                     $data['fosseRevetuGauche'] = "NON";
                     if ('null' != $request->get('fosseRevetuGauche') && null != $request->get('fosseRevetuGauche') && !empty($request->get('fosseRevetuGauche'))) {
                         $data['fosseRevetuGauche'] = $request->get('fosseRevetuGauche');
@@ -558,6 +558,9 @@ class RouteController extends AbstractController
                 }
 
                 if ($request->get('coteFosseDroite') == "OUI") {
+                    $dateInformationFosse = new \DateTime($request->get('dateInformationFosse'));
+                    $dateInformationFosse->format('Y-m-d H:i:s');
+                    $data['dateInformationFosse'] = $dateInformationFosse;
                     $data['fosseRevetuDroite'] = "NON";
                     if ('null' != $request->get('fosseRevetuDroite') && null != $request->get('fosseRevetuDroite') && !empty($request->get('fosseRevetuDroite'))) {
                         $data['fosseRevetuDroite'] = $request->get('fosseRevetuDroite');

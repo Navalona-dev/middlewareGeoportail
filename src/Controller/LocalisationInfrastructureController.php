@@ -220,6 +220,74 @@ class LocalisationInfrastructureController extends AbstractController
     }
 
     /**
+     * @Route("/api/localites/liste", name="locatite_liste_commmunes_region", methods={"GET"})
+     */
+    public function listeLocalite(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)
+    {    
+        
+        $response = new Response();
+
+        try {
+
+            $data = json_decode($request->getContent(), true);
+           
+            $localitesInfrastructure = $localisationInfrastructureService->getAllCoordonneLocalites();
+            
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "localites list_successfull",
+                'data' => $localitesInfrastructure
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
      * @Route("/api/localites", name="locatite_commmunes_region", methods={"POST"})
      */
     public function listeLocaliteInCommunesInRegion(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)

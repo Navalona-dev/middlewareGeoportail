@@ -85,6 +85,14 @@ class LocalisationInfrastructureService
         return false;
     }
 
+    public function getAllCoordonneLocalites()
+    {
+        $localitesInfrastructures = $this->LocalisationInfrastructureRepository->getAllCoordonneLocalites();
+        if (count($localitesInfrastructures) > 0) {
+            return $localitesInfrastructures;
+        }
+        return false;
+    }
     
     public function getAllDistrictByRegion($region = null)
     {

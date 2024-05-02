@@ -65,7 +65,7 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
 
     public function getAllLocalites()
     {
-        $sql = "SELECT c_com, nom_loca  FROM couche_localites";
+        $sql = "SELECT c_com, nom_loca, ST_X(geom) AS long, ST_Y(geom) AS lat  FROM couche_localites";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

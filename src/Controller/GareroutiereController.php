@@ -371,7 +371,18 @@ class GareroutiereController extends AbstractController
             $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
             $data['categorie' ] = $request->get('categorie');
             $data['capaciteVoitureAccueillies'] = $request->get('capaciteVoitureAccueillies');
-            $data['categoriePrecision'] = $request->get('categoriePrecision');
+            //$data['categoriePrecision'] = $request->get('categoriePrecision');
+
+           
+            $data['categoriePrecision'] = null;
+            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
+                $allCategories = $gareroutiereService->getAllCategorieInfra();
+                if ($allCategories != false && count($allCategories) > 0 && !in_array($request->get('categorie'), $allCategories)) {
+                        $data['categoriePrecision'] = $request->get('categorie');
+                        $data['categorie' ] = "Autre à préciser";
+                }
+            }
+            
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             

@@ -191,6 +191,22 @@ class GareroutiereService
         return false;
     }
 
+    public function getAllCategorieInfra()
+    {
+        $categories = $this->gareroutiereRepository->getAllCategorieInfra();
+        if (count($categories) > 0) {
+            $tabCategorie = [];
+            foreach ($categories as $key => $categorie) {
+                if (!in_array($categorie['categorie'], $tabCategorie)) {
+                    array_push($tabCategorie, $categorie['categorie']);
+                }
+            }
+            return $tabCategorie;
+        }
+        return false;
+    }
+
+    
     public function addInfrastructureTravaux($idInfrastructure = null, $data)
     {
         $result = $this->gareroutiereRepository->addInfrastructureTravaux($idInfrastructure, $data['objetTravaux'], $data['consistanceTravaux'], $data['maitreOuvrageTravaux'], $data['maitreOuvrageDelegueTravaux'], $data['maitreOeuvreTravaux'], $data['idControleSurveillanceTravaux'], $data['modePassationTravaux'], $data['porteAppelOffreTravaux'], $data['montantTravaux'], $data['numeroContratTravaux'], $data['dateContratTravaux'], $data['dateOrdreServiceTravaux'], $data['idTitulaireTravaux'], $data['resultatTravaux'], $data['motifRuptureContratTravaux'], $data['dateReceptionProvisoireTravaux'], $data['dateReceptionDefinitiveTravaux'], $data['ingenieurReceptionProvisoireTravaux'], $data['ingenieurReceptionDefinitiveTravaux'], $data['dateInformationTravaux'], $data['sourceInformationTravaux'], $data['modeAcquisitionInformationTravaux'], $data['bailleurTravaux']);

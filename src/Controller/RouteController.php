@@ -1400,21 +1400,31 @@ class RouteController extends AbstractController
                                 if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements" || $colonne == "Structure") {
                                     $updateColonneInfra .= "\"$colonne\""."="."$value".", ";
                                 } else {
-                                    $updateColonneInfra .= $colonne."="."$value".", ";
+                                    if ($colonne != "rattache") {
+                                        $updateColonneInfra .= $colonne."="."$value".", ";
+                                    } /*else {
+                                        $value = pg_escape_string($value);
+                                        $value = "'$value'";
+                                        $updateColonneInfra .= $colonne."="."$value".", ";
+                                    }*/
+                                    
                                 }
                                 
                             } else {
                                 if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements" || $colonne == "Structure") {
                                     $updateColonneInfra .= "\"$colonne\""."="."$value";
                                 } else {
-                                    $updateColonneInfra .= $colonne."="."$value";
+                                    if ($colonne != "rattache") {
+                                        $updateColonneInfra .= $colonne."="."$value";
+                                    }
+                                    
                                 }
                                 
                             }
                         } 
                         $i++;
                     }
-
+                    
                     $updateColonneInfra = trim($updateColonneInfra);
                     if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);

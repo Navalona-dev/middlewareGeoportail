@@ -996,10 +996,10 @@ class GareroutiereController extends AbstractController
 
                                         $value = pg_escape_string($value);
                                         if (count($data['infrastructure']) - 1 != $i) {
-                                            $updateColonneInfra .= "precision_categorie="."$value".", categorie = 'Autre à préciser', ";
+                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser', ";
                                         } else {
                                            
-                                            $updateColonneInfra .= "precision_categorie="."$value".", categorie = 'Autre à préciser'";
+                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser'";
                                         }
                                         
                                             
@@ -1039,7 +1039,7 @@ class GareroutiereController extends AbstractController
                     if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-                    
+                   
                     if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
                     $idInfra = $gareroutiereService->updateInfrastructure($idInfra, $updateColonneInfra);
                     }

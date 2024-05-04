@@ -1397,14 +1397,14 @@ class RouteController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements") {
+                                if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements" || $colonne == "Structure") {
                                     $updateColonneInfra .= "\"$colonne\""."="."$value".", ";
                                 } else {
                                     $updateColonneInfra .= $colonne."="."$value".", ";
                                 }
                                 
                             } else {
-                                if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements") {
+                                if ($colonne == "Largeur_chaussée" || $colonne == "Largeur_accotements" || $colonne == "Structure") {
                                     $updateColonneInfra .= "\"$colonne\""."="."$value";
                                 } else {
                                     $updateColonneInfra .= $colonne."="."$value";

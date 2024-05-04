@@ -1219,9 +1219,10 @@ class TrajetrouteController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['data_collecte']) - 1 != $i) {
-                                $updateColonneData .= $colonne."="."$value".", ";
-                                $colonneInsert .= $colonne.", ";
-                                $valuesInsert .= $value.", ";
+                                    $updateColonneData .= $colonne."="."$value".", ";
+                                    $colonneInsert .= $colonne.", ";
+                                    $valuesInsert .= $value.", ";
+                                
                             } else {
                                 $updateColonneData .= $colonne."="."$value";
                                 $colonneInsert .= $colonne;
@@ -1245,6 +1246,10 @@ class TrajetrouteController extends AbstractController
                     }
 
                     if ($idData == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         $idData = $trajetrouteService->updateInfrastructureTables('t_tj_04_donnees_collectees', $idData, $updateColonneData);

@@ -22,6 +22,7 @@ class BacRepository extends ServiceEntityRepository
         $communeTerrain = pg_escape_string($communeTerrain);
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $region = pg_escape_string($region);
         $nom = pg_escape_string($nom);
         $sql = "INSERT into t_bc_01_infrastructure (nom, indicatif, categorie,localite, commune_terrain,  nom_de_la_route_a_qui_il_est_rattache,  point_kilometrique_de_son_implantation, mois_ouverture, mois_de_fermeture, date_information, source_information, mode_acquisition_information, geom, district, charge_maximum, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3, precision_categorie) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$localite."', '".$communeTerrain."', '".$nomRouteRattache."', '".$pointKmImplantation."', '".$moisOuverture."', '".$moisFermeture."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$district."', '".floatval($chargeMaximum)."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."', '".$categoriePrecision."')";
         

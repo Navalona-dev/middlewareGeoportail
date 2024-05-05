@@ -1069,19 +1069,19 @@ class PontController extends AbstractController
     
                                             $value = pg_escape_string($value);
                                             if (count($data['infrastructure']) - 1 != $i) {
-                                                $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser', ";
+                                                $updateColonneInfra .= "categorie_precision='$value', categorie = 'Autre à préciser', ";
                                             } else {
                                                
-                                                $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser'";
+                                                $updateColonneInfra .= "categorie_precision='$value', categorie = 'Autre à préciser'";
                                             }
                                             
                                                 
                                         } else {
                                             $value = pg_escape_string($value);
                                             if (count($data['infrastructure']) - 1 != $i) {
-                                                $updateColonneInfra .= "precision_categorie= null, categorie = '$value', ";
+                                                $updateColonneInfra .= "categorie_precision= null, categorie = '$value', ";
                                             } else {
-                                                $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
+                                                $updateColonneInfra .= "categorie_precision= null, categorie = '$value'";
                                             }
                                             
                                         }

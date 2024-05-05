@@ -23,6 +23,7 @@ class GareroutiereRepository extends ServiceEntityRepository
         $communeTerrain = pg_escape_string($communeTerrain);
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $region = pg_escape_string($region);
         $sql = "INSERT into t_gr_01_infrastructure (nom, categorie,  localite, commune_terrain,  capacite_de_voiture_accueillies, date_information, source_information, mode_acquisition_information, geom, district, precision_categorie, code, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$nom."', '".$categorie."', '".$localite."', '".$communeTerrain."', ".intval($capaciteVoitureAccueillies).", '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$district."', '".$categoriePrecision."', '".$code."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         
         $conn = $this->entityManager->getConnection();

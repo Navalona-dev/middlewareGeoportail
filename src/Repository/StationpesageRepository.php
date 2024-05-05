@@ -22,6 +22,7 @@ class StationpesageRepository extends ServiceEntityRepository
         $communeTerrain = pg_escape_string($communeTerrain);
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $region = pg_escape_string($region);
         $nom = pg_escape_string($nom);
         $sql = "INSERT into t_sp_01_infrastructure (nom, indicatif, categorie,nom_de_la_route_a_qui_il_est_rattache,  point_kilometrique_d_implantation, commune_terrain, localite, date_information, source_information, mode_acquisition_information, geom, district, region, photo1, photo2, photo3, photo_name1, photo_name2, photo_name3) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$nomRouteRattache."', '".$pointKmImplantation."', '".$communeTerrain."', '".$localite."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$district."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$photo_name1."', '".$photo_name2."', '".$photo_name3."')";
         

@@ -412,10 +412,15 @@ class BacController extends AbstractController
             $data['etatCoqueBac'] = $request->get('etatCoqueBac');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
-            $data['dureeTheoriqueTraversee' ] = $request->get('dureeTheoriqueTraversee');
-            $data['dureeReelleTraversee' ] = $request->get('dureeReelleTraversee');
-            
-            
+            $data['dureeTheoriqueTraversee' ] = null;
+            if ($request->get('dureeTheoriqueTraversee') != "null" && $request->get('dureeTheoriqueTraversee') != "undefined" && $request->get('dureeTheoriqueTraversee') != "0") {
+                $data['dureeTheoriqueTraversee' ] = $request->get('dureeTheoriqueTraversee');
+            }
+            $data['dureeReelleTraversee' ] = null;
+            if ($request->get('dureeReelleTraversee') != "null" && $request->get('dureeReelleTraversee') != "undefined" && $request->get('dureeReelleTraversee') != "0") {
+                $data['dureeReelleTraversee' ] = $request->get('dureeReelleTraversee');
+            }
+
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
             $data['precisionStructure'] = $request->get('precisionStructure');

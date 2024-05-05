@@ -386,11 +386,14 @@ class BacController extends AbstractController
             }
 
             $data['categoriePrecision'] = null;
-            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined" && $request->get('categorie') == "Autres") {
-                if ($request->get('categoriePrecision') != "null" && $request->get('categoriePrecision') != "undefined") {
-                    $data['categoriePrecision'] = $request->get('categoriePrecision');
+            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
+                $allCategories = $bacService->getAllCategorieInfra();
+                if ($allCategories != false && count($allCategories) > 0 && !in_array($request->get('categorie'), $allCategories)) {
+                        $data['categoriePrecision'] = $request->get('categorie');
+                        $data['categorie' ] = "Autre à préciser";
                 }
             }
+
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
             $data['indicatif'] = 'IM.H_03_04';
@@ -999,7 +1002,7 @@ class BacController extends AbstractController
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
                         $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
-
+                    $allCategories = $bacService->getAllCategorieInfra();
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1010,15 +1013,47 @@ class BacController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
+                            if ($colonne == "categorie") {
+                                if ($value != "null" && $value != "undefined" && $value != "") {
+                                  
+                                    if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
+
+                                        $value = pg_escape_string($value);
+                                        if (count($data['infrastructure']) - 1 != $i) {
+                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser', ";
+                                        } else {
+                                           
+                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser'";
+                                        }
+                                        
+                                            
+                                    } else {
+                                        $value = pg_escape_string($value);
+                                        if (count($data['infrastructure']) - 1 != $i) {
+                                            $updateColonneInfra .= "precision_categorie= null, categorie = '$value', ";
+                                        } else {
+                                            $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
+                                        }
+                                        
+                                    }
+                                }
+                            } else {
+                                $value = pg_escape_string($value);
+                                $value = "'$value'";
+                            }
                         }
 
                         if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                $updateColonneInfra .= $colonne."="."$value".", ";
+                                if ($colonne != "categorie") {
+                                    $updateColonneInfra .= $colonne."="."$value".", ";
+                                }
+                                
                             } else {
-                                $updateColonneInfra .= $colonne."="."$value";
+                                if ($colonne != "categorie") {
+                                    $updateColonneInfra .= $colonne."="."$value";
+                                }
+                                
                             }
                         } 
                         $i++;
@@ -1091,6 +1126,10 @@ class BacController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $bacService->addInfoInTableByInfrastructure('t_bc_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
@@ -1159,6 +1198,10 @@ class BacController extends AbstractController
                     }
 
                     if ($idData == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $bacService->addInfoInTableByInfrastructure('t_bc_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
@@ -1225,6 +1268,10 @@ class BacController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $bacService->addInfoInTableByInfrastructure('t_bc_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
@@ -1292,6 +1339,10 @@ class BacController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idEtudes = $bacService->addInfoInTableByInfrastructure('t_bc_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {

@@ -395,9 +395,11 @@ class PontController extends AbstractController
             }
             
             $data['categoriePrecision'] = null;
-            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined" && $request->get('categorie') == "Autres") {
-                if ($request->get('categoriePrecision') != "null" && $request->get('categoriePrecision') != "undefined") {
-                    $data['categoriePrecision'] = $request->get('categoriePrecision');
+            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
+                $allCategories = $pontService->getAllCategorieInfra();
+                if ($allCategories != false && count($allCategories) > 0 && !in_array($request->get('categorie'), $allCategories)) {
+                        $data['categoriePrecision'] = $request->get('categorie');
+                        $data['categorie' ] = "Autre à préciser";
                 }
             }
             
@@ -1039,7 +1041,7 @@ class PontController extends AbstractController
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
                         $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
-
+                    $allCategories = $pontService->getAllCategorieInfra();
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1060,16 +1062,48 @@ class PontController extends AbstractController
                                     }
                                 }
                             } else {
-                                $value = pg_escape_string($value);
-                                $value = "'$value'";
+                                if ($colonne == "categorie") {
+                                    if ($value != "null" && $value != "undefined" && $value != "") {
+                                      
+                                        if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
+    
+                                            $value = pg_escape_string($value);
+                                            if (count($data['infrastructure']) - 1 != $i) {
+                                                $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser', ";
+                                            } else {
+                                               
+                                                $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser'";
+                                            }
+                                            
+                                                
+                                        } else {
+                                            $value = pg_escape_string($value);
+                                            if (count($data['infrastructure']) - 1 != $i) {
+                                                $updateColonneInfra .= "precision_categorie= null, categorie = '$value', ";
+                                            } else {
+                                                $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
+                                            }
+                                            
+                                        }
+                                    }
+                                } else {
+                                    $value = pg_escape_string($value);
+                                    $value = "'$value'";
+                                }
                             }
                         }
 
                         if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
                             if (count($data['infrastructure']) - 1 != $i) {
-                                $updateColonneInfra .= $colonne."="."$value".", ";
+                                if ($colonne != "categorie") {
+                                    $updateColonneInfra .= $colonne."="."$value".", ";
+                                }
+                                
                             } else {
-                                $updateColonneInfra .= $colonne."="."$value";
+                                if ($colonne != "categorie") {
+                                    $updateColonneInfra .= $colonne."="."$value";
+                                }
+                                
                             }
                         } 
                         $i++;
@@ -1142,6 +1176,10 @@ class PontController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $pontService->addInfoInTableByInfrastructure('t_pnr_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
@@ -1210,6 +1248,10 @@ class PontController extends AbstractController
                     }
 
                     if ($idData == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $pontService->addInfoInTableByInfrastructure('t_pnr_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
@@ -1276,6 +1318,10 @@ class PontController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $pontService->addInfoInTableByInfrastructure('t_pnr_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
@@ -1343,6 +1389,10 @@ class PontController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idEtudes = $pontService->addInfoInTableByInfrastructure('t_pnr_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {

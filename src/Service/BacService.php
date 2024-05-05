@@ -49,6 +49,21 @@ class BacService
         return 0;
     }
 
+    public function getAllCategorieInfra()
+    {
+        $categories = $this->bacRepository->getAllCategorieInfra();
+        if (count($categories) > 0) {
+            $tabCategorie = [];
+            foreach ($categories as $key => $categorie) {
+                if (!in_array($categorie['categorie'], $tabCategorie)) {
+                    array_push($tabCategorie, $categorie['categorie']);
+                }
+            }
+            return $tabCategorie;
+        }
+        return false;
+    }
+
     public function getAllyRouteInfoMinifie()
     {
         $routeyInfo = $this->bacRepository->getAllyRouteInfoMinifie();

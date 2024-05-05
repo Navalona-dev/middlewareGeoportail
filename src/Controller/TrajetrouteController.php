@@ -1179,6 +1179,10 @@ class TrajetrouteController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         $idSituation = $trajetrouteService->updateInfrastructureTables('t_tj_02_situation', $idSituation, $updateColonneEtat);
@@ -1314,6 +1318,10 @@ class TrajetrouteController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $trajetrouteService->addInfoInTableByInfrastructure('t_tj_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         $idTravaux = $trajetrouteService->updateInfrastructureTables('t_tj_05_travaux', $idTravaux, $updateColonneTravaux);

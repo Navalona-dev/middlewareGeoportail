@@ -1103,6 +1103,10 @@ class GareroutiereController extends AbstractController
                     }
                    
                     if ($idSituation == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_03_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
@@ -1171,6 +1175,10 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idData == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_06_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
@@ -1237,6 +1245,10 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_08_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
@@ -1304,6 +1316,10 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idEtudes = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_10_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
@@ -1371,6 +1387,10 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idFoncier == 0) {
+                        $date = new \DateTime();
+                        $dateInfo = $date->format('Y-m-d H:i:s');
+                        $dateInfoFormated = "'$dateInfo'";
+                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idFoncier = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_05_foncier', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneFoncier) && !empty($updateColonneFoncier)) {

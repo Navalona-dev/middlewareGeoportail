@@ -75,6 +75,18 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getAllLocalitesInstat()
+    {
+        $sql = "SELECT lib_dist as district, zdr_lcom as commune, zdr_lloc as localite, ST_X(geom) AS long, ST_Y(geom) AS lat  FROM \"Localites_INSTAT\"";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     public function getAllCoordonneLocalites()
     {
         $sql = "SELECT c_com, nom_loca, ST_X(geom) AS long, ST_Y(geom) AS lat  FROM couche_localites";

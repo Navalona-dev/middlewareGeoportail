@@ -85,6 +85,15 @@ class LocalisationInfrastructureService
         return false;
     }
 
+    public function getAllLocalitesInstat()
+    {
+        $localitesInfrastructures = $this->LocalisationInfrastructureRepository->getAllLocalitesInstat();
+        if (count($localitesInfrastructures) > 0) {
+            return $localitesInfrastructures;
+        }
+        return false;
+    }
+
     public function getAllCoordonneLocalites()
     {
         $localitesInfrastructures = $this->LocalisationInfrastructureRepository->getAllCoordonneLocalites();

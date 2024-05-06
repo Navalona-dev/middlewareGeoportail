@@ -371,8 +371,10 @@ class LocalisationInfrastructureController extends AbstractController
 
             $communesInfrastructure = $localisationInfrastructureService->getAllCommunes();
 
-            $localitesInfrastructure = $localisationInfrastructureService->getAllLocalites();
-            
+            $localitesInfrastructure = $localisationInfrastructureService->getAllLocalitesInstat();
+          
+            ini_set('memory_limit','2G');
+            set_time_limit(0);
             $tabLocalisation = [];
             if (count($regionsInfrastructure) > 0) {
                 foreach($regionsInfrastructure as $region) {
@@ -413,12 +415,14 @@ class LocalisationInfrastructureController extends AbstractController
                                         $unCommune['dist_ceni'] = $commune['dist_ceni'];
                                         $unCommune['localites'] = [];
                                         $tabLocalites = array_filter($localitesInfrastructure, function ($localite) use ($commune) {
-                                            return $localite['c_com'] === $commune['com_ceni'];
+                                            return strtoupper($localite['commune']) === strtoupper($commune['commune']);
                                         });
+                                       
                                         if (count($tabLocalites) > 0) {
                                             foreach($tabLocalites as $localite) {
-                                                $unLocalite['localite'] = $localite['nom_loca'];
-                                                $unLocalite['com_ceni'] = $localite['c_com'];
+                                                $unLocalite['district'] = $localite['district'];
+                                                $unLocalite['commune'] = $localite['commune'];
+                                                $unLocalite['localite'] = $localite['localite'];
                                                 $unLocalite['latitude'] = $localite['lat'];
                                                 $unLocalite['longitude'] = $localite['long'];
                                                 array_push($unCommune['localites'], $unLocalite);

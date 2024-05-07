@@ -49,6 +49,15 @@ class LocalisationInfrastructureService
         return false;
     }
 
+    public function getInfoRegion($region)
+    {
+        $regionsInfrastructures = $this->LocalisationInfrastructureRepository->getInfoRegion($region);
+        if (count($regionsInfrastructures) > 0) {
+            return $regionsInfrastructures;
+        }
+        return false;
+    }
+
     public function getCoordonneeRegion()
     {
         $regionsInfrastructures = $this->LocalisationInfrastructureRepository->getCoordonneeRegion();

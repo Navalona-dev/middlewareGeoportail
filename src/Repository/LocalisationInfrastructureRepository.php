@@ -39,6 +39,20 @@ class LocalisationInfrastructureRepository extends ServiceEntityRepository
        
     }
 
+    public function getInfoRegion($region)
+    {
+        $region = strtoupper(pg_escape_string($region));
+
+        $sql = "SELECT DISTINCT region, reg_ceni  FROM couche_region where region = '$region'";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+        $res = $result->fetchAll();
+        return (count($res) > 0 ? $res[0] : false);
+       
+    }
+
     public function getAllDistricts()
     {
         $sql = "SELECT DISTINCT district, dist_ceni, reg_ceni  FROM couche_commune";

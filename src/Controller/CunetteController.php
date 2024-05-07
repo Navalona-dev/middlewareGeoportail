@@ -1112,6 +1112,12 @@ class CunetteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idSituation == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1119,10 +1125,6 @@ class CunetteController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $CunetteService->addInfoInTableByInfrastructure('t_cu_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
@@ -1184,6 +1186,12 @@ class CunetteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idData == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1191,10 +1199,6 @@ class CunetteController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $CunetteService->addInfoInTableByInfrastructure('t_cu_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
@@ -1254,6 +1258,12 @@ class CunetteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idTravaux == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1261,10 +1271,6 @@ class CunetteController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $CunetteService->addInfoInTableByInfrastructure('t_cu_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {

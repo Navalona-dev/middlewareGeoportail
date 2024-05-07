@@ -1169,6 +1169,12 @@ class PontController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idSituation == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1176,10 +1182,6 @@ class PontController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $pontService->addInfoInTableByInfrastructure('t_pnr_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
@@ -1241,6 +1243,12 @@ class PontController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idData == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1248,10 +1256,6 @@ class PontController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $pontService->addInfoInTableByInfrastructure('t_pnr_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
@@ -1311,6 +1315,12 @@ class PontController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idTravaux == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1318,10 +1328,6 @@ class PontController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $pontService->addInfoInTableByInfrastructure('t_pnr_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
@@ -1382,6 +1388,12 @@ class PontController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idEtudes == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1389,10 +1401,6 @@ class PontController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idEtudes = $pontService->addInfoInTableByInfrastructure('t_pnr_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {

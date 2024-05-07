@@ -1486,6 +1486,12 @@ class RouteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idFosseGauche == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1551,6 +1557,12 @@ class RouteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idFosseDroite == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1618,6 +1630,12 @@ class RouteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idAccoteGauche == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1685,6 +1703,12 @@ class RouteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idAccoteDroite == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1752,6 +1776,12 @@ class RouteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idSituation == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1820,6 +1850,12 @@ class RouteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idSurface == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);

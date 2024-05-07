@@ -1096,6 +1096,12 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idSituation == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1103,10 +1109,6 @@ class GareroutiereController extends AbstractController
                     }
                    
                     if ($idSituation == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_03_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
@@ -1168,6 +1170,12 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idData == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1175,10 +1183,6 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_06_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {

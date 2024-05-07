@@ -62,9 +62,19 @@ class BacController extends AbstractController
         $idInfra = null;
         try {
             $data = [];
-            $uploadedFile1 = $request->files->get('photo1');
-            $uploadedFile2 = $request->files->get('photo2');
-            $uploadedFile3 = $request->files->get('photo3');
+            $uploadedFile1 = "undefined";
+            $uploadedFile2 = "undefined";
+            $uploadedFile3 = "undefined";
+            if ($request->files->has('photo1')) {
+                $uploadedFile1 = $request->files->get('photo1');
+            }
+            if ($request->files->has('photo2')) {
+                $uploadedFile2 = $request->files->get('photo2');
+            }
+            if ($request->files->has('photo3')) {
+                $uploadedFile3 = $request->files->get('photo3');
+            }
+            
             $idInfra = $request->get('infraId');
             $data['photo1'] = null;
             $data['photo2'] = null;
@@ -105,7 +115,7 @@ class BacController extends AbstractController
 
             $directory1 = $this->pathImageBac . "photo1/";
 
-            if (null != $uploadedFile1) {
+            if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";    
@@ -138,7 +148,7 @@ class BacController extends AbstractController
                 }
                 
             } else {
-                if ($toDeletePhoto1) {
+                if ($toDeletePhoto1 && ("null" == $uploadedFile1 || null == $uploadedFile1)) {
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo1/";
                     if (file_exists($directory1.$nomOldFile1)) {
@@ -146,16 +156,17 @@ class BacController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile1);
                     }
                 }
-                $toNullPhoto1 = true;
-                $setUpdate .= "photo1 = null, photo_name1 = null";
+                
+                if ($uploadedFile1 != "undefined") {
+                    $toNullPhoto1 = true;
+                    $setUpdate .= "photo1 = null, photo_name1 = null";
+                }
             }
-
-            
-            
+          
 
             $directory2 = $this->pathImageBac . "photo2/";
 
-            if (null != $uploadedFile2) {
+            if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
 
@@ -177,9 +188,11 @@ class BacController extends AbstractController
                 $data['photo2'] = $this->pathForNamePhotobac."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
-                    $setUpdate .= ", ";    
+                    if ($uploadedFile1 != "undefined") {
+                        $setUpdate .= ", ";    
+                    }
                 //}
-                
+               
                 $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
 
                 if ($toDeletePhoto2) {
@@ -190,7 +203,7 @@ class BacController extends AbstractController
                     }
                 }
             } else {
-                if ($toDeletePhoto2) {
+                if ($toDeletePhoto2 && ("null" == $uploadedFile2 || null == $uploadedFile2)) {
                     $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo2/";
                     if (file_exists($directory2.$nomOldFile2)) {
@@ -199,17 +212,19 @@ class BacController extends AbstractController
                     }
                 }
                 $toNullPhoto2 = true;
-                if ($toNullPhoto1 || null != $data['photo1']) {
+                if (($toNullPhoto1 || null != $data['photo1']) && $uploadedFile2 != "undefined") {
                     $setUpdate .= ", ";  
                 }
-
-                $setUpdate .= "photo2 = null, photo_name2 = null";
+                if ($uploadedFile2 != "undefined") {
+                    $setUpdate .= "photo2 = null, photo_name2 = null";
+                }
+                
             }
 
 
             $directory3 = $this->pathImageBac . "photo3/";
 
-            if (null != $uploadedFile3) {
+            if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
 
@@ -245,7 +260,7 @@ class BacController extends AbstractController
                     }
                 }
             } else {
-                if ($toDeletePhoto3) {
+                if ($toDeletePhoto3 && ("null" == $uploadedFile3 || null == $uploadedFile3)) {
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo3/";
                     if (file_exists($directory3.$nomOldFile3)) {
@@ -255,13 +270,17 @@ class BacController extends AbstractController
                 }
                 $toNullPhoto3 = true;
 
-                if ($toNullPhoto2  || null != $data['photo2']) {
+                if (($toNullPhoto2  || null != $data['photo2']) && $uploadedFile3 != "undefined") {
                     $setUpdate .= ", ";  
                 }
-
-                $setUpdate .= "photo3 = null, photo_name3 = null";
+                if ($uploadedFile3 != "undefined") {
+                    $setUpdate .= "photo3 = null, photo_name3 = null";
+                }
+                
             }
-
+           
+            
+            
             if (isset($setUpdate) && !empty($setUpdate)) {
                 $idInfra = $bacService->addInfrastructurePhoto($idInfra, $setUpdate);
             }
@@ -1124,6 +1143,12 @@ class BacController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idSituation == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1131,10 +1156,6 @@ class BacController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idSituation = $bacService->addInfoInTableByInfrastructure('t_bc_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
@@ -1196,6 +1217,12 @@ class BacController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idData == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1203,10 +1230,6 @@ class BacController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idData = $bacService->addInfoInTableByInfrastructure('t_bc_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
@@ -1266,6 +1289,12 @@ class BacController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idTravaux == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1273,10 +1302,6 @@ class BacController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $bacService->addInfoInTableByInfrastructure('t_bc_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
@@ -1337,6 +1362,12 @@ class BacController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idEtudes == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1344,10 +1375,6 @@ class BacController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idEtudes = $bacService->addInfoInTableByInfrastructure('t_bc_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {

@@ -1242,6 +1242,12 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idTravaux == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1249,10 +1255,6 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idTravaux = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_08_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
@@ -1313,6 +1315,12 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idEtudes == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1320,10 +1328,6 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idEtudes = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_10_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
@@ -1384,6 +1388,12 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($valuesInsert) {
+                        if ($idFoncier == 0) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1391,10 +1401,6 @@ class GareroutiereController extends AbstractController
                     }
 
                     if ($idFoncier == 0) {
-                        $date = new \DateTime();
-                        $dateInfo = $date->format('Y-m-d H:i:s');
-                        $dateInfoFormated = "'$dateInfo'";
-                        $valuesInsert .= ", date_information = ".$dateInfoFormated."";
                         $idFoncier = $gareroutiereService->addInfoInTableByInfrastructure('t_gr_05_foncier', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneFoncier) && !empty($updateColonneFoncier)) {

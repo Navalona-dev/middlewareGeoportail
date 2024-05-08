@@ -15,6 +15,8 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Exception\UnsufficientPrivilegeException;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class LocalisationInfrastructureController extends AbstractController
 {
@@ -355,6 +357,29 @@ class LocalisationInfrastructureController extends AbstractController
         return $response;
     }
     
+    /**
+     * @Route("/api/file/localites", name="localite_file_region_infrastructure", methods={"GET"})
+     */
+    public function getJsonLocalitesInfrastructure(Request $request, LocalisationInfrastructureService $localisationInfrastructureService)
+    {
+         // Récupérer le chemin du répertoire public
+            $publicDirectory = $this->getParameter('kernel.project_dir') . '/public';
+
+            // Vérifier si le fichier existe dans le répertoire public
+            $filePath = $publicDirectory . '/localites.json';
+           
+            if (!file_exists($filePath)) {
+                throw $this->createNotFoundException('Le fichier demandé n\'existe pas.');
+            }
+        
+            // Retourner le fichier en tant que réponse
+            // Retourner le fichier en tant que réponse
+            return new StreamedResponse(function () use ($filePath) {
+                readfile($filePath);
+            });
+            //return new BinaryFileResponse($filePath);
+    }
+
     /**
      * @Route("/api/localite/region", name="localite_region_infrastructure", methods={"POST"})
      */

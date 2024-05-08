@@ -114,7 +114,7 @@ class BacController extends AbstractController
             }
 
             $directory1 = $this->pathImageBac . "photo1/";
-
+            dd($uploadedFile1, $uploadedFile2, $uploadedFile3);
             if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
@@ -162,7 +162,7 @@ class BacController extends AbstractController
                     $setUpdate .= "photo1 = null, photo_name1 = null";
                 }
             }
-          
+            dd($setUpdate,$toDeletePhoto1 );
 
             $directory2 = $this->pathImageBac . "photo2/";
 
@@ -280,7 +280,7 @@ class BacController extends AbstractController
             }
            
             
-            
+         
             if (isset($setUpdate) && !empty($setUpdate)) {
                 $idInfra = $bacService->addInfrastructurePhoto($idInfra, $setUpdate);
             }

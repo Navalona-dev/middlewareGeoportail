@@ -590,7 +590,8 @@ class LocalisationInfrastructureController extends AbstractController
                                         $unCommune['dist_ceni'] = $commune['dist_ceni'];
                                         $unCommune['localites'] = [];
                                         $tabLocalites = array_filter($localitesInfrastructure, function ($localite) use ($commune) {
-                                            return strtoupper($localite['commune']) === strtoupper($commune['commune']);
+                                            //return strtoupper($localite['commune']) === strtoupper($commune['commune']);
+                                            return strtoupper($localite['nom_loca']) === strtoupper($commune['commune']);
                                         });
                                        
                                         if (count($tabLocalites) > 0) {

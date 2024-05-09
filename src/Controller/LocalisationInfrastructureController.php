@@ -597,8 +597,10 @@ class LocalisationInfrastructureController extends AbstractController
                                             foreach($tabLocalites as $localite) {
                                                 //$unLocalite['district'] = $localite['district'];
                                                 //$unLocalite['commune'] = $localite['commune'];
-                                                $unLocalite['com_ceni'] = $localite['commune'];
-                                                $unLocalite['localite'] = $localite['localite'];
+                                               // $unLocalite['com_ceni'] = $localite['commune'];
+                                                $unLocalite['com_ceni'] = $localite['c_com'];
+                                                $unLocalite['localite'] = $localite['nom_loca'];
+                                                //$unLocalite['localite'] = $localite['localite'];
                                                 $unLocalite['latitude'] = $localite['lat'];
                                                 $unLocalite['longitude'] = $localite['long'];
                                                 array_push($unCommune['localites'], $unLocalite);

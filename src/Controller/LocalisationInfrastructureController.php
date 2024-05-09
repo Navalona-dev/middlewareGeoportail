@@ -545,7 +545,8 @@ class LocalisationInfrastructureController extends AbstractController
 
             $communesInfrastructure = $localisationInfrastructureService->getAllCommunes();
 
-            $localitesInfrastructure = $localisationInfrastructureService->getAllLocalitesInstat();
+            //$localitesInfrastructure = $localisationInfrastructureService->getAllLocalitesInstat();
+            $localitesInfrastructure = $localisationInfrastructureService->getAllLocalites();
           
             ini_set('memory_limit','2G');
             set_time_limit(0);

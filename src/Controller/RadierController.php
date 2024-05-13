@@ -404,7 +404,7 @@ class RadierController extends AbstractController
             if ($request->get('existenceFerraillageVisible') != "null" && $request->get('existenceFerraillageVisible') != "undefined") {
                 $data['existenceFerraillageVisible'] = $request->get('existenceFerraillageVisible');
             }
-            $data['existenceFissures'] = $request->get('existenceFissures');
+            //$data['existenceFissures'] = $request->get('existenceFissures');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
             $data['denivellationStructureRadierCanalArrivee' ] = $request->get('denivellationStructureRadierCanalArrivee');

@@ -1043,6 +1043,7 @@ class StationpesageController extends AbstractController
                 if (array_key_exists('situations', $data) && count($data['situations']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
+                    $hasDateInformationSituation = false;
                     foreach ($data['situations'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -1060,6 +1061,7 @@ class StationpesageController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
+                            $hasDateInformationSituation = true;
                         } else {
                             $value = pg_escape_string($value);
                             $value = "'$value'";
@@ -1085,7 +1087,7 @@ class StationpesageController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idSituation == 0) {
+                        if ($idSituation == 0 && !$hasDateInformationSituation) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";
@@ -1116,6 +1118,7 @@ class StationpesageController extends AbstractController
                 if (array_key_exists('data_collecte', $data) && count($data['data_collecte']) > 0) {
                     $hasDataChanged = true;
                     $i = 0;
+                    $hasDateInformationData = false;
                     foreach ($data['data_collecte'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -1133,6 +1136,7 @@ class StationpesageController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
+                            $hasDateInformationData = true;
                         } else {
                             $value = pg_escape_string($value);
                             $value = "'$value'";
@@ -1159,7 +1163,7 @@ class StationpesageController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idData == 0) {
+                        if ($idData == 0 && !$hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";

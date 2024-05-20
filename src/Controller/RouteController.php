@@ -1734,6 +1734,7 @@ class RouteController extends AbstractController
                 if (array_key_exists('situations', $data) && count($data['situations']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
+                    $hasDateInformationSituation = false;
                     foreach ($data['situations'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -1751,6 +1752,7 @@ class RouteController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
+                            $hasDateInformationSituation = true;
                         } else {
                             $value = pg_escape_string($value);
                             $value = "'$value'";
@@ -1776,7 +1778,7 @@ class RouteController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idSituation == 0) {
+                        if ($idSituation == 0 && !$hasDateInformationSituation) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";

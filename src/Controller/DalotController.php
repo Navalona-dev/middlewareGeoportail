@@ -1053,7 +1053,7 @@ class DalotController extends AbstractController
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
-
+                    
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
                         $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
@@ -1113,6 +1113,7 @@ class DalotController extends AbstractController
                 if (array_key_exists('etat', $data) && count($data['etat']) > 0) {
                     $hasEtatChanged = true;
                     $i = 0;
+                    $hasDateInformationEtat = false;
                     foreach ($data['etat'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -1130,6 +1131,7 @@ class DalotController extends AbstractController
                             $date = new \DateTime($value);
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
+                            $hasDateInformationEtat = true;
                         } else {
                             $value = pg_escape_string($value);
                             $value = "'$value'";
@@ -1155,7 +1157,7 @@ class DalotController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idEtat == 0) {
+                        if ($idEtat == 0 && !$hasDateInformationEtat) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";
@@ -1186,7 +1188,7 @@ class DalotController extends AbstractController
                 if (array_key_exists('data_collecte', $data) && count($data['data_collecte']) > 0) {
                     $hasDataChanged = true;
                     $i = 0;
-                    $hasDateInformation = false;
+                    $hasDateInformationData = false;
                     foreach ($data['data_collecte'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -1205,7 +1207,7 @@ class DalotController extends AbstractController
                             $value = $date->format('Y-m-d H:i:s');
                             $value = "'$value'";
 
-                            $hasDateInformation = true;
+                            $hasDateInformationData = true;
                         } else {
                             $value = pg_escape_string($value);
                             $value = "'$value'";
@@ -1233,7 +1235,7 @@ class DalotController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idData == 0 && !$hasDateInformation) {
+                        if ($idData == 0 && !$hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";

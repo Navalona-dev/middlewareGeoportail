@@ -1068,8 +1068,19 @@ class DalotController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
-                            $value = pg_escape_string($value);
-                            $value = "'$value'";
+                            if ($colonne == "nom_de_la_route_a_qui_il_est_rattache") {
+                                if ($value != "null" && $value != "undefined" && $value != "") {
+                                    $infoYlisteRoute = $dalotService->getInfoyRouteInfoMinifie($value);
+                                    if ($infoYlisteRoute != false && count($infoYlisteRoute) > 0) {
+                                        $value = $infoYlisteRoute[0]['nom'];
+                                        $value = pg_escape_string($value);
+                                        $value = "'$value'";
+                                    }
+                                }
+                            } else {
+                                $value = pg_escape_string($value);
+                                $value = "'$value'";
+                            }
                         }
 
                         if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {

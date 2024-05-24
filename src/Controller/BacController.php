@@ -93,17 +93,17 @@ class BacController extends AbstractController
             $toNullPhoto3 = false;
             $oldPhotosInfra = [];
             if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
-                if (isset($infoPhotosInfra[0]["photo1"])) {
+                if (isset($infoPhotosInfra[0]["photo1"]) && !empty($infoPhotosInfra[0]["photo1"]) && $infoPhotosInfra[0]["photo1"] != "") {
                     $toDeletePhoto1 = true;
                     $oldPhotosInfra["photo1"] = $infoPhotosInfra[0]["photo1"];
                 }
 
-                if (isset($infoPhotosInfra[0]["photo2"])) {
+                if (isset($infoPhotosInfra[0]["photo2"]) && !empty($infoPhotosInfra[0]["photo2"]) && $infoPhotosInfra[0]["photo2"] != "") {
                     $toDeletePhoto2 = true;
                     $oldPhotosInfra["photo2"] = $infoPhotosInfra[0]["photo2"];
                 }
 
-                if (isset($infoPhotosInfra[0]["photo3"])) {
+                if (isset($infoPhotosInfra[0]["photo3"]) && !empty($infoPhotosInfra[0]["photo3"]) && $infoPhotosInfra[0]["photo3"] != "") {
                     $toDeletePhoto3 = true;
                     $oldPhotosInfra["photo3"] = $infoPhotosInfra[0]["photo3"];
                 }
@@ -112,9 +112,9 @@ class BacController extends AbstractController
             if(!is_dir($this->pathImageBac)) {
                 mkdir($this->pathImageBac, 0777, true);
             }
-
+          
             $directory1 = $this->pathImageBac . "photo1/";
-        
+      
             if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
@@ -138,7 +138,7 @@ class BacController extends AbstractController
                 $data['photo1'] = $this->pathForNamePhotobac."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
-
+               
                 if ($toDeletePhoto1) {
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
                     if (file_exists($directory1.$nomOldFile1)) {

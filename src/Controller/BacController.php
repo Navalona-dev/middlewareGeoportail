@@ -188,7 +188,7 @@ class BacController extends AbstractController
                 $data['photo2'] = $this->pathForNamePhotobac."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
-                    if ($uploadedFile1 != "undefined") {
+                    if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
                         $setUpdate .= ", ";    
                     }
                 //}
@@ -211,19 +211,20 @@ class BacController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile2);
                     }
                 }
-                $toNullPhoto2 = true;
-                if (($toNullPhoto1 || null != $data['photo1']) && $uploadedFile2 != "undefined") {
+
+                if (($toNullPhoto1 || null != $data['photo1'] || "undefined" != $uploadedFile1) && $uploadedFile2 != "undefined") {
                     $setUpdate .= ", ";  
                 }
                 if ($uploadedFile2 != "undefined") {
                     $setUpdate .= "photo2 = null, photo_name2 = null";
+                    $toNullPhoto2 = true;
                 }
                 
             }
 
 
             $directory3 = $this->pathImageBac . "photo3/";
-
+           
             if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
@@ -245,13 +246,13 @@ class BacController extends AbstractController
 
                 $data['photo3'] = $this->pathForNamePhotobac."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
-
-                //if (null != $data['photo1'] || null != $data['photo2']) {
+               
+                if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {
                     $setUpdate .= ", ";    
-                //}
+                }
 
                 $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
-
+              
                 if ($toDeletePhoto3) {
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
                     if (file_exists($directory3.$nomOldFile3)) {
@@ -268,15 +269,17 @@ class BacController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile3);
                     }
                 }
-                $toNullPhoto3 = true;
-
-                if (($toNullPhoto2  || null != $data['photo2']) && $uploadedFile3 != "undefined") {
+               
+               
+                if (($toNullPhoto2  || null != $data['photo2'] || $toNullPhoto1 || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1) && $uploadedFile3 != "undefined") {
                     $setUpdate .= ", ";  
                 }
+                //dd($toNullPhoto2, $setUpdate, $data, $uploadedFile3, $uploadedFile3);
                 if ($uploadedFile3 != "undefined") {
                     $setUpdate .= "photo3 = null, photo_name3 = null";
+                    $toNullPhoto3 = true;
                 }
-                
+               
             }
            
             

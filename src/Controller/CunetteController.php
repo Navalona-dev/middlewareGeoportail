@@ -51,7 +51,142 @@ class CunetteController extends AbstractController
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
-     /**
+    /**
+     * @Route("/api/cunetteroute/deletephoto", name="cunetteroute_delete_photo", methods={"POST"})
+     */
+    public function deletePhoto(Request $request, CunetteService $cunetteService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                $photo = $data['photo'];
+                $idInfra = $data['infraId'];
+                $indexPhoto = "photo";
+                $indexPhotoName = "photo_name";
+                if ($photo != null && $photo != "null") {
+                    $indexPhoto .= $photo;
+                    $indexPhotoName .= $photo;
+                }
+            
+                
+                $setUpdate = "";
+
+                $infoPhotosInfra = $cunetteService->getPhotoInfraInfo($idInfra);
+                
+                $oldPhotosInfra = [];
+                if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0 && array_key_exists($indexPhoto, $infoPhotosInfra[0])) {
+                    if (isset($infoPhotosInfra[0][$indexPhoto]) && !empty($infoPhotosInfra[0][$indexPhoto]) && $infoPhotosInfra[0][$indexPhoto] != "") {
+                        $oldPhotosInfra[$indexPhoto] = $infoPhotosInfra[0][$indexPhoto];
+                    }
+                }
+
+                $directory = $this->pathImageCunette . $indexPhoto."/";
+                $directoryPublicCopy =  $this->directoryCopy. $indexPhoto."/";
+                
+                if (array_key_exists($indexPhoto, $oldPhotosInfra)) {
+                    $nomOldFile = basename($oldPhotosInfra[$indexPhoto]);
+                    if (file_exists($directory.$nomOldFile)) {
+                        unlink($directory.$nomOldFile);
+                        unlink($directoryPublicCopy.$nomOldFile);
+                        $setUpdate .= "$indexPhoto = null, $indexPhotoName = null";
+                    }
+                
+                    if (isset($setUpdate) && !empty($setUpdate)) {
+                        $idInfra = $cunetteService->addInfrastructurePhoto($idInfra, $setUpdate);
+                    }
+                   
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Photo cunette route deleted_successfull"
+                    ]));
+                } else {
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Pas de photo cunette route supprimer"
+                    ]));
+                }
+                
+                $response->headers->set('Content-Type', 'application/json');
+            }
+            
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
+    }
+
+    /**
      * @Route("/api/cunetteroute/updatephoto", name="cunetteroute_update_photo", methods={"POST"})
      */
     public function updatePhoto(Request $request, CunetteService $cunetteService)
@@ -61,9 +196,19 @@ class CunetteController extends AbstractController
         $idInfra = null;
         try {
             $data = [];
-            $uploadedFile1 = $request->files->get('photo1');
-            $uploadedFile2 = $request->files->get('photo2');
-            $uploadedFile3 = $request->files->get('photo3');
+            $uploadedFile1 = "undefined";
+            $uploadedFile2 = "undefined";
+            $uploadedFile3 = "undefined";
+            if ($request->files->has('photo1')) {
+                $uploadedFile1 = $request->files->get('photo1');
+            }
+            if ($request->files->has('photo2')) {
+                $uploadedFile2 = $request->files->get('photo2');
+            }
+            if ($request->files->has('photo3')) {
+                $uploadedFile3 = $request->files->get('photo3');
+            }
+            
             $idInfra = $request->get('infraId');
             $data['photo1'] = null;
             $data['photo2'] = null;
@@ -82,17 +227,17 @@ class CunetteController extends AbstractController
             $toNullPhoto3 = false;
             $oldPhotosInfra = [];
             if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
-                if (isset($infoPhotosInfra[0]["photo1"])) {
+                if (isset($infoPhotosInfra[0]["photo1"]) && !empty($infoPhotosInfra[0]["photo1"]) && $infoPhotosInfra[0]["photo1"] != "") {
                     $toDeletePhoto1 = true;
                     $oldPhotosInfra["photo1"] = $infoPhotosInfra[0]["photo1"];
                 }
 
-                if (isset($infoPhotosInfra[0]["photo2"])) {
+                if (isset($infoPhotosInfra[0]["photo2"]) && !empty($infoPhotosInfra[0]["photo2"]) && $infoPhotosInfra[0]["photo2"] != "") {
                     $toDeletePhoto2 = true;
                     $oldPhotosInfra["photo2"] = $infoPhotosInfra[0]["photo2"];
                 }
 
-                if (isset($infoPhotosInfra[0]["photo3"])) {
+                if (isset($infoPhotosInfra[0]["photo3"]) && !empty($infoPhotosInfra[0]["photo3"]) && $infoPhotosInfra[0]["photo3"] != "") {
                     $toDeletePhoto3 = true;
                     $oldPhotosInfra["photo3"] = $infoPhotosInfra[0]["photo3"];
                 }
@@ -101,10 +246,10 @@ class CunetteController extends AbstractController
             if(!is_dir($this->pathImageCunette)) {
                 mkdir($this->pathImageCunette, 0777, true);
             }
-
+          
             $directory1 = $this->pathImageCunette . "photo1/";
-
-            if (null != $uploadedFile1) {
+      
+            if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";    
@@ -127,7 +272,7 @@ class CunetteController extends AbstractController
                 $data['photo1'] = $this->pathForNamePhotoCunette."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
-
+               
                 if ($toDeletePhoto1) {
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
                     if (file_exists($directory1.$nomOldFile1)) {
@@ -137,7 +282,7 @@ class CunetteController extends AbstractController
                 }
                 
             } else {
-                if ($toDeletePhoto1) {
+                if ($toDeletePhoto1 && ("null" == $uploadedFile1 || null == $uploadedFile1)) {
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo1/";
                     if (file_exists($directory1.$nomOldFile1)) {
@@ -145,16 +290,17 @@ class CunetteController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile1);
                     }
                 }
-                $toNullPhoto1 = true;
-                $setUpdate .= "photo1 = null, photo_name1 = null";
+                
+                if ($uploadedFile1 != "undefined") {
+                    $toNullPhoto1 = true;
+                    $setUpdate .= "photo1 = null, photo_name1 = null";
+                }
             }
-
-            
-            
+        
 
             $directory2 = $this->pathImageCunette . "photo2/";
 
-            if (null != $uploadedFile2) {
+            if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
 
@@ -176,9 +322,11 @@ class CunetteController extends AbstractController
                 $data['photo2'] = $this->pathForNamePhotoCunette."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
-                    $setUpdate .= ", ";    
+                    if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
+                        $setUpdate .= ", ";    
+                    }
                 //}
-                
+               
                 $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
 
                 if ($toDeletePhoto2) {
@@ -189,7 +337,7 @@ class CunetteController extends AbstractController
                     }
                 }
             } else {
-                if ($toDeletePhoto2) {
+                if ($toDeletePhoto2 && ("null" == $uploadedFile2 || null == $uploadedFile2)) {
                     $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo2/";
                     if (file_exists($directory2.$nomOldFile2)) {
@@ -197,18 +345,21 @@ class CunetteController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile2);
                     }
                 }
-                $toNullPhoto2 = true;
-                if ($toNullPhoto1 || null != $data['photo1']) {
+
+                if (($toNullPhoto1 || null != $data['photo1'] || "undefined" != $uploadedFile1) && $uploadedFile2 != "undefined") {
                     $setUpdate .= ", ";  
                 }
-
-                $setUpdate .= "photo2 = null, photo_name2 = null";
+                if ($uploadedFile2 != "undefined") {
+                    $setUpdate .= "photo2 = null, photo_name2 = null";
+                    $toNullPhoto2 = true;
+                }
+                
             }
 
 
             $directory3 = $this->pathImageCunette . "photo3/";
-
-            if (null != $uploadedFile3) {
+           
+            if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
 
@@ -229,13 +380,13 @@ class CunetteController extends AbstractController
 
                 $data['photo3'] = $this->pathForNamePhotoCunette."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
-
-                //if (null != $data['photo1'] || null != $data['photo2']) {
+               
+                if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {
                     $setUpdate .= ", ";    
-                //}
+                }
 
                 $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
-
+              
                 if ($toDeletePhoto3) {
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
                     if (file_exists($directory3.$nomOldFile3)) {
@@ -244,7 +395,7 @@ class CunetteController extends AbstractController
                     }
                 }
             } else {
-                if ($toDeletePhoto3) {
+                if ($toDeletePhoto3 && ("null" == $uploadedFile3 || null == $uploadedFile3)) {
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo3/";
                     if (file_exists($directory3.$nomOldFile3)) {
@@ -252,15 +403,21 @@ class CunetteController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile3);
                     }
                 }
-                $toNullPhoto3 = true;
-
-                if ($toNullPhoto2  || null != $data['photo2']) {
+               
+               
+                if (($toNullPhoto2  || null != $data['photo2'] || $toNullPhoto1 || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1) && $uploadedFile3 != "undefined") {
                     $setUpdate .= ", ";  
                 }
-
-                $setUpdate .= "photo3 = null, photo_name3 = null";
+                //dd($toNullPhoto2, $setUpdate, $data, $uploadedFile3, $uploadedFile3);
+                if ($uploadedFile3 != "undefined") {
+                    $setUpdate .= "photo3 = null, photo_name3 = null";
+                    $toNullPhoto3 = true;
+                }
+               
             }
-
+           
+            
+         
             if (isset($setUpdate) && !empty($setUpdate)) {
                 $idInfra = $cunetteService->addInfrastructurePhoto($idInfra, $setUpdate);
             }

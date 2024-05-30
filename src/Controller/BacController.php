@@ -53,9 +53,144 @@ class BacController extends AbstractController
     }
 
     /**
+     * @Route("/api/bacroute/deletephoto", name="bacroute_delete_photo", methods={"POST"})
+     */
+    public function deletePhoto(Request $request, BacService $bacService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                $photo = $data['photo'];
+                $idInfra = $data['infraId'];
+                $indexPhoto = "photo";
+                $indexPhotoName = "photo_name";
+                if ($photo != null && $photo != "null") {
+                    $indexPhoto .= $photo;
+                    $indexPhotoName .= $photo;
+                }
+            
+                
+                $setUpdate = "";
+
+                $infoPhotosInfra = $bacService->getPhotoInfraInfo($idInfra);
+                
+                $oldPhotosInfra = [];
+                if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0 && array_key_exists($indexPhoto, $infoPhotosInfra[0])) {
+                    if (isset($infoPhotosInfra[0][$indexPhoto]) && !empty($infoPhotosInfra[0][$indexPhoto]) && $infoPhotosInfra[0][$indexPhoto] != "") {
+                        $oldPhotosInfra[$indexPhoto] = $infoPhotosInfra[0][$indexPhoto];
+                    }
+                }
+
+                $directory = $this->pathImageBac . $indexPhoto."/";
+                $directoryPublicCopy =  $this->directoryCopy. $indexPhoto."/";
+                
+                if (array_key_exists($indexPhoto, $oldPhotosInfra)) {
+                    $nomOldFile = basename($oldPhotosInfra[$indexPhoto]);
+                    if (file_exists($directory.$nomOldFile)) {
+                        unlink($directory.$nomOldFile);
+                        unlink($directoryPublicCopy.$nomOldFile);
+                        $setUpdate .= "$indexPhoto = null, $indexPhotoName = null";
+                    }
+                
+                    if (isset($setUpdate) && !empty($setUpdate)) {
+                        $idInfra = $bacService->addInfrastructurePhoto($idInfra, $setUpdate);
+                    }
+                   
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Photo bac route deleted_successfull"
+                    ]));
+                } else {
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Pas de photo bac route supprimer"
+                    ]));
+                }
+                
+                $response->headers->set('Content-Type', 'application/json');
+            }
+            
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
+    }
+
+    /**
      * @Route("/api/bacroute/updatephoto", name="bacroute_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, bacService $bacService)
+    public function updatePhoto(Request $request, BacService $bacService)
     { 
         $response = new Response();
         $hasException = false;
@@ -371,7 +506,7 @@ class BacController extends AbstractController
     /**
      * @Route("/api/bac/add", name="bac_add", methods={"POST"})
      */
-    public function create(Request $request, bacService $bacService)
+    public function create(Request $request, BacService $bacService)
     {    
         $response = new Response();
         $hasException = false;
@@ -784,7 +919,7 @@ class BacController extends AbstractController
     /**
      * @Route("/api/infra/bac/liste", name="bac_list", methods={"GET"})
      */
-    public function listebac(Request $request, bacService $bacService)
+    public function listebac(Request $request, BacService $bacService)
     {    
         $response = new Response();
         
@@ -850,7 +985,7 @@ class BacController extends AbstractController
     /**
      * @Route("/api/infra/bac/liste/minifie", name="bac_list_minifie", methods={"GET"})
      */
-    public function listebacMinifie(Request $request, bacService $bacService)
+    public function listebacMinifie(Request $request, BacService $bacService)
     {    
         $response = new Response();
         
@@ -916,7 +1051,7 @@ class BacController extends AbstractController
     /**
      * @Route("/api/infra/bac/info", name="bac_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, bacService $bacService)
+    public function getOneInfraInfo(Request $request, BacService $bacService)
     {    
         $response = new Response();
         
@@ -1001,7 +1136,7 @@ class BacController extends AbstractController
     /**
      * @Route("/api/bac/update", name="bac_update", methods={"POST"})
      */
-    public function update(Request $request, bacService $bacService)
+    public function update(Request $request, BacService $bacService)
     {    
         $response = new Response();
         $hasException = false;

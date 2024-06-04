@@ -41,7 +41,7 @@ class RouteController extends AbstractController
     private $pathForNamePhotoRoute = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'ro_route/t_ro_01_infrastructure/';
+    private const nameRepertoireImage = 'se_route/t_se_ro_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
@@ -367,7 +367,7 @@ class RouteController extends AbstractController
             if ($request->get('rattache') != "null" && $request->get('rattache') != "undefined") {
                     $infoYlisteRoute = $routeService->getInfoyRouteInfoMinifie($request->get('rattache'));
                    
-                    if (count($infoYlisteRoute) > 0) {
+                    if ($infoYlisteRoute != false && count($infoYlisteRoute) > 0) {
                         $data['rattache'] = $infoYlisteRoute[0]['nom'];
                     }
             }

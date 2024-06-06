@@ -62,9 +62,19 @@ class RouteController extends AbstractController
         $idInfra = null;
         try {
             $data = [];
-            $uploadedFile1 = $request->files->get('photo1');
-            $uploadedFile2 = $request->files->get('photo2');
-            $uploadedFile3 = $request->files->get('photo3');
+            $uploadedFile1 = "undefined";
+            $uploadedFile2 = "undefined";
+            $uploadedFile3 = "undefined";
+            if ($request->files->has('photo1')) {
+                $uploadedFile1 = $request->files->get('photo1');
+            }
+            if ($request->files->has('photo2')) {
+                $uploadedFile2 = $request->files->get('photo2');
+            }
+            if ($request->files->has('photo3')) {
+                $uploadedFile3 = $request->files->get('photo3');
+            }
+            
             $idInfra = $request->get('infraId');
             $data['photo1'] = null;
             $data['photo2'] = null;
@@ -83,17 +93,17 @@ class RouteController extends AbstractController
             $toNullPhoto3 = false;
             $oldPhotosInfra = [];
             if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
-                if (isset($infoPhotosInfra[0]["photo1"])) {
+                if (isset($infoPhotosInfra[0]["photo1"]) && !empty($infoPhotosInfra[0]["photo1"]) && $infoPhotosInfra[0]["photo1"] != "") {
                     $toDeletePhoto1 = true;
                     $oldPhotosInfra["photo1"] = $infoPhotosInfra[0]["photo1"];
                 }
 
-                if (isset($infoPhotosInfra[0]["photo2"])) {
+                if (isset($infoPhotosInfra[0]["photo2"]) && !empty($infoPhotosInfra[0]["photo2"]) && $infoPhotosInfra[0]["photo2"] != "") {
                     $toDeletePhoto2 = true;
                     $oldPhotosInfra["photo2"] = $infoPhotosInfra[0]["photo2"];
                 }
 
-                if (isset($infoPhotosInfra[0]["photo3"])) {
+                if (isset($infoPhotosInfra[0]["photo3"]) && !empty($infoPhotosInfra[0]["photo3"]) && $infoPhotosInfra[0]["photo3"] != "") {
                     $toDeletePhoto3 = true;
                     $oldPhotosInfra["photo3"] = $infoPhotosInfra[0]["photo3"];
                 }
@@ -102,10 +112,10 @@ class RouteController extends AbstractController
             if(!is_dir($this->pathImageRoute)) {
                 mkdir($this->pathImageRoute, 0777, true);
             }
-
+          
             $directory1 = $this->pathImageRoute . "photo1/";
-
-            if (null != $uploadedFile1) {
+      
+            if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";    
@@ -125,10 +135,10 @@ class RouteController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotoroute."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoRoute."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
-
+               
                 if ($toDeletePhoto1) {
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
                     if (file_exists($directory1.$nomOldFile1)) {
@@ -138,7 +148,7 @@ class RouteController extends AbstractController
                 }
                 
             } else {
-                if ($toDeletePhoto1) {
+                if ($toDeletePhoto1 && ("null" == $uploadedFile1 || null == $uploadedFile1)) {
                     $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo1/";
                     if (file_exists($directory1.$nomOldFile1)) {
@@ -146,16 +156,17 @@ class RouteController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile1);
                     }
                 }
-                $toNullPhoto1 = true;
-                $setUpdate .= "photo1 = null, photo_name1 = null";
+                
+                if ($uploadedFile1 != "undefined") {
+                    $toNullPhoto1 = true;
+                    $setUpdate .= "photo1 = null, photo_name1 = null";
+                }
             }
-
-            
-            
+        
 
             $directory2 = $this->pathImageRoute . "photo2/";
 
-            if (null != $uploadedFile2) {
+            if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
 
@@ -174,12 +185,14 @@ class RouteController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotoroute."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoRoute."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
-                    $setUpdate .= ", ";    
+                    if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
+                        $setUpdate .= ", ";    
+                    }
                 //}
-                
+               
                 $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
 
                 if ($toDeletePhoto2) {
@@ -190,7 +203,7 @@ class RouteController extends AbstractController
                     }
                 }
             } else {
-                if ($toDeletePhoto2) {
+                if ($toDeletePhoto2 && ("null" == $uploadedFile2 || null == $uploadedFile2)) {
                     $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo2/";
                     if (file_exists($directory2.$nomOldFile2)) {
@@ -198,18 +211,21 @@ class RouteController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile2);
                     }
                 }
-                $toNullPhoto2 = true;
-                if ($toNullPhoto1 || null != $data['photo1']) {
+
+                if (($toNullPhoto1 || null != $data['photo1'] || "undefined" != $uploadedFile1) && $uploadedFile2 != "undefined") {
                     $setUpdate .= ", ";  
                 }
-
-                $setUpdate .= "photo2 = null, photo_name2 = null";
+                if ($uploadedFile2 != "undefined") {
+                    $setUpdate .= "photo2 = null, photo_name2 = null";
+                    $toNullPhoto2 = true;
+                }
+                
             }
 
 
             $directory3 = $this->pathImageRoute . "photo3/";
-
-            if (null != $uploadedFile3) {
+           
+            if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
 
@@ -228,15 +244,15 @@ class RouteController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoroute."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoRoute."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
-
-                //if (null != $data['photo1'] || null != $data['photo2']) {
+               
+                if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {
                     $setUpdate .= ", ";    
-                //}
+                }
 
                 $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
-
+              
                 if ($toDeletePhoto3) {
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
                     if (file_exists($directory3.$nomOldFile3)) {
@@ -245,7 +261,7 @@ class RouteController extends AbstractController
                     }
                 }
             } else {
-                if ($toDeletePhoto3) {
+                if ($toDeletePhoto3 && ("null" == $uploadedFile3 || null == $uploadedFile3)) {
                     $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
                     $directoryPublicCopy =  $this->directoryCopy. "photo3/";
                     if (file_exists($directory3.$nomOldFile3)) {
@@ -253,15 +269,21 @@ class RouteController extends AbstractController
                         unlink($directoryPublicCopy.$nomOldFile3);
                     }
                 }
-                $toNullPhoto3 = true;
-
-                if ($toNullPhoto2  || null != $data['photo2']) {
+               
+               
+                if (($toNullPhoto2  || null != $data['photo2'] || $toNullPhoto1 || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1) && $uploadedFile3 != "undefined") {
                     $setUpdate .= ", ";  
                 }
-
-                $setUpdate .= "photo3 = null, photo_name3 = null";
+                //dd($toNullPhoto2, $setUpdate, $data, $uploadedFile3, $uploadedFile3);
+                if ($uploadedFile3 != "undefined") {
+                    $setUpdate .= "photo3 = null, photo_name3 = null";
+                    $toNullPhoto3 = true;
+                }
+               
             }
-
+           
+            
+         
             if (isset($setUpdate) && !empty($setUpdate)) {
                 $idInfra = $routeService->addInfrastructurePhoto($idInfra, $setUpdate);
             }
@@ -270,7 +292,7 @@ class RouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo route route updated_successfull"
+                'message' => "Photo bac route updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

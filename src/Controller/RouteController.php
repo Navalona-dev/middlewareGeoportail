@@ -53,6 +53,141 @@ class RouteController extends AbstractController
     }
 
     /**
+     * @Route("/api/route/deletephoto", name="route_delete_photo", methods={"POST"})
+     */
+    public function deletePhoto(Request $request, RouteService $routeService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                $photo = $data['photo'];
+                $idInfra = $data['infraId'];
+                $indexPhoto = "photo";
+                $indexPhotoName = "photo_name";
+                if ($photo != null && $photo != "null") {
+                    $indexPhoto .= $photo;
+                    $indexPhotoName .= $photo;
+                }
+            
+                
+                $setUpdate = "";
+
+                $infoPhotosInfra = $routeService->getPhotoInfraInfo($idInfra);
+                
+                $oldPhotosInfra = [];
+                if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0 && array_key_exists($indexPhoto, $infoPhotosInfra[0])) {
+                    if (isset($infoPhotosInfra[0][$indexPhoto]) && !empty($infoPhotosInfra[0][$indexPhoto]) && $infoPhotosInfra[0][$indexPhoto] != "") {
+                        $oldPhotosInfra[$indexPhoto] = $infoPhotosInfra[0][$indexPhoto];
+                    }
+                }
+
+                $directory = $this->pathImageRoute . $indexPhoto."/";
+                $directoryPublicCopy =  $this->directoryCopy. $indexPhoto."/";
+                
+                if (array_key_exists($indexPhoto, $oldPhotosInfra)) {
+                    $nomOldFile = basename($oldPhotosInfra[$indexPhoto]);
+                    if (file_exists($directory.$nomOldFile)) {
+                        unlink($directory.$nomOldFile);
+                        unlink($directoryPublicCopy.$nomOldFile);
+                        $setUpdate .= "$indexPhoto = null, $indexPhotoName = null";
+                    }
+                
+                    if (isset($setUpdate) && !empty($setUpdate)) {
+                        $idInfra = $routeService->addInfrastructurePhoto($idInfra, $setUpdate);
+                    }
+                   
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Photo route deleted_successfull"
+                    ]));
+                } else {
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Pas de photo route supprimer"
+                    ]));
+                }
+                
+                $response->headers->set('Content-Type', 'application/json');
+            }
+            
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
+    }
+
+    /**
      * @Route("/api/route/updatephoto", name="route_update_photo", methods={"POST"})
      */
     public function updatePhoto(Request $request, RouteService $routeService)
@@ -292,7 +427,7 @@ class RouteController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo bac route updated_successfull"
+                'message' => "Photo route updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

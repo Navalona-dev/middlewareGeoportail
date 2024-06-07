@@ -33,9 +33,9 @@ class RouteRepository extends ServiceEntityRepository
         return $id;
     }
     
-    public function addInfrastructurePhoto($idInfra = null, $setUpdate )
+    public function addInfrastructurePhoto($idInfra = null, $setUpdate = null)
     {
-        $sql = "UPDATE t_se_ro_infrastructure SET ".$setUpdate." where id = ".$idInfra."";
+        $sql = "UPDATE t_se_ro_infrastructure SET ".$setUpdate." where gid = ".$idInfra."";
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -46,8 +46,9 @@ class RouteRepository extends ServiceEntityRepository
 
     public function getPhotoInfraInfo($infraId)
     {
-        $sql = "SELECT infra.id as infra_id, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3 FROM t_se_ro_infrastructure as infra  where infra.id = ".intval($infraId)."";
+        $sql = "SELECT infra.gid as infra_id, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3 FROM t_se_ro_infrastructure as infra  where infra.gid = ".intval($infraId)."";
 
+        
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $result = $query->execute();
@@ -273,7 +274,7 @@ class RouteRepository extends ServiceEntityRepository
         }  
     }
 
-    public function addInfrastructureRouteSituation($idInfrastructure = null, $fonctionnel = null, $raison, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null)
+    public function addInfrastructureRouteSituation($idInfrastructure = null, $fonctionnel = null, $raison = null, $sourceInformation = null, $modeAcquisitionInformation = null, $etat = null)
     {   
         $sourceInfo = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);

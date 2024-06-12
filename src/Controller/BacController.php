@@ -52,6 +52,34 @@ class BacController extends AbstractController
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
+   
+    /**
+     * @Route("/api/bacroute/getphoto/{id}", name="infra_bac_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, BacService $bacService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $bacService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
     /**
      * @Route("/api/bacroute/deletephoto", name="bacroute_delete_photo", methods={"POST"})
      */

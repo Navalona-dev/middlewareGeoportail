@@ -52,6 +52,33 @@ class StationpesageController extends AbstractController
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
+    /**
+     * @Route("/api/stationpesageroute/getphoto/{id}", name="infra_stationpesage_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, StationpesageService $stationpesageService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $stationpesageService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
      /**
      * @Route("/api/stationpesagerouteroute/deletephoto", name="stationpesagerouteroute_delete_photo", methods={"POST"})
      */

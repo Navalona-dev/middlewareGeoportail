@@ -52,6 +52,33 @@ class DalotController extends AbstractController
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic'). self::nameRepertoireImage;
     }
 
+    /**
+     * @Route("/api/dalotroute/getphoto/{id}", name="infra_dalotroute_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, DalotService $dalotService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $dalotService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
      /**
      * @Route("/api/dalotroute/deletephoto", name="dalotroute_delete_photo", methods={"POST"})
      */

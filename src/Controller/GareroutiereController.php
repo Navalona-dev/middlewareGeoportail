@@ -52,6 +52,33 @@ class GareroutiereController extends AbstractController
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
+    /**
+     * @Route("/api/gareroutiereroute/getphoto/{id}", name="infra_gareroutiererouteroute_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, GareroutiereService $gareroutiereService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $gareroutiereService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
      /**
      * @Route("/api/gareroutiereroute/deletephoto", name="gareroutiereroute_delete_photo", methods={"POST"})
      */

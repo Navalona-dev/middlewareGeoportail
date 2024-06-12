@@ -53,6 +53,33 @@ class RadierController extends AbstractController
     }
 
     /**
+     * @Route("/api/radierroute/getphoto/{id}", name="infra_radier_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, RadierService $radierService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $radierService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
+    /**
      * @Route("/api/radierroute/deletephoto", name="radierroute_delete_photo", methods={"POST"})
      */
     public function deletePhoto(Request $request, RadierService $radierService)

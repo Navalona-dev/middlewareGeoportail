@@ -52,6 +52,33 @@ class PontController extends AbstractController
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
+    /**
+     * @Route("/api/pontroute/getphoto/{id}", name="infra_pont_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, PontService $pontService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $pontService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
      /**
      * @Route("/api/pontroute/deletephoto", name="pontroute_delete_photo", methods={"POST"})
      */

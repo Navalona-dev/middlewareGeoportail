@@ -52,6 +52,33 @@ class RouteController extends AbstractController
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic'). self::nameRepertoireImage;
     }
 
+     /**
+     * @Route("/api/route/getphoto/{id}", name="infra_route_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, RouteService $routeService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $routeService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
     /**
      * @Route("/api/route/deletephoto", name="route_delete_photo", methods={"POST"})
      */

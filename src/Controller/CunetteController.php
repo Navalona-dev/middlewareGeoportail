@@ -52,6 +52,33 @@ class CunetteController extends AbstractController
     }
 
     /**
+     * @Route("/api/cunetteroute/getphoto/{id}", name="infra_cunette_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, CunetteService $cunetteService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $cunetteService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
+    /**
      * @Route("/api/cunetteroute/deletephoto", name="cunetteroute_delete_photo", methods={"POST"})
      */
     public function deletePhoto(Request $request, CunetteService $cunetteService)

@@ -295,7 +295,7 @@ class RouteController extends AbstractController
                 $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
+                //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
                 $data['photo1'] = $this->pathForNamePhotoRoute."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
@@ -345,7 +345,7 @@ class RouteController extends AbstractController
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
                 $data['photo2'] = $this->pathForNamePhotoRoute."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
@@ -404,7 +404,7 @@ class RouteController extends AbstractController
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = uniqid().".".$uploadedFile3->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
+                //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
                 $data['photo3'] = $this->pathForNamePhotoRoute."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
@@ -623,7 +623,7 @@ class RouteController extends AbstractController
                 $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
                 
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
+                //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
                 $data['photo1'] = $this->pathForNamePhotoRoute."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
@@ -638,7 +638,7 @@ class RouteController extends AbstractController
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
                 $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
                 $data['photo2'] = $this->pathForNamePhotoRoute."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
@@ -653,7 +653,7 @@ class RouteController extends AbstractController
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
                 $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
 
                 $data['photo3'] = $this->pathForNamePhotoRoute."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;

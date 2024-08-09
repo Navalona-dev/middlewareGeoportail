@@ -28,6 +28,12 @@ parameters:
     pathForNamePhotoBac: 'media/upload/bc_bac/t_bc_01_infrastructure/'
     pathImageStationpesage: '/home/qgis/projects/saisie/media/upload/sp_station_pesage/t_sp_01_infrastructure/'
     pathForNamePhotoStationpesage: 'media/upload/sp_station_pesage/t_sp_01_infrastructure/'
+    pathImageAntenne: '/home/qgis/projects/saisie/media/upload/ar_antenne_relai/t_ar_01_infrastructure/'
+    pathForNamePhotoAntenne: 'media/upload/ar_antenne_relai/t_ar_01_infrastructure/'
+    pathImageAssainissement: '/home/qgis/projects/saisie/media/upload/as_assainissement/t_as_01_infrastructure/'
+    pathForNamePhotoAssainissement: 'media/upload/as_assainissement/t_as_01_infrastructure/'
+    pathImageBarrageHydro: '/home/qgis/projects/saisie/media/upload/bh_barrage/t_bh_01_infrastructure/'
+    pathForNamePhotoBarrageHydro: 'media/upload/bh_barrage/t_bh_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:

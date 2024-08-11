@@ -111,5 +111,20 @@ services:
     App\Service\TrajetrouteService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@trajetrouterepository.service']
         public: true
+    antennerepository.service:
+        class: App\Repository\AntenneRepository
+    App\Service\AntenneService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@antennerepository.service']
+        public: true
+    assainissementrepository.service:
+        class: App\Repository\AssainissementRepository
+    App\Service\AssainissementService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@assainissementrepository.service']
+        public: true
+    barragehydrorepository.service:
+        class: App\Repository\BarragehydroRepository
+    App\Service\BarragehydroService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@barragehydrorepository.service']
+        public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

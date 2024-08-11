@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManager;
 use App\Repository;
 use App\Repository\BarragehydroRepository;
 
-class barragehydroService
+class BarragehydroService
 {
     private $tokenStorage;
     private $entityManager;

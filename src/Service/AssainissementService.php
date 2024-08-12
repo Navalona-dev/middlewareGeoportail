@@ -127,7 +127,7 @@ class AssainissementService
 
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $data)
     {
-        $result = $this->assainissementRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['etatFondationPylone'], $data['etatPylone'], $data['etatAntenne'], $data['etatMateriels'], $data['sourceInformationData'], $data['modeAcquisitionInformationData']);
+        $result = $this->assainissementRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['typeWc'], $data['etatFosse'], $data['etatBassin'], $data['sourceInformationData'], $data['modeAcquisitionInformationData']);
         
         if ($result) {
             return $result;

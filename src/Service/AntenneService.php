@@ -30,7 +30,7 @@ class AntenneService
     
     public function addInfrastructure($data)
     {
-        $result = $this->antenneRepository->addInfrastructure($data['nom'], $data['categorie'], $data['indicatif'], $data['nomRouteRattache'], $data['pointKmImplantation'], $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['longitude'], $data['latitude'], $data['district'], $data['categoriePrecision'], $data['chargeMaximum'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3'], $data['moisOuverture'], $data['moisFermeture']);
+        $result = $this->antenneRepository->addInfrastructure($data['nom'], $data['categorie'], $data['indicatif'], null, null, $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['longitude'], $data['latitude'], $data['district'], $data['categoriePrecision'], $data['chargeMaximum'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3'], $data['moisOuverture'], $data['moisFermeture']);
         return $result;
     }
 

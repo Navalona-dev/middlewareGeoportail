@@ -688,6 +688,9 @@ class AntenneController extends AbstractController
                 $data['photoName3'] = $nomPhoto3;
             }
 
+            $data['categoriePrecision'] = null;
+            $data['chargeMaximum'] = null;
+
             $idInfra = $antenneService->addInfrastructure($data);
 
             if ($idInfra != false) {

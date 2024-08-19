@@ -690,7 +690,9 @@ class AntenneController extends AbstractController
 
             $data['categoriePrecision'] = null;
             $data['chargeMaximum'] = null;
-
+            $data['moisOuverture'] = null;
+            $data['moisFermeture'] = null;
+            
             $idInfra = $antenneService->addInfrastructure($data);
 
             if ($idInfra != false) {

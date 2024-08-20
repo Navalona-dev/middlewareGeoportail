@@ -1144,7 +1144,7 @@ class BaragehydroController extends AbstractController
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
                         $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
-                    $allCategories = $barragehydroService->getAllCategorieInfra();
+                    //$allCategories = $barragehydroService->getAllCategorieInfra();
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1158,7 +1158,7 @@ class BaragehydroController extends AbstractController
                             if ($colonne == "categorie") {
                                 if ($value != "null" && $value != "undefined" && $value != "") {
                                   
-                                    if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
+                                    /*if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
 
                                         $value = pg_escape_string($value);
                                         if (count($data['infrastructure']) - 1 != $i) {
@@ -1177,6 +1177,12 @@ class BaragehydroController extends AbstractController
                                             $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
                                         }
                                         
+                                    }*/
+                                    $value = pg_escape_string($value);
+                                    if (count($data['infrastructure']) - 1 != $i) {
+                                        $updateColonneInfra .= "categorie = '$value', ";
+                                    } else {
+                                        $updateColonneInfra .= "categorie = '$value'";
                                     }
                                 }
                             } else {

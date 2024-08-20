@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\centraleelectriqueService;
+use App\Service\CentraleelectriqueService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -56,7 +56,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/centraleelectrique/getphoto/{id}", name="infra_centraleelectrique_photo", methods={"GET"})
      */
-    public function getPhotosByInfra($id, Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function getPhotosByInfra($id, Request $request, CentraleelectriqueService $centraleelectriqueService)
     {
         $infoPhotosInfra = [];
         $response = new Response();
@@ -83,7 +83,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/centraleelectrique/deletephoto", name="centraleelectrique_delete_photo", methods={"POST"})
      */
-    public function deletePhoto(Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function deletePhoto(Request $request, CentraleelectriqueService $centraleelectriqueService)
     { 
         $response = new Response();
         $hasException = false;
@@ -218,7 +218,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/centraleelectrique/updatephoto", name="centraleelectrique_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function updatePhoto(Request $request, CentraleelectriqueService $centraleelectriqueService)
     { 
         $response = new Response();
         $hasException = false;
@@ -534,7 +534,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/centraleelectrique/add", name="centraleelectrique_add", methods={"POST"})
      */
-    public function create(Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function create(Request $request, CentraleelectriqueService $centraleelectriqueService)
     {    
         $response = new Response();
         $hasException = false;
@@ -945,7 +945,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/infra/centraleelectrique/liste", name="centraleelectrique_list", methods={"GET"})
      */
-    public function listecentraleelectrique(Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function listecentraleelectrique(Request $request, CentraleelectriqueService $centraleelectriqueService)
     {    
         $response = new Response();
         
@@ -1011,7 +1011,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/infra/centraleelectrique/liste/minifie", name="centraleelectrique_list_minifie", methods={"GET"})
      */
-    public function listecentraleelectriqueMinifie(Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function listecentraleelectriqueMinifie(Request $request, CentraleelectriqueService $centraleelectriqueService)
     {    
         $response = new Response();
         
@@ -1077,7 +1077,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/infra/centraleelectrique/info", name="centraleelectrique_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function getOneInfraInfo(Request $request, CentraleelectriqueService $centraleelectriqueService)
     {    
         $response = new Response();
         
@@ -1144,7 +1144,7 @@ class CentraleeletriqueController extends AbstractController
     /**
      * @Route("/api/centraleelectrique/update", name="centraleelectrique_update", methods={"POST"})
      */
-    public function update(Request $request, centraleelectriqueService $centraleelectriqueService)
+    public function update(Request $request, CentraleelectriqueService $centraleelectriqueService)
     {    
         $response = new Response();
         $hasException = false;

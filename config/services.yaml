@@ -34,6 +34,10 @@ parameters:
     pathForNamePhotoAssainissement: 'media/upload/as_assainissement/t_as_01_infrastructure/'
     pathImageBarrageHydro: '/home/qgis/projects/saisie/media/upload/bh_barrage/t_bh_01_infrastructure/'
     pathForNamePhotoBarrageHydro: 'media/upload/bh_barrage/t_bh_01_infrastructure/'
+    pathImageBatimentadministratif: '/home/qgis/projects/saisie/media/upload/ba_batiment_administratif/t_ba_01_infrastructure/'
+    pathForNamePhotoBatimentadministratif: 'media/upload/ba_batiment_administratif/t_ba_01_infrastructure/'
+    pathImageCentraleelectrique: '/home/qgis/projects/saisie/media/upload/ce_centrale_electrique/t_ce_01_infrastructure/'
+    pathForNamePhotoCentraleelectrique: 'media/upload/ce_centrale_electrique/t_ce_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -125,6 +129,11 @@ services:
         class: App\Repository\BarragehydroRepository
     App\Service\BarragehydroService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@barragehydrorepository.service']
+        public: true
+    batimentadministratifrepository.service:
+        class: App\Repository\BarragehydroRepository
+    App\Service\BatimentadministratifService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@batimentadministratifrepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

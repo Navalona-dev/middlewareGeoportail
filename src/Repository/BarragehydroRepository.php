@@ -189,7 +189,7 @@ class BarragehydroRepository extends ServiceEntityRepository
                     $selectedcolonne = "id";
                     break;*/
                 case 'travaux':
-                    $table = "t_as_08_travaux";
+                    $table = "t_as_05_travaux";
                     $colonne = "id_infrastructure";
                     $selectedcolonne = "id";
                     break;
@@ -199,7 +199,7 @@ class BarragehydroRepository extends ServiceEntityRepository
                     $selectedcolonne = "id";
                     break;*/
                 case 'etude':
-                    $table = "t_as_10_etudes";
+                    $table = "t_as_07_etudes";
                     $colonne = "id_infrastructure";
                     $selectedcolonne = "id";
                     break;
@@ -220,7 +220,7 @@ class BarragehydroRepository extends ServiceEntityRepository
 
             $row = $result->fetchAllAssociative();
 
-            if (null != $row && count($row) > 0 && null != $row[0] && null != $row[0][$selectedcolonne]) {
+            if (null != $row && is_array($row) && count($row) > 0 && null != $row[0] && null != $row[0][$selectedcolonne]) {
                 $this->deleteByIdInfrastructure($row[0][$selectedcolonne], $table, $colonne);
             }
         }

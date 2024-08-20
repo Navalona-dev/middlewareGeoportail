@@ -137,7 +137,7 @@ services:
         public: true
     centraleeletctriquerepository.service:
         class: App\Repository\CentraleelectriqueRepository
-    App\Service\CentraleeletctriqueService:
+    App\Service\CentraleelectriqueService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@centraleeletctriquerepository.service']
         public: true
     # add more service definitions when explicit configuration is needed

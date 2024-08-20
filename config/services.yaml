@@ -131,7 +131,7 @@ services:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@barragehydrorepository.service']
         public: true
     batimentadministratifrepository.service:
-        class: App\Repository\BarragehydroRepository
+        class: App\Repository\BatimentadministratifRepository
     App\Service\BatimentadministratifService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@batimentadministratifrepository.service']
         public: true

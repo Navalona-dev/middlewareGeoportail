@@ -135,5 +135,10 @@ services:
     App\Service\BatimentadministratifService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@batimentadministratifrepository.service']
         public: true
+    centraleeletctriquerepository.service:
+        class: App\Repository\CentraleelectriqueRepository
+    App\Service\CentraleeletctriqueService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@centraleeletctriquerepository.service']
+        public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

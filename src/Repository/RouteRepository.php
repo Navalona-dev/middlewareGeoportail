@@ -407,7 +407,7 @@ class RouteRepository extends ServiceEntityRepository
 
     public function getAllyRouteInfo()
     {
-        $sql = 'select route.gid as id, ST_ASGeoJSON(route.geom) AS geom, route.nom as nom, route."Num" as numero, route."Anc_Nom", route."Classe", route."Nom2020" from y_liste_route as route';
+        $sql = 'select route.gid as id, ST_ASGeoJSON(route.geom) AS geom, route.nom as nom, route.num as numero, route."Anc_Nom", route."Classe", route."Nom2020" from y_liste_route as route';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -419,7 +419,7 @@ class RouteRepository extends ServiceEntityRepository
 
     public function getInfoyRouteInfoMinifie($id)
     {
-        $sql = 'select route.gid as id, route.nom as nom, route."Num" as numero from y_liste_route as route where route.gid = '.$id.'';
+        $sql = 'select route.gid as id, route.nom as nom, route.num as numero from y_liste_route as route where route.gid = '.$id.'';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
@@ -431,7 +431,7 @@ class RouteRepository extends ServiceEntityRepository
     
     public function getAllyRouteInfoMinifie()
     {
-        $sql = 'select MAX(route.gid) as id, route.nom as nom, MAX(route."Num") as numero from y_liste_route as route GROUP BY route.nom';
+        $sql = 'select MAX(route.gid) as id, route.nom as nom, MAX(route.num) as numero from y_liste_route as route GROUP BY route.nom';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

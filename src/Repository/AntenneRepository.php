@@ -199,7 +199,7 @@ class AntenneRepository extends ServiceEntityRepository
                     $selectedcolonne = "id";
                     break;*/
                 case 'etude':
-                    $table = "t_ar_10_etudes";
+                    $table = "t_ar_12_etudes";
                     $colonne = "id_infrastructure";
                     $selectedcolonne = "id";
                     break;
@@ -386,7 +386,7 @@ class AntenneRepository extends ServiceEntityRepository
     {   
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
-        $sql = "INSERT into t_ar_10_etudes (id_infrastructure, objet_contrat, consistance_contrat, entite, id_titulaire, montant_contrat, numero_contrat, mode_passation, porte_appel_offre, date_contrat, date_ordre_service, resultat_prestation, motif_rupture_contrat, date_information, source_information, mode_acquisition_information, bailleur, precision_consistance, precision_mode_passation) VALUES (".intval($idInfrastructure).", '".$objetContrat."', '".$consistanceContrat."', '".$entite."', ".intval($idTitulaire).", ".intval($montantContrat).", '".$numeroContrat."', '".$modePassation."', '".$porteAppelOffre."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', '".$resultatPrestation."', '".$motifRuptureContrat."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$bailleur."', '".$precisionConsistance."', '".$precisionModePassation."')";
+        $sql = "INSERT into t_ar_12_etudes (id_infrastructure, objet_contrat, consistance_contrat, entite, id_titulaire, montant_contrat, numero_contrat, mode_passation, porte_appel_offre, date_contrat, date_ordre_service, resultat_prestation, motif_rupture_contrat, date_information, source_information, mode_acquisition_information, bailleur, precision_consistance, precision_mode_passation) VALUES (".intval($idInfrastructure).", '".$objetContrat."', '".$consistanceContrat."', '".$entite."', ".intval($idTitulaire).", ".intval($montantContrat).", '".$numeroContrat."', '".$modePassation."', '".$porteAppelOffre."', '".$dateContrat->format("Y-m-d")."', '".$dateOrdreService->format("Y-m-d")."', '".$resultatPrestation."', '".$motifRuptureContrat."', '".$dateInformation->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$bailleur."', '".$precisionConsistance."', '".$precisionModePassation."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

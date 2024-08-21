@@ -38,6 +38,8 @@ parameters:
     pathForNamePhotoBatimentadministratif: 'media/upload/ba_batiment_administratif/t_ba_01_infrastructure/'
     pathImageCentraleelectrique: '/home/qgis/projects/saisie/media/upload/ce_centrale_electrique/t_ce_01_infrastructure/'
     pathForNamePhotoCentraleelectrique: 'media/upload/ce_centrale_electrique/t_ce_01_infrastructure/'
+    pathImageCentreculturel: '/home/qgis/projects/saisie/media/upload/cc_centre_culturel/t_cc_01_infrastructure/'
+    pathForNamePhotoCentreculturel: 'media/upload/cc_centre_culturel/t_cc_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -139,6 +141,11 @@ services:
         class: App\Repository\CentraleelectriqueRepository
     App\Service\CentraleelectriqueService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@centraleeletctriquerepository.service']
+        public: true
+    centreculturelrepository.service:
+        class: App\Repository\CentraleelectriqueRepository
+    App\Service\CentreculturelService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@centreculturelrepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\centreculturelService;
+use App\Service\tunnelferService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -33,35 +33,35 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class CentreculturelController extends AbstractController
+class TunnelferController extends AbstractController
 {
     private $pathImage = null;
-    private $pathImageCentreculturel = null;
+    private $pathImageTunnelfer = null;
     private $pathPublic = null;
-    private $pathForNamePhotoCentreculturel = null;
+    private $pathForNamePhotoTunnelfer = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'cc_centre_culturel/t_cc_01_infrastructure/';
+    private const nameRepertoireImage = 'tnf_tunnel_ferroviaire/t_tnf_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
-        $this->pathImageCentreculturel = $params->get('pathImageCentreculturel');
+        $this->pathImageTunnelfer = $params->get('pathImageTunnelfer');
         $this->pathPublic = $params->get('pathPublic');
-        $this->pathForNamePhotoCentreculturel = $params->get('pathForNamePhotoCentreculturel');
+        $this->pathForNamePhotoTunnelfer = $params->get('pathForNamePhotoTunnelfer');
         $this->kernelInterface = $kernelInterface;
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
    
     /**
-     * @Route("/api/centreculturel/getphoto/{id}", name="infra_centreculturel_photo", methods={"GET"})
+     * @Route("/api/tunnelfer/getphoto/{id}", name="infra_tunnelfer_photo", methods={"GET"})
      */
-    public function getPhotosByInfra($id, Request $request, centreculturelService $centreculturelService)
+    public function getPhotosByInfra($id, Request $request, tunnelferService $tunnelferService)
     {
         $infoPhotosInfra = [];
         $response = new Response();
         if (isset($id) && !empty($id)) {
-            $infoPhotosInfra = $centreculturelService->getPhotoInfraInfo($id);
+            $infoPhotosInfra = $tunnelferService->getPhotoInfraInfo($id);
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
@@ -81,9 +81,9 @@ class CentreculturelController extends AbstractController
     }
 
     /**
-     * @Route("/api/centreculturel/deletephoto", name="centreculturel_delete_photo", methods={"POST"})
+     * @Route("/api/tunnelfer/deletephoto", name="tunnelfer_delete_photo", methods={"POST"})
      */
-    public function deletePhoto(Request $request, centreculturelService $centreculturelService)
+    public function deletePhoto(Request $request, tunnelferService $tunnelferService)
     { 
         $response = new Response();
         $hasException = false;
@@ -103,7 +103,7 @@ class CentreculturelController extends AbstractController
                 
                 $setUpdate = "";
 
-                $infoPhotosInfra = $centreculturelService->getPhotoInfraInfo($idInfra);
+                $infoPhotosInfra = $tunnelferService->getPhotoInfraInfo($idInfra);
                 
                 $oldPhotosInfra = [];
                 if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0 && array_key_exists($indexPhoto, $infoPhotosInfra[0])) {
@@ -112,7 +112,7 @@ class CentreculturelController extends AbstractController
                     }
                 }
 
-                $directory = $this->pathImageCentreculturel . $indexPhoto."/";
+                $directory = $this->pathImageTunnelfer . $indexPhoto."/";
                 $directoryPublicCopy =  $this->directoryCopy. $indexPhoto."/";
                 
                 if (array_key_exists($indexPhoto, $oldPhotosInfra)) {
@@ -124,19 +124,19 @@ class CentreculturelController extends AbstractController
                     }
                 
                     if (isset($setUpdate) && !empty($setUpdate)) {
-                        $idInfra = $centreculturelService->addInfrastructurePhoto($idInfra, $setUpdate);
+                        $idInfra = $tunnelferService->addInfrastructurePhoto($idInfra, $setUpdate);
                     }
                    
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Photo centreculturel route deleted_successfull"
+                        'message' => "Photo tunnelfer route deleted_successfull"
                     ]));
                 } else {
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Pas de photo centreculturel route supprimer"
+                        'message' => "Pas de photo tunnelfer route supprimer"
                     ]));
                 }
                 
@@ -216,9 +216,9 @@ class CentreculturelController extends AbstractController
     }
 
     /**
-     * @Route("/api/centreculturel/updatephoto", name="centreculturel_update_photo", methods={"POST"})
+     * @Route("/api/tunnelfer/updatephoto", name="tunnelfer_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, centreculturelService $centreculturelService)
+    public function updatePhoto(Request $request, tunnelferService $tunnelferService)
     { 
         $response = new Response();
         $hasException = false;
@@ -247,7 +247,7 @@ class CentreculturelController extends AbstractController
             $data['photoName3'] = null;
             $setUpdate = "";
 
-            $infoPhotosInfra = $centreculturelService->getPhotoInfraInfo($idInfra);
+            $infoPhotosInfra = $tunnelferService->getPhotoInfraInfo($idInfra);
             $toDeletePhoto1 = false;
             $toDeletePhoto2 = false;
             $toDeletePhoto3 = false;
@@ -272,11 +272,11 @@ class CentreculturelController extends AbstractController
                 }
             }
 
-            if(!is_dir($this->pathImageCentreculturel)) {
-                mkdir($this->pathImageCentreculturel, 0777, true);
+            if(!is_dir($this->pathImageTunnelfer)) {
+                mkdir($this->pathImageTunnelfer, 0777, true);
             }
           
-            $directory1 = $this->pathImageCentreculturel . "photo1/";
+            $directory1 = $this->pathImageTunnelfer . "photo1/";
       
             if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
@@ -298,7 +298,7 @@ class CentreculturelController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotoCentreculturel."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoTunnelfer."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
                
@@ -327,7 +327,7 @@ class CentreculturelController extends AbstractController
             }
         
 
-            $directory2 = $this->pathImageCentreculturel . "photo2/";
+            $directory2 = $this->pathImageTunnelfer . "photo2/";
 
             if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
@@ -348,7 +348,7 @@ class CentreculturelController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotoCentreculturel."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoTunnelfer."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
                     if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
@@ -386,7 +386,7 @@ class CentreculturelController extends AbstractController
             }
 
 
-            $directory3 = $this->pathImageCentreculturel . "photo3/";
+            $directory3 = $this->pathImageTunnelfer . "photo3/";
            
             if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
@@ -407,7 +407,7 @@ class CentreculturelController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoCentreculturel."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoTunnelfer."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
                
                 if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {
@@ -448,14 +448,14 @@ class CentreculturelController extends AbstractController
             
          
             if (isset($setUpdate) && !empty($setUpdate)) {
-                $idInfra = $centreculturelService->addInfrastructurePhoto($idInfra, $setUpdate);
+                $idInfra = $tunnelferService->addInfrastructurePhoto($idInfra, $setUpdate);
             }
             
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo centreculturel route updated_successfull"
+                'message' => "Photo tunnelfer route updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -532,9 +532,9 @@ class CentreculturelController extends AbstractController
     }
 
     /**
-     * @Route("/api/centreculturel/add", name="centreculturel_add", methods={"POST"})
+     * @Route("/api/tunnelfer/add", name="tunnelfer_add", methods={"POST"})
      */
-    public function create(Request $request, centreculturelService $centreculturelService)
+    public function create(Request $request, tunnelferService $tunnelferService)
     {    
         $response = new Response();
         $hasException = false;
@@ -546,6 +546,9 @@ class CentreculturelController extends AbstractController
             $data['district' ] = $request->get('district');
             $data['communeTerrain' ] = $request->get('commune');
             $data['nom' ] = $request->get('nom');
+            $data['longueurTunnel' ] = $request->get('longueurTunnel');
+            $data['nomLigneRattache' ] = $request->get('nomLigneRattache');
+            $data['pointKmImplantation' ] = $request->get('pointKmImplantation');
             $data['localite'] = null;
 
             if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
@@ -571,20 +574,8 @@ class CentreculturelController extends AbstractController
             $data['raisonPrecision'] = null;
 
             // Data collecte
-            $data['existenceElectricite'] = $request->get('existenceElectricite');
-            $data['sourceElectricite'] = $request->get('sourceElectricite');
-            $data['etatElectricite'] = $request->get('etatElectricite');
-            $data['existenceEau'] = $request->get('existenceEau');
-            $data['sourceEau'] = $request->get('sourceEau');
-            $data['etatEau'] = $request->get('etatEau');
-            $data['existenceWc'] = $request->get('existenceWc');
-            $data['typeWc'] = $request->get('typeWc');
-            $data['etatWc'] = $request->get('etatWc');
-            $data['existenceDrainageEauPluviale'] = $request->get('existenceDrainageEauPluviale');
-            $data['etatDrainageEauPluviale'] = $request->get('etatDrainageEauPluviale');
-            $data['existenceCloture'] = $request->get('existenceCloture');
-            $data['typeCloture'] = $request->get('typeCloture');
-            $data['etatCloture'] = $request->get('etatCloture');
+            $data['existenceFissure'] = $request->get('existenceFissure');
+            $data['existenceFerraillageVisible'] = $request->get('existenceFerraillageVisible');
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
            
@@ -655,7 +646,7 @@ class CentreculturelController extends AbstractController
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageCentreculturel . "photo1/";
+                $directory1 = $this->pathImageTunnelfer . "photo1/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";
 
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
@@ -664,14 +655,14 @@ class CentreculturelController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhotoCentreculturel."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoTunnelfer."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageCentreculturel . "photo2/";
+                $directory2 = $this->pathImageTunnelfer . "photo2/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
@@ -679,14 +670,14 @@ class CentreculturelController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhotoCentreculturel."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoTunnelfer."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageCentreculturel . "photo3/";
+                $directory3 = $this->pathImageTunnelfer . "photo3/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
@@ -694,39 +685,30 @@ class CentreculturelController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoCentreculturel."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoTunnelfer."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }
 
-            $data['categoriePrecision'] = null;
-            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
-                $allCategories = $centreculturelService->getAllCategorieInfra();
-                if ($allCategories != false && count($allCategories) > 0 && !in_array($request->get('categorie'), $allCategories)) {
-                        $data['categoriePrecision'] = $request->get('categorie');
-                        $data['categorie' ] = "Autre à préciser";
-                }
-            }
-            
             $data['categoriePrecision'] = null;
             $data['chargeMaximum'] = null;
             $data['moisOuverture'] = null;
             $data['moisFermeture'] = null;
             
-            $idInfra = $centreculturelService->addInfrastructure($data);
+            $idInfra = $tunnelferService->addInfrastructure($data);
 
             if ($idInfra != false) {
                 // add situation et etat
-                //$idEtat = $centreculturelService->addInfrastructureRouteEtat($idInfra, $data);
+                //$idEtat = $tunnelferService->addInfrastructureRouteEtat($idInfra, $data);
 
-                $idEtat = $centreculturelService->addInfrastructureSituation($idInfra, $data);
+                $idEtat = $tunnelferService->addInfrastructureSituation($idInfra, $data);
 
-                $idDataCollected = $centreculturelService->addInfrastructureDonneCollecte($idInfra, $data);
+                $idDataCollected = $tunnelferService->addInfrastructureDonneCollecte($idInfra, $data);
 
-                /*$idStructure = $centreculturelService->addInfrastructureRouteStructure($idInfra, $data);
+                /*$idStructure = $tunnelferService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idAccotement = $centreculturelService->addInfrastructureRouteAccotement($idInfra, $data);
+                $idAccotement = $tunnelferService->addInfrastructureRouteAccotement($idInfra, $data);
 
-                $idFosse = $centreculturelService->addInfrastructureRouteFosse($idInfra, $data);*/
+                $idFosse = $tunnelferService->addInfrastructureRouteFosse($idInfra, $data);*/
             
 
                 /**
@@ -737,7 +719,7 @@ class CentreculturelController extends AbstractController
                 $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                 $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
 
-                $idFoncier = $centreculturelService->addInfrastructureRouteFoncier($idInfra, $data);*/
+                $idFoncier = $tunnelferService->addInfrastructureRouteFoncier($idInfra, $data);*/
 
                 //Travaux 
                 if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true") && "false" != $request->get('hasTravaux')) {
@@ -778,7 +760,7 @@ class CentreculturelController extends AbstractController
                     $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
                     $data['bailleurTravaux'] = $request->get('bailleurTravaux');
 
-                    $idTravaux = $centreculturelService->addInfrastructureTravaux($idInfra, $data);
+                    $idTravaux = $tunnelferService->addInfrastructureTravaux($idInfra, $data);
                 }
                 
                 // Fournitures
@@ -815,7 +797,7 @@ class CentreculturelController extends AbstractController
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
-                $idFourniture = $centreculturelService->addInfrastructureRouteFourniture($idInfra, $data);*/
+                $idFourniture = $tunnelferService->addInfrastructureRouteFourniture($idInfra, $data);*/
                 // Etudes
                 if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
@@ -853,19 +835,19 @@ class CentreculturelController extends AbstractController
                     $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
                 // $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
                     $data['bailleurEtude'] = $request->get('bailleurEtude');
-                    $idEtude = $centreculturelService->addInfrastructureEtudes($idInfra, $data);
+                    $idEtude = $tunnelferService->addInfrastructureEtudes($idInfra, $data);
                 }
                 
                 /**
                  * End Administrative data
                 */
-                //$idDonneAnnexe = $centreculturelService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
+                //$idDonneAnnexe = $tunnelferService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "centreculturel route created_successfull"
+                'message' => "tunnelfer route created_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -920,20 +902,20 @@ class CentreculturelController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         
@@ -941,20 +923,20 @@ class CentreculturelController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/centreculturel/liste", name="centreculturel_list", methods={"GET"})
+     * @Route("/api/infra/tunnelfer/liste", name="tunnelfer_list", methods={"GET"})
      */
-    public function listecentreculturel(Request $request, centreculturelService $centreculturelService)
+    public function listetunnelfer(Request $request, tunnelferService $tunnelferService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $centreculturelService->getAllInfrastructures();
+            $routes = $tunnelferService->getAllInfrastructures();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "centreculturel route list_successfull",
+                'message' => "tunnelfer route list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1007,20 +989,20 @@ class CentreculturelController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/centreculturel/liste/minifie", name="centreculturel_list_minifie", methods={"GET"})
+     * @Route("/api/infra/tunnelfer/liste/minifie", name="tunnelfer_list_minifie", methods={"GET"})
      */
-    public function listecentreculturelMinifie(Request $request, centreculturelService $centreculturelService)
+    public function listetunnelferMinifie(Request $request, tunnelferService $tunnelferService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $centreculturelService->getAllInfrastructuresMinifie();
+            $routes = $tunnelferService->getAllInfrastructuresMinifie();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "centreculturel route list_successfull",
+                'message' => "tunnelfer route list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1073,16 +1055,16 @@ class CentreculturelController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/centreculturel/info", name="centreculturel_info", methods={"POST"})
+     * @Route("/api/infra/tunnelfer/info", name="tunnelfer_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, centreculturelService $centreculturelService)
+    public function getOneInfraInfo(Request $request, tunnelferService $tunnelferService)
     {    
         $response = new Response();
         
         try {
             $infraId = $request->get('id');
 
-            $routes = $centreculturelService->getOneInfraInfo(intval($infraId));
+            $routes = $tunnelferService->getOneInfraInfo(intval($infraId));
             
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
@@ -1140,9 +1122,9 @@ class CentreculturelController extends AbstractController
     }
 
     /**
-     * @Route("/api/centreculturel/update", name="centreculturel_update", methods={"POST"})
+     * @Route("/api/tunnelfer/update", name="tunnelfer_update", methods={"POST"})
      */
-    public function update(Request $request, centreculturelService $centreculturelService)
+    public function update(Request $request, tunnelferService $tunnelferService)
     {    
         $response = new Response();
         $hasException = false;
@@ -1170,7 +1152,7 @@ class CentreculturelController extends AbstractController
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
                         $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
-                    $allCategories = $centreculturelService->getAllCategorieInfra();
+                    $allCategories = $tunnelferService->getAllCategorieInfra();
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1184,7 +1166,7 @@ class CentreculturelController extends AbstractController
                             if ($colonne == "categorie") {
                                 if ($value != "null" && $value != "undefined" && $value != "") {
                                   
-                                    if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
+                                    /*if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
 
                                         $value = pg_escape_string($value);
                                         if (count($data['infrastructure']) - 1 != $i) {
@@ -1203,6 +1185,12 @@ class CentreculturelController extends AbstractController
                                             $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
                                         }
                                         
+                                    }*/
+                                    $value = pg_escape_string($value);
+                                    if (count($data['infrastructure']) - 1 != $i) {
+                                        $updateColonneInfra .= "categorie = '$value', ";
+                                    } else {
+                                        $updateColonneInfra .= "categorie = '$value'";
                                     }
                                 }
                             } else {
@@ -1233,7 +1221,7 @@ class CentreculturelController extends AbstractController
                     }
                     
                     if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
-                    $idInfra = $centreculturelService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    $idInfra = $tunnelferService->updateInfrastructure($idInfra, $updateColonneInfra);
                     }
                 }
                 // Situation
@@ -1302,10 +1290,10 @@ class CentreculturelController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
-                        $idSituation = $centreculturelService->addInfoInTableByInfrastructure('t_cc_03_situation', $colonneInsert, $valuesInsert);
+                        $idSituation = $tunnelferService->addInfoInTableByInfrastructure('t_ar_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
-                        $idSituation = $centreculturelService->updateInfrastructureTables('t_cc_03_situation', $idSituation, $updateColonneEtat);
+                        $idSituation = $tunnelferService->updateInfrastructureTables('t_ar_02_situation', $idSituation, $updateColonneEtat);
                         }
                     } 
                     
@@ -1378,10 +1366,10 @@ class CentreculturelController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $idData = $centreculturelService->addInfoInTableByInfrastructure('t_cc_06_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $tunnelferService->addInfoInTableByInfrastructure('t_ar_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
-                        $idData = $centreculturelService->updateInfrastructureTables('t_cc_06_donnees_collectees', $idData, $updateColonneData);
+                        $idData = $tunnelferService->updateInfrastructureTables('t_ar_04_donnees_collectees', $idData, $updateColonneData);
                         }
                     }
                 }
@@ -1450,10 +1438,10 @@ class CentreculturelController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $idTravaux = $centreculturelService->addInfoInTableByInfrastructure('t_bc_05_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $tunnelferService->addInfoInTableByInfrastructure('t_bc_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
-                        $idTravaux = $centreculturelService->updateInfrastructureTables('t_bc_05_travaux', $idTravaux, $updateColonneTravaux);
+                        $idTravaux = $tunnelferService->updateInfrastructureTables('t_bc_05_travaux', $idTravaux, $updateColonneTravaux);
                         }
                     }
                 }
@@ -1523,10 +1511,10 @@ class CentreculturelController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $idEtudes = $centreculturelService->addInfoInTableByInfrastructure('t_bc_07_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $tunnelferService->addInfoInTableByInfrastructure('t_bc_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
-                        $idEtudes = $centreculturelService->updateInfrastructureTables('t_bc_07_etudes', $idEtudes, $updateColonneEtudes);
+                        $idEtudes = $tunnelferService->updateInfrastructureTables('t_bc_07_etudes', $idEtudes, $updateColonneEtudes);
                         }
                     }
                 }
@@ -1536,7 +1524,7 @@ class CentreculturelController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "centreculturel update_successfull"
+                'message' => "tunnelfer update_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -1591,20 +1579,20 @@ class CentreculturelController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            //$centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            //$centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            //$centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            //$centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            //$centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            //$tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $centreculturelService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $tunnelferService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         

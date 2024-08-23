@@ -44,6 +44,8 @@ parameters:
     pathForNamePhotoCheminfer: 'media/upload/cf_chemin_de_fer/t_cf_01_infrastructure/'
     pathImageGareferoviaire: '/home/qgis/projects/saisie/media/upload/gf_gare_ferroviaire/t_gf_01_infrastructure/'
     pathForNamePhotoGareferoviaire: 'media/upload/gf_gare_ferroviaire/t_gf_01_infrastructure/'
+    pathImageTunnelfer: '/home/qgis/projects/saisie/media/upload/tnf_tunnel_ferroviaire/t_tnf_01_infrastructure/'
+    pathForNamePhotoTunnelfer: 'media/upload/tnf_tunnel_ferroviaire/t_tnf_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -155,11 +157,16 @@ services:
         class: App\Repository\CheminferRepository
     App\Service\CheminferService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@cheminferrepository.service']
-        public: true
+        public: true 
     gareferoviairerepository.service:
         class: App\Repository\GareferoviaireRepository
     App\Service\GareferoviaireService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@gareferoviairerepository.service']
+        public: true
+    tunnelferrepository.service:
+        class: App\Repository\TunnelferRepository
+    App\Service\TunnelferService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@tunnelferrepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

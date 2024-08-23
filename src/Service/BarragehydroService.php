@@ -30,7 +30,7 @@ class BarragehydroService
     
     public function addInfrastructure($data)
     {
-        $result = $this->barragehydroRepository->addInfrastructure($data['nom'], $data['categorie'], $data['indicatif'], $data['type'], $data['longueurBarrage'], $data['superficieDominee'], $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['longitude'], $data['latitude'], $data['district'], $data['precisionTpe'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3']);
+        $result = $this->barragehydroRepository->addInfrastructure($data['nom'], $data['categorie'], $data['indicatif'], $data['type'], $data['longueurBarrage'], $data['superficieDominee'], $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['longitude'], $data['latitude'], $data['district'], $data['precisionType'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3']);
         return $result;
     }
 

@@ -741,7 +741,7 @@ class PontController extends AbstractController
                 $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
-                $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                $nomPhoto3 = uniqid().".".$uploadedFile3->getClientOriginalExtension();
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 

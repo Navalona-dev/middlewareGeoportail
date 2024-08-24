@@ -127,7 +127,7 @@ class CentraleelectriqueService
 
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $data)
     {
-        $result = $this->centraleelectriqueRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['etatBarrage'], $data['etatTurbine'], $data['etatGroupe'], $data['etatPanneauxSolaire'], $data['etatEolienne'], $data['etatGenieCivilBiomasse'], $data['existenceEau'], $data['sourceEau'], $data['etatEau'], $data['existenceWc'], $data['typeWc'], $data['etatWc'], $data['existenceDrainageEauPluviale'], $data['etatDrainageEauPluviale'], $data['existenceCloture'], $data['typeCloture'], $data['etatCloture'], $data['sourceInformationData'], $data['modeAcquisitionInformationData']);
+        $result = $this->centraleelectriqueRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['etatBarrage'], $data['etatTurbine'], $data['etatGroupe'], $data['etatPanneauxSolaire'], $data['etatEolienne'], $data['etatGenieCivilBiomasse'], $data['existenceEau'], $data['sourceEau'], $data['etatEau'], $data['existenceWc'], $data['typeWc'], $data['etatWc'], $data['existenceDrainageEauPluviale'], $data['etatDrainageEauPluviale'], $data['existenceCloture'], $data['typeCloture'], $data['etatCloture'], $data['sourceInformationData'], $data['modeAcquisitionInformationData'], $data['puissanceDisponible']);
         
         if ($result) {
             return $result;

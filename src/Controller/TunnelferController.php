@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\tunnelferService;
+use App\Service\TunnelferService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -56,7 +56,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/tunnelfer/getphoto/{id}", name="infra_tunnelfer_photo", methods={"GET"})
      */
-    public function getPhotosByInfra($id, Request $request, tunnelferService $tunnelferService)
+    public function getPhotosByInfra($id, Request $request, TunnelferService $tunnelferService)
     {
         $infoPhotosInfra = [];
         $response = new Response();
@@ -83,7 +83,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/tunnelfer/deletephoto", name="tunnelfer_delete_photo", methods={"POST"})
      */
-    public function deletePhoto(Request $request, tunnelferService $tunnelferService)
+    public function deletePhoto(Request $request, TunnelferService $tunnelferService)
     { 
         $response = new Response();
         $hasException = false;
@@ -218,7 +218,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/tunnelfer/updatephoto", name="tunnelfer_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, tunnelferService $tunnelferService)
+    public function updatePhoto(Request $request, TunnelferService $tunnelferService)
     { 
         $response = new Response();
         $hasException = false;
@@ -534,7 +534,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/tunnelfer/add", name="tunnelfer_add", methods={"POST"})
      */
-    public function create(Request $request, tunnelferService $tunnelferService)
+    public function create(Request $request, TunnelferService $tunnelferService)
     {    
         $response = new Response();
         $hasException = false;
@@ -925,7 +925,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/infra/tunnelfer/liste", name="tunnelfer_list", methods={"GET"})
      */
-    public function listetunnelfer(Request $request, tunnelferService $tunnelferService)
+    public function listetunnelfer(Request $request, TunnelferService $tunnelferService)
     {    
         $response = new Response();
         
@@ -991,7 +991,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/infra/tunnelfer/liste/minifie", name="tunnelfer_list_minifie", methods={"GET"})
      */
-    public function listetunnelferMinifie(Request $request, tunnelferService $tunnelferService)
+    public function listetunnelferMinifie(Request $request, TunnelferService $tunnelferService)
     {    
         $response = new Response();
         
@@ -1057,7 +1057,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/infra/tunnelfer/info", name="tunnelfer_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, tunnelferService $tunnelferService)
+    public function getOneInfraInfo(Request $request, TunnelferService $tunnelferService)
     {    
         $response = new Response();
         
@@ -1124,7 +1124,7 @@ class TunnelferController extends AbstractController
     /**
      * @Route("/api/tunnelfer/update", name="tunnelfer_update", methods={"POST"})
      */
-    public function update(Request $request, tunnelferService $tunnelferService)
+    public function update(Request $request, TunnelferService $tunnelferService)
     {    
         $response = new Response();
         $hasException = false;

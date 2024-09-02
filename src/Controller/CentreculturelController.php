@@ -56,7 +56,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/centreculturel/getphoto/{id}", name="infra_centreculturel_photo", methods={"GET"})
      */
-    public function getPhotosByInfra($id, Request $request, centreculturelService $centreculturelService)
+    public function getPhotosByInfra($id, Request $request, CentreculturelService $centreculturelService)
     {
         $infoPhotosInfra = [];
         $response = new Response();
@@ -83,7 +83,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/centreculturel/deletephoto", name="centreculturel_delete_photo", methods={"POST"})
      */
-    public function deletePhoto(Request $request, centreculturelService $centreculturelService)
+    public function deletePhoto(Request $request, CentreculturelService $centreculturelService)
     { 
         $response = new Response();
         $hasException = false;
@@ -218,7 +218,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/centreculturel/updatephoto", name="centreculturel_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, centreculturelService $centreculturelService)
+    public function updatePhoto(Request $request, CentreculturelService $centreculturelService)
     { 
         $response = new Response();
         $hasException = false;
@@ -534,7 +534,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/centreculturel/add", name="centreculturel_add", methods={"POST"})
      */
-    public function create(Request $request, centreculturelService $centreculturelService)
+    public function create(Request $request, CentreculturelService $centreculturelService)
     {    
         $response = new Response();
         $hasException = false;
@@ -943,7 +943,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/infra/centreculturel/liste", name="centreculturel_list", methods={"GET"})
      */
-    public function listecentreculturel(Request $request, centreculturelService $centreculturelService)
+    public function listecentreculturel(Request $request, CentreculturelService $centreculturelService)
     {    
         $response = new Response();
         
@@ -1009,7 +1009,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/infra/centreculturel/liste/minifie", name="centreculturel_list_minifie", methods={"GET"})
      */
-    public function listecentreculturelMinifie(Request $request, centreculturelService $centreculturelService)
+    public function listecentreculturelMinifie(Request $request, CentreculturelService $centreculturelService)
     {    
         $response = new Response();
         
@@ -1075,7 +1075,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/infra/centreculturel/info", name="centreculturel_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, centreculturelService $centreculturelService)
+    public function getOneInfraInfo(Request $request, CentreculturelService $centreculturelService)
     {    
         $response = new Response();
         
@@ -1142,7 +1142,7 @@ class CentreculturelController extends AbstractController
     /**
      * @Route("/api/centreculturel/update", name="centreculturel_update", methods={"POST"})
      */
-    public function update(Request $request, centreculturelService $centreculturelService)
+    public function update(Request $request, CentreculturelService $centreculturelService)
     {    
         $response = new Response();
         $hasException = false;

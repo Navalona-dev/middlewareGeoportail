@@ -711,6 +711,7 @@ class CentreculturelController extends AbstractController
             $data['chargeMaximum'] = null;
             $data['moisOuverture'] = null;
             $data['moisFermeture'] = null;
+            $data['nomLigneRattache'] = null;
             
             $idInfra = $centreculturelService->addInfrastructure($data);
 

@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\cheminferService;
+use App\Service\CheminferService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -83,7 +83,7 @@ class CheminferController extends AbstractController
     /**
      * @Route("/api/cheminfer/deletephoto", name="cheminfer_delete_photo", methods={"POST"})
      */
-    public function deletePhoto(Request $request, cheminferService $cheminferService)
+    public function deletePhoto(Request $request, CheminferService $cheminferService)
     { 
         $response = new Response();
         $hasException = false;
@@ -218,7 +218,7 @@ class CheminferController extends AbstractController
     /**
      * @Route("/api/cheminfer/updatephoto", name="cheminfer_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, cheminferService $cheminferService)
+    public function updatePhoto(Request $request, CheminferService $cheminferService)
     { 
         $response = new Response();
         $hasException = false;
@@ -534,7 +534,7 @@ class CheminferController extends AbstractController
     /**
      * @Route("/api/cheminfer/add", name="cheminfer_add", methods={"POST"})
      */
-    public function create(Request $request, cheminferService $cheminferService)
+    public function create(Request $request, CheminferService $cheminferService)
     {    
         $response = new Response();
         $hasException = false;
@@ -926,7 +926,7 @@ class CheminferController extends AbstractController
     /**
      * @Route("/api/infra/cheminfer/liste", name="cheminfer_list", methods={"GET"})
      */
-    public function listecheminfer(Request $request, cheminferService $cheminferService)
+    public function listecheminfer(Request $request, CheminferService $cheminferService)
     {    
         $response = new Response();
         
@@ -992,7 +992,7 @@ class CheminferController extends AbstractController
     /**
      * @Route("/api/infra/cheminfer/liste/minifie", name="cheminfer_list_minifie", methods={"GET"})
      */
-    public function listecheminferMinifie(Request $request, cheminferService $cheminferService)
+    public function listecheminferMinifie(Request $request, CheminferService $cheminferService)
     {    
         $response = new Response();
         
@@ -1058,7 +1058,7 @@ class CheminferController extends AbstractController
     /**
      * @Route("/api/infra/cheminfer/info", name="cheminfer_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, cheminferService $cheminferService)
+    public function getOneInfraInfo(Request $request, CheminferService $cheminferService)
     {    
         $response = new Response();
         
@@ -1125,7 +1125,7 @@ class CheminferController extends AbstractController
     /**
      * @Route("/api/cheminfer/update", name="cheminfer_update", methods={"POST"})
      */
-    public function update(Request $request, cheminferService $cheminferService)
+    public function update(Request $request, CheminferService $cheminferService)
     {    
         $response = new Response();
         $hasException = false;

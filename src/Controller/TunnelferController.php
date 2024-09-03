@@ -1290,10 +1290,10 @@ class TunnelferController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
-                        $idSituation = $tunnelferService->addInfoInTableByInfrastructure('t_ar_02_situation', $colonneInsert, $valuesInsert);
+                        $idSituation = $tunnelferService->addInfoInTableByInfrastructure('t_tnf_02_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
-                        $idSituation = $tunnelferService->updateInfrastructureTables('t_ar_02_situation', $idSituation, $updateColonneEtat);
+                        $idSituation = $tunnelferService->updateInfrastructureTables('t_tnf_02_situation', $idSituation, $updateColonneEtat);
                         }
                     } 
                     
@@ -1366,10 +1366,10 @@ class TunnelferController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $idData = $tunnelferService->addInfoInTableByInfrastructure('t_ar_04_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $tunnelferService->addInfoInTableByInfrastructure('t_tnf_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
-                        $idData = $tunnelferService->updateInfrastructureTables('t_ar_04_donnees_collectees', $idData, $updateColonneData);
+                        $idData = $tunnelferService->updateInfrastructureTables('t_tnf_04_donnees_collectees', $idData, $updateColonneData);
                         }
                     }
                 }

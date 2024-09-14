@@ -19,6 +19,7 @@ class CunetteRepository extends ServiceEntityRepository
     {
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);
+        $district = pg_escape_string($district);
         $communeTerrain = pg_escape_string($communeTerrain);
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);

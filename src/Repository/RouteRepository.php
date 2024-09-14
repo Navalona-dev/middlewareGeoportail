@@ -20,6 +20,7 @@ class RouteRepository extends ServiceEntityRepository
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);
         $communeTerrain = pg_escape_string($communeTerrain);
+        $district = pg_escape_string($district);
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $modeGestion = pg_escape_string($modeGestion);

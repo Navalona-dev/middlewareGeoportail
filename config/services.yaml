@@ -46,6 +46,10 @@ parameters:
     pathForNamePhotoGareferoviaire: 'media/upload/gf_gare_ferroviaire/t_gf_01_infrastructure/'
     pathImageTunnelfer: '/home/qgis/projects/saisie/media/upload/tnf_tunnel_ferroviaire/t_tnf_01_infrastructure/'
     pathForNamePhotoTunnelfer: 'media/upload/tnf_tunnel_ferroviaire/t_tnf_01_infrastructure/'
+    pathImageEaupotable: '/home/qgis/projects/saisie/media/upload/ep_eau_potable/t_ep_01_infrastructure/'
+    pathForNamePhotoEaupotable: 'media/upload/ep_eau_potable/t_ep_01_infrastructure/'
+    pathImageInfrastructureabattage: '/home/qgis/projects/saisie/media/upload/ia_infrastructure_abattage/t_ia_01_infrastructure/'
+    pathForNameInfrastructureabattage: 'media/upload/ia_infrastructure_abattage/t_ia_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -167,6 +171,16 @@ services:
         class: App\Repository\TunnelferRepository
     App\Service\TunnelferService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@tunnelferrepository.service']
+        public: true
+    eaupotablerepository.service:
+        class: App\Repository\EaupotableRepository
+    App\Service\EaupotableService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@eaupotablerepository.service']
+        public: true
+    infrastructureabattagerepository.service:
+        class: App\Repository\InfrastructureabattageRepository
+    App\Service\InfrastructureabattageService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructureabattagerepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

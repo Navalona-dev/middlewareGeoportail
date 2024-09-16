@@ -1201,12 +1201,12 @@ class InfrastructureabattageController extends AbstractController
                                         }
                                         
                                     }
-                                    $value = pg_escape_string($value);
+                                    /*$value = pg_escape_string($value);
                                     if (count($data['infrastructure']) - 1 != $i) {
                                         $updateColonneInfra .= "categorie = '$value', ";
                                     } else {
                                         $updateColonneInfra .= "categorie = '$value'";
-                                    }
+                                    }*/
                                 }
                             } else {
                                 $value = pg_escape_string($value);
@@ -1381,10 +1381,10 @@ class InfrastructureabattageController extends AbstractController
                     }
 
                     if ($idData == 0) {
-                        $idData = $infrastructureabattageService->addInfoInTableByInfrastructure('t_ia_05_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $infrastructureabattageService->addInfoInTableByInfrastructure('t_ia_06_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
-                        $idData = $infrastructureabattageService->updateInfrastructureTables('t_ia_05_donnees_collectees', $idData, $updateColonneData);
+                        $idData = $infrastructureabattageService->updateInfrastructureTables('t_ia_06_donnees_collectees', $idData, $updateColonneData);
                         }
                     }
                 }
@@ -1453,10 +1453,10 @@ class InfrastructureabattageController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $idTravaux = $infrastructureabattageService->addInfoInTableByInfrastructure('t_bc_05_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $infrastructureabattageService->addInfoInTableByInfrastructure('t_ia_08_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
-                        $idTravaux = $infrastructureabattageService->updateInfrastructureTables('t_bc_05_travaux', $idTravaux, $updateColonneTravaux);
+                        $idTravaux = $infrastructureabattageService->updateInfrastructureTables('t_ia_08_travaux', $idTravaux, $updateColonneTravaux);
                         }
                     }
                 }
@@ -1526,10 +1526,10 @@ class InfrastructureabattageController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $idEtudes = $infrastructureabattageService->addInfoInTableByInfrastructure('t_bc_07_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $infrastructureabattageService->addInfoInTableByInfrastructure('t_ia_10_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
-                        $idEtudes = $infrastructureabattageService->updateInfrastructureTables('t_bc_07_etudes', $idEtudes, $updateColonneEtudes);
+                        $idEtudes = $infrastructureabattageService->updateInfrastructureTables('t_ia_10_etudes', $idEtudes, $updateColonneEtudes);
                         }
                     }
                 }

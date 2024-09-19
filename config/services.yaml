@@ -54,6 +54,8 @@ parameters:
     pathForNameInfrastructuresportive: 'media/upload/is_infrastructure_sportive/t_is_01_infrastructure/'
     pathImageInfrastructureaviation: '/home/qgis/projects/saisie/media/upload/iv_infrastructure_aviation/t_iv_01_infrastructure/'
     pathForNameInfrastructureaviation: 'media/upload/iv_infrastructure_aviation/t_iv_01_infrastructure/'
+    pathImageInfrastructuremarche: '/home/qgis/projects/saisie/media/upload/ma_marche/t_ma_01_infrastructure/'
+    pathForNameInfrastructuremarche: 'media/upload/ma_marche/t_ma_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -195,6 +197,11 @@ services:
         class: App\Repository\InfrastructureaviationRepository
     App\Service\InfrastructureaviationService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructureaviationrepository.service']
+        public: true
+    marcherepository.service:
+        class: App\Repository\MarcheRepository
+    App\Service\MarcheService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@marcherepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

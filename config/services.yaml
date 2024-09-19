@@ -50,6 +50,10 @@ parameters:
     pathForNamePhotoEaupotable: 'media/upload/ep_eau_potable/t_ep_01_infrastructure/'
     pathImageInfrastructureabattage: '/home/qgis/projects/saisie/media/upload/ia_infrastructure_abattage/t_ia_01_infrastructure/'
     pathForNameInfrastructureabattage: 'media/upload/ia_infrastructure_abattage/t_ia_01_infrastructure/'
+    pathImageInfrastructuresportive: '/home/qgis/projects/saisie/media/upload/is_infrastructure_sportive/t_is_01_infrastructure/'
+    pathForNameInfrastructuresportive: 'media/upload/is_infrastructure_sportive/t_is_01_infrastructure/'
+    pathImageInfrastructureaviation: '/home/qgis/projects/saisie/media/upload/iv_infrastructure_aviation/t_iv_01_infrastructure/'
+    pathForNameInfrastructureaviation: 'media/upload/iv_infrastructure_aviation/t_iv_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -181,6 +185,16 @@ services:
         class: App\Repository\InfrastructureabattageRepository
     App\Service\InfrastructureabattageService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructureabattagerepository.service']
+        public: true
+    infrastructuresportiverepository.service:
+        class: App\Repository\InfrastructuresportiveRepository
+    App\Service\InfrastructuresportiveService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructuresportiverepository.service']
+        public: true
+    infrastructureaviationrepository.service:
+        class: App\Repository\InfrastructureaviationRepository
+    App\Service\InfrastructureaviationService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@infrastructureaviationrepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

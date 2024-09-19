@@ -569,6 +569,8 @@ class EaupotableController extends AbstractController
             $data['indicatif'] = 'IM.C_01_01';
             
             
+            $data['localiteBeneficiaire'] = $request->get('localiteBeneficiaire');
+            $data['communeBeneficiaire'] = $request->get('communeBeneficiaire');
             // Situation
             $data['etat'] = $request->get('etat');
             $data['fonctionnel'] = $request->get('fonctionnel');
@@ -1388,6 +1390,82 @@ class EaupotableController extends AbstractController
                         }
                     }
                 }
+
+                // Localite beneficiaire
+                $hasDataChanged = false;
+                $updateColonneLocalBe = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idData = 0;
+                if (array_key_exists('localite_beneficiaire', $data) && count($data['localite_beneficiaire']) > 0) {
+                    $hasDataChanged = true;
+                    $i = 0;
+                    $hasDateInformationData = false;
+                    foreach ($data['localite_beneficiaire'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idData = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                            $hasDateInformationData = true;
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['localite_beneficiaire']) - 1 != $i) {
+                                $updateColonneLocalBe .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneLocalBe .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneLocalBe = trim($updateColonneLocalBe);
+                    if (isset($updateColonneLocalBe[-1]) && $updateColonneLocalBe[-1] == ",") {
+                        $updateColonneLocalBe = substr($updateColonneLocalBe, 0, strlen($updateColonneLocalBe) - 1);
+                    }
+
+                    /*if ($valuesInsert) {
+                        if ($idData == 0 && !$hasDateInformationData) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }*/
+
+                    if ($idData == 0) {
+                        $idData = $eaupotableService->addInfoInTableByInfrastructure('t_ep_02_localites_beneficieires', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneLocalBe) && !empty($updateColonneLocalBe)) {
+                        $idData = $eaupotableService->updateInfrastructureTables('t_ep_02_localites_beneficieires', $idData, $updateColonneLocalBe);
+                        }
+                    }
+                }
+
                 // Travaux
                 $hasTravauxChanged = false;
                 $updateColonneTravaux = "";

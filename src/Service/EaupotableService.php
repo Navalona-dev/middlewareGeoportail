@@ -78,7 +78,7 @@ class EaupotableService
         $result = $this->eaupotableRepository->addInfoInTableByInfrastructure($table, $colonnes, $values);
         return $result;
     }
-
+    
     public function updateInfrastructureTables($table , $idRow, $updateColonne)
     {
         $result = $this->eaupotableRepository->updateInfrastructureTables($table, $idRow, $updateColonne);
@@ -113,6 +113,18 @@ class EaupotableService
 
         return false;
     }
+
+    public function addInfrastructureLocaliteBeneficiaire($idInfrastructure, $data)
+    {
+        $result = $this->eaupotableRepository->addInfrastructureLocaliteBeneficiaire($idInfrastructure, $data['localiteBeneficiaire'], $data['communeBeneficiaire']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
     
     public function addInfrastructureSituation($idInfrastructure, $data)
     {

@@ -127,7 +127,7 @@ class InfrastructureaviationService
 
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $data)
     {
-        $result = $this->infrastructureaviationRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['existenceElectricite'], $data['sourceElectricite'], $data['etatElectricite'], $data['existenceEau'], $data['sourceEau'], $data['etatEau'], $data['existenceWc'], $data['typeWc'], $data['etatWc'], $data['existenceDrainageEauPluviale'], $data['etatDrainageEauPluviale'], $data['existenceCloture'], $data['typeCloture'], $data['etatCloture'], $data['sourceInformationData'], $data['modeAcquisitionInformationData']);
+        $result = $this->infrastructureaviationRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['revetementPiste'], $data['bitumeExistencePelade'], $data['bitumeExistenceFissure'], $data['bitumeExistenceTrou'], $data['existencePoteauxAlignement'], $data['etatPoteauxAlignement'], $data['enTerreTrou'], $data['betonFissure'], $data['betonExistenceFerraillageVisible'], $data['betonExistenceTrou'], $data['existenceElectricite'], $data['sourceElectricite'], $data['etatElectricite'], $data['existenceEau'], $data['sourceEau'], $data['etatEau'], $data['existenceWc'], $data['typeWc'], $data['etatWc'], $data['existenceDrainageEauPluviale'], $data['etatDrainageEauPluviale'], $data['existenceCloture'], $data['typeCloture'], $data['etatCloture'], $data['sourceInformationData'], $data['modeAcquisitionInformationData']);
         
         if ($result) {
             return $result;

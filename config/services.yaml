@@ -56,6 +56,8 @@ parameters:
     pathForNameInfrastructureaviation: 'media/upload/iv_infrastructure_aviation/t_iv_01_infrastructure/'
     pathImageInfrastructuremarche: '/home/qgis/projects/saisie/media/upload/ma_marche/t_ma_01_infrastructure/'
     pathForNameInfrastructuremarche: 'media/upload/ma_marche/t_ma_01_infrastructure/'
+    pathImagePort: '/home/qgis/projects/saisie/media/upload/pr_port/t_pr_01_infrastructure/'
+    pathForNamePort: 'media/upload/pr_port/t_pr_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -202,6 +204,11 @@ services:
         class: App\Repository\MarcheRepository
     App\Service\MarcheService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@marcherepository.service']
+        public: true
+    portrepository.service:
+        class: App\Repository\PortRepository
+    App\Service\PortService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@portrepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

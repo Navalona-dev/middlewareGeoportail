@@ -597,7 +597,7 @@ class InfrastructuresportiveController extends AbstractController
             $data['etatMoteur'] = $request->get('etatMoteur');
             $data['etatBassin'] = $request->get('etatBassin');
             $data['etatBordPiscine'] = $request->get('etatBordPiscine');
-            $data['EtatPisteAthlétisme'] = $request->get('EtatPisteAthlétisme');
+            $data['EtatPisteAthletisme'] = $request->get('EtatPisteAthletisme');
             $data['existenceElectricite'] = $request->get('existenceElectricite');
             $data['sourceElectricite'] = $request->get('sourceElectricite');
             $data['etatElectricite'] = $request->get('etatElectricite');

@@ -293,6 +293,7 @@ class MarcheRepository extends ServiceEntityRepository
     {   
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $sourceEau = pg_escape_string($sourceEau);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ma_06_donnees_collectees (id_infrastructure, existence_des_etales, etat_des_etales, existence_eau, source_eau, etat_eau, existence_electricite, source_electricite, etat_electricite, existence_wc, type_wc, etat_wc, existence_drainage_eau_pluviale, etat_drainage_eau_pluviale, existence_cloture, type_cloture, etat_cloture, date_information, source_information, mode_acquisition_information) VALUES (".intval($idInfrastructure).", '".$existenceEtales."', '".$etatEtales."', '".$existenceEau."', '".$sourceEau."', '".$etatEau."', '".$existenceElectricite."', '".$sourceElectricite."', '".$etatElectricite."', '".$existenceWc."', '".$typeWc."', '".$etatWc."', '".$existenceDrainageEauPluviale."', '".$etatDrainageEauPluviale."', '".$existenceCloture."', '".$typeCloture."', '".$etatCloture."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."')";
         

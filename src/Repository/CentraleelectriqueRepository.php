@@ -291,6 +291,7 @@ class CentraleelectriqueRepository extends ServiceEntityRepository
     {   
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $sourceEau = pg_escape_string($sourceEau);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_ce_06_donnees_collectees (id_infrastructure, etat_barrage, etat_turbine, etat_groupe, etat_panneaux_solaire, etat_eolienne, etat_genie_civil_biomasse, existence_eau, source_eau, etat_eau, existence_wc, type_wc, etat_wc, existence_drainage_eau_pluviale, etat_drainage_eau_pluviale, existence_cloture, type_cloture, etat_cloture, date_information, source_information, mode_acquisition_information, puissance_disponible) VALUES (".intval($idInfrastructure).", '".$etatBarrage."', '".$etatTurbine."', '".$etatGroupe."', '".$etatPanneauxSolaire."', '".$etatEolienne."', '".$etatGenieCivilBiomasse."', '".$existenceEau."', '".$sourceEau."', '".$etatEau."', '".$existenceWc."', '".$typeWc."', '".$etatWc."', '".$existenceDrainageEauPluviale."', '".$etatDrainageEauPluviale."', '".$existenceCloture."', '".$typeCloture."', '".$etatCloture."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".intval($puissanceDisponible)."')";
         

@@ -580,6 +580,8 @@ class InfrastructureaviationController extends AbstractController
             $data['raisonPrecision'] = null;
 
             // Data collecte
+            
+            $data['existenceElectricite'] = $request->get('existenceElectricite');
             $data['revetementPiste'] = $request->get('revetementPiste');
             $data['bitumeExistencePelade'] = $request->get('bitumeExistencePelade');
             $data['bitumeExistenceFissure'] = $request->get('bitumeExistenceFissure');

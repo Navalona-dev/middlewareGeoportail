@@ -1203,12 +1203,12 @@ class EaupotableController extends AbstractController
                                         }
                                         
                                     }
-                                    $value = pg_escape_string($value);
+                                    /*$value = pg_escape_string($value);
                                     if (count($data['infrastructure']) - 1 != $i) {
                                         $updateColonneInfra .= "categorie = '$value', ";
                                     } else {
                                         $updateColonneInfra .= "categorie = '$value'";
-                                    }
+                                    }*/
                                 }
                             } else {
                                 $value = pg_escape_string($value);

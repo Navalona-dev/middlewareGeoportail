@@ -104,7 +104,7 @@ class CheminferRepository extends ServiceEntityRepository
 
     public function getAllInfrastructuresMinifie()
     {
-        $sql = 'SELECT infra.id as infra_id, infra.ligne as ligne, infra.gare_debut as gare_debut, infra.gare_fin as gare_fin, infra.pk_debut as pk_debut, infra.pk_fin as pk_fin, infra.localite, infra.commune_sur_terrain, infra.date_information, infra.source_information as source_information, infra.mode_acquisition_information as mode_acquisition_information, infra.district,  ST_X(infra.geom) AS longitude, ST_Y(infra.geom) AS latitude, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_cf_01_infrastructure as infra';
+        $sql = 'SELECT infra.id as infra_id, infra.ligne as ligne, infra.gare_debut as gare_debut, infra.gare_fin as gare_fin, infra.pk_debut as pk_debut, infra.pk_fin as pk_fin, infra.localite, infra.commune_sur_terrain, infra.date_information, infra.source_information as source_information, infra.mode_acquisition_information as mode_acquisition_information, infra.district,  ST_AsText(infra.geom) as coordonnees, infra.photo1, infra.photo2, infra.photo3, infra.photo_name1, infra.photo_name2, infra.photo_name3  FROM t_cf_01_infrastructure as infra';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

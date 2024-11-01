@@ -1188,7 +1188,7 @@ class VoienavigableController extends AbstractController
 
             $routes = $voienavigableService->getOneInfraInfo(intval($infraId));
 
-            $routesInfrastructure = $voienavigableService->getAllyRouteInfoMinifie();
+            /*$routesInfrastructure = $voienavigableService->getAllyRouteInfoMinifie();
             $infoRoutes = [];
             if ($routes != false && count($routes) > 0 && $routesInfrastructure != false && count($routesInfrastructure) > 0 ) {
                 foreach ($routesInfrastructure as $key => $value) {
@@ -1204,7 +1204,7 @@ class VoienavigableController extends AbstractController
                 if ($infoRoutes != false) {
                     $routes[0]['infoRoutes'] = $infoRoutes;
                 }
-            }
+            }*/
 
             //dd($this->urlGenerator->generate('images_route', ['imageName' => '64b1501d625a7.jpg']));
             $response->setContent(json_encode([

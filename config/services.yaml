@@ -58,6 +58,16 @@ parameters:
     pathForNameInfrastructuremarche: 'media/upload/ma_marche/t_ma_01_infrastructure/'
     pathImagePort: '/home/qgis/projects/saisie/media/upload/pr_port/t_pr_01_infrastructure/'
     pathForNamePort: 'media/upload/pr_port/t_pr_01_infrastructure/'
+    pathImagePharePort: '/home/qgis/projects/saisie/media/upload/ph_phare/t_ph_01_infrastructure/'
+    pathForNamePharePort: 'media/upload/ph_phare/t_ph_01_infrastructure/'
+    pathImageSecuritepublique: '/home/qgis/projects/saisie/media/upload/su_securite_public/t_su_01_infrastructure/'
+    pathForNameSecuritepublique: 'media/upload/su_securite_public/t_su_01_infrastructure/'
+    pathImageSantepublique: '/home/qgis/projects/saisie/media/upload/st_sante/t_st_01_infrastructure/'
+    pathForNameSantepublique: 'media/upload/st_sante/t_st_01_infrastructure/'
+    pathImageStationpompage: '/home/qgis/projects/saisie/media/upload/so_station_pompage/t_so_01_infrastructure/'
+    pathForNameStationpompage: 'media/upload/so_station_pompage/t_so_01_infrastructure/'
+    pathImageVoienavigable: '/home/qgis/projects/saisie/media/upload/vn_voie_navigable/t_vn_01_infrastructure/'
+    pathForNameVoienavigable: 'media/upload/vn_voie_navigable/t_vn_01_infrastructure/'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -209,6 +219,31 @@ services:
         class: App\Repository\PortRepository
     App\Service\PortService:
         arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@portrepository.service']
+        public: true
+    phareportrepository.service:
+        class: App\Repository\PharePortRepository
+    App\Service\PharePortService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@phareportrepository.service']
+        public: true
+    securitepublicrepository.service:
+        class: App\Repository\SecuritepublicRepository
+    App\Service\SecuritepublicService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@securitepublicrepository.service']
+        public: true
+    santepublicrepository.service:
+        class: App\Repository\SantepublicRepository
+    App\Service\SantepublicService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@santepublicrepository.service']
+        public: true
+    stationpompagerepository.service:
+        class: App\Repository\StationpompageRepository
+    App\Service\StationpompageService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@stationpompagerepository.service']
+        public: true
+    voienavigablerepository.service:
+        class: App\Repository\VoienavigableRepository
+    App\Service\VoienavigableService:
+        arguments: ['@security.token_storage', "@doctrine.orm.middleware_entity_manager", '@session', '@voienavigablerepository.service']
         public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

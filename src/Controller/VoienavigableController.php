@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
-
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\RouteRepository;
 
@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\InfrastructuresportiveService;
+use App\Service\PontService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -27,63 +27,38 @@ use App\Exception\PropertyVideException;
 use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Exception\UnsufficientPrivilegeException;
+use App\Service\VoienavigableService;
 use DateTime;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class InfrastructuresportiveController extends AbstractController
+class VoienavigableController extends AbstractController
 {
     private $pathImage = null;
-    private $pathImageInfrastructuresportive = null;
+    private $pathImageVoienavigable = null;
+    private $pathForNameVoienavigable = null;
     private $pathPublic = null;
-    private $pathForNameInfrastructuresportive = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'is_infrastructure_sportive/t_is_01_infrastructure/';
+    private $urlGenerator;
+    private const nameRepertoireImage = 'vn_voie_navigable/t_vn_01_infrastructure/';
 
-    public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
+    public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface, UrlGeneratorInterface $urlGenerator) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
-        $this->pathImageInfrastructuresportive = $params->get('pathImageInfrastructuresportive');
+        $this->pathImageVoienavigable = $params->get('pathImageVoienavigable');
         $this->pathPublic = $params->get('pathPublic');
-        $this->pathForNameInfrastructuresportive = $params->get('pathForNameInfrastructuresportive');
+        $this->pathForNameVoienavigable = $params->get('pathForNameVoienavigable');
         $this->kernelInterface = $kernelInterface;
-        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
+        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic'). self::nameRepertoireImage;
+        $this->urlGenerator = $urlGenerator;
     }
 
-   
-    /**
-     * @Route("/api/infrastructuresportive/getphoto/{id}", name="infra_infrastructuresportive_photo", methods={"GET"})
+     /**
+     * @Route("/api/voienavigable/deletephoto", name="voienavigable_delete_photo", methods={"POST"})
      */
-    public function getPhotosByInfra($id, Request $request, InfrastructuresportiveService $infrastructuresportiveService)
-    {
-        $infoPhotosInfra = [];
-        $response = new Response();
-        if (isset($id) && !empty($id)) {
-            $infoPhotosInfra = $infrastructuresportiveService->getPhotoInfraInfo($id);
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
-                'message' => "Info infrastructure successfull",
-                'pathImage' => $this->pathImage,
-                'data' => $infoPhotosInfra
-            ]));
-        }
-        $response->setContent(json_encode([
-            'code'  => Response::HTTP_OK,
-            'status' => true,
-            'message' => "Info infrastructure successfull",
-            'pathImage' => $this->pathImage,
-            'data' => $infoPhotosInfra
-        ]));
-        return $response;
-    }
-
-    /**
-     * @Route("/api/infrastructuresportive/deletephoto", name="infrastructuresportive_delete_photo", methods={"POST"})
-     */
-    public function deletePhoto(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function deletePhoto(Request $request, VoienavigableService $voienavigableService)
     { 
         $response = new Response();
         $hasException = false;
@@ -103,7 +78,7 @@ class InfrastructuresportiveController extends AbstractController
                 
                 $setUpdate = "";
 
-                $infoPhotosInfra = $infrastructuresportiveService->getPhotoInfraInfo($idInfra);
+                $infoPhotosInfra = $voienavigableService->getPhotoInfraInfo($idInfra);
                 
                 $oldPhotosInfra = [];
                 if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0 && array_key_exists($indexPhoto, $infoPhotosInfra[0])) {
@@ -112,7 +87,7 @@ class InfrastructuresportiveController extends AbstractController
                     }
                 }
 
-                $directory = $this->pathImageInfrastructuresportive . $indexPhoto."/";
+                $directory = $this->pathImageVoienavigable . $indexPhoto."/";
                 $directoryPublicCopy =  $this->directoryCopy. $indexPhoto."/";
                 
                 if (array_key_exists($indexPhoto, $oldPhotosInfra)) {
@@ -124,19 +99,19 @@ class InfrastructuresportiveController extends AbstractController
                     }
                 
                     if (isset($setUpdate) && !empty($setUpdate)) {
-                        $idInfra = $infrastructuresportiveService->addInfrastructurePhoto($idInfra, $setUpdate);
+                        $idInfra = $voienavigableService->addInfrastructurePhoto($idInfra, $setUpdate);
                     }
                    
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Photo infrastructuresportive route deleted_successfull"
+                        'message' => "Photo Voie navigable deleted_successfull"
                     ]));
                 } else {
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Pas de photo infrastructuresportive route supprimer"
+                        'message' => "Pas de photo Voie navigable supprimer"
                     ]));
                 }
                 
@@ -194,19 +169,19 @@ class InfrastructuresportiveController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
             /*
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
         
             */
         
@@ -216,9 +191,9 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructuresportive/updatephoto", name="infrastructuresportive_update_photo", methods={"POST"})
+     * @Route("/api/voienavigable/updatephoto", name="voienavigable_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function updatePhoto(Request $request, VoienavigableService $voienavigableService)
     { 
         $response = new Response();
         $hasException = false;
@@ -247,7 +222,7 @@ class InfrastructuresportiveController extends AbstractController
             $data['photoName3'] = null;
             $setUpdate = "";
 
-            $infoPhotosInfra = $infrastructuresportiveService->getPhotoInfraInfo($idInfra);
+            $infoPhotosInfra = $voienavigableService->getPhotoInfraInfo($idInfra);
             $toDeletePhoto1 = false;
             $toDeletePhoto2 = false;
             $toDeletePhoto3 = false;
@@ -272,11 +247,11 @@ class InfrastructuresportiveController extends AbstractController
                 }
             }
 
-            if(!is_dir($this->pathImageInfrastructuresportive)) {
-                mkdir($this->pathImageInfrastructuresportive, 0777, true);
+            if(!is_dir($this->pathImageVoienavigable)) {
+                mkdir($this->pathImageVoienavigable, 0777, true);
             }
           
-            $directory1 = $this->pathImageInfrastructuresportive . "photo1/";
+            $directory1 = $this->pathForNameVoienavigable . "photo1/";
       
             if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
@@ -298,7 +273,7 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNameInfrastructuresportive."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNameVoienavigable."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
                
@@ -327,7 +302,7 @@ class InfrastructuresportiveController extends AbstractController
             }
         
 
-            $directory2 = $this->pathImageInfrastructuresportive . "photo2/";
+            $directory2 = $this->pathForNameVoienavigable . "photo2/";
 
             if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
@@ -348,7 +323,7 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNameInfrastructuresportive."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNameVoienavigable."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
                     if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
@@ -386,7 +361,7 @@ class InfrastructuresportiveController extends AbstractController
             }
 
 
-            $directory3 = $this->pathImageInfrastructuresportive . "photo3/";
+            $directory3 = $this->pathForNameVoienavigable . "photo3/";
            
             if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
@@ -407,7 +382,7 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNameInfrastructuresportive."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNameVoienavigable."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
                
                 if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {
@@ -448,14 +423,14 @@ class InfrastructuresportiveController extends AbstractController
             
          
             if (isset($setUpdate) && !empty($setUpdate)) {
-                $idInfra = $infrastructuresportiveService->addInfrastructurePhoto($idInfra, $setUpdate);
+                $idInfra = $voienavigableService->addInfrastructurePhoto($idInfra, $setUpdate);
             }
             
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo infrastructuresportive route updated_successfull"
+                'message' => "Photo Voie navigable updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -510,19 +485,19 @@ class InfrastructuresportiveController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
             /*
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
         
             */
         
@@ -532,89 +507,253 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructuresportive/add", name="infrastructuresportive_add", methods={"POST"})
+     * @Route("/api/voienavigable/addphoto", name="voienavigable_add_photo", methods={"POST"})
      */
-    public function create(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function addPhoto(Request $request, VoienavigableService $voienavigableService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            $data = [];
+            $uploadedFile1 = $request->files->get('photo1');
+            $uploadedFile2 = $request->files->get('photo2');
+            $uploadedFile3 = $request->files->get('photo3');
+            $idInfra = $request->get('infraId');
+            $data['photo1'] = null;
+            $data['photo2'] = null;
+            $data['photo3'] = null;
+            $data['photoName1'] = null;
+            $data['photoName2'] = null;
+            $data['photoName3'] = null;
+            $setUpdate = "";
+            if (null != $uploadedFile1) {
+                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
+                $tmpPathName1 = $uploadedFile1->getPathname();
+                $directory1 = $this->pathImageVoienavigable . "photo1/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
+
+                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
+                
+                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
+                //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
+
+                $data['photo1'] = $this->pathImageVoienavigable."photo1/" .$nomPhoto1;
+                $data['photoName1'] = $nomPhoto1;
+                $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
+            }
+            
+            
+            if (null != $uploadedFile2) {
+                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
+                $tmpPathName2 = $uploadedFile2->getPathname();
+                $directory2 = $this->pathImageVoienavigable . "photo2/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+
+                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
+                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
+                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                
+                $data['photo2'] = $this->pathImageVoienavigable."photo2/" .$nomPhoto2;
+                $data['photoName2'] = $nomPhoto2;
+                if (null != $data['photo1']) {
+                    $setUpdate .= ", ";    
+                }
+                $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
+            }
+
+            if (null != $uploadedFile3) {
+                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
+                $tmpPathName3 = $uploadedFile3->getPathname();
+                $directory3 = $this->pathImageVoienavigable . "photo3/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+
+                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
+                $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
+                //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
+
+                $data['photo3'] = $this->pathImageVoienavigable."photo3/" .$nomPhoto3;
+                $data['photoName3'] = $nomPhoto3;
+
+                if (null != $data['photo1'] || null != $data['photo2']) {
+                    $setUpdate .= ", ";    
+                }
+
+                $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
+            }
+
+            if (isset($setUpdate) && !empty($setUpdate)) {
+                $idInfra = $voienavigableService->addInfrastructurePhoto($idInfra, $setUpdate);
+            }
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Photo Voie navigable created_successfull"
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
+    }
+
+     /**
+     * @Route("/api/voienavigable/add", name="voienavigable_add", methods={"POST"})
+     */
+    public function create(Request $request, VoienavigableService $voienavigableService)
     {    
         $response = new Response();
         $hasException = false;
         $idInfra = null;
         try {
-
+            $infos = json_decode($request->getContent(), true);
             $data = [];
-            $data['region' ] = $request->get('region');
-            $data['district' ] = $request->get('district');
-            $data['communeTerrain' ] = $request->get('commune');
-            $data['nom' ] = $request->get('nom');
-            $data['localite'] = null;
-
-            if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
-                $data['localite'] = $request->get('localite');
-            }
+            $data['region' ] = $infos['region'];
+            $data['district' ] = $infos['district'];
+            $data['communeTerrain' ] = $infos['commune'];
+            $data['nom' ] = $infos['nom'];
+            $data['localite'] = $infos['localite'];
+        
            
-            $data['sourceInformation' ] = $request->get('sourceInformation');
-            $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
-            $data['categorie' ] = $request->get('categorie');
+            $data['localiteDepart' ] = $infos['localiteDepart'];
+            $data['localiteArrivee' ] = $infos['localiteArrivee'];
+            $data['sourceInformation' ] = $infos['sourceInformation'];
+            $data['modeAcquisitionInformation' ] = $infos['modeAcquisitionInformation'];
+          
+            $data['categorie' ] = $infos['categorie'];
+            $data['moisOuverture' ] = $infos['moisOuverture'];
+            $data['moisFermeture' ] = $infos['moisFermeture'];
+            //$data['nomRouteRattache'] = $request->get('nomRouteRattache');
+            $data['nomVoieNavigableRattache'] = $infos['nomVoieNavigableRattache'];
+
+            /*if ($request->get('nomRouteRattache') != "null" && $request->get('nomRouteRattache') != "undefined") {
+                    $infoYlisteRoute = $voienavigableService->getInfoyRouteInfoMinifie($request->get('nomRouteRattache'));
+                   
+                    if (count($infoYlisteRoute) > 0) {
+                        $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
+                    }
+            }*/
+
             $data['categoriePrecision'] = null;
-            if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
-                $allCategories = $infrastructuresportiveService->getAllCategorieInfra();
+            /*if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
+                $allCategories = $voienavigableService->getAllCategorieInfra();
                 if ($allCategories != false && count($allCategories) > 0 && !in_array($request->get('categorie'), $allCategories)) {
                         $data['categoriePrecision'] = $request->get('categorie');
                         $data['categorie' ] = "Autre à préciser";
                 }
-            }
+            }*/
 
-            $data['latitude'] = $request->get('latitude');
-            $data['longitude'] = $request->get('longitude');
-            $data['indicatif'] = 'IM.F_10_02';
-            
+            $data['coordonnees'] = "";
+            if (count($infos['localisations']) > 0) {
+                foreach ($infos['localisations'] as $key => $value) {
+                    if (count($infos['localisations']) - 1 == $key) {
+                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'];
+                    } else {
+                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'].", ";
+                    }
+                }
+            }
+            $data['indicatif'] = 'IM.H_02_04';
             
             // Situation
-            $data['etat'] = $request->get('etat');
-            $data['fonctionnel'] = $request->get('fonctionnel');
-            $data['motif'] = $request->get('motifNonFonctionel');
-            $data['sourceInformationSituation' ] = $request->get('sourceInformationSituation');
-            $data['modeAcquisitionInformationSituation' ] = $request->get('modeAcquisitionInformationSituation');
+            $data['etat'] = $infos['situation']['etat'];
+            $data['fonctionnel'] = $infos['situation']['fonctionnel'];
+            $data['motif'] = $infos['situation']['motifNonFonctionel'];
+            $data['sourceInformationSituation' ] = $infos['situation']['sourceInformationSituation'];
+            $data['modeAcquisitionInformationSituation' ] = $infos['situation']['modeAcquisitionInformationSituation'];
             $data['raisonPrecision'] = null;
 
             // Data collecte
+            $data['etatEnsablementCanal'] = $infos['data']['etatEnsablementCanal'];
+            $data['existenceChenal'] = $infos['data']['existenceChenal'];
+            $data['etatEnsablementChenal'] = $infos['data']['etatEnsablementChenal'];
+            $data['existenceBalise'] = $infos['data']['existenceBalise'];
+            $data['etatGlobalBalises'] = $infos['data']['etatGlobalBalises'];
+            $data['existenceDigue'] = $infos['data']['existenceDigue'];
+            $data['fuiteDigue'] = $infos['data']['fuiteDigue'];
+            $data['existenceTrousDigue'] = $infos['data']['existenceTrousDigue'];
+            $data['existenceErosionLongRechargeAval'] = $infos['data']['existenceErosionLongRechargeAval'];
+            $data['existenceOuvrageAccostage'] = $infos['data']['existenceOuvrageAccostage'];
+            $data['typeOuvrageAccostage'] = $infos['data']['typeOuvrageAccostage'];
+            $data['existenceFissureOuvrageBeton'] = $infos['data']['existenceFissureOuvrageBeton'];
+            $data['existenceFerraillageVisiblePourOuvrageBeton'] = $infos['data']['existenceFerraillageVisiblePourOuvrageBeton'];
+            $data['existenceFissurePourOuvrageMaconnerie'] = $infos['data']['existenceFissurePourOuvrageMaconnerie'];
+            $data['existencePouillePourOuvrageFer'] = $infos['data']['existencePouillePourOuvrageFer'];
+            $data['sourceInformationData'] = $infos['data']['sourceInformationData'];
+            $data['modeAcquisitionInformationData' ] = $infos['data']['modeAcquisitionInformationData'];
+          
 
-            $data['existenceGradinTribune'] = $request->get('existenceGradinTribune');
-            $data['etatGradinTribune'] = $request->get('etatGradinTribune');
-            $data['etatGlobalAiresJeu'] = $request->get('etatGlobalAiresJeu');
-            $data['etatPoteaux'] = $request->get('etatPoteaux');
-            $data['existencProjecteurs'] = $request->get('existencProjecteurs');
-            $data['etatProjecteurs'] = $request->get('etatProjecteurs');
-            $data['existenceVestiaire'] = $request->get('existenceVestiaire');
-            $data['etatVestiaire'] = $request->get('etatVestiaire');
-            $data['existenceWcVestiaire'] = $request->get('existenceWcVestiaire');
-            $data['etatWcVestiaire'] = $request->get('etatWcVestiaire');
-            $data['existenceDoucheVestiaire'] = $request->get('existenceDoucheVestiaire');
-            $data['etatDoucheVestiaire'] = $request->get('etatDoucheVestiaire');
-            $data['existenceMobiliersVestiaire'] = $request->get('existenceMobiliersVestiaire');
-            $data['etatMobiliersVestiaire'] = $request->get('etatMobiliersVestiaire');
-            $data['existencePiscine'] = $request->get('existencePiscine');
-            $data['etatMoteur'] = $request->get('etatMoteur');
-            $data['etatBassin'] = $request->get('etatBassin');
-            $data['etatBordPiscine'] = $request->get('etatBordPiscine');
-            $data['EtatPisteAthletisme'] = $request->get('EtatPisteAthletisme');
-            $data['existenceElectricite'] = $request->get('existenceElectricite');
-            $data['sourceElectricite'] = $request->get('sourceElectricite');
-            $data['etatElectricite'] = $request->get('etatElectricite');
-            $data['existenceEau'] = $request->get('existenceEau');
-            $data['sourceEau'] = $request->get('sourceEau');
-            $data['etatEau'] = $request->get('etatEau');
-            $data['existenceWc'] = $request->get('existenceWc');
-            $data['typeWc'] = $request->get('typeWc');
-            $data['etatWc'] = $request->get('etatWc');
-            $data['existenceDrainageEauPluviale'] = $request->get('existenceDrainageEauPluviale');
-            $data['etatDrainageEauPluviale'] = $request->get('etatDrainageEauPluviale');
-            $data['existenceCloture'] = $request->get('existenceCloture');
-            $data['typeCloture'] = $request->get('typeCloture');
-            $data['etatCloture'] = $request->get('etatCloture');
-            $data['sourceInformationData'] = $request->get('sourceInformationData');
-            $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
-            $data['volumeReservoir'] = null;
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
             $data['precisionStructure'] = $request->get('precisionStructure');
@@ -670,80 +809,28 @@ class InfrastructuresportiveController extends AbstractController
             $data['coteFosse'] = $request->get('coteFosse');*/
             
             
-            $uploadedFile1 = $request->files->get('photo1');
-            $uploadedFile2 = $request->files->get('photo2');
-            $uploadedFile3 = $request->files->get('photo3');
             $data['photo1'] = null;
             $data['photo2'] = null;
             $data['photo3'] = null;
             $data['photoName1'] = null;
             $data['photoName2'] = null;
             $data['photoName3'] = null;
-            if (null != $uploadedFile1) {
-                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
-                $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageInfrastructuresportive . "photo1/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
 
-                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
-                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
-                
-                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
-
-                $data['photo1'] = $this->pathForNameInfrastructuresportive."photo1/" .$nomPhoto1;
-                $data['photoName1'] = $nomPhoto1;
-            }
-            
-            if (null != $uploadedFile2) {
-                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
-                $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageInfrastructuresportive . "photo2/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
-
-                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
-                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
-                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
-                
-                $data['photo2'] = $this->pathForNameInfrastructuresportive."photo2/" .$nomPhoto2;
-                $data['photoName2'] = $nomPhoto2;
-            }
-
-            if (null != $uploadedFile3) {
-                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
-                $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageInfrastructuresportive . "photo3/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
-
-                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
-                $nomPhoto3 = uniqid().".".$uploadedFile3->getClientOriginalExtension();
-                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
-
-                $data['photo3'] = $this->pathForNameInfrastructuresportive."photo3/" .$nomPhoto3;
-                $data['photoName3'] = $nomPhoto3;
-            }
-
-            $data['chargeMaximum'] = null;
-            $data['moisOuverture'] = null;
-            $data['moisFermeture'] = null;
-            
-            $idInfra = $infrastructuresportiveService->addInfrastructure($data);
+            $idInfra = $voienavigableService->addInfrastructure($data);
 
             if ($idInfra != false) {
                 // add situation et etat
-                //$idEtat = $infrastructuresportiveService->addInfrastructureRouteEtat($idInfra, $data);
+                //$idEtat = $voienavigableService->addInfrastructureRouteEtat($idInfra, $data);
 
-                $idEtat = $infrastructuresportiveService->addInfrastructureSituation($idInfra, $data);
+                $idEtat = $voienavigableService->addInfrastructureSituation($idInfra, $data);
 
-                $idDataCollected = $infrastructuresportiveService->addInfrastructureDonneCollecte($idInfra, $data);
+                $idDataCollected = $voienavigableService->addInfrastructureDonneCollecte($idInfra, $data);
 
-                /*$idStructure = $infrastructuresportiveService->addInfrastructureRouteStructure($idInfra, $data);
+                /*$idStructure = $voienavigableService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idAccotement = $infrastructuresportiveService->addInfrastructureRouteAccotement($idInfra, $data);
+                $idAccotement = $voienavigableService->addInfrastructureRouteAccotement($idInfra, $data);
 
-                $idFosse = $infrastructuresportiveService->addInfrastructureRouteFosse($idInfra, $data);*/
+                $idFosse = $voienavigableService->addInfrastructureRouteFosse($idInfra, $data);*/
             
 
                 /**
@@ -754,7 +841,7 @@ class InfrastructuresportiveController extends AbstractController
                 $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                 $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
 
-                $idFoncier = $infrastructuresportiveService->addInfrastructureRouteFoncier($idInfra, $data);*/
+                $idFoncier = $voienavigableService->addInfrastructureRouteFoncier($idInfra, $data);*/
 
                 //Travaux 
                 if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true") && "false" != $request->get('hasTravaux')) {
@@ -795,7 +882,7 @@ class InfrastructuresportiveController extends AbstractController
                     $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
                     $data['bailleurTravaux'] = $request->get('bailleurTravaux');
 
-                    $idTravaux = $infrastructuresportiveService->addInfrastructureTravaux($idInfra, $data);
+                    $idTravaux = $voienavigableService->addInfrastructureTravaux($idInfra, $data);
                 }
                 
                 // Fournitures
@@ -832,7 +919,7 @@ class InfrastructuresportiveController extends AbstractController
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
-                $idFourniture = $infrastructuresportiveService->addInfrastructureRouteFourniture($idInfra, $data);*/
+                $idFourniture = $voienavigableService->addInfrastructureRouteFourniture($idInfra, $data);*/
                 // Etudes
                 if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
@@ -870,19 +957,19 @@ class InfrastructuresportiveController extends AbstractController
                     $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
                 // $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
                     $data['bailleurEtude'] = $request->get('bailleurEtude');
-                    $idEtude = $infrastructuresportiveService->addInfrastructureEtudes($idInfra, $data);
+                    $idEtude = $voienavigableService->addInfrastructureEtudes($idInfra, $data);
                 }
                 
                 /**
                  * End Administrative data
                 */
-                //$idDonneAnnexe = $infrastructuresportiveService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
+                //$idDonneAnnexe = $voienavigableService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive route created_successfull"
+                'message' => "voienavigable route created_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -937,41 +1024,41 @@ class InfrastructuresportiveController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         
         return $response;
     }
-
+    
     /**
-     * @Route("/api/infra/infrastructuresportive/liste", name="infrastructuresportive_list", methods={"GET"})
+     * @Route("/api/infra/voienavigable/liste", name="voienavigable_list", methods={"GET"})
      */
-    public function listeinfrastructuresportive(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function listeTrajeRoute(Request $request, VoienavigableService $voienavigableService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $infrastructuresportiveService->getAllInfrastructures();
+            $routes = $voienavigableService->getAllInfrastructures();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive route list_successfull",
+                'message' => "Voie navigable list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1024,20 +1111,20 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/infrastructuresportive/liste/minifie", name="infrastructuresportive_list_minifie", methods={"GET"})
+     * @Route("/api/infra/voienavigable/liste/minifie", name="voienavigable_list_minifie", methods={"GET"})
      */
-    public function listeinfrastructuresportiveMinifie(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function listevoienavigableMinifie(Request $request, VoienavigableService $voienavigableService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $infrastructuresportiveService->getAllInfrastructuresMinifie();
+            $routes = $voienavigableService->getAllInfrastructuresMinifie();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive route list_successfull",
+                'message' => "Voie navigable list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1090,21 +1177,40 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/infrastructuresportive/info", name="infrastructuresportive_info", methods={"POST"})
+     * @Route("/api/infra/voienavigable/info", name="voienavigable_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function getOneInfraInfo(Request $request, VoienavigableService $voienavigableService)
     {    
         $response = new Response();
         
         try {
             $infraId = $request->get('id');
 
-            $routes = $infrastructuresportiveService->getOneInfraInfo(intval($infraId));
+            $routes = $voienavigableService->getOneInfraInfo(intval($infraId));
+
+            $routesInfrastructure = $voienavigableService->getAllyRouteInfoMinifie();
+            $infoRoutes = [];
+            if ($routes != false && count($routes) > 0 && $routesInfrastructure != false && count($routesInfrastructure) > 0 ) {
+                foreach ($routesInfrastructure as $key => $value) {
+                   if (trim($value['nom']) == trim($routes[0]['nom_de_la_route_a_qui_il_est_rattache'])) {
+                    $infoRoutes = $value;
+                   }
+                }
             
+            }
+            
+            if ($routes != false && count($routes) > 0) {
+                $routes[0]['infoRoutes'] = false;
+                if ($infoRoutes != false) {
+                    $routes[0]['infoRoutes'] = $infoRoutes;
+                }
+            }
+
+            //dd($this->urlGenerator->generate('images_route', ['imageName' => '64b1501d625a7.jpg']));
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Info infrastructure successfull",
+                'message' => "Voie navigable infrastructure successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1157,9 +1263,9 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructuresportive/update", name="infrastructuresportive_update", methods={"POST"})
+     * @Route("/api/voienavigable/update", name="voienavigable_update", methods={"POST"})
      */
-    public function update(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function update(Request $request, VoienavigableService $voienavigableService)
     {    
         $response = new Response();
         $hasException = false;
@@ -1178,16 +1284,30 @@ class InfrastructuresportiveController extends AbstractController
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
                 $colonneFloat = ['duree_theorique_de_la_traversee', 'duree_reelle_de_la_traversee', 'longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
 
-                $colonneDate = ["date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
+                $colonneDate = ["date_infromation", "date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
                 
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
 
-                    if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
-                        $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
+                    if (array_key_exists("localisations", $data['infrastructure'])) {
+                        $coordonnees = "";
+                        if (count($data['infrastructure']['localisations']) > 0) {
+                            
+                            foreach ($data['infrastructure']['localisations'] as $key => $value) {
+                                if (count($data['infrastructure']['localisations']) - 1 == $key) {
+                                    $coordonnees .= (string) $value['longitude']." ". (string) $value['latitude'];
+                                } else {
+                                    $coordonnees .= (string) $value['longitude']." ". (string) $value['latitude'].", ";
+                                }
+                                
+                            }
+                        }
+
+                        $updateColonneInfra .= "geom = ST_GeomFromText('LINESTRING(".$coordonnees.")'), ";
                     }
-                    $allCategories = $infrastructuresportiveService->getAllCategorieInfra();
+                    
+
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1198,53 +1318,30 @@ class InfrastructuresportiveController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
-                            if ($colonne == "categorie") {
-                                if ($value != "null" && $value != "undefined" && $value != "") {
-                                  
-                                    if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
-
-                                        $value = pg_escape_string($value);
-                                        if (count($data['infrastructure']) - 1 != $i) {
-                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser', ";
-                                        } else {
-                                           
-                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser'";
+                            if ($colonne != "localisations") {
+                                /*if ($colonne == "nom_de_la_route_a_qui_il_est_rattache") {
+                                    if ($value != "null" && $value != "undefined" && $value != "") {
+                                        $infoYlisteRoute = $voienavigableService->getInfoyRouteInfoMinifie($value);
+                                        if ($infoYlisteRoute != false && count($infoYlisteRoute) > 0) {
+                                            $value = $infoYlisteRoute[0]['nom'];
+                                            $value = pg_escape_string($value);
+                                            $value = "'$value'";
                                         }
-                                        
-                                            
-                                    } else {
-                                        $value = pg_escape_string($value);
-                                        if (count($data['infrastructure']) - 1 != $i) {
-                                            $updateColonneInfra .= "precision_categorie= null, categorie = '$value', ";
-                                        } else {
-                                            $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
-                                        }
-                                        
                                     }
-                                    /*$value = pg_escape_string($value);
-                                    if (count($data['infrastructure']) - 1 != $i) {
-                                        $updateColonneInfra .= "categorie = '$value', ";
-                                    } else {
-                                        $updateColonneInfra .= "categorie = '$value'";
-                                    }*/
-                                }
-                            } else {
-                                $value = pg_escape_string($value);
-                                $value = "'$value'";
+                                } else {*/
+                                    $value = pg_escape_string($value);
+                                    $value = "'$value'";
+                                //}
                             }
                         }
 
-                        if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
+                        if ($colonne != "id" && $colonne != "gid"  && $colonne != "localisations") {
+                         
                             if (count($data['infrastructure']) - 1 != $i) {
-                                if ($colonne != "categorie") {
-                                    $updateColonneInfra .= $colonne."="."$value".", ";
-                                }
                                 
+                                $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {
-                                if ($colonne != "categorie") {
-                                    $updateColonneInfra .= $colonne."="."$value";
-                                }
-                                
+                                $updateColonneInfra .= $colonne."="."$value";
                             }
                         } 
                         $i++;
@@ -1254,10 +1351,8 @@ class InfrastructuresportiveController extends AbstractController
                     if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-                    
-                    if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
-                    $idInfra = $infrastructuresportiveService->updateInfrastructure($idInfra, $updateColonneInfra);
-                    }
+                   
+                    $idInfra = $voienavigableService->updateInfrastructure($idInfra, $updateColonneInfra);
                 }
                 // Situation
                 $hasEtatChanged = false;
@@ -1325,11 +1420,9 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
-                        $idSituation = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_03_situation', $colonneInsert, $valuesInsert);
+                        $idSituation = $voienavigableService->addInfoInTableByInfrastructure('t_vn_02_situation', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
-                        $idSituation = $infrastructuresportiveService->updateInfrastructureTables('t_is_03_situation', $idSituation, $updateColonneEtat);
-                        }
+                        $idSituation = $voienavigableService->updateInfrastructureTables('t_vn_02_situation', $idSituation, $updateColonneEtat);
                     } 
                     
                 }
@@ -1369,9 +1462,10 @@ class InfrastructuresportiveController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['data_collecte']) - 1 != $i) {
-                                $updateColonneData .= $colonne."="."$value".", ";
-                                $colonneInsert .= $colonne.", ";
-                                $valuesInsert .= $value.", ";
+                                    $updateColonneData .= $colonne."="."$value".", ";
+                                    $colonneInsert .= $colonne.", ";
+                                    $valuesInsert .= $value.", ";
+                                
                             } else {
                                 $updateColonneData .= $colonne."="."$value";
                                 $colonneInsert .= $colonne;
@@ -1388,10 +1482,10 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idData == 0 && !$hasDateInformationData) {
+                        if ($idData == 0 && $hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= ", date_information";
+                            $colonneInsert .= "date_information";
                             $valuesInsert .= "'$dateInfo'";
                         }
                         $valuesInsert = trim($valuesInsert);
@@ -1399,13 +1493,11 @@ class InfrastructuresportiveController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-                 
+
                     if ($idData == 0) {
-                        $idData = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_06_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $voienavigableService->addInfoInTableByInfrastructure('t_vn_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneData) && !empty($updateColonneData)) {
-                        $idData = $infrastructuresportiveService->updateInfrastructureTables('t_is_06_donnees_collectees', $idData, $updateColonneData);
-                        }
+                        $idData = $voienavigableService->updateInfrastructureTables('t_vn_04_donnees_collectees', $idData, $updateColonneData);
                     }
                 }
                 // Travaux
@@ -1473,11 +1565,9 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $idTravaux = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_08_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $voienavigableService->addInfoInTableByInfrastructure('t_vn_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
-                        $idTravaux = $infrastructuresportiveService->updateInfrastructureTables('t_is_08_travaux', $idTravaux, $updateColonneTravaux);
-                        }
+                        $idTravaux = $voienavigableService->updateInfrastructureTables('t_vn_05_travaux', $idTravaux, $updateColonneTravaux);
                     }
                 }
 
@@ -1533,12 +1623,6 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idEtudes == 0) {
-                            $date = new \DateTime();
-                            $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= "date_information";
-                            $valuesInsert .= "'$dateInfo'";
-                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1546,10 +1630,142 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $idEtudes = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_10_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $voienavigableService->addInfoInTableByInfrastructure('t_vn_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
-                        $idEtudes = $infrastructuresportiveService->updateInfrastructureTables('t_is_10_etudes', $idEtudes, $updateColonneEtudes);
+                        $idEtudes = $voienavigableService->updateInfrastructureTables('t_vn_07_etudes', $idEtudes, $updateColonneEtudes);
+                    }
+                }
+
+                // Etat
+                $hasEtatChanged = false;
+                $updateColonneEtat = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idEtat = 0;
+                if (array_key_exists('etat', $data) && count($data['etat']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['etat'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idEtat = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['etat']) - 1 != $i) {
+                                $updateColonneEtat .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneEtat .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idEtat == 0) {
+                        $idEtat = $voienavigableService->addInfoInTableByInfrastructure('t_vn_03_etat', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
+                        $idEtat = $voienavigableService->updateInfrastructureTables('t_vn_03_etat', $idEtat, $updateColonneEtat);
+                        }
+                    } 
+                    
+                }
+
+                // Fourniture
+                $hasEtudeChanged = false;
+                $updateColonneFourniture = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idFourniture = 0;
+                if (array_key_exists('fournitures', $data) && count($data['fournitures']) > 0) {
+                    $hasEtudeChanged = true;
+                    $i = 0;
+                    foreach ($data['fournitures'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idFourniture = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['fournitures']) - 1 != $i) {
+                                $updateColonneFourniture .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneFourniture .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneFourniture = trim($updateColonneFourniture);
+                    if (isset($updateColonneFourniture[-1]) && $updateColonneFourniture[-1] == ",") {
+                        $updateColonneFourniture = substr($updateColonneFourniture, 0, strlen($updateColonneFourniture) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idFourniture == 0) {
+                        $idFourniture = $voienavigableService->addInfoInTableByInfrastructure('t_vn_06_fourniture', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneFourniture) && !empty($updateColonneFourniture)) {
+                        $idFourniture = $voienavigableService->updateInfrastructureTables('t_vn_06_fourniture', $idFourniture, $updateColonneFourniture);
                         }
                     }
                 }
@@ -1559,7 +1775,7 @@ class InfrastructuresportiveController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive update_successfull"
+                'message' => "Voie navigable update_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -1614,20 +1830,20 @@ class InfrastructuresportiveController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            //$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $voienavigableService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         

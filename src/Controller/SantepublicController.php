@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\InfrastructuresportiveService;
+use App\Service\santepublicService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -33,35 +33,35 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class InfrastructuresportiveController extends AbstractController
+class SantepublicController extends AbstractController
 {
     private $pathImage = null;
-    private $pathImageInfrastructuresportive = null;
+    private $pathImageSantepublique = null;
     private $pathPublic = null;
-    private $pathForNameInfrastructuresportive = null;
+    private $pathForNameSantepublique = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'is_infrastructure_sportive/t_is_01_infrastructure/';
+    private const nameRepertoireImage = 'st_sante/t_st_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
-        $this->pathImageInfrastructuresportive = $params->get('pathImageInfrastructuresportive');
+        $this->pathImageSantepublique = $params->get('pathImageSantepublique');
         $this->pathPublic = $params->get('pathPublic');
-        $this->pathForNameInfrastructuresportive = $params->get('pathForNameInfrastructuresportive');
+        $this->pathForNameSantepublique = $params->get('pathForNameSantepublique');
         $this->kernelInterface = $kernelInterface;
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
     }
 
    
     /**
-     * @Route("/api/infrastructuresportive/getphoto/{id}", name="infra_infrastructuresportive_photo", methods={"GET"})
+     * @Route("/api/santepublic/getphoto/{id}", name="infra_santepublic_photo", methods={"GET"})
      */
-    public function getPhotosByInfra($id, Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function getPhotosByInfra($id, Request $request, SantepublicService $santepublicService)
     {
         $infoPhotosInfra = [];
         $response = new Response();
         if (isset($id) && !empty($id)) {
-            $infoPhotosInfra = $infrastructuresportiveService->getPhotoInfraInfo($id);
+            $infoPhotosInfra = $santepublicService->getPhotoInfraInfo($id);
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
@@ -81,9 +81,9 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructuresportive/deletephoto", name="infrastructuresportive_delete_photo", methods={"POST"})
+     * @Route("/api/santepublic/deletephoto", name="santepublic_delete_photo", methods={"POST"})
      */
-    public function deletePhoto(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function deletePhoto(Request $request, SantepublicService $santepublicService)
     { 
         $response = new Response();
         $hasException = false;
@@ -103,7 +103,7 @@ class InfrastructuresportiveController extends AbstractController
                 
                 $setUpdate = "";
 
-                $infoPhotosInfra = $infrastructuresportiveService->getPhotoInfraInfo($idInfra);
+                $infoPhotosInfra = $santepublicService->getPhotoInfraInfo($idInfra);
                 
                 $oldPhotosInfra = [];
                 if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0 && array_key_exists($indexPhoto, $infoPhotosInfra[0])) {
@@ -112,7 +112,7 @@ class InfrastructuresportiveController extends AbstractController
                     }
                 }
 
-                $directory = $this->pathImageInfrastructuresportive . $indexPhoto."/";
+                $directory = $this->pathImageSantepublique . $indexPhoto."/";
                 $directoryPublicCopy =  $this->directoryCopy. $indexPhoto."/";
                 
                 if (array_key_exists($indexPhoto, $oldPhotosInfra)) {
@@ -124,19 +124,19 @@ class InfrastructuresportiveController extends AbstractController
                     }
                 
                     if (isset($setUpdate) && !empty($setUpdate)) {
-                        $idInfra = $infrastructuresportiveService->addInfrastructurePhoto($idInfra, $setUpdate);
+                        $idInfra = $santepublicService->addInfrastructurePhoto($idInfra, $setUpdate);
                     }
                    
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Photo infrastructuresportive route deleted_successfull"
+                        'message' => "Photo santepublic route deleted_successfull"
                     ]));
                 } else {
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Pas de photo infrastructuresportive route supprimer"
+                        'message' => "Pas de photo santepublic route supprimer"
                     ]));
                 }
                 
@@ -216,9 +216,9 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructuresportive/updatephoto", name="infrastructuresportive_update_photo", methods={"POST"})
+     * @Route("/api/santepublic/updatephoto", name="santepublic_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function updatePhoto(Request $request, SantepublicService $santepublicService)
     { 
         $response = new Response();
         $hasException = false;
@@ -247,7 +247,7 @@ class InfrastructuresportiveController extends AbstractController
             $data['photoName3'] = null;
             $setUpdate = "";
 
-            $infoPhotosInfra = $infrastructuresportiveService->getPhotoInfraInfo($idInfra);
+            $infoPhotosInfra = $santepublicService->getPhotoInfraInfo($idInfra);
             $toDeletePhoto1 = false;
             $toDeletePhoto2 = false;
             $toDeletePhoto3 = false;
@@ -272,11 +272,11 @@ class InfrastructuresportiveController extends AbstractController
                 }
             }
 
-            if(!is_dir($this->pathImageInfrastructuresportive)) {
-                mkdir($this->pathImageInfrastructuresportive, 0777, true);
+            if(!is_dir($this->pathImageSantepublique)) {
+                mkdir($this->pathImageSantepublique, 0777, true);
             }
           
-            $directory1 = $this->pathImageInfrastructuresportive . "photo1/";
+            $directory1 = $this->pathImageSantepublique . "photo1/";
       
             if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
@@ -298,7 +298,7 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNameInfrastructuresportive."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNameSantepublique."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
                
@@ -327,7 +327,7 @@ class InfrastructuresportiveController extends AbstractController
             }
         
 
-            $directory2 = $this->pathImageInfrastructuresportive . "photo2/";
+            $directory2 = $this->pathImageSantepublique . "photo2/";
 
             if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
@@ -348,7 +348,7 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNameInfrastructuresportive."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNameSantepublique."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
                     if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
@@ -386,7 +386,7 @@ class InfrastructuresportiveController extends AbstractController
             }
 
 
-            $directory3 = $this->pathImageInfrastructuresportive . "photo3/";
+            $directory3 = $this->pathImageSantepublique . "photo3/";
            
             if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
@@ -407,7 +407,7 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNameInfrastructuresportive."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNameSantepublique."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
                
                 if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {
@@ -448,14 +448,14 @@ class InfrastructuresportiveController extends AbstractController
             
          
             if (isset($setUpdate) && !empty($setUpdate)) {
-                $idInfra = $infrastructuresportiveService->addInfrastructurePhoto($idInfra, $setUpdate);
+                $idInfra = $santepublicService->addInfrastructurePhoto($idInfra, $setUpdate);
             }
             
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo infrastructuresportive route updated_successfull"
+                'message' => "Photo santepublic route updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -532,9 +532,9 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructuresportive/add", name="infrastructuresportive_add", methods={"POST"})
+     * @Route("/api/santepublic/add", name="santepublic_add", methods={"POST"})
      */
-    public function create(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function create(Request $request, SantepublicService $santepublicService)
     {    
         $response = new Response();
         $hasException = false;
@@ -557,7 +557,7 @@ class InfrastructuresportiveController extends AbstractController
             $data['categorie' ] = $request->get('categorie');
             $data['categoriePrecision'] = null;
             if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
-                $allCategories = $infrastructuresportiveService->getAllCategorieInfra();
+                $allCategories = $santepublicService->getAllCategorieInfra();
                 if ($allCategories != false && count($allCategories) > 0 && !in_array($request->get('categorie'), $allCategories)) {
                         $data['categoriePrecision'] = $request->get('categorie');
                         $data['categorie' ] = "Autre à préciser";
@@ -566,8 +566,7 @@ class InfrastructuresportiveController extends AbstractController
 
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
-            $data['indicatif'] = 'IM.F_10_02';
-            
+            $data['indicatif'] = 'IM.B_02_01';
             
             // Situation
             $data['etat'] = $request->get('etat');
@@ -578,26 +577,13 @@ class InfrastructuresportiveController extends AbstractController
             $data['raisonPrecision'] = null;
 
             // Data collecte
-
-            $data['existenceGradinTribune'] = $request->get('existenceGradinTribune');
-            $data['etatGradinTribune'] = $request->get('etatGradinTribune');
-            $data['etatGlobalAiresJeu'] = $request->get('etatGlobalAiresJeu');
-            $data['etatPoteaux'] = $request->get('etatPoteaux');
-            $data['existencProjecteurs'] = $request->get('existencProjecteurs');
-            $data['etatProjecteurs'] = $request->get('etatProjecteurs');
-            $data['existenceVestiaire'] = $request->get('existenceVestiaire');
-            $data['etatVestiaire'] = $request->get('etatVestiaire');
-            $data['existenceWcVestiaire'] = $request->get('existenceWcVestiaire');
-            $data['etatWcVestiaire'] = $request->get('etatWcVestiaire');
-            $data['existenceDoucheVestiaire'] = $request->get('existenceDoucheVestiaire');
-            $data['etatDoucheVestiaire'] = $request->get('etatDoucheVestiaire');
-            $data['existenceMobiliersVestiaire'] = $request->get('existenceMobiliersVestiaire');
-            $data['etatMobiliersVestiaire'] = $request->get('etatMobiliersVestiaire');
-            $data['existencePiscine'] = $request->get('existencePiscine');
-            $data['etatMoteur'] = $request->get('etatMoteur');
-            $data['etatBassin'] = $request->get('etatBassin');
-            $data['etatBordPiscine'] = $request->get('etatBordPiscine');
-            $data['EtatPisteAthletisme'] = $request->get('EtatPisteAthletisme');
+            $data['nombrePersonnel'] = $request->get('nombrePersonnel');
+            $data['nombrePatient'] = $request->get('nombrePatient');
+            $data['existanceTerrainFoot'] = $request->get('existanceTerrainFoot');
+            $data['etatFerrainFoot'] = $request->get('etatFerrainFoot');
+            $data['existanceTerrainMixte'] = $request->get('existanceTerrainMixte');
+            $data['etatTerrainMixte'] = $request->get('etatTerrainMixte');
+         
             $data['existenceElectricite'] = $request->get('existenceElectricite');
             $data['sourceElectricite'] = $request->get('sourceElectricite');
             $data['etatElectricite'] = $request->get('etatElectricite');
@@ -682,7 +668,7 @@ class InfrastructuresportiveController extends AbstractController
             if (null != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
                 $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageInfrastructuresportive . "photo1/";
+                $directory1 = $this->pathImageSantepublique . "photo1/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo1/";
 
                 $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
@@ -691,14 +677,14 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNameInfrastructuresportive."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNameSantepublique."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
             }
             
             if (null != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
                 $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageInfrastructuresportive . "photo2/";
+                $directory2 = $this->pathImageSantepublique . "photo2/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo2/";
 
                 $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
@@ -706,14 +692,14 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNameInfrastructuresportive."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNameSantepublique."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
             }
 
             if (null != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
                 $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageInfrastructuresportive . "photo3/";
+                $directory3 = $this->pathImageSantepublique . "photo3/";
                 $directoryPublicCopy =  $this->directoryCopy. "photo3/";
 
                 $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
@@ -721,7 +707,7 @@ class InfrastructuresportiveController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNameInfrastructuresportive."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNameSantepublique."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
             }
 
@@ -729,21 +715,21 @@ class InfrastructuresportiveController extends AbstractController
             $data['moisOuverture'] = null;
             $data['moisFermeture'] = null;
             
-            $idInfra = $infrastructuresportiveService->addInfrastructure($data);
+            $idInfra = $santepublicService->addInfrastructure($data);
 
             if ($idInfra != false) {
                 // add situation et etat
-                //$idEtat = $infrastructuresportiveService->addInfrastructureRouteEtat($idInfra, $data);
+                //$idEtat = $santepublicService->addInfrastructureRouteEtat($idInfra, $data);
 
-                $idEtat = $infrastructuresportiveService->addInfrastructureSituation($idInfra, $data);
+                $idEtat = $santepublicService->addInfrastructureSituation($idInfra, $data);
 
-                $idDataCollected = $infrastructuresportiveService->addInfrastructureDonneCollecte($idInfra, $data);
+                $idDataCollected = $santepublicService->addInfrastructureDonneCollecte($idInfra, $data);
 
-                /*$idStructure = $infrastructuresportiveService->addInfrastructureRouteStructure($idInfra, $data);
+                /*$idStructure = $santepublicService->addInfrastructureRouteStructure($idInfra, $data);
 
-                $idAccotement = $infrastructuresportiveService->addInfrastructureRouteAccotement($idInfra, $data);
+                $idAccotement = $santepublicService->addInfrastructureRouteAccotement($idInfra, $data);
 
-                $idFosse = $infrastructuresportiveService->addInfrastructureRouteFosse($idInfra, $data);*/
+                $idFosse = $santepublicService->addInfrastructureRouteFosse($idInfra, $data);*/
             
 
                 /**
@@ -754,7 +740,7 @@ class InfrastructuresportiveController extends AbstractController
                 $data['numeroReference'] = $request->get('numeroReferenceFoncier');
                 $data['nomProprietaire'] = $request->get('nomProprietaireFoncier');
 
-                $idFoncier = $infrastructuresportiveService->addInfrastructureRouteFoncier($idInfra, $data);*/
+                $idFoncier = $santepublicService->addInfrastructureRouteFoncier($idInfra, $data);*/
 
                 //Travaux 
                 if (null != $request->get('hasTravaux') && ($request->get('hasTravaux') == true || $request->get('hasTravaux') == "true") && "false" != $request->get('hasTravaux')) {
@@ -766,7 +752,7 @@ class InfrastructuresportiveController extends AbstractController
                     $data['maitreOuvrageDelegueTravaux'] = $request->get('maitreOuvrageDelegueTravaux');
                     $data['idControleSurveillanceTravaux'] = $request->get('idControleSurveillanceTravaux');//idControleSurveillance
                     $data['modePassationTravaux'] = $request->get('modePassationTravaux');
-                    $data['porteAppelOffreTravaux'] = $request->get('porteAppelOffreTravaux');
+                    $data['santepubliceAppelOffreTravaux'] = $request->get('santepubliceAppelOffreTravaux');
                     $data['montantTravaux'] = $request->get('montantTravaux');
                     $data['numeroContratTravaux'] = $request->get('numeroContratTravaux');
                     //$data['precisionConsistanceTravaux'] = $request->get('precisionConsistanceTravaux');
@@ -795,7 +781,7 @@ class InfrastructuresportiveController extends AbstractController
                     $data['modeAcquisitionInformationTravaux'] = $request->get('modeAcquisitionInformationTravaux');
                     $data['bailleurTravaux'] = $request->get('bailleurTravaux');
 
-                    $idTravaux = $infrastructuresportiveService->addInfrastructureTravaux($idInfra, $data);
+                    $idTravaux = $santepublicService->addInfrastructureTravaux($idInfra, $data);
                 }
                 
                 // Fournitures
@@ -804,7 +790,7 @@ class InfrastructuresportiveController extends AbstractController
                 $data['materielsFourniture'] = $request->get('materielsFourniture');
                 $data['entiteFourniture'] = $request->get('entiteFourniture');
                 $data['modePassationFourniture'] = $request->get('modePassationFourniture');
-                $data['porteAppelOffreFourniture'] = $request->get('porteAppelOffreFourniture');
+                $data['santepubliceAppelOffreFourniture'] = $request->get('santepubliceAppelOffreFourniture');
                 $data['montantFourniture'] = $request->get('montantFourniture');
                 $data['idTitulaireFourniture'] = $request->get('idTitulaireFourniture');
                 $data['numeroContratFourniture'] = $request->get('numeroContratFourniture');
@@ -832,7 +818,7 @@ class InfrastructuresportiveController extends AbstractController
 
                 $data['dateReceptionDefinitiveFourniture'] = $dateReceptionDefinitiveFourniture;
                 $data['bailleurFourniture'] = $request->get('bailleurFourniture');
-                $idFourniture = $infrastructuresportiveService->addInfrastructureRouteFourniture($idInfra, $data);*/
+                $idFourniture = $santepublicService->addInfrastructureRouteFourniture($idInfra, $data);*/
                 // Etudes
                 if (null != $request->get('hasEtude') && ($request->get('hasEtude') == true || $request->get('hasEtude') == "true") && "false" != $request->get('hasEtude')) {
                     $data['objetContratEtude'] = $request->get('objetContratEtude');
@@ -842,7 +828,7 @@ class InfrastructuresportiveController extends AbstractController
                     $data['montantContratEtude'] = $request->get('montantContratEtude');
                     $data['numeroContratEtude'] = $request->get('numeroContratEtude');
                     $data['modePassationEtude'] = $request->get('modePassationEtude');
-                    $data['porteAppelOffreEtude'] = $request->get('porteAppelOffreEtude');
+                    $data['santepubliceAppelOffreEtude'] = $request->get('santepubliceAppelOffreEtude');
 
                     $dateContratEtude = new \DateTime($request->get('dateContratEtude'));
                     $dateContratEtude->format('Y-m-d H:i:s');
@@ -870,19 +856,19 @@ class InfrastructuresportiveController extends AbstractController
                     $data['modeAcquisitionInformationEtude'] = $request->get('modeAcquisitionInformationEtude');
                 // $data['precisionConsistanceContratEtude'] = $request->get('precisionConsistanceContratEtude');
                     $data['bailleurEtude'] = $request->get('bailleurEtude');
-                    $idEtude = $infrastructuresportiveService->addInfrastructureEtudes($idInfra, $data);
+                    $idEtude = $santepublicService->addInfrastructureEtudes($idInfra, $data);
                 }
                 
                 /**
                  * End Administrative data
                 */
-                //$idDonneAnnexe = $infrastructuresportiveService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
+                //$idDonneAnnexe = $santepublicService->addInfrastructureEducationDonneAnnexe($idInfra, $data);
             }
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive route created_successfull"
+                'message' => "santepublic route created_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -937,20 +923,20 @@ class InfrastructuresportiveController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         
@@ -958,20 +944,20 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/infrastructuresportive/liste", name="infrastructuresportive_list", methods={"GET"})
+     * @Route("/api/infra/santepublic/liste", name="santepublic_list", methods={"GET"})
      */
-    public function listeinfrastructuresportive(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function listesantepublic(Request $request, SantepublicService $santepublicService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $infrastructuresportiveService->getAllInfrastructures();
+            $routes = $santepublicService->getAllInfrastructures();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive route list_successfull",
+                'message' => "santepublic route list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1024,20 +1010,20 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/infrastructuresportive/liste/minifie", name="infrastructuresportive_list_minifie", methods={"GET"})
+     * @Route("/api/infra/santepublic/liste/minifie", name="santepublic_list_minifie", methods={"GET"})
      */
-    public function listeinfrastructuresportiveMinifie(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function listesantepublicMinifie(Request $request, SantepublicService $santepublicService)
     {    
         $response = new Response();
         
         try {
 
-            $routes = $infrastructuresportiveService->getAllInfrastructuresMinifie();
+            $routes = $santepublicService->getAllInfrastructuresMinifie();
 
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive route list_successfull",
+                'message' => "santepublic route list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1090,16 +1076,16 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infra/infrastructuresportive/info", name="infrastructuresportive_info", methods={"POST"})
+     * @Route("/api/infra/santepublic/info", name="santepublic_info", methods={"POST"})
      */
-    public function getOneInfraInfo(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function getOneInfraInfo(Request $request, SantepublicService $santepublicService)
     {    
         $response = new Response();
         
         try {
             $infraId = $request->get('id');
 
-            $routes = $infrastructuresportiveService->getOneInfraInfo(intval($infraId));
+            $routes = $santepublicService->getOneInfraInfo(intval($infraId));
             
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
@@ -1157,9 +1143,9 @@ class InfrastructuresportiveController extends AbstractController
     }
 
     /**
-     * @Route("/api/infrastructuresportive/update", name="infrastructuresportive_update", methods={"POST"})
+     * @Route("/api/santepublic/update", name="santepublic_update", methods={"POST"})
      */
-    public function update(Request $request, InfrastructuresportiveService $infrastructuresportiveService)
+    public function update(Request $request, SantepublicService $santepublicService)
     {    
         $response = new Response();
         $hasException = false;
@@ -1187,7 +1173,7 @@ class InfrastructuresportiveController extends AbstractController
                     if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
                         $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
                     }
-                    $allCategories = $infrastructuresportiveService->getAllCategorieInfra();
+                    $allCategories = $santepublicService->getAllCategorieInfra();
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1200,7 +1186,6 @@ class InfrastructuresportiveController extends AbstractController
                         } else {
                             if ($colonne == "categorie") {
                                 if ($value != "null" && $value != "undefined" && $value != "") {
-                                  
                                     if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
 
                                         $value = pg_escape_string($value);
@@ -1256,7 +1241,7 @@ class InfrastructuresportiveController extends AbstractController
                     }
                     
                     if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
-                    $idInfra = $infrastructuresportiveService->updateInfrastructure($idInfra, $updateColonneInfra);
+                    $idInfra = $santepublicService->updateInfrastructure($idInfra, $updateColonneInfra);
                     }
                 }
                 // Situation
@@ -1325,10 +1310,10 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($idSituation == 0) {
-                        $idSituation = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_03_situation', $colonneInsert, $valuesInsert);
+                        $idSituation = $santepublicService->addInfoInTableByInfrastructure('t_st_03_situation', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
-                        $idSituation = $infrastructuresportiveService->updateInfrastructureTables('t_is_03_situation', $idSituation, $updateColonneEtat);
+                        $idSituation = $santepublicService->updateInfrastructureTables('t_st_03_situation', $idSituation, $updateColonneEtat);
                         }
                     } 
                     
@@ -1391,7 +1376,7 @@ class InfrastructuresportiveController extends AbstractController
                         if ($idData == 0 && !$hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= ", date_information";
+                            $colonneInsert .= "date_information";
                             $valuesInsert .= "'$dateInfo'";
                         }
                         $valuesInsert = trim($valuesInsert);
@@ -1399,12 +1384,12 @@ class InfrastructuresportiveController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-                 
+
                     if ($idData == 0) {
-                        $idData = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_06_donnees_collectees', $colonneInsert, $valuesInsert);
+                        $idData = $santepublicService->addInfoInTableByInfrastructure('t_st_06_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneData) && !empty($updateColonneData)) {
-                        $idData = $infrastructuresportiveService->updateInfrastructureTables('t_is_06_donnees_collectees', $idData, $updateColonneData);
+                        $idData = $santepublicService->updateInfrastructureTables('t_st_06_donnees_collectees', $idData, $updateColonneData);
                         }
                     }
                 }
@@ -1473,10 +1458,10 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $idTravaux = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_08_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $santepublicService->addInfoInTableByInfrastructure('t_st_08_travaux', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
-                        $idTravaux = $infrastructuresportiveService->updateInfrastructureTables('t_is_08_travaux', $idTravaux, $updateColonneTravaux);
+                        $idTravaux = $santepublicService->updateInfrastructureTables('t_st_08_travaux', $idTravaux, $updateColonneTravaux);
                         }
                     }
                 }
@@ -1546,10 +1531,10 @@ class InfrastructuresportiveController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $idEtudes = $infrastructuresportiveService->addInfoInTableByInfrastructure('t_is_10_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $santepublicService->addInfoInTableByInfrastructure('t_st_10_etudes', $colonneInsert, $valuesInsert);
                     } else {
                         if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
-                        $idEtudes = $infrastructuresportiveService->updateInfrastructureTables('t_is_10_etudes', $idEtudes, $updateColonneEtudes);
+                        $idEtudes = $santepublicService->updateInfrastructureTables('t_st_10_etudes', $idEtudes, $updateColonneEtudes);
                         }
                     }
                 }
@@ -1559,7 +1544,7 @@ class InfrastructuresportiveController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructuresportive update_successfull"
+                'message' => "santepublic update_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -1614,20 +1599,20 @@ class InfrastructuresportiveController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'etat');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            //$infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            //$santepublicService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            //$santepublicService->cleanTablesByIdInfrastructure($idInfra, 'etat');
+            //$santepublicService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            //$santepublicService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            //$santepublicService->cleanTablesByIdInfrastructure($idInfra, 'etude');
             /*
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
            
-            $infrastructuresportiveService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            $santepublicService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
            
         }
         

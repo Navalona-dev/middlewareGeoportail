@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
-
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\RouteRepository;
 
@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\CheminferService;
+use App\Service\PontService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -27,6 +27,7 @@ use App\Exception\PropertyVideException;
 use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Exception\UnsufficientPrivilegeException;
+use App\Service\CheminferService;
 use DateTime;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
@@ -37,50 +38,24 @@ class CheminferController extends AbstractController
 {
     private $pathImage = null;
     private $pathImageCheminfer = null;
-    private $pathPublic = null;
     private $pathForNamePhotoCheminfer = null;
+    private $pathPublic = null;
     private $kernelInterface;
     private $directoryCopy = null;
+    private $urlGenerator;
     private const nameRepertoireImage = 'cf_chemin_de_fer/t_cf_01_infrastructure/';
 
-    public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
+    public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface, UrlGeneratorInterface $urlGenerator) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
         $this->pathImageCheminfer = $params->get('pathImageCheminfer');
         $this->pathPublic = $params->get('pathPublic');
         $this->pathForNamePhotoCheminfer = $params->get('pathForNamePhotoCheminfer');
         $this->kernelInterface = $kernelInterface;
-        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
+        $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic'). self::nameRepertoireImage;
+        $this->urlGenerator = $urlGenerator;
     }
 
-   
-    /**
-     * @Route("/api/cheminfer/getphoto/{id}", name="infra_cheminfer_photo", methods={"GET"})
-     */
-    public function getPhotosByInfra($id, Request $request, cheminferService $cheminferService)
-    {
-        $infoPhotosInfra = [];
-        $response = new Response();
-        if (isset($id) && !empty($id)) {
-            $infoPhotosInfra = $cheminferService->getPhotoInfraInfo($id);
-            $response->setContent(json_encode([
-                'code'  => Response::HTTP_OK,
-                'status' => true,
-                'message' => "Info infrastructure successfull",
-                'pathImage' => $this->pathImage,
-                'data' => $infoPhotosInfra
-            ]));
-        }
-        $response->setContent(json_encode([
-            'code'  => Response::HTTP_OK,
-            'status' => true,
-            'message' => "Info infrastructure successfull",
-            'pathImage' => $this->pathImage,
-            'data' => $infoPhotosInfra
-        ]));
-        return $response;
-    }
-
-    /**
+     /**
      * @Route("/api/cheminfer/deletephoto", name="cheminfer_delete_photo", methods={"POST"})
      */
     public function deletePhoto(Request $request, CheminferService $cheminferService)
@@ -130,13 +105,13 @@ class CheminferController extends AbstractController
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Photo cheminfer route deleted_successfull"
+                        'message' => "Photo Chemin de fer deleted_successfull"
                     ]));
                 } else {
                     $response->setContent(json_encode([
                         'code'  => Response::HTTP_OK,
                         'status' => true,
-                        'message' => "Pas de photo cheminfer route supprimer"
+                        'message' => "Pas de photo Chemin de fer supprimer"
                     ]));
                 }
                 
@@ -194,19 +169,19 @@ class CheminferController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*$cheminferService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
             /*
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
         
             */
         
@@ -276,7 +251,7 @@ class CheminferController extends AbstractController
                 mkdir($this->pathImageCheminfer, 0777, true);
             }
           
-            $directory1 = $this->pathImageCheminfer . "photo1/";
+            $directory1 = $this->pathForNamePhotoCheminfer . "photo1/";
       
             if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
                 $nomOriginal1 = $uploadedFile1->getClientOriginalName();
@@ -327,7 +302,7 @@ class CheminferController extends AbstractController
             }
         
 
-            $directory2 = $this->pathImageCheminfer . "photo2/";
+            $directory2 = $this->pathForNamePhotoCheminfer . "photo2/";
 
             if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
                 $nomOriginal2 = $uploadedFile2->getClientOriginalName();
@@ -386,7 +361,7 @@ class CheminferController extends AbstractController
             }
 
 
-            $directory3 = $this->pathImageCheminfer . "photo3/";
+            $directory3 = $this->pathForNamePhotoCheminfer . "photo3/";
            
             if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
                 $nomOriginal3 = $uploadedFile3->getClientOriginalName();
@@ -455,7 +430,7 @@ class CheminferController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Photo cheminfer route updated_successfull"
+                'message' => "Photo Chemin de fer updated_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
@@ -510,19 +485,19 @@ class CheminferController extends AbstractController
         }
 
         if ($hasException) {// Clean database
-            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*$cheminferService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
             /*
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'structure');
             
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
-            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
         
             */
         
@@ -532,6 +507,168 @@ class CheminferController extends AbstractController
     }
 
     /**
+     * @Route("/api/cheminfer/addphoto", name="cheminfer_add_photo", methods={"POST"})
+     */
+    public function addPhoto(Request $request, CheminferService $cheminferService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            $data = [];
+            $uploadedFile1 = $request->files->get('photo1');
+            $uploadedFile2 = $request->files->get('photo2');
+            $uploadedFile3 = $request->files->get('photo3');
+            $idInfra = $request->get('infraId');
+            $data['photo1'] = null;
+            $data['photo2'] = null;
+            $data['photo3'] = null;
+            $data['photoName1'] = null;
+            $data['photoName2'] = null;
+            $data['photoName3'] = null;
+            $setUpdate = "";
+            if (null != $uploadedFile1) {
+                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
+                $tmpPathName1 = $uploadedFile1->getPathname();
+                $directory1 = $this->pathImageCheminfer . "photo1/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
+
+                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
+                
+                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
+                //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
+
+                $data['photo1'] = $this->pathImageCheminfer."photo1/" .$nomPhoto1;
+                $data['photoName1'] = $nomPhoto1;
+                $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
+            }
+            
+            
+            if (null != $uploadedFile2) {
+                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
+                $tmpPathName2 = $uploadedFile2->getPathname();
+                $directory2 = $this->pathImageCheminfer . "photo2/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+
+                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
+                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
+                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                
+                $data['photo2'] = $this->pathImageCheminfer."photo2/" .$nomPhoto2;
+                $data['photoName2'] = $nomPhoto2;
+                if (null != $data['photo1']) {
+                    $setUpdate .= ", ";    
+                }
+                $setUpdate .= "photo2 = '".$data['photo2']."', photo_name2 = '".$data['photoName2']."'";
+            }
+
+            if (null != $uploadedFile3) {
+                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
+                $tmpPathName3 = $uploadedFile3->getPathname();
+                $directory3 = $this->pathImageCheminfer . "photo3/";
+                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+
+                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
+                $nomPhoto3 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
+                //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
+
+                $data['photo3'] = $this->pathImageCheminfer."photo3/" .$nomPhoto3;
+                $data['photoName3'] = $nomPhoto3;
+
+                if (null != $data['photo1'] || null != $data['photo2']) {
+                    $setUpdate .= ", ";    
+                }
+
+                $setUpdate .= "photo3 = '".$data['photo3']."', photo_name3 = '".$data['photoName3']."'";
+            }
+
+            if (isset($setUpdate) && !empty($setUpdate)) {
+                $idInfra = $cheminferService->addInfrastructurePhoto($idInfra, $setUpdate);
+            }
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Photo Chemin de fer created_successfull"
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$cheminferService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $cheminferService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
+    }
+
+     /**
      * @Route("/api/cheminfer/add", name="cheminfer_add", methods={"POST"})
      */
     public function create(Request $request, CheminferService $cheminferService)
@@ -540,46 +677,58 @@ class CheminferController extends AbstractController
         $hasException = false;
         $idInfra = null;
         try {
-
+            $infos = json_decode($request->getContent(), true);
             $data = [];
-            $data['region' ] = $request->get('region');
-            $data['district' ] = $request->get('district');
-            $data['communeTerrain' ] = $request->get('commune');
-            $data['ligne' ] = $request->get('ligne');
+            $data['region' ] = $infos['region'];
+            $data['district' ] = $infos['district'];
+            $data['communeTerrain' ] = $infos['commune'];
+            $data['ligne' ] = $infos['ligne'];
             $data['localite'] = null;
 
-            if ($request->get('localite') != "null" && $request->get('localite') != "undefined") {
-                $data['localite'] = $request->get('localite');
+            if ($infos['localite'] != "null" && $infos['localite'] != "undefined") {
+                $data['localite'] = $infos['localite'];
             }
            
-            $data['sourceInformation' ] = $request->get('sourceInformation');
-            $data['modeAcquisitionInformation' ] = $request->get('modeAcquisitionInformation');
-            $data['gareDebut' ] = $request->get('gareDebut');
-            $data['gareFin'] = $request->get('gareFin');
-            $data['pkDebut'] = $request->get('pkDebut');
-            $data['pkFin'] = $request->get('pkFin');
+            $data['sourceInformation' ] = $infos['sourceInformation'];
+            $data['modeAcquisitionInformation' ] = $infos['modeAcquisitionInformation'];
+            $data['gareDebut' ] = $infos['gareDebut'];
+            $data['gareFin'] = $infos['gareFin'];
+            $data['pkDebut'] = $infos['pkDebut'];
+            $data['pkFin'] = $infos['pkFin'];
 
-            $data['latitude'] = $request->get('latitude');
-            $data['longitude'] = $request->get('longitude');
-            $data['indicatif'] = 'IM.G_01_01';
+            //$data['latitude'] = $request->get('latitude');
+            //$data['longitude'] = $request->get('longitude');
+            $data['coordonnees'] = "";
+            if (count($infos['localisations']) > 0) {
+                
+                foreach ($infos['localisations'] as $key => $value) {
+                    if (count($infos['localisations']) - 1 == $key) {
+                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'];
+                    } else {
+                        $data['coordonnees'] .= (string) $value['longitude']." ". (string) $value['latitude'].", ";
+                    }
+                    
+                }
+            }
+            $data['indicatif'] = 'IM.H_02_01';
             
             
             // Situation
-            $data['etat'] = $request->get('etat');
-            $data['fonctionnel'] = $request->get('fonctionnel');
-            $data['motif'] = $request->get('motifNonFonctionel');
-            $data['sourceInformationSituation' ] = $request->get('sourceInformationSituation');
-            $data['modeAcquisitionInformationSituation' ] = $request->get('modeAcquisitionInformationSituation');
+            $data['etat'] = $infos['situation']['etat'];
+            $data['fonctionnel'] = $infos['situation']['fonctionnel'];
+            $data['motif'] = $infos['situation']['motifNonFonctionel'];
+            $data['sourceInformationSituation' ] = $infos['situation']['sourceInformationSituation'];
+            $data['modeAcquisitionInformationSituation' ] = $infos['situation']['modeAcquisitionInformationSituation'];
             $data['raisonPrecision'] = null;
 
             // Data collecte
-            $data['complétudeDesRails'] = $request->get('complétudeDesRails');
-            $data['typeTraverse'] = $request->get('typeTraverse');
-            $data['existenceTraversePourrie'] = $request->get('existenceTraversePourrie');
-            $data['existenceTraverseRouillee'] = $request->get('existenceTraverseRouillee');
-            $data['baseGravillon'] = $request->get('baseGravillon');
-            $data['sourceInformationData'] = $request->get('sourceInformationData');
-            $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
+            $data['complétudeDesRails'] = $infos['data']['complétudeDesRails'];
+            $data['typeTraverse'] = $infos['data']['typeTraverse'];
+            $data['existenceTraversePourrie'] = $infos['data']['existenceTraversePourrie'];
+            $data['existenceTraverseRouillee'] = $infos['data']['existenceTraverseRouillee'];
+            $data['baseGravillon'] = $infos['data']['baseGravillon'];
+            $data['sourceInformationData'] = $infos['data']['sourceInformationData'];
+            $data['modeAcquisitionInformationData' ] = $infos['data']['modeAcquisitionInformationData'];
            
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
@@ -636,60 +785,13 @@ class CheminferController extends AbstractController
             $data['coteFosse'] = $request->get('coteFosse');*/
             
             
-            $uploadedFile1 = $request->files->get('photo1');
-            $uploadedFile2 = $request->files->get('photo2');
-            $uploadedFile3 = $request->files->get('photo3');
             $data['photo1'] = null;
             $data['photo2'] = null;
             $data['photo3'] = null;
             $data['photoName1'] = null;
             $data['photoName2'] = null;
             $data['photoName3'] = null;
-            if (null != $uploadedFile1) {
-                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
-                $tmpPathName1 = $uploadedFile1->getPathname();
-                $directory1 = $this->pathImageCheminfer . "photo1/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo1/";
-
-                $name_temp = hash('sha512', session_id().microtime($nomOriginal1));
-                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
-                
-                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
-                //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
-
-                $data['photo1'] = $this->pathForNamePhotoCheminfer."photo1/" .$nomPhoto1;
-                $data['photoName1'] = $nomPhoto1;
-            }
             
-            if (null != $uploadedFile2) {
-                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
-                $tmpPathName2 = $uploadedFile2->getPathname();
-                $directory2 = $this->pathImageCheminfer . "photo2/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
-
-                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
-                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
-                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
-                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
-                
-                $data['photo2'] = $this->pathForNamePhotoCheminfer."photo2/" .$nomPhoto2;
-                $data['photoName2'] = $nomPhoto2;
-            }
-
-            if (null != $uploadedFile3) {
-                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
-                $tmpPathName3 = $uploadedFile3->getPathname();
-                $directory3 = $this->pathImageCheminfer . "photo3/";
-                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
-
-                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
-                $nomPhoto3 = uniqid().".".$uploadedFile3->getClientOriginalExtension();
-                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
-                //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
-
-                $data['photo3'] = $this->pathForNamePhotoCheminfer."photo3/" .$nomPhoto3;
-                $data['photoName3'] = $nomPhoto3;
-            }
 
             $data['categoriePrecision'] = null;
             $data['chargeMaximum'] = null;
@@ -922,11 +1024,11 @@ class CheminferController extends AbstractController
         
         return $response;
     }
-
+    
     /**
      * @Route("/api/infra/cheminfer/liste", name="cheminfer_list", methods={"GET"})
      */
-    public function listecheminfer(Request $request, CheminferService $cheminferService)
+    public function listeTrajeRoute(Request $request, CheminferService $cheminferService)
     {    
         $response = new Response();
         
@@ -937,7 +1039,7 @@ class CheminferController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "cheminfer route list_successfull",
+                'message' => "Chemin de fer list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1003,7 +1105,7 @@ class CheminferController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "cheminfer route list_successfull",
+                'message' => "Chemin de fer list_successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1066,11 +1168,30 @@ class CheminferController extends AbstractController
             $infraId = $request->get('id');
 
             $routes = $cheminferService->getOneInfraInfo(intval($infraId));
+
+           /* $routesInfrastructure = $cheminferService->getAllyRouteInfoMinifie();
+            $infoRoutes = [];
+            if ($routes != false && count($routes) > 0 && $routesInfrastructure != false && count($routesInfrastructure) > 0 ) {
+                foreach ($routesInfrastructure as $key => $value) {
+                   if (trim($value['nom']) == trim($routes[0]['nom_de_la_route_a_qui_il_est_rattache'])) {
+                    $infoRoutes = $value;
+                   }
+                }
             
+            }
+            
+            if ($routes != false && count($routes) > 0) {
+                $routes[0]['infoRoutes'] = false;
+                if ($infoRoutes != false) {
+                    $routes[0]['infoRoutes'] = $infoRoutes;
+                }
+            }*/
+
+            //dd($this->urlGenerator->generate('images_route', ['imageName' => '64b1501d625a7.jpg']));
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "Info infrastructure successfull",
+                'message' => "Chemin de fer infrastructure successfull",
                 'pathImage' => $this->pathImage,
                 'data' => $routes
             ]));
@@ -1144,16 +1265,30 @@ class CheminferController extends AbstractController
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
                 $colonneFloat = ['duree_theorique_de_la_traversee', 'duree_reelle_de_la_traversee', 'longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
 
-                $colonneDate = ["date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
-                
+                $colonneDate = ["date_infromation", "date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
+                 
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
                     $i = 0;
 
-                    if (array_key_exists("long", $data['infrastructure']) && array_key_exists("lat", $data['infrastructure'])) {
-                        $updateColonneInfra .= "geom = ST_GeomFromText('POINT(" . $data['infrastructure']['long'] . " " . $data['infrastructure']['lat'] . ")'), ";
+                    if (array_key_exists("localisations", $data['infrastructure'])) {
+                        $coordonnees = "";
+                        if (count($data['infrastructure']['localisations']) > 0) {
+                            
+                            foreach ($data['infrastructure']['localisations'] as $key => $value) {
+                                if (count($data['infrastructure']['localisations']) - 1 == $key) {
+                                    $coordonnees .= (string) $value['longitude']." ". (string) $value['latitude'];
+                                } else {
+                                    $coordonnees .= (string) $value['longitude']." ". (string) $value['latitude'].", ";
+                                }
+                                
+                            }
+                        }
+
+                        $updateColonneInfra .= "geom = ST_GeomFromText('LINESTRING(".$coordonnees.")'), ";
                     }
-                    $allCategories = $cheminferService->getAllCategorieInfra();
+                    
+
                     foreach ($data['infrastructure'] as $colonne => $value) {
                         if (in_array($colonne, $colonneInteger)) {
                             $value = intval($value);
@@ -1164,53 +1299,30 @@ class CheminferController extends AbstractController
                         } elseif(in_array($colonne, $colonneFloat)) {  
                             $value = floatval($value);
                         } else {
-                            if ($colonne == "categorie") {
-                                if ($value != "null" && $value != "undefined" && $value != "") {
-                                  
-                                    /*if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
-
-                                        $value = pg_escape_string($value);
-                                        if (count($data['infrastructure']) - 1 != $i) {
-                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser', ";
-                                        } else {
-                                           
-                                            $updateColonneInfra .= "precision_categorie='$value', categorie = 'Autre à préciser'";
+                            /*if ($colonne != "localisations") {
+                                if ($colonne == "nom_de_la_route_a_qui_il_est_rattache") {
+                                    if ($value != "null" && $value != "undefined" && $value != "") {
+                                        $infoYlisteRoute = $cheminferService->getInfoyRouteInfoMinifie($value);
+                                        if ($infoYlisteRoute != false && count($infoYlisteRoute) > 0) {
+                                            $value = $infoYlisteRoute[0]['nom'];
+                                            $value = pg_escape_string($value);
+                                            $value = "'$value'";
                                         }
-                                        
-                                            
-                                    } else {
-                                        $value = pg_escape_string($value);
-                                        if (count($data['infrastructure']) - 1 != $i) {
-                                            $updateColonneInfra .= "precision_categorie= null, categorie = '$value', ";
-                                        } else {
-                                            $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
-                                        }
-                                        
-                                    }*/
-                                    $value = pg_escape_string($value);
-                                    if (count($data['infrastructure']) - 1 != $i) {
-                                        $updateColonneInfra .= "categorie = '$value', ";
-                                    } else {
-                                        $updateColonneInfra .= "categorie = '$value'";
                                     }
-                                }
-                            } else {
-                                $value = pg_escape_string($value);
-                                $value = "'$value'";
-                            }
+                                } else {*/
+                                    $value = pg_escape_string($value);
+                                    $value = "'$value'";
+                                //}
                         }
+                        
 
-                        if ($colonne != "id" && $colonne != "gid" && $colonne != "long" && $colonne != "lat") {
+                        if ($colonne != "id" && $colonne != "gid"  && $colonne != "localisations") {
+                         
                             if (count($data['infrastructure']) - 1 != $i) {
-                                if ($colonne != "categorie") {
-                                    $updateColonneInfra .= $colonne."="."$value".", ";
-                                }
                                 
+                                $updateColonneInfra .= $colonne."="."$value".", ";
                             } else {
-                                if ($colonne != "categorie") {
-                                    $updateColonneInfra .= $colonne."="."$value";
-                                }
-                                
+                                $updateColonneInfra .= $colonne."="."$value";
                             }
                         } 
                         $i++;
@@ -1220,10 +1332,8 @@ class CheminferController extends AbstractController
                     if (isset($updateColonneInfra[-1]) && $updateColonneInfra[-1] == ",") {
                         $updateColonneInfra = substr($updateColonneInfra, 0, strlen($updateColonneInfra) - 1);
                     }
-                    
-                    if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {
+                   
                     $idInfra = $cheminferService->updateInfrastructure($idInfra, $updateColonneInfra);
-                    }
                 }
                 // Situation
                 $hasEtatChanged = false;
@@ -1293,9 +1403,7 @@ class CheminferController extends AbstractController
                     if ($idSituation == 0) {
                         $idSituation = $cheminferService->addInfoInTableByInfrastructure('t_cf_02_situation', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
                         $idSituation = $cheminferService->updateInfrastructureTables('t_cf_02_situation', $idSituation, $updateColonneEtat);
-                        }
                     } 
                     
                 }
@@ -1335,9 +1443,10 @@ class CheminferController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['data_collecte']) - 1 != $i) {
-                                $updateColonneData .= $colonne."="."$value".", ";
-                                $colonneInsert .= $colonne.", ";
-                                $valuesInsert .= $value.", ";
+                                    $updateColonneData .= $colonne."="."$value".", ";
+                                    $colonneInsert .= $colonne.", ";
+                                    $valuesInsert .= $value.", ";
+                                
                             } else {
                                 $updateColonneData .= $colonne."="."$value";
                                 $colonneInsert .= $colonne;
@@ -1354,7 +1463,7 @@ class CheminferController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idData == 0 && !$hasDateInformationData) {
+                        if ($idData == 0 && $hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";
@@ -1369,9 +1478,7 @@ class CheminferController extends AbstractController
                     if ($idData == 0) {
                         $idData = $cheminferService->addInfoInTableByInfrastructure('t_cf_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneData) && !empty($updateColonneData)) {
                         $idData = $cheminferService->updateInfrastructureTables('t_cf_04_donnees_collectees', $idData, $updateColonneData);
-                        }
                     }
                 }
                 // Travaux
@@ -1439,11 +1546,9 @@ class CheminferController extends AbstractController
                     }
 
                     if ($idTravaux == 0) {
-                        $idTravaux = $cheminferService->addInfoInTableByInfrastructure('t_bc_05_travaux', $colonneInsert, $valuesInsert);
+                        $idTravaux = $cheminferService->addInfoInTableByInfrastructure('t_cf_05_travaux', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneTravaux) && !empty($updateColonneTravaux)) {
-                        $idTravaux = $cheminferService->updateInfrastructureTables('t_bc_05_travaux', $idTravaux, $updateColonneTravaux);
-                        }
+                        $idTravaux = $cheminferService->updateInfrastructureTables('t_cf_05_travaux', $idTravaux, $updateColonneTravaux);
                     }
                 }
 
@@ -1499,12 +1604,6 @@ class CheminferController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idEtudes == 0) {
-                            $date = new \DateTime();
-                            $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= "date_information";
-                            $valuesInsert .= "'$dateInfo'";
-                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1512,20 +1611,153 @@ class CheminferController extends AbstractController
                     }
 
                     if ($idEtudes == 0) {
-                        $idEtudes = $cheminferService->addInfoInTableByInfrastructure('t_bc_07_etudes', $colonneInsert, $valuesInsert);
+                        $idEtudes = $cheminferService->addInfoInTableByInfrastructure('t_cf_07_etudes', $colonneInsert, $valuesInsert);
                     } else {
-                        if (isset($updateColonneEtudes) && !empty($updateColonneEtudes)) {
-                        $idEtudes = $cheminferService->updateInfrastructureTables('t_bc_07_etudes', $idEtudes, $updateColonneEtudes);
+                        $idEtudes = $cheminferService->updateInfrastructureTables('t_cf_07_etudes', $idEtudes, $updateColonneEtudes);
+                    }
+                }
+
+                // Etat
+                $hasEtatChanged = false;
+                $updateColonneEtat = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idEtat = 0;
+                if (array_key_exists('etat', $data) && count($data['etat']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    foreach ($data['etat'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idEtat = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['etat']) - 1 != $i) {
+                                $updateColonneEtat .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneEtat .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneEtat = trim($updateColonneEtat);
+                    if (isset($updateColonneEtat[-1]) && $updateColonneEtat[-1] == ",") {
+                        $updateColonneEtat = substr($updateColonneEtat, 0, strlen($updateColonneEtat) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idEtat == 0) {
+                        $idEtat = $cheminferService->addInfoInTableByInfrastructure('t_cf_03_etat', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneEtat) && !empty($updateColonneEtat)) {
+                        $idEtat = $cheminferService->updateInfrastructureTables('t_cf_03_etat', $idEtat, $updateColonneEtat);
+                        }
+                    } 
+                    
+                }
+
+                // Fourniture
+                $hasEtudeChanged = false;
+                $updateColonneFourniture = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idFourniture = 0;
+                if (array_key_exists('fournitures', $data) && count($data['fournitures']) > 0) {
+                    $hasEtudeChanged = true;
+                    $i = 0;
+                    foreach ($data['fournitures'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idFourniture = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['fournitures']) - 1 != $i) {
+                                $updateColonneFourniture .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneFourniture .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                            
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneFourniture = trim($updateColonneFourniture);
+                    if (isset($updateColonneFourniture[-1]) && $updateColonneFourniture[-1] == ",") {
+                        $updateColonneFourniture = substr($updateColonneFourniture, 0, strlen($updateColonneFourniture) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idFourniture == 0) {
+                        $idFourniture = $cheminferService->addInfoInTableByInfrastructure('t_cf_06_fourniture', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneFourniture) && !empty($updateColonneFourniture)) {
+                        $idFourniture = $cheminferService->updateInfrastructureTables('t_cf_06_fourniture', $idFourniture, $updateColonneFourniture);
                         }
                     }
                 }
             }
         
+    
         
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "cheminfer update_successfull"
+                'message' => "Chemin de fer update_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

@@ -307,7 +307,10 @@ class EaupotableRepository extends ServiceEntityRepository
     {   
         $sourceInformation = pg_escape_string($sourceInformation);
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
+        $aepgExistenceFuiteTuyaux = pg_escape_string($aepgExistenceFuiteTuyaux);
+        $aepgExistenceFerraillageVisibleReservoir = pg_escape_string($aepgExistenceFerraillageVisibleReservoir);
         $dateInfo = new \DateTime();
+        
         $sql = "INSERT into t_ep_05_donnees_collectees (id_infrastructure, aepg_fuite_sur_le_reservoir, aepg_existence_fissure_sur_le_reservoir, aepg_existence_ferraillage_visible_sur_le_reservoir, aepg_completude_tuyaux, aepg_existence_fuite_sur_les_tuyaux, aepg_nombre_borne_fontaine, aepg_nombre_borne_fontaine_fonctionnel, forage_degradation_de_l_ouvrage_de_surface_en_maconnerie, forage_etat_global_materiel, jirama_etat_global_chateau_eau, date_information, source_information, mode_acquisition_information, jirama_etat_global_materiels_machine, puits_degradation_de_l_ouvrage_de_surface_en_maconnerie, puits_etat_pompe) VALUES (".intval($idInfrastructure).", '".$aepgFuiteReservoir."', '".$aepgExistenceFissureReservoir."', '".$aepgExistenceFerraillageVisibleReservoir."', '".$aepgCompletudeTuyaux."', '".$aepgExistenceFuiteTuyaux."', '".intval($aepgNombreBorneFontaine)."', '".intval($aepgNombreBorneFontaineFonctionnel)."', '".$forageDegradationOuvrageSurfaceMaconnerie."', '".$forageEtatGlobalMateriel."', '".$jiramaEtatGlobalChateauEau."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', '".$jiramaEtatGlobalMaterielsMachine."', '".$puitsDegradationOuvrageSurfaceMaconnerie."', '".$puitsEtatPompe."')";
         
         $conn = $this->entityManager->getConnection();

@@ -1241,6 +1241,83 @@ class EaupotableController extends AbstractController
                     $idInfra = $eaupotableService->updateInfrastructure($idInfra, $updateColonneInfra);
                     }
                 }
+
+                // Beneficiaire
+
+                $hasEtatChanged = false;
+                $updateColonneBeneficiaire = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idBeneficiaire = 0;
+                if (array_key_exists('beneficiaire', $data) && count($data['beneficiaire']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    $hasDateInformationBeneficiaire = false;
+                    foreach ($data['beneficiaire'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idBeneficiaire = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                            $hasDateInformationSituation = true;
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['beneficiaire']) - 1 != $i) {
+                                $updateColonneBeneficiaire .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonneBeneficiaire .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+                        $i++;
+                    }
+
+                    $updateColonneBeneficiaire = trim($updateColonneBeneficiaire);
+                    if (isset($updateColonneBeneficiaire[-1]) && $updateColonneBeneficiaire[-1] == ",") {
+                        $updateColonneBeneficiaire = substr($updateColonneBeneficiaire, 0, strlen($updateColonneBeneficiaire) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        /*if ($idBeneficiaire == 0 && !$hasDateInformationBeneficiaire) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }*/
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idBeneficiaire == 0) {
+                        $idBeneficiaire = $eaupotableService->addInfoInTableByInfrastructure('t_ep_02_localites_beneficieires', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonneBeneficiaire) && !empty($updateColonneBeneficiaire)) {
+                        $idBeneficiaire = $eaupotableService->updateInfrastructureTables('t_ep_02_localites_beneficieires', $idBeneficiaire, $updateColonneBeneficiaire);
+                        }
+                    } 
+                    
+                }
+
                 // Situation
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";

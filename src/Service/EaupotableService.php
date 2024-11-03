@@ -30,7 +30,7 @@ class EaupotableService
     
     public function addInfrastructure($data)
     {
-        $result = $this->eaupotableRepository->addInfrastructure($data['nom'], $data['categorie'], $data['indicatif'], $data['volumeReservoir'], null, $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['longitude'], $data['latitude'], $data['district'], $data['categoriePrecision'], $data['chargeMaximum'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3'], $data['moisOuverture'], $data['moisFermeture']);
+        $result = $this->eaupotableRepository->addInfrastructure($data['nom'], $data['categorie'], $data['indicatif'], $data['volumeReservoir'], null, $data['localite'], $data['communeTerrain'], $data['sourceInformation'], $data['modeAcquisitionInformation'], $data['longitude'], $data['latitude'], $data['district'], $data['categoriePrecision'], $data['chargeMaximum'], $data['region'], $data['photo1'], $data['photo2'], $data['photo3'], $data['photoName1'], $data['photoName2'], $data['photoName3'], $data['moisOuverture'], $data['moisFermeture'], $data['localiteBeneficiaire'], $data['communeBeneficiaire']);
         return $result;
     }
 

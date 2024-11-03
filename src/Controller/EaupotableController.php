@@ -1277,7 +1277,8 @@ class EaupotableController extends AbstractController
                         }
 
                         if ($idBeneficiaire == 0) {
-                            $colonneInsert .= "id_infrastructure = ".intval($idInfra);
+                            $colonneInsert .= "id_infrastructure = ";
+                            $valuesInsert .= intval($idInfra).", ";
                         }
 
                         if ($colonne != "id" && $colonne != "gid") {

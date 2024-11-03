@@ -1276,6 +1276,10 @@ class EaupotableController extends AbstractController
                             $value = "'$value'";
                         }
 
+                        if ($idBeneficiaire == 0) {
+                            $colonneInsert .= "id_infrastructure = ".intval($idInfra);
+                        }
+
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['beneficiaire']) - 1 != $i) {
                                 $updateColonneBeneficiaire .= $colonne."="."$value".", ";
@@ -1287,6 +1291,7 @@ class EaupotableController extends AbstractController
                                 $valuesInsert .= $value;
                             }
                         } 
+
                         $i++;
                     }
 

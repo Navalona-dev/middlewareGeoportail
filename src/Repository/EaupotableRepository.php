@@ -38,7 +38,8 @@ class EaupotableRepository extends ServiceEntityRepository
             $localiteBeneficiaire = pg_escape_string($localiteBeneficiaire);
             $communeBeneficiaire = pg_escape_string($communeBeneficiaire);
             $sqlBeneficiaire = "INSERT into t_ep_02_localites_beneficieires (id_infrastructure, localite,commune) VALUES ('".intval($id)."', '".$localiteBeneficiaire."', '".$communeBeneficiaire."')";
-            $queryBeneficiaire = $conn->prepare($sql);
+            $connBeneficiare = $this->entityManager->getConnection();
+            $queryBeneficiaire = $connBeneficiare->prepare($sqlBeneficiaire);
             $queryBeneficiaire->execute();
         }
         

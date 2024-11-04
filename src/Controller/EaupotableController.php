@@ -1253,6 +1253,23 @@ class EaupotableController extends AbstractController
                     $hasEtatChanged = true;
                     $i = 0;
                     $hasDateInformationBeneficiaire = false;
+                    
+
+                    foreach ($data['beneficiaire'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idBeneficiaire = intval($value);
+                        }
+                    }
+
+                    if ($idBeneficiaire == 0) {
+                        $colonneInsert .= "id_infrastructure, ";
+                        $valuesInsert .= intval($idInfra).", ";
+                    }
+
                     foreach ($data['beneficiaire'] as $colonne => $value) {
 
                         $tabColonne = explode("__", $colonne);
@@ -1276,10 +1293,7 @@ class EaupotableController extends AbstractController
                             $value = "'$value'";
                         }
 
-                        if ($idBeneficiaire == 0) {
-                            $colonneInsert .= "id_infrastructure";
-                            $valuesInsert .= intval($idInfra).", ";
-                        }
+                      
 
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['beneficiaire']) - 1 != $i) {

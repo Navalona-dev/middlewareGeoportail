@@ -140,7 +140,7 @@ class StationpompageService
 
     public function addInfrastructurePompe($idIdDataCollecte = null, $data)
     {
-         $result = $this->stationpompageRepository->addInfrastructurePompe($idIdDataCollecte, $data['marquePompe'], $data['debitNominal'], $data['debitReel'], $data['etatPompe']);
+         $result = $this->stationpompageRepository->addInfrastructurePompe($idIdDataCollecte, $data['marquePompe'], $data['debitNominal'], $data['debitReel'], $data['etatPompe'], $data['idInfra']);
         
         if ($result) {
             return $result;

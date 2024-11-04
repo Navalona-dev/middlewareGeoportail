@@ -725,8 +725,10 @@ class StationpompageController extends AbstractController
                 $idEtat = $stationpompageService->addInfrastructureSituation($idInfra, $data);
 
                 $idDataCollected = $stationpompageService->addInfrastructureDonneCollecte($idInfra, $data);
+                
+                $data['idInfra'] = $idInfra;
 
-                $idDataPompe = $stationpompageService->addInfrastructurePompe($idDataCollected, $data);
+                $idDataPompe = $stationpompageService->addInfrastructurePompe($idDataCollected, $data, $idInfra);
 
                 /*$idStructure = $stationpompageService->addInfrastructureRouteStructure($idInfra, $data);
 
@@ -1247,6 +1249,7 @@ class StationpompageController extends AbstractController
                     $idInfra = $stationpompageService->updateInfrastructure($idInfra, $updateColonneInfra);
                     }
                 }
+
                 // Situation
                 $hasEtatChanged = false;
                 $updateColonneEtat = "";
@@ -1396,6 +1399,103 @@ class StationpompageController extends AbstractController
                         }
                     }
                 }
+
+                // Pompe
+
+                $hasEtatChanged = false;
+                $updateColonnePompe = "";
+                $colonneInsert = "";
+                $valuesInsert = "";
+                $idPompe = 0;
+                if (array_key_exists('pompe', $data) && count($data['pompe']) > 0) {
+                    $hasEtatChanged = true;
+                    $i = 0;
+                    $hasDateInformationPompe = false;
+                    
+
+                    foreach ($data['pompe'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idPompe = intval($value);
+                        }
+                    }
+
+                    if ($idPompe == 0) {
+                        $colonneInsert .= "id_donnees_collectees, ";
+                        $valuesInsert .= intval($idData).", ";
+                    }
+
+                    foreach ($data['pompe'] as $colonne => $value) {
+
+                        $tabColonne = explode("__", $colonne);
+                        $colonne = $tabColonne[1];
+
+                        if ($colonne == "id" || $colonne == "gid") {
+                            $idPompe = intval($value);
+                        }
+                        
+                        if (in_array($colonne, $colonneInteger)) {
+                            $value = intval($value);
+                        } elseif (in_array($colonne, $colonneFloat)) {  
+                            $value = floatval($value);
+                        } elseif (in_array($colonne, $colonneDate)) {
+                            $date = new \DateTime($value);
+                            $value = $date->format('Y-m-d H:i:s');
+                            $value = "'$value'";
+                            $hasDateInformationSituation = true;
+                        } else {
+                            $value = pg_escape_string($value);
+                            $value = "'$value'";
+                        }
+
+                        
+
+                        if ($colonne != "id" && $colonne != "gid") {
+                            if (count($data['pompe']) - 1 != $i) {
+                                $updateColonnePompe .= $colonne."="."$value".", ";
+                                $colonneInsert .= $colonne.", ";
+                                $valuesInsert .= $value.", ";
+                            } else {
+                                $updateColonnePompe .= $colonne."="."$value";
+                                $colonneInsert .= $colonne;
+                                $valuesInsert .= $value;
+                            }
+                        } 
+
+                        $i++;
+                    }
+
+                    $updateColonnePompe = trim($updateColonnePompe);
+                    if (isset($updateColonnePompe[-1]) && $updateColonnePompe[-1] == ",") {
+                        $updateColonnePompe = substr($updateColonnePompe, 0, strlen($updateColonnePompe) - 1);
+                    }
+
+                    if ($valuesInsert) {
+                        /*if ($idPompe == 0 && !$hasDateInformationPompe) {
+                            $date = new \DateTime();
+                            $dateInfo = $date->format('Y-m-d H:i:s');
+                            $colonneInsert .= "date_information";
+                            $valuesInsert .= "'$dateInfo'";
+                        }*/
+                        $valuesInsert = trim($valuesInsert);
+                        if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
+                            $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
+                        }
+                    }
+
+                    if ($idPompe == 0) {
+                        $idPompe = $stationpompageService->addInfoInTableByInfrastructure('t_so_08_pompes', $colonneInsert, $valuesInsert);
+                    } else {
+                        if (isset($updateColonnePompe) && !empty($updateColonnePompe)) {
+                        $idPompe = $stationpompageService->updateInfrastructureTables('t_so_08_pompes', $idPompe, $updateColonnePompe);
+                        }
+                    } 
+                                    
+                }
+
                 // Travaux
                 $hasTravauxChanged = false;
                 $updateColonneTravaux = "";

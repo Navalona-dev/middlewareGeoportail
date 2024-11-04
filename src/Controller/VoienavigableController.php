@@ -1464,12 +1464,12 @@ class VoienavigableController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idSituation == 0 && !$hasDateInformationSituation) {
+                        /*if ($idSituation == 0 && !$hasDateInformationSituation) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= ", date_information";
                             $valuesInsert .= "'$dateInfo'";
-                        }
+                        }*/
                         
 
                         $valuesInsert = trim($valuesInsert);
@@ -1477,7 +1477,7 @@ class VoienavigableController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-
+            
                     if ($idSituation == 0) {
                         $idSituation = $voienavigableService->addInfoInTableByInfrastructure('t_vn_02_situation', $colonneInsert, $valuesInsert);
                     } else {
@@ -1561,7 +1561,6 @@ class VoienavigableController extends AbstractController
                         }
                     }
 
-                   // dd($colonneInsert, $valuesInsert);
                     if ($idData == 0) {
                         $idData = $voienavigableService->addInfoInTableByInfrastructure('t_vn_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {

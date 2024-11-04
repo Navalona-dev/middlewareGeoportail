@@ -55,6 +55,27 @@ class VoienavigableController extends AbstractController
         $this->urlGenerator = $urlGenerator;
     }
 
+    /**
+     * @Route("/api/voienavigable/photos", name="voienavigable_get_photo", methods={"POST"})
+     */
+    public function getPhoto(Request $request, VoienavigableService $voienavigableService)
+    {   
+        $response = new Response();
+        $idInfra = $request->get('infraId');
+
+        $infoPhotosInfra = $voienavigableService->getPhotoInfraInfo($idInfra);
+
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Photos Voie navigable successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+
+        $response->headers->set('Content-Type', 'application/json');
+    }
+
      /**
      * @Route("/api/voienavigable/deletephoto", name="voienavigable_delete_photo", methods={"POST"})
      */

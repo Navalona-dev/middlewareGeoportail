@@ -1533,13 +1533,6 @@ class VoienavigableController extends AbstractController
                                     
                                 
                             } else {
-                                if ($colonne == 'source_information') {
-                                    $date = new \DateTime();
-                                    $dateInfo = $date->format('Y-m-d H:i:s');
-                                    $colonneInsert .= ", date_information";
-                                    $valuesInsert .= "'$dateInfo'";
-                                }
-
                                 $updateColonneData .= $colonne."="."$value";
                                 $colonneInsert .= $colonne;
                                 $valuesInsert .= $value;

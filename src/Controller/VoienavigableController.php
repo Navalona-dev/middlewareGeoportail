@@ -1536,8 +1536,8 @@ class VoienavigableController extends AbstractController
                                 if ($colonne == 'source_information') {
                                     $date = new \DateTime();
                                     $dateInfo = $date->format('Y-m-d H:i:s');
-                                    $colonneInsert .= ", date_information";
-                                    $valuesInsert .= "'$dateInfo'";
+                                    $colonneInsert .= "date_information, ";
+                                    $valuesInsert .= "'$dateInfo', ";
                                 }
 
                                 $updateColonneData .= $colonne."="."$value";

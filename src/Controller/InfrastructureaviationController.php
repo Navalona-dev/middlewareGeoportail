@@ -1384,7 +1384,7 @@ class InfrastructureaviationController extends AbstractController
                         if ($idData == 0 && !$hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= "date_information";
+                            $colonneInsert .= ", date_information";
                             $valuesInsert .= "'$dateInfo'";
                         }
                         $valuesInsert = trim($valuesInsert);

@@ -68,7 +68,7 @@ class PharePortRepository extends ServiceEntityRepository
 
     public function getAllPortInfo()
     {
-        $sql = 'select nom from t_pr_01_infrastructure as port';
+        $sql = 'select port.nom from t_pr_01_infrastructure as port';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

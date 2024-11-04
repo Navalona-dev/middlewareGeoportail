@@ -1457,12 +1457,14 @@ class VoienavigableController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        /*if ($idSituation == 0 && !$hasDateInformationSituation) {
+                        if ($idSituation == 0 && !$hasDateInformationSituation) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= "date_information";
+                            $colonneInsert .= ", date_information";
                             $valuesInsert .= "'$dateInfo'";
-                        }*/
+                        }
+                        
+
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1532,12 +1534,12 @@ class VoienavigableController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        /*if ($idData == 0 && $hasDateInformationData) {
+                        if ($idData == 0 && $hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= "date_information";
+                            $colonneInsert .= ", date_information";
                             $valuesInsert .= "'$dateInfo'";
-                        }*/
+                        }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);

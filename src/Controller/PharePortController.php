@@ -1616,4 +1616,72 @@ class PharePortController extends AbstractController
         
         return $response;
     }
+
+    
+
+    /**
+     * @Route("/api/infra/phareport/liste", name="phareport_list", methods={"GET"})
+     */
+    public function getAllPortInfo(Request $request, PharePortService $phareportService)
+    {    
+        $response = new Response();
+        
+        try {
+
+            $ports = $phareportService->getAllPortInfo();
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "port list_successfull",
+                'data' => $ports
+            ]));
+            
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        return $response;
+    }
+
 }

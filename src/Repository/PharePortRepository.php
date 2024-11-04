@@ -66,6 +66,18 @@ class PharePortRepository extends ServiceEntityRepository
         return $idInfra;
     }
 
+    public function getAllPortInfo()
+    {
+        $sql = 'select nom from t_pr_01_infrastructure as port';
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+       
+    }
+
     public function getAllCategorieInfra()
     {
         $abattage = pg_escape_string('Infrastructure sportive');

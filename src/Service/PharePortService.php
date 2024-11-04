@@ -58,6 +58,16 @@ class PharePortService
         return 0;
     }
 
+    public function getAllPortInfo()
+    {
+        $ports = $this->pharePortRepository->getAllPortInfo();
+        if (count($ports) > 0) {
+            return $ports;
+        }
+        return 0;
+    }
+
+    
     public function getAllInfrastructuresMinifie()
     {
         $routes = $this->pharePortRepository->getAllInfrastructuresMinifie();

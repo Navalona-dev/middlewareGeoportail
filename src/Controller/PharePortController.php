@@ -1620,7 +1620,7 @@ class PharePortController extends AbstractController
     
 
     /**
-     * @Route("/api/infra/phareport/liste", name="phareport_list", methods={"GET"})
+     * @Route("/api/infra/port/liste", name="phareport_list", methods={"GET"})
      */
     public function getAllPortInfo(Request $request, PharePortService $phareportService)
     {    

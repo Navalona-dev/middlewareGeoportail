@@ -588,10 +588,23 @@ class InfrastructureaviationController extends AbstractController
             $data['bitumeExistenceTrou'] = $request->get('bitumeExistenceTrou');
             $data['existencePoteauxAlignement'] = $request->get('existencePoteauxAlignement');
             $data['etatPoteauxAlignement'] = $request->get('etatPoteauxAlignement');
-            $data['enTerreTrou'] = $request->get('enTerreTrou');
+            $data['enTerreTrou'] = null;
+            if ($request->get('enTerreTrou') != "null" && $request->get('enTerreTrou') != "undefined" && $request->get('enTerreTrou') != "") {
+                $data['enTerreTrou'] = $request->get('enTerreTrou');
+            }
+           
             $data['betonFissure'] = $request->get('betonFissure');
-            $data['betonExistenceFerraillageVisible'] = $request->get('betonExistenceFerraillageVisible');
-            $data['betonExistenceTrou'] = $request->get('betonExistenceTrou');
+            $data['betonExistenceFerraillageVisible'] = null;
+            if ($request->get('betonExistenceFerraillageVisible') != "null" && $request->get('betonExistenceFerraillageVisible') != "undefined" && $request->get('betonExistenceFerraillageVisible') != "") {
+                $data['betonExistenceFerraillageVisible'] = $request->get('betonExistenceFerraillageVisible');
+            }
+
+            $data['betonExistenceTrou'] = null;
+            if ($request->get('betonExistenceTrou') != "null" && $request->get('betonExistenceTrou') != "undefined" && $request->get('betonExistenceTrou') != "") {
+                $data['betonExistenceTrou'] = $request->get('betonExistenceTrou');
+            }
+
+            //$data['betonExistenceTrou'] = $request->get('betonExistenceTrou');
             $data['sourceElectricite'] = $request->get('sourceElectricite');
             $data['etatElectricite'] = $request->get('etatElectricite');
             $data['existenceEau'] = $request->get('existenceEau');
@@ -608,6 +621,7 @@ class InfrastructureaviationController extends AbstractController
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
             $data['volumeReservoir'] = null;
+           
             /* $data['structure'] = $request->get('structure');
             $data['procedureTravaux'] = $request->get('procedureTravaux');
             $data['precisionStructure'] = $request->get('precisionStructure');
@@ -875,7 +889,7 @@ class InfrastructureaviationController extends AbstractController
             $response->setContent(json_encode([
                 'code'  => Response::HTTP_OK,
                 'status' => true,
-                'message' => "infrastructureaviation route created_successfull"
+                'message' => "infrastructureaviation created_successfull"
             ]));
 
             $response->headers->set('Content-Type', 'application/json');

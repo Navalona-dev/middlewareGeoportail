@@ -55,6 +55,33 @@ class CheminferController extends AbstractController
         $this->urlGenerator = $urlGenerator;
     }
 
+    /**
+     * @Route("/api/cheminfer/getphoto/{id}", name="infra_cheminfer_photo", methods={"GET"})
+     */
+    public function getPhotosByInfra($id, Request $request, CheminferService $cheminferService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+            $infoPhotosInfra = $cheminferService->getPhotoInfraInfo($id);
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImage,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImage,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
      /**
      * @Route("/api/cheminfer/deletephoto", name="cheminfer_delete_photo", methods={"POST"})
      */
@@ -1370,6 +1397,13 @@ class CheminferController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['situations']) - 1 != $i) {
+                                if ($colonne == 'source_information') {
+                                    $date = new \DateTime();
+                                    $dateInfo = $date->format('Y-m-d H:i:s');
+                                    $colonneInsert .= "date_information, ";
+                                    $valuesInsert .= "'$dateInfo', ";
+                                }
+
                                 $updateColonneEtat .= $colonne."="."$value".", ";
                                 $colonneInsert .= $colonne.", ";
                                 $valuesInsert .= $value.", ";
@@ -1388,12 +1422,12 @@ class CheminferController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idSituation == 0 && !$hasDateInformationSituation) {
+                        /*if ($idSituation == 0 && !$hasDateInformationSituation) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";
                             $valuesInsert .= "'$dateInfo'";
-                        }
+                        }*/
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
@@ -1443,11 +1477,23 @@ class CheminferController extends AbstractController
 
                         if ($colonne != "id" && $colonne != "gid") {
                             if (count($data['data_collecte']) - 1 != $i) {
+                                    if ($colonne == 'source_information') {
+                                        $date = new \DateTime();
+                                        $dateInfo = $date->format('Y-m-d H:i:s');
+                                        $colonneInsert .= "date_information, ";
+                                        $valuesInsert .= "'$dateInfo', ";
+                                    }
                                     $updateColonneData .= $colonne."="."$value".", ";
                                     $colonneInsert .= $colonne.", ";
                                     $valuesInsert .= $value.", ";
                                 
                             } else {
+                                if ($colonne == 'source_information') {
+                                    $date = new \DateTime();
+                                    $dateInfo = $date->format('Y-m-d H:i:s');
+                                    $colonneInsert .= "date_information, ";
+                                    $valuesInsert .= "'$dateInfo', ";
+                                }
                                 $updateColonneData .= $colonne."="."$value";
                                 $colonneInsert .= $colonne;
                                 $valuesInsert .= $value;
@@ -1463,12 +1509,12 @@ class CheminferController extends AbstractController
                     }
 
                     if ($valuesInsert) {
-                        if ($idData == 0 && $hasDateInformationData) {
+                        /*if ($idData == 0 && $hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= "date_information";
                             $valuesInsert .= "'$dateInfo'";
-                        }
+                        }*/
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);

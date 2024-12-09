@@ -568,7 +568,7 @@ class EducationController extends AbstractController
 
             $data['latitude'] = $request->get('latitude');
             $data['longitude'] = $request->get('longitude');
-            $data['indicatif'] = 'IM.J_01_02';
+            $data['indicatif'] = 'IM.A';
             
             
             // Situation

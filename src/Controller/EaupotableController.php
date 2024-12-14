@@ -581,8 +581,17 @@ class EaupotableController extends AbstractController
 
             // Data collecte
             $data['aepgFuiteReservoir'] = $request->get('aepgFuiteReservoir');
-            $data['aepgExistenceFissureReservoir'] = $request->get('aepgExistenceFissureReservoir');
-            $data['aepgExistenceFerraillageVisibleReservoir'] = $request->get('aepgExistenceFerraillageVisibleReservoir');
+
+            $data['aepgExistenceFissureReservoir'] = null;
+            if ($request->get('aepgExistenceFissureReservoir') != "null" && $request->get('aepgExistenceFissureReservoir') != "undefined") {
+                $data['aepgExistenceFissureReservoir'] = $request->get('aepgExistenceFissureReservoir');
+            }
+
+            $data['aepgExistenceFerraillageVisibleReservoir'] = null;
+            if ($request->get('aepgExistenceFerraillageVisibleReservoir') != "null" && $request->get('aepgExistenceFerraillageVisibleReservoir') != "undefined") {
+                $data['aepgExistenceFerraillageVisibleReservoir'] = $request->get('aepgExistenceFerraillageVisibleReservoir');
+            }
+
             $data['aepgCompletudeTuyaux'] = $request->get('aepgCompletudeTuyaux');
             $data['aepgExistenceFuiteTuyaux'] = $request->get('aepgExistenceFuiteTuyaux');
             $data['aepgNombreBorneFontaine'] = $request->get('aepgNombreBorneFontaine');
@@ -1309,7 +1318,7 @@ class EaupotableController extends AbstractController
 
                         $i++;
                     }
-
+                   
                     $updateColonneBeneficiaire = trim($updateColonneBeneficiaire);
                     if (isset($updateColonneBeneficiaire[-1]) && $updateColonneBeneficiaire[-1] == ",") {
                         $updateColonneBeneficiaire = substr($updateColonneBeneficiaire, 0, strlen($updateColonneBeneficiaire) - 1);
@@ -1327,7 +1336,6 @@ class EaupotableController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-
                     if ($idBeneficiaire == 0) {
                         $idBeneficiaire = $eaupotableService->addInfoInTableByInfrastructure('t_ep_02_localites_beneficieires', $colonneInsert, $valuesInsert);
                     } else {

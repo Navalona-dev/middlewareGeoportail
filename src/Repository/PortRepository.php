@@ -68,7 +68,7 @@ class PortRepository extends ServiceEntityRepository
 
     public function getAllCategorieInfra()
     {
-        $abattage = pg_escape_string('Infrastructure sportive');
+        $abattage = pg_escape_string('Port');
 
         $sql = "SELECT categorie.categorie as categorie FROM x_categorie as categorie  where categorie.infrastucture = '".$abattage."'";
 

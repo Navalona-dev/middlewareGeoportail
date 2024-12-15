@@ -558,7 +558,7 @@ class EaupotableController extends AbstractController
             $data['categoriePrecision'] = null;
             if ($request->get('categorie') != "null" && $request->get('categorie') != "undefined") {
                 $allCategories = $eaupotableService->getAllCategorieInfra();
-                if ($allCategories != false && count($allCategories) > 0 && !in_array($request->get('categorie'), $allCategories)) {
+                if ($allCategories != false && count($allCategories) > 0 && in_array($request->get('categorie'), $allCategories)) {
                         $data['categoriePrecision'] = $request->get('categorie');
                         $data['categorie' ] = "Autre à préciser";
                 }

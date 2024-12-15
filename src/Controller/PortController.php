@@ -590,7 +590,8 @@ class PortController extends AbstractController
             $data['existenceRampeEau'] = $request->get('existenceRampeEau');
             $data['existenceFissureRampeEau'] = $request->get('existenceFissureRampeEau');
             $data['existenceFerraillageVisibleRampeEau'] = $request->get('existenceFerraillageVisibleRampeEau');
-           
+            $data['existenceFissureDarse'] = $request->get('existenceFissureDarse');
+            
             $data['existenceElectricite'] = $request->get('existenceElectricite');
             $data['sourceElectricite'] = $request->get('sourceElectricite');
             $data['etatElectricite'] = $request->get('etatElectricite');

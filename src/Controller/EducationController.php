@@ -159,7 +159,7 @@ class EducationController extends AbstractController
         } catch (MappingException $MappingException) {
             $hasException = true;
             $response->setContent(json_encode([
-                'shasExceptiontatus' => false,
+                'status' => false,
                 'message' => $MappingException->getMessage()
             ]));
         } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
@@ -215,10 +215,11 @@ class EducationController extends AbstractController
         return $response;
     }
 
+
     /**
      * @Route("/api/education/updatephoto", name="education_update_photo", methods={"POST"})
      */
-    public function updatePhoto(Request $request, EducationService $educationService)
+    public function updatePhoto(Request $request, EducationService $eductionService)
     { 
         $response = new Response();
         $hasException = false;
@@ -247,7 +248,7 @@ class EducationController extends AbstractController
             $data['photoName3'] = null;
             $setUpdate = "";
 
-            $infoPhotosInfra = $educationService->getPhotoInfraInfo($idInfra);
+            $infoPhotosInfra = $eductionService->getPhotoInfraInfo($idInfra);
             $toDeletePhoto1 = false;
             $toDeletePhoto2 = false;
             $toDeletePhoto3 = false;
@@ -326,8 +327,6 @@ class EducationController extends AbstractController
                 }
             }
         
-            if (isset($infoPhotosInfra[0]["photo2"]) && !empty($infoPhotosInfra[0]["photo2"]) && $infoPhotosInfra[0]["photo2"] != "") {
-                $toDeletePhoto2 = true;
 
             $directory2 = $this->pathImageEducation . "photo2/";
 
@@ -450,7 +449,7 @@ class EducationController extends AbstractController
             
          
             if (isset($setUpdate) && !empty($setUpdate)) {
-                $idInfra = $educationService->addInfrastructurePhoto($idInfra, $setUpdate);
+                $idInfra = $eductionService->addInfrastructurePhoto($idInfra, $setUpdate);
             }
             
 
@@ -461,7 +460,7 @@ class EducationController extends AbstractController
             ]));
 
             $response->headers->set('Content-Type', 'application/json');
-        }
+
         } catch (PropertyVideException $PropertyVideException) {
             $hasException = true;
             $response->setContent(json_encode([

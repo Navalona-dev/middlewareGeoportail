@@ -39,7 +39,7 @@ class TrajetrouteController extends AbstractController
     private $pathImage = null;
     private $pathImageTrajetroute = null;
     private $pathPublic = null;
-    private $pathForNamePhotoTrajetroute = null;
+    private $pathForNamePhotoTrajetroute = null; 
     private $kernelInterface;
     private $directoryCopy = null;
     private $urlGenerator;
@@ -300,7 +300,7 @@ class TrajetrouteController extends AbstractController
                 move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
                 //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
 
-                $data['photo1'] = $this->pathForNamePhototrajetroute."photo1/" .$nomPhoto1;
+                $data['photo1'] = $this->pathForNamePhotoTrajetroute."photo1/" .$nomPhoto1;
                 $data['photoName1'] = $nomPhoto1;
                 $setUpdate .= "photo1 = '".$data['photo1']."', photo_name1 = '".$data['photoName1']."'";
                
@@ -350,7 +350,7 @@ class TrajetrouteController extends AbstractController
                 move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
                 //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
                 
-                $data['photo2'] = $this->pathForNamePhototrajetroute."photo2/" .$nomPhoto2;
+                $data['photo2'] = $this->pathForNamePhotoTrajetroute."photo2/" .$nomPhoto2;
                 $data['photoName2'] = $nomPhoto2;
                 //if (null != $data['photo1']) {
                     if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
@@ -409,7 +409,7 @@ class TrajetrouteController extends AbstractController
                 move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhototrajetroute."photo3/" .$nomPhoto3;
+                $data['photo3'] = $this->pathForNamePhotoTrajetroute."photo3/" .$nomPhoto3;
                 $data['photoName3'] = $nomPhoto3;
                
                 if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {

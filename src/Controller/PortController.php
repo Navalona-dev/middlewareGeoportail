@@ -1195,7 +1195,7 @@ class PortController extends AbstractController
                             if ($colonne == "categorie") {
                                 if ($value != "null" && $value != "undefined" && $value != "") {
                                   
-                                    if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
+                                    /*if ($allCategories != false && count($allCategories) > 0 && !in_array($value, $allCategories)) {
 
                                         $value = pg_escape_string($value);
                                         if (count($data['infrastructure']) - 1 != $i) {
@@ -1214,13 +1214,13 @@ class PortController extends AbstractController
                                             $updateColonneInfra .= "precision_categorie= null, categorie = '$value'";
                                         }
                                         
-                                    }
-                                    /*$value = pg_escape_string($value);
+                                    }*/
+                                    $value = pg_escape_string($value);
                                     if (count($data['infrastructure']) - 1 != $i) {
                                         $updateColonneInfra .= "categorie = '$value', ";
                                     } else {
                                         $updateColonneInfra .= "categorie = '$value'";
-                                    }*/
+                                    }
                                 }
                             } else {
                                 $value = pg_escape_string($value);

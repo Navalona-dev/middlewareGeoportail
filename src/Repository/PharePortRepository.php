@@ -15,7 +15,7 @@ class PharePortRepository extends ServiceEntityRepository
         $this->entityManager = $registry->getManager("middleware");
     }
 
-    public function addInfrastructure($nom = null, $categorie = null, $indicatif = null, $type = null, $nomPortRattache = null, $localite = null, $communeTerrain = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $chargeMaximum = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null, $moisOuverture = null, $moisFermeture = null )
+    public function addInfrastructure($nom = null, $categorie = null, $indicatif = null, $nomPortRattache = null, $localite = null, $communeTerrain = null, $sourceInformation = null, $modeAcquisitionInformation = null, $longitude = null, $latitude = null, $district = null, $categoriePrecision = null, $chargeMaximum = null, $region = null, $photo1 = null, $photo2 = null, $photo3 = null, $photo_name1 = null, $photo_name2 = null, $photo_name3 = null, $moisOuverture = null, $moisFermeture = null )
     {
         $dateInfo = new \DateTime();
         $localite = pg_escape_string($localite);
@@ -24,7 +24,7 @@ class PharePortRepository extends ServiceEntityRepository
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $region = pg_escape_string($region);
         $nom = pg_escape_string($nom);
-        $sql = "INSERT into t_ph_01_infrastructure (nom, indicatif, categorie, nom_du_port_a_qui_il_est_rattache, localite, commune_terrain, date_information, source_information, mode_acquisition_information, geom, photo_name1, photo_name2, photo_name3, district, region, photo1, photo2, photo3, \"type\") VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$nomPortRattache."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$photo_name1."', '".$photo_name2."', '".$photo_name3."', '".$district."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."', '".$type."')";
+        $sql = "INSERT into t_ph_01_infrastructure (nom, indicatif, categorie, nom_du_port_a_qui_il_est_rattache, localite, commune_terrain, date_information, source_information, mode_acquisition_information, geom, photo_name1, photo_name2, photo_name3, district, region, photo1, photo2, photo3) VALUES ('".$nom."', '".$indicatif."', '".$categorie."', '".$nomPortRattache."', '".$localite."', '".$communeTerrain."', '".$dateInfo->format("Y-m-d")."', '".$sourceInformation."', '".$modeAcquisitionInformation."', ST_GeomFromText('POINT(" . $longitude . " " . $latitude . ")', 4326), '".$photo_name1."', '".$photo_name2."', '".$photo_name3."', '".$district."', '".$region."', '".$photo1."', '".$photo2."', '".$photo3."')";
         
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

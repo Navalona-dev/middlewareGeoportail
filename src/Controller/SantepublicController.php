@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\CreateMediaObjectAction;
-use App\Service\santepublicService;
+use App\Service\SantepublicService;
 
 
 use Doctrine\ORM\ORMInvalidArgumentException;

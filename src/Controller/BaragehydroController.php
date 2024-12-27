@@ -578,11 +578,30 @@ class BaragehydroController extends AbstractController
             $data['sourceInformationData'] = $request->get('sourceInformationData');
             $data['modeAcquisitionInformationData' ] = $request->get('modeAcquisitionInformationData');
             
-            $data['betonExistenceFissureBeton'] = $request->get('betonExistenceFissureBeton');
-            $data['betonExistenceFerraillageVisible'] = $request->get('betonExistenceFerraillageVisible');
-            $data['betonExistenceAffoullementPiedOuvrage'] = $request->get('betonExistenceAffoullementPiedOuvrage');
-            $data['betonExistenceErosionLongRivesBarrage'] = $request->get('betonExistenceErosionLongRivesBarrage');
+            $data['betonExistenceFissureBeton'] = null;
+
+            if ($request->get('betonExistenceFissureBeton') != null && $request->get('betonExistenceFissureBeton') != "null" && $request->get('betonExistenceFissureBeton') != "undefined") {
+                $data['betonExistenceFissureBeton'] = $request->get('betonExistenceFissureBeton');
+            }
+
+            $data['betonExistenceFerraillageVisible'] = null;
+
+            if ($request->get('betonExistenceFerraillageVisible') != null && $request->get('betonExistenceFerraillageVisible') != "null" && $request->get('betonExistenceFerraillageVisible') != "undefined") {
+                $data['betonExistenceFerraillageVisible'] = $request->get('betonExistenceFerraillageVisible');
+            }
+
+            $data['betonExistenceAffoullementPiedOuvrage'] = null;
+
+            if ($request->get('betonExistenceAffoullementPiedOuvrage') != null && $request->get('betonExistenceAffoullementPiedOuvrage') != "null" && $request->get('betonExistenceAffoullementPiedOuvrage') != "undefined") {
+                $data['betonExistenceAffoullementPiedOuvrage'] = $request->get('betonExistenceAffoullementPiedOuvrage');
+            }
            
+            $data['betonExistenceErosionLongRivesBarrage'] = null;
+
+            if ($request->get('betonExistenceErosionLongRivesBarrage') != null && $request->get('betonExistenceErosionLongRivesBarrage') != "null" && $request->get('betonExistenceErosionLongRivesBarrage') != "undefined") {
+                $data['betonExistenceErosionLongRivesBarrage'] = $request->get('betonExistenceErosionLongRivesBarrage');
+            }
+
             $data['betonAncrageOuvrageRivesCoursEau'] = $request->get('betonAncrageOuvrageRivesCoursEau');
             $data['remblaiFissurationDesRemblais'] = $request->get('remblaiFissurationDesRemblais');
             $data['remblaiRavinement'] = $request->get('remblaiRavinement');

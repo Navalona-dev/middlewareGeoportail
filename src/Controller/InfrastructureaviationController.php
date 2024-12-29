@@ -1399,7 +1399,7 @@ class InfrastructureaviationController extends AbstractController
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
                             $colonneInsert .= ", date_information";
-                            $valuesInsert .= "'$dateInfo'";
+                            $valuesInsert .= ", '$dateInfo'";
                         }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {

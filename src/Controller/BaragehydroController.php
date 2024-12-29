@@ -602,7 +602,12 @@ class BaragehydroController extends AbstractController
                 $data['betonExistenceErosionLongRivesBarrage'] = $request->get('betonExistenceErosionLongRivesBarrage');
             }
 
-            $data['betonAncrageOuvrageRivesCoursEau'] = $request->get('betonAncrageOuvrageRivesCoursEau');
+            $data['betonAncrageOuvrageRivesCoursEau'] = null;
+
+            if ($request->get('betonAncrageOuvrageRivesCoursEau') != null && $request->get('betonAncrageOuvrageRivesCoursEau') != "null" && $request->get('betonAncrageOuvrageRivesCoursEau') != "undefined") {
+                $data['betonAncrageOuvrageRivesCoursEau'] = $request->get('betonAncrageOuvrageRivesCoursEau');
+            }
+          
             $data['remblaiFissurationDesRemblais'] = $request->get('remblaiFissurationDesRemblais');
             $data['remblaiRavinement'] = $request->get('remblaiRavinement');
             $data['remblaiErosionLongRechargeAval'] = $request->get('remblaiErosionLongRechargeAval');
@@ -1154,7 +1159,7 @@ class BaragehydroController extends AbstractController
                 'id_ingenieurs_reception_definitive', 'montant_contrat', 'nombre_voies', 'pk_debut', 'pk_fin', 'capacite_de_voiture_accueillies'];
                 $colonneFloat = ['longueur_barrage', 'superficie_dominee', 'duree_theorique_de_la_traversee', 'duree_reelle_de_la_traversee', 'longueur', 'largeur', 'charge_maximum', 'Largeur_chaussée', 'Largeur_accotements', 'decalage_de_la_jointure_du_tablier_chaussee_en_affaissement', 'decalage_de_la_jointure_du_tablier_chaussee_en_ecartement'];
 
-                $colonneDate = ["date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
+                $colonneDate = ["date_infromation", "date_information", "date_contrat", "date_ordre_service", "date_reception_provisoire", "date_reception_definitive"];
                 
                 if (array_key_exists('infrastructure', $data) && count($data['infrastructure']) > 0) {
                     $hasInfraChanged = true;
@@ -1291,7 +1296,7 @@ class BaragehydroController extends AbstractController
                         if ($idSituation == 0 && !$hasDateInformationSituation) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= "date_information";
+                            $colonneInsert .= ", date_information";
                             $valuesInsert .= "'$dateInfo'";
                         }
                         $valuesInsert = trim($valuesInsert);
@@ -1299,7 +1304,7 @@ class BaragehydroController extends AbstractController
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-
+                    //dd($idSituation, $colonneInsert, $valuesInsert);
                     if ($idSituation == 0) {
                         $idSituation = $barragehydroService->addInfoInTableByInfrastructure('t_bh_02_situation', $colonneInsert, $valuesInsert);
                     } else {
@@ -1367,15 +1372,15 @@ class BaragehydroController extends AbstractController
                         if ($idData == 0 && !$hasDateInformationData) {
                             $date = new \DateTime();
                             $dateInfo = $date->format('Y-m-d H:i:s');
-                            $colonneInsert .= "date_information";
-                            $valuesInsert .= "'$dateInfo'";
+                            $colonneInsert .= ", date_information";
+                            $valuesInsert .= ", '$dateInfo'";
                         }
                         $valuesInsert = trim($valuesInsert);
                         if ($valuesInsert[-1] && $valuesInsert[-1] == ",") {
                             $valuesInsert = substr($valuesInsert, 0, strlen($valuesInsert) - 1);
                         }
                     }
-
+                   
                     if ($idData == 0) {
                         $idData = $barragehydroService->addInfoInTableByInfrastructure('t_bh_04_donnees_collectees', $colonneInsert, $valuesInsert);
                     } else {

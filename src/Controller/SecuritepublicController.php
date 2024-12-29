@@ -41,7 +41,7 @@ class SecuritepublicController extends AbstractController
     private $pathForNameSecuritepublique = null;
     private $kernelInterface;
     private $directoryCopy = null;
-    private const nameRepertoireImage = 'su_securite_public/t_su_01_infrastructure/';
+    private const nameRepertoireImage = 'su_securite_publique/t_su_01_infrastructure/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;

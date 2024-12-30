@@ -240,13 +240,18 @@ class TrajetrouteRepository extends ServiceEntityRepository
     public function updateInfrastructure($idInfra = null, $updateColonneInfra = null)
     {
         $dateInfo = new \DateTime();
-        $sql = "UPDATE t_tj_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
+        if (isset($updateColonneInfra) && !empty($updateColonneInfra)) {   
+            $sql = "UPDATE t_tj_01_infrastructure SET ".$updateColonneInfra." where id = ".$idInfra."";
+            $conn = $this->entityManager->getConnection();
+            $query = $conn->prepare($sql);
+            $query->executeQuery();
+    
+            return $idInfra;
+        }
+        
+        return false;
+      
        
-        $conn = $this->entityManager->getConnection();
-        $query = $conn->prepare($sql);
-        $query->executeQuery();
-
-        return $idInfra;
     }
 
     public function addInfoInTableByInfrastructure($table, $colonnes, $values)
@@ -293,7 +298,7 @@ class TrajetrouteRepository extends ServiceEntityRepository
         $modeAcquisitionInformation = pg_escape_string($modeAcquisitionInformation);
         $dateInfo = new \DateTime();
         $sql = "INSERT into t_tj_04_donnees_collectees (id_infrastructure, praticable_toute_l_annee, mois_d_ouverture, mois_de_fermeture, duree_trajet_en_saison_seche, duree_trajet_en_saison_de_pluie, date_information, source_information, mode_acquisition_information, revetement) VALUES (".intval($idInfrastructure).", '".$praticable_toute_l_annee."', '".$mois_d_ouverture."', '".$mois_de_fermeture."', ".intval($duree_trajet_en_saison_seche).", ".intval($duree_trajet_en_saison_de_pluie).", '".$dateInfo->format("Y-m-d")."', '".$sourceInfo."', '".$modeAcquisitionInformation."', '".$revetement."')";
-        
+       
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);
         $query->execute();

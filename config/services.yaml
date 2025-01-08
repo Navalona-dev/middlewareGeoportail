@@ -34,6 +34,8 @@ parameters:
     pathForNamePhotoAssainissement: 'media/upload/as_assainissement/t_as_01_infrastructure/'
     pathImageBarrageHydro: '/home/qgis/projects/saisie/media/upload/bh_barrage/t_bh_01_infrastructure/'
     pathForNamePhotoBarrageHydro: 'media/upload/bh_barrage/t_bh_01_infrastructure/'
+    pathImageBatimentadministratifBatiment: '/home/qgis/projects/saisie/media/upload/ba_batiment_administratif/t_ba_07_batiment/'
+    pathForNamePhotoBatimentadministratifBatiment: 'media/upload/ba_batiment_administratif/t_ba_07_batiment/'
     pathImageBatimentadministratif: '/home/qgis/projects/saisie/media/upload/ba_batiment_administratif/t_ba_01_infrastructure/'
     pathForNamePhotoBatimentadministratif: 'media/upload/ba_batiment_administratif/t_ba_01_infrastructure/'
     pathImageCentraleelectrique: '/home/qgis/projects/saisie/media/upload/ce_centrale_electrique/t_ce_01_infrastructure/'

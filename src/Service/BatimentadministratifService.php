@@ -125,9 +125,20 @@ class BatimentadministratifService
         return false;
     }
 
+    public function addInfrastructurePlanMasse($idInfrastructure, $data)
+    {
+        $result = $this->batimentadministratifRepository->addInfrastructurePlanMasse($idInfrastructure, $data['photoPlanMasse']);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
     public function addInfrastructureDonneCollecte($idInfrastructure = null, $data)
     {
-        $result = $this->batimentadministratifRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['existanceTerrainFoot'], $data['etatTerrainFoot'], $data['existanceTerrainMixte'], $data['etatTerrainMixte'], $data['sourceInformationData'], $data['modeAcquisitionInformationData']);
+        $result = $this->batimentadministratifRepository->addInfrastructureDonneCollecte($idInfrastructure, $data['existanceTerrainFoot'], $data['etatTerrainFoot'], $data['existanceTerrainMixte'], $data['etatTerrainMixte'], $data['sourceInformationData'], $data['modeAcquisitionInformationData'], $data['existenceElectricite'], $data['sourceElectricite'], $data['etatElectricite'], $data['existenceEau'], $data['sourceEau'], $data['etatEau'], $data['existenceWc'], $data['typeWc'], $data['etatWc'], $data['existenceDrainageEauPluviale'], $data['etatDrainageEauPluviale'], $data['existenceCloture'], $data['typeCloture'], $data['etatCloture']);
         
         if ($result) {
             return $result;
@@ -207,6 +218,45 @@ class BatimentadministratifService
         $routes = $this->batimentadministratifRepository->getPhotoInfraInfo(intval($infraId));
         if (count($routes) > 0) {
             return $routes;
+        }
+        return false;
+    }
+
+    public function addInfrastructureBatimentPhoto($dataCollecteId = null, $setUpdate)
+    {
+        $result = $this->batimentadministratifRepository->addInfrastructureBatimentPhoto($dataCollecteId, $setUpdate);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+    
+    public function getPhotoInfraBatimentInfo($dataCollecteId)
+    {
+        $routes = $this->batimentadministratifRepository->getPhotoInfraBatimentInfo(intval($dataCollecteId));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
+    }
+    
+
+    public function findIdBatimentFromIdDatacollecte($dataCollecteId)
+    {
+        $routes = $this->batimentadministratifRepository->findIdBatimentFromIdDatacollecte(intval($dataCollecteId));
+        if (count($routes) > 0) {
+            return $routes[0]['idbatiment'];
+        }
+        return false;
+    }
+
+    public function findIdDataCollecteFromIdInfra($infraId)
+    {
+        $routes = $this->batimentadministratifRepository->findIdDataCollecteFromIdInfra(intval($infraId));
+        if (count($routes) > 0) {
+            return $routes[0]['iddatacollecte'];
         }
         return false;
     }

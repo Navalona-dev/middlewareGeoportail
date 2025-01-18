@@ -551,7 +551,7 @@ class DalotController extends AbstractController
             if ($request->get('nom') != "null" && $request->get('nom') != "undefined") {
                     $infoYlisteRoute = $dalotService->getInfoyRouteInfoMinifie($request->get('nom'));
                    
-                    if (count($infoYlisteRoute) > 0) {
+                    if ($infoYlisteRoute != false && count($infoYlisteRoute) > 0) {
                         $data['nom'] = $infoYlisteRoute[0]['nom'];
                     }
             }

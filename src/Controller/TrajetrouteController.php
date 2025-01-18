@@ -713,7 +713,7 @@ class TrajetrouteController extends AbstractController
             if ($infos['nomRouteRattache'] != "null" && $infos['nomRouteRattache'] != "undefined") {
                     $infoYlisteRoute = $trajetrouteService->getInfoyRouteInfoMinifie($infos['nomRouteRattache']);
                    
-                    if (count($infoYlisteRoute) > 0) {
+                    if ($infoYlisteRoute != false && count($infoYlisteRoute) > 0) {
                         $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
                     }
             }

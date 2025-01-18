@@ -120,7 +120,7 @@ class DalotService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
     }
 
     public function addInfrastructureEtat($idInfrastructure, $data)

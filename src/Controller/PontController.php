@@ -573,7 +573,7 @@ class PontController extends AbstractController
             if ($request->get('nomRouteRattache') != "null" && $request->get('nomRouteRattache') != "undefined") {
                     $infoYlisteRoute = $pontService->getInfoyRouteInfoMinifie($request->get('nomRouteRattache'));
                    
-                    if (count($infoYlisteRoute) > 0) {
+                    if ($infoYlisteRoute != false && count($infoYlisteRoute) > 0) {
                         $data['nomRouteRattache'] = $infoYlisteRoute[0]['nom'];
                     }
             }

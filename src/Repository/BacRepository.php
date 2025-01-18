@@ -91,7 +91,7 @@ class BacRepository extends ServiceEntityRepository
 
     public function getInfoyRouteInfoMinifie($id)
     {
-        $sql = 'select route.gid as id, route.nom as nom, route.num as numero from y_liste_route as route where route.gid = '.$id.'';
+        $sql = 'select route.id as id, route.nom as nom, route.num as numero from y_liste_route as route where route.id = '.$id.'';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

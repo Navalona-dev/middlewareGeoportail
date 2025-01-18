@@ -162,7 +162,7 @@ class TrajetrouteService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
     }
 
     public function addInfrastructurePhoto($idInfrastructure = null, $setUpdate)

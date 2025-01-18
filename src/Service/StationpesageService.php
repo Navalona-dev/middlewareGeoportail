@@ -79,7 +79,7 @@ class StationpesageService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
     }
 
     public function addInfoInTableByInfrastructure($table, $colonnes, $values)

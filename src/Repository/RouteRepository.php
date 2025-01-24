@@ -409,7 +409,7 @@ class RouteRepository extends ServiceEntityRepository
 
     public function getAllyRouteInfo()
     {
-        $sql = 'select route.gid as id, ST_ASGeoJSON(route.geom) AS geom, route.nom as nom, route.num as numero, route."Anc_Nom", route."Classe", route."Nom2020" from y_liste_route as route';
+        $sql = 'select route.id as id, ST_ASGeoJSON(route.geom) AS geom, route.nom as nom, route.num as numero, route."Anc_Nom", route."Classe", route."Nom2020" from y_liste_route as route';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

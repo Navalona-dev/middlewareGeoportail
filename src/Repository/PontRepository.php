@@ -70,7 +70,7 @@ class PontRepository extends ServiceEntityRepository
 
     public function getAllyRouteInfoMinifie()
     {
-        $sql = 'select MAX(route.gid) as id, route.nom as nom, MAX(route.num) as numero from y_liste_route as route GROUP BY route.nom';
+        $sql = 'select MAX(route.id) as id, route.nom as nom, MAX(route.num) as numero from y_liste_route as route GROUP BY route.nom';
 
         $conn = $this->entityManager->getConnection();
         $query = $conn->prepare($sql);

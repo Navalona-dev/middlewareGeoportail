@@ -133,7 +133,7 @@ class RadierService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
     }
 
     /*public function addInfrastructureRouteStructure($idInfrastructure = null, $data)

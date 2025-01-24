@@ -106,7 +106,7 @@ class PontService
         if (count($routes) > 0) {
             return $routes;
         }
-        return 0;
+        return false;
     }
 
     

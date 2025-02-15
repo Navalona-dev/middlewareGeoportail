@@ -51,7 +51,7 @@ class BatimentadministratifController extends AbstractController
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
         $this->pathImageBatiment = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImageBatiment;
-        
+
         $this->pathImageBatimentadministratif = $params->get('pathImageBatimentadministratif');
         $this->pathImageBatimentadministratifBatiment = $params->get('pathImageBatimentadministratifBatiment');
         $this->pathPublic = $params->get('pathPublic');
@@ -113,7 +113,7 @@ class BatimentadministratifController extends AbstractController
             'code'  => Response::HTTP_OK,
             'status' => true,
             'message' => "Info infrastructure successfull",
-            'pathImage' => $this->pathImage,
+            'pathImage' => $this->pathImageBatiment,
             'data' => $infoPhotosInfra
         ]));
         return $response;

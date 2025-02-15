@@ -46,7 +46,7 @@ class BatimentadministratifController extends AbstractController
     private $directoryCopy = null;
     private $directoryCopyBatiment = null;
     private const nameRepertoireImage = 'ba_batiment_administratif/t_ba_01_infrastructure/';
-    private const nameRepertoireImageBatiment = 'ba_batiment_administratif/t_ba_01_infrastructure/t_ba_07_batiment/';
+    private const nameRepertoireImageBatiment = 'ba_batiment_administratif/t_ba_07_batiment/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;

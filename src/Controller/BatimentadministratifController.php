@@ -36,6 +36,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class BatimentadministratifController extends AbstractController
 {
     private $pathImage = null;
+    private $pathImageBatiment = null;
     private $pathImageBatimentadministratif = null;
     private $pathImageBatimentadministratifBatiment = null;
     private $pathForNamePhotoBatimentadministratifBatiment = null;
@@ -43,10 +44,13 @@ class BatimentadministratifController extends AbstractController
     private $pathForNamePhotoBatimentadministratif = null;
     private $kernelInterface;
     private $directoryCopy = null;
+    private $directoryCopyBatiment = null;
     private const nameRepertoireImage = 'ba_batiment_administratif/t_ba_01_infrastructure/';
+    private const nameRepertoireImageBatiment = 'ba_batiment_administratif/t_ba_01_infrastructure/t_ba_07_batiment/';
 
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
+        $this->pathImageBatiment = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImageBatiment;
         $this->pathImageBatimentadministratif = $params->get('pathImageBatimentadministratif');
         $this->pathImageBatimentadministratifBatiment = $params->get('pathImageBatimentadministratifBatiment');
         $this->pathPublic = $params->get('pathPublic');
@@ -54,6 +58,7 @@ class BatimentadministratifController extends AbstractController
         $this->pathForNamePhotoBatimentadministratifBatiment = $params->get('pathForNamePhotoBatimentadministratifBatiment');
         $this->kernelInterface = $kernelInterface;
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
+        $this->directoryCopyBatiment= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImageBatiment;
     }
 
    
@@ -99,7 +104,7 @@ class BatimentadministratifController extends AbstractController
                 'code'  => Response::HTTP_OK,
                 'status' => true,
                 'message' => "Info infrastructure successfull",
-                'pathImage' => $this->pathImage,
+                'pathImage' => $this->pathImageBatiment,
                 'data' => $infoPhotosInfra
             ]));
         }

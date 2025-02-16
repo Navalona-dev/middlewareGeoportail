@@ -652,7 +652,7 @@ class BatimentadministratifController extends AbstractController
 
                 $name_temp4 = hash('sha512', session_id().microtime($nomOriginal4));
                 $nomPhoto4 = uniqid().".".$uploadedFile4->getClientOriginalExtension();
-                move_uploaded_file($tmpPathName3, $directory4.$nomPhoto3);
+                move_uploaded_file($tmpPathName4, $directory4.$nomPhoto4);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
                 $data['photo3'] = $this->pathForNamePhotoBatimentadministratifBatiment."photo4/" .$nomPhoto4;

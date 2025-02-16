@@ -69,7 +69,7 @@ class BatimentadministratifRepository extends ServiceEntityRepository
         $query = $conn->prepare($sql);
         $query->executeQuery();
      
-        return $idInfra;
+        return $dataCollecteId;
     }
 
     public function getAllCategorieInfra()

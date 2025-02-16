@@ -655,8 +655,8 @@ class BatimentadministratifController extends AbstractController
                 move_uploaded_file($tmpPathName4, $directory4.$nomPhoto4);
                 //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
 
-                $data['photo3'] = $this->pathForNamePhotoBatimentadministratifBatiment."photo4/" .$nomPhoto4;
-                $data['photoName3'] = $nomPhoto4;
+                $data['photo4'] = $this->pathForNamePhotoBatimentadministratifBatiment."photo4/" .$nomPhoto4;
+                $data['photoName4'] = $nomPhoto4;
                
                 if (null != $data['photo1'] || null != $data['photo2'] || null != $data['photo3'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || "undefined" != $uploadedFile3 || $toNullPhoto1 || $toNullPhoto2 || $toNullPhoto3) {
                     $setUpdate .= ", ";    

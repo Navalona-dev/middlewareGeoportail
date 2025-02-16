@@ -120,7 +120,7 @@ class BatimentadministratifController extends AbstractController
     }
 
     /**
-     * @Route("/api/batimentadministrafif/inforbatiment/deletephoto", name="batimentadministrafif_deletebatiment_photo", methods={"POST"})
+     * @Route("/api/batimentadministrafif/infobatiment/delete/photo", name="batimentadministrafif_deletebatiment_photo", methods={"POST"})
      */
     public function deleteBatimentPhoto(Request $request, BatimentadministratifService $batimentadministratifService)
     { 

@@ -43,6 +43,12 @@ class StationpesageController extends AbstractController
     private $directoryCopy = null;
     private const nameRepertoireImage = 'sp_station_pesage/t_sp_01_infrastructure/';
 
+    private $pathImageBatiment = null;
+    private $pathImageStationpessageBatiment = null;
+    private $pathForNamePhotoStationpessageBatiment = null;
+    private $directoryCopyBatiment = null;
+    private const nameRepertoireImageBatiment = 'sp_station_pesage/t_sp_07_batiment/';
+
     public function __construct(ParameterBagInterface $params, KernelInterface  $kernelInterface) {
         $this->pathImage = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImage;
         $this->pathImageStationpesage = $params->get('pathImageStationpesage');
@@ -50,6 +56,176 @@ class StationpesageController extends AbstractController
         $this->pathForNamePhotoStationpesage = $params->get('pathForNamePhotoStationpesage');
         $this->kernelInterface = $kernelInterface;
         $this->directoryCopy= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImage;
+
+        $this->pathImageBatiment = $params->get('base_url'). $params->get('pathPublic') . self::nameRepertoireImageBatiment;
+        $this->pathImageStationpessageBatiment = $params->get('pathImageStationpessageBatiment');
+        $this->pathForNamePhotoStationpessageBatiment = $params->get('pathForNamePhotoStationpessageBatiment');
+        $this->directoryCopyBatiment= $kernelInterface->getProjectDir()."/public".$params->get('pathPublic').self::nameRepertoireImageBatiment;
+    }
+
+    /**
+     * @Route("/api/stationpesageroute/infobatiment/{id}", name="infra_stationpesageroute_infobatiment", methods={"GET"})
+     */
+    public function getInfoInfraBatimentInfo($id, Request $request, StationpesageService $stationpesageService)
+    {
+        $infoPhotosInfra = [];
+        $response = new Response();
+        if (isset($id) && !empty($id)) {
+           
+            $infoPhotosInfra = $stationpesageService->getPhotoInfraBatimentInfo($id);
+            
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Info infrastructure successfull",
+                'pathImage' => $this->pathImageBatiment,
+                'data' => $infoPhotosInfra
+            ]));
+        }
+        $response->setContent(json_encode([
+            'code'  => Response::HTTP_OK,
+            'status' => true,
+            'message' => "Info infrastructure successfull",
+            'pathImage' => $this->pathImageBatiment,
+            'data' => $infoPhotosInfra
+        ]));
+        return $response;
+    }
+
+    /**
+     * @Route("/api/stationpesageroute/infobatiment/delete/photo", name="stationpesageroute_deletebatiment_photo", methods={"POST"})
+     */
+    public function deleteBatimentPhoto(Request $request, StationpesageService $stationpesageService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $idInfra = null;
+        try {
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                $photo = $data['photo'];
+                $idInfra = $data['dataCollecteId'];
+                $indexPhoto = "photo";
+                $indexPhotoName = "photo_name";
+                if ($photo != null && $photo != "null") {
+                    $indexPhoto .= $photo;
+                    $indexPhotoName .= $photo;
+                }
+            
+                
+                $setUpdate = "";
+
+                $infoPhotosInfra = $stationpesageService->getPhotoInfraBatimentInfo($idInfra);
+                
+                $oldPhotosInfra = [];
+                if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0 && array_key_exists($indexPhoto, $infoPhotosInfra[0])) {
+                    if (isset($infoPhotosInfra[0][$indexPhoto]) && !empty($infoPhotosInfra[0][$indexPhoto]) && $infoPhotosInfra[0][$indexPhoto] != "") {
+                        $oldPhotosInfra[$indexPhoto] = $infoPhotosInfra[0][$indexPhoto];
+                    }
+                }
+
+                $directory = $this->pathImageStationpessageBatiment . $indexPhoto."/";
+                $directoryPublicCopy =  $this->directoryCopyBatiment. $indexPhoto."/";
+                
+                if (array_key_exists($indexPhoto, $oldPhotosInfra)) {
+                    $nomOldFile = basename($oldPhotosInfra[$indexPhoto]);
+                    if (file_exists($directory.$nomOldFile)) {
+                        unlink($directory.$nomOldFile);
+                        unlink($directoryPublicCopy.$nomOldFile);
+                        //$setUpdate .= "$indexPhoto = null, $indexPhotoName = null";
+                        $setUpdate .= "$indexPhoto = null";
+                    }
+                
+                    if (isset($setUpdate) && !empty($setUpdate)) {
+                        $idInfra = $stationpesageService->addInfrastructureBatimentPhoto($idInfra, $setUpdate);
+                    }
+                   
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Photo stationpesageroute deleted_successfull"
+                    ]));
+                } else {
+                    $response->setContent(json_encode([
+                        'code'  => Response::HTTP_OK,
+                        'status' => true,
+                        'message' => "Pas de photo stationpesageroute  supprimer"
+                    ]));
+                }
+                
+                $response->headers->set('Content-Type', 'application/json');
+            }
+            
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
+        return $response;
     }
 
     /**
@@ -76,6 +252,393 @@ class StationpesageController extends AbstractController
             'pathImage' => $this->pathImage,
             'data' => $infoPhotosInfra
         ]));
+        return $response;
+    }
+    
+    /**
+     * @Route("/api/stationpesageroute/batiment/updatephoto", name="stationpesageroute_batiment_update_photo", methods={"POST"})
+     */
+    public function updatePhotoBatiment(Request $request, StationpesageService $stationpesageService)
+    { 
+        $response = new Response();
+        $hasException = false;
+        $dataCollecteId = null;
+        try {
+            $data = [];
+            $uploadedFile1 = "undefined";
+            $uploadedFile2 = "undefined";
+            $uploadedFile3 = "undefined";
+            $uploadedFile4 = "undefined";
+            if ($request->files->has('photo1')) {
+                $uploadedFile1 = $request->files->get('photo1');
+            }
+            if ($request->files->has('photo2')) {
+                $uploadedFile2 = $request->files->get('photo2');
+            }
+            if ($request->files->has('photo3')) {
+                $uploadedFile3 = $request->files->get('photo3');
+            }
+            
+            if ($request->files->has('photo4')) {
+                $uploadedFile4 = $request->files->get('photo4');
+            }
+
+            $dataCollecteId = $request->get('dataCollecteId');
+            $data['photo1'] = null;
+            $data['photo2'] = null;
+            $data['photo3'] = null;
+            $data['photo4'] = null;
+            $data['photoName1'] = null;
+            $data['photoName2'] = null;
+            $data['photoName3'] = null;
+            $setUpdate = "";
+            
+            $infoPhotosInfra = $stationpesageService->getPhotoInfraBatimentInfo($dataCollecteId);
+           
+            $toDeletePhoto1 = false;
+            $toDeletePhoto2 = false;
+            $toDeletePhoto3 = false;
+            $toDeletePhoto4 = false;
+            $toNullPhoto1 = false;
+            $toNullPhoto2 = false;
+            $toNullPhoto3 = false;
+            $toNullPhoto4 = false;
+            $oldPhotosInfra = [];
+            if ($infoPhotosInfra != false && count($infoPhotosInfra) > 0) {
+                if (isset($infoPhotosInfra[0]["photo1"]) && !empty($infoPhotosInfra[0]["photo1"]) && $infoPhotosInfra[0]["photo1"] != "") {
+                    $toDeletePhoto1 = true;
+                    $oldPhotosInfra["photo1"] = $infoPhotosInfra[0]["photo1"];
+                }
+
+                if (isset($infoPhotosInfra[0]["photo2"]) && !empty($infoPhotosInfra[0]["photo2"]) && $infoPhotosInfra[0]["photo2"] != "") {
+                    $toDeletePhoto2 = true;
+                    $oldPhotosInfra["photo2"] = $infoPhotosInfra[0]["photo2"];
+                }
+
+                if (isset($infoPhotosInfra[0]["photo3"]) && !empty($infoPhotosInfra[0]["photo3"]) && $infoPhotosInfra[0]["photo3"] != "") {
+                    $toDeletePhoto3 = true;
+                    $oldPhotosInfra["photo3"] = $infoPhotosInfra[0]["photo3"];
+                }
+
+                if (isset($infoPhotosInfra[0]["photo4"]) && !empty($infoPhotosInfra[0]["photo4"]) && $infoPhotosInfra[0]["photo4"] != "") {
+                    $toDeletePhoto4 = true;
+                    $oldPhotosInfra["photo4"] = $infoPhotosInfra[0]["photo4"];
+                }
+            }
+            
+            if(!is_dir($this->pathImageStationpessageBatiment)) {
+                mkdir($this->pathImageStationpessageBatiment, 0777, true);
+            }
+          
+            $directory1 = $this->pathImageStationpessageBatiment . "photo1/";
+      
+            if (null != $uploadedFile1 && "null" != $uploadedFile1 && "undefined" != $uploadedFile1) {
+                $nomOriginal1 = $uploadedFile1->getClientOriginalName();
+                $tmpPathName1 = $uploadedFile1->getPathname();
+                $directoryPublicCopy =  $this->directoryCopy. "photo1/";    
+
+                if(!is_dir($directory1)) {
+                    mkdir($directory1, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                
+                //$name_temp = hash('sha512', session_id().microtime($nomOriginal1));
+                $nomPhoto1 = uniqid().".".$uploadedFile1->getClientOriginalExtension();
+                
+                move_uploaded_file($tmpPathName1, $directory1.$nomPhoto1);
+                //copy($directory1.$nomPhoto1, $directoryPublicCopy.$nomPhoto1);
+
+                $data['photo1'] = $this->pathForNamePhotoStationpessageBatiment."photo1/" .$nomPhoto1;
+                $data['photoName1'] = $nomPhoto1;
+                $setUpdate .= "photo1 = '".$data['photo1']."'";
+               
+                if ($toDeletePhoto1) {
+                    $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
+                    if (file_exists($directory1.$nomOldFile1)) {
+                        unlink($directory1.$nomOldFile1);
+                        unlink($directoryPublicCopy.$nomOldFile1);
+                    }
+                }
+                
+            } else {
+                if ($toDeletePhoto1 && ("null" == $uploadedFile1 || null == $uploadedFile1)) {
+                    $nomOldFile1 = basename($oldPhotosInfra["photo1"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo1/";
+                    if (file_exists($directory1.$nomOldFile1)) {
+                        unlink($directory1.$nomOldFile1);
+                        unlink($directoryPublicCopy.$nomOldFile1);
+                    }
+                }
+                
+                if ($uploadedFile1 != "undefined") {
+                    $toNullPhoto1 = true;
+                    $setUpdate .= "photo1 = null";
+                }
+            }
+        
+
+            $directory2 = $this->pathImageStationpessageBatiment . "photo2/";
+
+            if (null != $uploadedFile2 && "null" != $uploadedFile2 && "undefined" != $uploadedFile2) {
+                $nomOriginal2 = $uploadedFile2->getClientOriginalName();
+                $tmpPathName2 = $uploadedFile2->getPathname();
+
+                $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+
+                if(!is_dir($directory2)) {
+                    mkdir($directory2, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                $name_temp2 = hash('sha512', session_id().microtime($nomOriginal2));
+                $nomPhoto2 = uniqid().".".$uploadedFile2->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName2, $directory2.$nomPhoto2);
+                //copy($directory2.$nomPhoto2, $directoryPublicCopy.$nomPhoto2);
+                
+                $data['photo2'] = $this->pathForNamePhotoStationpessageBatiment."photo2/" .$nomPhoto2;
+                $data['photoName2'] = $nomPhoto2;
+                //if (null != $data['photo1']) {
+                    if ($uploadedFile1 != "undefined" || $toNullPhoto1 || null != $data['photo1']) {
+                        $setUpdate .= ", ";    
+                    }
+                //}
+               
+                $setUpdate .= "photo2 = '".$data['photo2']."'";
+
+                if ($toDeletePhoto2) {
+                    $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
+                    if (file_exists($directory2.$nomOldFile2)) {
+                        unlink($directory2.$nomOldFile2);
+                        unlink($directoryPublicCopy.$nomOldFile2);
+                    }
+                }
+            } else {
+                if ($toDeletePhoto2 && ("null" == $uploadedFile2 || null == $uploadedFile2)) {
+                    $nomOldFile2 = basename($oldPhotosInfra["photo2"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo2/";
+                    if (file_exists($directory2.$nomOldFile2)) {
+                        unlink($directory2.$nomOldFile2);
+                        unlink($directoryPublicCopy.$nomOldFile2);
+                    }
+                }
+
+                if (($toNullPhoto1 || null != $data['photo1'] || "undefined" != $uploadedFile1) && $uploadedFile2 != "undefined") {
+                    $setUpdate .= ", ";  
+                }
+                if ($uploadedFile2 != "undefined") {
+                    $setUpdate .= "photo2 = null";
+                    $toNullPhoto2 = true;
+                }
+                
+            }
+
+
+            $directory3 = $this->pathImageStationpessageBatiment . "photo3/";
+           
+            if (null != $uploadedFile3 && "null" != $uploadedFile3 && "undefined" != $uploadedFile3) {
+                $nomOriginal3 = $uploadedFile3->getClientOriginalName();
+                $tmpPathName3 = $uploadedFile3->getPathname();
+
+                $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+
+                if(!is_dir($directory3)) {
+                    mkdir($directory3, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                $name_temp3 = hash('sha512', session_id().microtime($nomOriginal3));
+                $nomPhoto3 = uniqid().".".$uploadedFile3->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName3, $directory3.$nomPhoto3);
+                //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
+
+                $data['photo3'] = $this->pathForNamePhotoStationpessageBatiment."photo3/" .$nomPhoto3;
+                $data['photoName3'] = $nomPhoto3;
+               
+                if (null != $data['photo1'] || null != $data['photo2'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto1 || $toNullPhoto2) {
+                    $setUpdate .= ", ";    
+                }
+
+                $setUpdate .= "photo3 = '".$data['photo3']."'";
+              
+                if ($toDeletePhoto3) {
+                    $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
+                    if (file_exists($directory3.$nomOldFile3)) {
+                        unlink($directory3.$nomOldFile3);
+                        unlink($directoryPublicCopy.$nomOldFile3);
+                    }
+                }
+            } else {
+                if ($toDeletePhoto3 && ("null" == $uploadedFile3 || null == $uploadedFile3)) {
+                    $nomOldFile3 = basename($oldPhotosInfra["photo3"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo3/";
+                    if (file_exists($directory3.$nomOldFile3)) {
+                        unlink($directory3.$nomOldFile3);
+                        unlink($directoryPublicCopy.$nomOldFile3);
+                    }
+                }
+               
+               
+                if (($toNullPhoto2  || null != $data['photo2'] || $toNullPhoto1 || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1) && $uploadedFile3 != "undefined") {
+                    $setUpdate .= ", ";  
+                }
+                //dd($toNullPhoto2, $setUpdate, $data, $uploadedFile3, $uploadedFile3);
+                if ($uploadedFile3 != "undefined") {
+                    $setUpdate .= "photo3 = null";
+                    $toNullPhoto3 = true;
+                }
+               
+            }
+           
+            $directory4 = $this->pathImageStationpessageBatiment . "photo4/";
+           
+            if (null != $uploadedFile4 && "null" != $uploadedFile4 && "undefined" != $uploadedFile4) {
+                $nomOriginal4 = $uploadedFile4->getClientOriginalName();
+                $tmpPathName4 = $uploadedFile4->getPathname();
+
+                $directoryPublicCopy =  $this->directoryCopy. "photo4/";
+
+                if(!is_dir($directory4)) {
+                    mkdir($directory4, 0777, true);
+                }
+
+                if(!is_dir($directoryPublicCopy)) {
+                    mkdir($directoryPublicCopy, 0777, true);
+                } 
+
+                $name_temp4 = hash('sha512', session_id().microtime($nomOriginal4));
+                $nomPhoto4 = uniqid().".".$uploadedFile4->getClientOriginalExtension();
+                move_uploaded_file($tmpPathName4, $directory4.$nomPhoto4);
+                //copy($directory3.$nomPhoto3, $directoryPublicCopy.$nomPhoto3);
+
+                $data['photo4'] = $this->pathForNamePhotoStationpessageBatiment."photo4/" .$nomPhoto4;
+                $data['photoName4'] = $nomPhoto4;
+               
+                if (null != $data['photo1'] || null != $data['photo2'] || null != $data['photo3'] || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || "undefined" != $uploadedFile3 || $toNullPhoto1 || $toNullPhoto2 || $toNullPhoto3) {
+                    $setUpdate .= ", ";    
+                }
+
+                $setUpdate .= "photo4 = '".$data['photo4']."'";
+              
+                if ($toDeletePhoto4) {
+                    $nomOldFile4 = basename($oldPhotosInfra["photo4"]);
+                    if (file_exists($directory4.$nomOldFile4)) {
+                        unlink($directory4.$nomOldFile4);
+                        unlink($directoryPublicCopy.$nomOldFile4);
+                    }
+                }
+            } else {
+                if ($toDeletePhoto4 && ("null" == $uploadedFile4 || null == $uploadedFile4)) {
+                    $nomOldFile4 = basename($oldPhotosInfra["photo4"]);
+                    $directoryPublicCopy =  $this->directoryCopy. "photo4/";
+                    if (file_exists($directory4.$nomOldFile4)) {
+                        unlink($directory4.$nomOldFile4);
+                        unlink($directoryPublicCopy.$nomOldFile4);
+                    }
+                }
+               
+               
+                if (($toNullPhoto2  || null != $data['photo2'] || $toNullPhoto1 || "undefined" != $uploadedFile2 || "undefined" != $uploadedFile1 || $toNullPhoto3  || null != $data['photo3'] || "undefined" != $uploadedFile3) && $uploadedFile4 != "undefined") {
+                    $setUpdate .= ", ";  
+                }
+                //dd($toNullPhoto2, $setUpdate, $data, $uploadedFile3, $uploadedFile3);
+                if ($uploadedFile4 != "undefined") {
+                    $setUpdate .= "photo4 = null";
+                    $toNullPhoto4 = true;
+                }
+               
+            }
+         
+            if (isset($setUpdate) && !empty($setUpdate)) {
+                $idInfraBatiment = $stationpesageService->addInfrastructureBatimentPhoto($dataCollecteId, $setUpdate);
+            }
+            
+
+            $response->setContent(json_encode([
+                'code'  => Response::HTTP_OK,
+                'status' => true,
+                'message' => "Photo batiment stationpesageroute route updated_successfull"
+            ]));
+
+            $response->headers->set('Content-Type', 'application/json');
+
+        } catch (PropertyVideException $PropertyVideException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $PropertyVideException->getMessage()
+            ]));
+        } catch (UniqueConstraintViolationException $UniqueConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UniqueConstraintViolationException->getMessage()
+            ]));
+        } catch (MappingException $MappingException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $MappingException->getMessage()
+            ]));
+        } catch (ORMInvalidArgumentException $ORMInvalidArgumentException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ORMInvalidArgumentException->getMessage()
+            ]));
+        } catch (UnsufficientPrivilegeException $UnsufficientPrivilegeException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $UnsufficientPrivilegeException->getMessage(),
+            ]));
+        /*} catch (ServerException $ServerException) {
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $ServerException->getMessage(),
+            ]));*/
+        } catch (NotNullConstraintViolationException $NotNullConstraintViolationException) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $NotNullConstraintViolationException->getMessage(),
+            ]));
+        } catch (\Exception $Exception) {
+            $hasException = true;
+            $response->setContent(json_encode([
+                'status' => false,
+                'message' => $Exception->getMessage(),
+            ]));
+        }
+
+        if ($hasException) {// Clean database
+            /*$trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'infrastructure');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'situation');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'data');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'travaux');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'etude');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fourniture');*/
+            /*
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'surface');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'structure');
+            
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'accotement');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'fosse');
+            $trajetrouteService->cleanTablesByIdInfrastructure($idInfra, 'foncier');
+        
+            */
+        
+        }
+        
         return $response;
     }
 

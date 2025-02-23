@@ -261,4 +261,24 @@ class StationpesageService
         $this->entityManager->flush();
     }
 
+    public function getPhotoInfraBatimentInfo($dataCollecteId)
+    {
+        $routes = $this->stationpesageRepository->getPhotoInfraBatimentInfo(intval($dataCollecteId));
+        if (count($routes) > 0) {
+            return $routes;
+        }
+        return false;
+    }
+
+    public function addInfrastructureBatimentPhoto($dataCollecteId = null, $setUpdate)
+    {
+        $result = $this->stationpesageRepository->addInfrastructureBatimentPhoto($dataCollecteId, $setUpdate);
+        
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
 }

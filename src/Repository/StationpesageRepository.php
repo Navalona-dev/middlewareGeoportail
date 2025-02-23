@@ -400,6 +400,27 @@ class StationpesageRepository extends ServiceEntityRepository
         return $id;
     }
 
+    public function addInfrastructureBatimentPhoto($dataCollecteId = null, $setUpdate )
+    {
+        $sql = "UPDATE t_sp_07_batiment SET ".$setUpdate." where id_donnees_collectees = ".$dataCollecteId."";
+
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $query->executeQuery();
+     
+        return $dataCollecteId;
+    }
+
+    public function getPhotoInfraBatimentInfo($dataCollecteId)
+    {
+        $sql = "SELECT batiment.id as batiment__id, batiment.batiment_en_dur as batiment__batiment_en_dur, batiment.nombre_niveau as batiment__nombre_niveau, batiment.affectation as batiment__affectation, batiment.type_fondation as batiment__type_fondation, batiment.moellon_existence_fissure as batiment__moellon_existence_fissure, batiment.moellon_existence_affouillement as batiment__moellon_existence_affouillement, batiment.beton_existence_ferraillage_visible as batiment__beton_existence_ferraillage_visible, batiment.moellon_beton_existence_fissure as batiment__moellon_beton_existence_fissure, batiment.moellon_beton_existence_affouillement as batiment__moellon_beton_existence_affouillement, batiment.moellon_beton_existence_frerraillage_visible as batiment__moellon_beton_existence_frerraillage_visible, batiment.terre_brique_existence_affouillement as batiment__terre_brique_existence_affouillement, batiment.pourvu_mur as batiment__pourvu_mur, batiment.mur_completude as batiment__mur_completude, batiment.mur_existence_fissure as batiment__mur_existence_fissure, batiment.pourvu_poteau as batiment__pourvu_poteau, batiment.poteau_existence_ferraillage_visible as batiment__poteau_existence_ferraillage_visible, batiment.type_sol as batiment__type_sol, batiment.sol_beton_existence_fissure as batiment__sol_beton_existence_fissure, batiment.sol_parquet_existence_solive_pourrie as batiment__sol_parquet_existence_solive_pourrie, batiment.sol_parquet_existence_parquet_pourri as batiment__sol_parquet_existence_parquet_pourri, batiment.sol_carreau_existence_carreau_casse as batiment__sol_carreau_existence_carreau_casse, batiment.type_plafond as batiment__type_plafond, batiment.etat_plafond as batiment__etat_plafond, batiment.type_toiture as batiment__type_toiture, batiment.toiture_tuile_existence_fuite as batiment__toiture_tuile_existence_fuite, batiment.toiture_tole_existence_infiltration as batiment__toiture_tole_existence_infiltration, batiment.toiture_terasse_existence_fissure as batiment__toiture_terasse_existence_fissure, batiment.toiture_terasse_existence_fuite as batiment__toiture_terasse_existence_fuite, batiment.type_charpente as batiment__type_charpente, batiment.charpente_metallique_existence_rouille as batiment__charpente_metallique_existence_rouille, batiment.charpente_bois_existence_pourriture as batiment__charpente_bois_existence_pourriture, batiment.pourvu_porte as batiment__pourvu_porte, batiment.completude_porte as batiment__completude_porte, batiment.etat_porte as batiment__etat_porte, batiment.pourvu_fenetre as batiment__pourvu_fenetre, batiment.completude_fenetre as batiment__completude_fenetre, batiment.etat_fenetre as batiment__etat_fenetre, batiment.etat_batiment as batiment__etat_batiment, batiment.precision_type_fondation as batiment__precision_type_fondation, batiment.numero_batiment as batiment__numero_batiment, batiment.photo1, batiment.photo2, batiment.photo3, batiment.photo4 FROM t_sp_07_batiment as batiment  where batiment.id_donnees_collectees = ".intval($dataCollecteId)."";
+       
+        $conn = $this->entityManager->getConnection();
+        $query = $conn->prepare($sql);
+        $result = $query->execute();
+
+        return $result->fetchAll();
+    }
 
     /*public function getAllyRouteInfo()
     {

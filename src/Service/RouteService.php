@@ -173,7 +173,7 @@ class RouteService
     
     public function addInfrastructureRouteAccotement($idInfrastructure = null, $data, $cote = null)
     {
-        $result = $this->routeRepository->addInfrastructureRouteAccotement($idInfrastructure, $data['accotement'.$cote], $data['accotementDegrationSurface'.$cote], $data['accotementDentelleRive'.$cote], $data['accotementDenivellationChausseAccotement'.$cote], $data['accotementDestructionAffouillementAccotement'.$cote], $data['accotementNonRevetueDeformationProfil'.$cote], $data['accotementRevetue'.$cote], $data['accotementTypeRevetementAccotement'.$cote], $data['accotementPrecisionTypeAccotement'], $data['dateInformationAccotement'], $data['sourceInformationAccotement'], $data['modeAcquisitionInformationAccotement']);
+        $result = $this->routeRepository->addInfrastructureRouteAccotement($idInfrastructure, $data['accotement'.$cote], $data['accotementDegrationSurface'.$cote], $data['accotementDentelleRive'.$cote], $data['accotementDenivellationChausseAccotement'.$cote], $data['accotementDestructionAffouillementAccotement'.$cote], $data['accotementNonRevetueDeformationProfil'.$cote], $data['accotementRevetue'.$cote], $data['accotementTypeRevetementAccotement'.$cote], $data['accotementPrecisionTypeAccotement'], $data['dateInformationAccotement'], $data['sourceInformationAccotement'], $data['modeAcquisitionInformationAccotement'], $data['reseauDivers'], $data['typeReseau']);
         
         if ($result) {
             return $result;

@@ -695,6 +695,8 @@ class RouteController extends AbstractController
                     $data['accotementDenivellationChausseAccotementGauche'] = $request->get('accotementDenivellationChausseAccotementGauche');
                     $data['accotementDestructionAffouillementAccotementGauche'] = $request->get('accotementDestructionAffouillementAccotementGauche');
                     $data['accotementNonRevetueDeformationProfilGauche'] = $request->get('accotementNonRevetueDeformationProfilGauche');
+                    $data['reseauDivers'] = $request->get('reseauDivers');
+                    $data['typeReseau'] = $request->get('typeReseau');
                     $idAccotementGauche = $routeService->addInfrastructureRouteAccotement($idInfra, $data, "Gauche");
                 }
 
@@ -713,6 +715,8 @@ class RouteController extends AbstractController
                     $data['accotementDenivellationChausseAccotementDroite'] = $request->get('accotementDenivellationChausseAccotementDroite');
                     $data['accotementDestructionAffouillementAccotementDroite'] = $request->get('accotementDestructionAffouillementAccotementDroite');
                     $data['accotementNonRevetueDeformationProfilDroite'] = $request->get('accotementNonRevetueDeformationProfilDroite');
+                    $data['reseauDivers'] = $request->get('reseauDivers');
+                    $data['typeReseau'] = $request->get('typeReseau');
                     $idAccotementDroite = $routeService->addInfrastructureRouteAccotement($idInfra, $data, "Droite");
                 }
 
